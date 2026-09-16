@@ -1,0 +1,12 @@
+import { Link } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { PageIntro, SiteLayout, usePageMeta } from "../components/layouts";
+import { CodeBlock, Status } from "../components/ui";
+
+const code = `export const name = 'greeter'\nexport const inject = ['logger']\n\nexport function apply(ctx) {\n  ctx.on('ready', () => {\n    ctx.logger.info('service ready')\n  })\n}`;
+const topics = ["What is Cordis", "The minimal plugin", "Services and injection", "Composition and hot reload", "Where ACRYL Blends begins"];
+
+export default function CordisPrimer() {
+  usePageMeta("Cordis Primer", "A concise on-ramp to Cordis plugins, services, injection, composition and hot reload.");
+  return <SiteLayout><PageIntro kicker="Protocol primer" title="Cordis, in one clean pass." description="The protocol beneath ACRYL Blends: small plugins, explicit services, dependency injection and live composition. This is an on-ramp, not a competing tutorial." actions={<Status>Thin by design</Status>}/><section className="mx-auto grid max-w-[1200px] gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1fr_1fr]"><div><h2 className="text-3xl font-semibold">A plugin is the atom.</h2><p className="mt-4 leading-7 text-muted-foreground">Cordis gives plugins a context, lifecycle, services and an explicit dependency graph. A plugin can stay tiny because composition is the system.</p><div className="mt-10 space-y-0 border-t border-border">{topics.map((x, i) => <Link key={x} to={`/cordis/${x.toLowerCase().replaceAll(" ", "-")}`} className="flex items-center justify-between border-b border-border py-4 text-sm hover:text-accent-foreground"><span><b className="mr-4 font-mono text-[10px] text-muted-foreground">0{i + 1}</b>{x}</span><ArrowRight size={14}/></Link>)}</div></div><CodeBlock label="greeter.ts" code={code}/></section><section className="border-t border-border bg-surface"><div className="mx-auto flex max-w-[1200px] flex-col justify-between gap-6 px-5 py-12 md:flex-row md:items-center md:px-8"><div><h2 className="text-2xl font-semibold">Go deeper at the source.</h2><p className="mt-2 text-sm text-muted-foreground">Continue with the complete seven-chapter DeepSeek Harness Cordis tutorial.</p></div><a href="https://deepseek-harness.github.io/deepseek-harness/en/develop/cordis-tutorial/" target="_blank" rel="noreferrer" className="btn-primary">Open full tutorial <ArrowRight size={15}/></a></div></section></SiteLayout>;
+}
