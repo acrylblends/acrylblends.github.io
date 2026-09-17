@@ -26,7 +26,8 @@ export default function App() {
       <Route path="/docs/:group/:item" element={<DocPage/>}/>
       <Route path="/docs/:group" element={<DocPage/>}/>
       <Route path="/cordis" element={<CordisPrimer/>}/>
-      <Route path="/cordis/:page" element={<CordisPage/>}/>
+      <Route path="/cordis/:group/:item" element={<CordisPage/>}/>
+      <Route path="/cordis/:group" element={<CordisPage/>}/>
       <Route path="/ecosystem" element={<EcosystemIndex/>}/>
       <Route path="/ecosystem/:page" element={<EcosystemPage/>}/>
       <Route path="/blog" element={<Blog/>}/>

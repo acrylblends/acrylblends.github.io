@@ -1,8 +1,9 @@
-// Real, hand-written content for the highest-traffic pages across Docs,
-// Cordis Primer and Ecosystem — grounded in specs/036-cordis-ecosystem-and-acryl-blends
-// in the acryldev/acryl repo, not placeholder copy. Keyed by a flat slug:
-// docs pages use "<group-slug>/<item-slug>", Cordis Primer and Ecosystem
-// pages use their own single-level route slug.
+// Real, hand-written content for the highest-traffic pages across Docs and
+// Ecosystem — grounded in specs/036-cordis-ecosystem-and-acryl-blends in the
+// acryldev/acryl repo, not placeholder copy. Keyed by a flat slug: docs
+// pages use "<group-slug>/<item-slug>", Ecosystem pages use their own
+// single-level route slug. The Cordis Primer has its own, much larger
+// content file — see src/lib/cordis-content.ts.
 export type DocEntry = {
   intro: string;
   body: { heading?: string; paragraphs: string[]; note?: string }[];
@@ -18,52 +19,6 @@ export function apply(ctx: Context) {
     ctx.logger.info('hello, world')
   })
 }`;
-
-const cordisYamlCode = `# cordis.yml
-plugins:
-  hello: {}`;
-
-const serviceCode = `import { Context, Service } from 'cordis'
-
-declare module 'cordis' {
-  interface Context {
-    greeter: GreeterService
-  }
-}
-
-class GreeterService extends Service {
-  constructor(ctx: Context) {
-    super(ctx, 'greeter')
-  }
-  greet(name: string) {
-    return \`hello, \${name}\`
-  }
-}
-
-export const name = 'greeter'
-export function apply(ctx: Context) {
-  ctx.plugin(GreeterService)
-}`;
-
-const injectCode = `export const name = 'consumer'
-export const inject = ['greeter']
-
-export function apply(ctx: Context) {
-  ctx.on('ready', () => {
-    ctx.logger.info(ctx.greeter.greet('cordis'))
-  })
-}`;
-
-const compositionYamlCode = `# cordis.yml
-plugins:
-  hello:
-    id: my-hello
-    disabled: false
-  greeter: {}
-  group:my-group:
-    isolate: true
-    plugins:
-      consumer: {}`;
 
 const blendYamlCode = `name: agent-workbench
 version: 0.1.0
@@ -245,41 +200,6 @@ export const docContent: Record<string, DocEntry> = {
     intro: "Not every layer of this model is finished — this page names the real gaps rather than implying they're already closed.",
     body: [{ paragraphs: [
       "The Differentiation Engine (live, checkpointed, reversible in-instance capability addition) is active design work, not shipped. The plugin-from-template scaffolding skill exists as a concept, not yet a guaranteed-compatible generator. Nesting/grouping plugins into intermediate units is an open question with no settled protocol. None of these are hidden — each has its own honest page rather than an implied claim of completeness.",
-    ]}],
-  },
-
-  // Cordis Primer pages
-  "what-is-cordis": {
-    intro: "Cordis is the protocol both ACRYL and stock DeepSeek Harness build on to stay compatible — the common ground, not either product's own branding.",
-    body: [{ paragraphs: [
-      "It defines context, services, dependency injection, an explicit plugin lifecycle (PENDING, LOADING, ACTIVE, FAILED, UNLOADING, DISPOSED), and a Loader that composes plugins from declarative YAML. ACRYL Blends is built on top of Cordis, not a replacement for it — this page is a concise on-ramp, not a competing tutorial; the full seven-chapter tutorial lives at the source.",
-    ]}],
-  },
-  "the-minimal-plugin": {
-    intro: "The smallest Cordis plugin is a name and an `apply` function — nothing else is required.",
-    body: [{ paragraphs: [
-      "A function plugin like this is the default shape; reach for a `Service` class only when the plugin exposes a direct, named capability other plugins will `inject`.",
-    ]}],
-    code: { label: "hello.ts", code: pluginCode },
-  },
-  "services-and-injection": {
-    intro: "A Service is a named, typed capability other plugins depend on explicitly through `inject` — never through a concrete provider reference or YAML row order.",
-    body: [{ paragraphs: [
-      "Declaring `inject = ['greeter']` makes the dependency hard: the consuming plugin stays PENDING until a provider for `greeter` is available, and reactivates cleanly if that provider is replaced. `ctx.get('greeter')` is the optional-dependency counterpart, for a consumer that can function without it.",
-    ]}],
-    code: { label: "greeter.ts + consumer.ts", code: `${serviceCode}\n\n${injectCode}` },
-  },
-  "composition-and-hot-reload": {
-    intro: "A Loader composes many plugins from one declarative YAML file, and can hot-reload any one of them without restarting the rest.",
-    body: [{ paragraphs: [
-      "Row `id`, `disabled`, groups and `isolate` are the composition primitives: an id names a specific plugin instance (and, per this ecosystem's own convention, should equal the package name by default), `disabled` toggles a row off without deleting it, and a group with `isolate: true` scopes service resolution so plugins inside it don't leak dependencies to plugins outside it.",
-    ]}],
-    code: { label: "cordis.yml", code: `${cordisYamlCode}\n\n${compositionYamlCode}` },
-  },
-  "where-acryl-blends-begins": {
-    intro: "Cordis ends at the plugin and its composition. Everything about naming a complete instance, publishing it, and browsing a catalog of them is ACRYL Blends.",
-    body: [{ paragraphs: [
-      "The Blend YAML format, the acrylblends registry, the blank-canvas starting point, hot-reload in-instance authoring before publishing — none of that is part of the Cordis protocol itself. It's the practical machinery this framework adds on top, so that the atoms Cordis defines can become real, distributable products.",
     ]}],
   },
 };

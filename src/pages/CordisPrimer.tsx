@@ -1,12 +1,49 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, BookOpen, Compass, Hammer, Wrench } from "lucide-react";
 import { PageIntro, SiteLayout, usePageMeta } from "../components/layouts";
-import { CodeBlock, Status } from "../components/ui";
+import { Status } from "../components/ui";
+import { cordisGroups } from "../lib/cordis-tutorial";
+import { slugify } from "../lib/content";
 
-const code = `export const name = 'greeter'\nexport const inject = ['logger']\n\nexport function apply(ctx) {\n  ctx.on('ready', () => {\n    ctx.logger.info('service ready')\n  })\n}`;
-const topics = ["What is Cordis", "The minimal plugin", "Services and injection", "Composition and hot reload", "Where ACRYL Blends begins"];
+const icons = [BookOpen, Compass, Hammer, Wrench];
 
 export default function CordisPrimer() {
-  usePageMeta("Cordis Primer", "A concise on-ramp to Cordis plugins, services, injection, composition and hot reload.");
-  return <SiteLayout><PageIntro kicker="Protocol primer" title="Cordis, in one clean pass." description="The protocol beneath ACRYL Blends: small plugins, explicit services, dependency injection and live composition. This is an on-ramp, not a competing tutorial." actions={<Status>Thin by design</Status>}/><section className="mx-auto grid max-w-[1200px] gap-12 px-5 py-16 md:px-8 lg:grid-cols-[1fr_1fr]"><div><h2 className="text-3xl font-semibold">A plugin is the atom.</h2><p className="mt-4 leading-7 text-muted-foreground">Cordis gives plugins a context, lifecycle, services and an explicit dependency graph. A plugin can stay tiny because composition is the system.</p><div className="mt-10 space-y-0 border-t border-border">{topics.map((x, i) => <Link key={x} to={`/cordis/${x.toLowerCase().replaceAll(" ", "-")}`} className="flex items-center justify-between border-b border-border py-4 text-sm hover:text-accent-foreground"><span><b className="mr-4 font-mono text-[10px] text-muted-foreground">0{i + 1}</b>{x}</span><ArrowRight size={14}/></Link>)}</div></div><CodeBlock label="greeter.ts" code={code}/></section><section className="border-t border-border bg-surface"><div className="mx-auto flex max-w-[1200px] flex-col justify-between gap-6 px-5 py-12 md:flex-row md:items-center md:px-8"><div><h2 className="text-2xl font-semibold">Go deeper at the source.</h2><p className="mt-2 text-sm text-muted-foreground">Continue with the complete seven-chapter DeepSeek Harness Cordis tutorial.</p></div><a href="https://deepseek-harness.github.io/deepseek-harness/en/develop/cordis-tutorial/" target="_blank" rel="noreferrer" className="btn-primary">Open full tutorial <ArrowRight size={15}/></a></div></section></SiteLayout>;
+  usePageMeta("Cordis Primer", "The exhaustive Cordis and Harness developer curriculum — tutorial, basics, framework reference, and applied practice — extended with ACRYL's own plugin-authoring bridge.");
+  return (
+    <SiteLayout>
+      <PageIntro
+        kicker="Protocol primer — exhaustive edition"
+        title="Cordis, in full."
+        description="This used to be a five-topic on-ramp. It is now a real recreation of the DeepSeek Harness Cordis/Harness developer documentation — the seven-chapter tutorial, the Basics/Framework/Practice reference, and the bridge into building a plugin for ACRYL itself — with every code sample fetched verbatim from the real source."
+        actions={<><Status tone="success">20 source pages recreated</Status><a href="https://deepseek-harness.github.io/deepseek-harness/en/develop/cordis-tutorial/" target="_blank" rel="noreferrer" className="btn-secondary">Read the original at the source</a></>}
+      />
+      <section className="mx-auto max-w-[1200px] px-5 py-16 md:px-8">
+        <div className="grid gap-4 md:grid-cols-2">
+          {cordisGroups.map((g, i) => {
+            const Icon = icons[i] ?? BookOpen;
+            return (
+              <div key={g.slug} className="border border-border p-6">
+                <Icon size={19} />
+                <h2 className="mt-6 text-xl font-semibold">{g.title}</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">{g.description}</p>
+                <div className="mt-5 space-y-2">
+                  {g.items.map((item) => <Link key={item} to={`/cordis/${g.slug}/${slugify(item)}`} className="group flex items-center justify-between py-1 text-sm text-muted-foreground hover:text-foreground"><span>{item}</span><ArrowRight size={13} className="opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" /></Link>)}
+                </div>
+                <Link to={`/cordis/${g.slug}`} className="mt-6 inline-flex items-center gap-2 font-mono text-[11px] font-semibold uppercase">Open section <ArrowRight size={13} /></Link>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+      <section className="border-t border-border bg-surface">
+        <div className="mx-auto flex max-w-[1200px] flex-col justify-between gap-6 px-5 py-12 md:flex-row md:items-center md:px-8">
+          <div>
+            <h2 className="text-2xl font-semibold">Where this leads: your own ACRYL plugin.</h2>
+            <p className="mt-2 max-w-xl text-sm text-muted-foreground">The tutorial's chapter 7 ends by registering a tool against a real tools service — the last item in that section takes the exact same pattern and points it at a real, published ACRYL plugin.</p>
+          </div>
+          <Link to="/cordis/tutorial/your-first-acryl-harness-plugin" className="btn-primary">Your first ACRYL Harness Plugin <ArrowRight size={15} /></Link>
+        </div>
+      </section>
+    </SiteLayout>
+  );
 }

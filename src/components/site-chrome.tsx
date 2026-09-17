@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, Search, X, ArrowUpRight, Layers3 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { blends, categories, docGroups, slugify } from "../lib/content";
+import { cordisGroups } from "../lib/cordis-tutorial";
 
 const nav = [{ to: "/", label: "Home" }, { to: "/blends", label: "Browse Blends" }, { to: "/docs", label: "Docs" }, { to: "/cordis", label: "Cordis Primer" }, { to: "/ecosystem", label: "Ecosystem" }, { to: "/blog", label: "Blog" }] as const;
 
@@ -16,7 +17,7 @@ export function Header() {
 }
 function SearchPanel({ onClose }: { onClose: () => void }) {
   const [q, setQ] = useState("");
-  const entries = [...blends.map(b => ({ title: b.name, meta: "Blend", to: `/blends/b/${b.slug}` })), ...categories.map(c => ({ title: c.name, meta: "Category", to: `/blends/${c.slug}` })), ...docGroups.flatMap(g => g.items.map(i => ({ title: i, meta: g.title, to: `/docs/${g.slug}/${slugify(i)}` })))].filter(x => x.title.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+  const entries = [...blends.map(b => ({ title: b.name, meta: "Blend", to: `/blends/b/${b.slug}` })), ...categories.map(c => ({ title: c.name, meta: "Category", to: `/blends/${c.slug}` })), ...docGroups.flatMap(g => g.items.map(i => ({ title: i, meta: g.title, to: `/docs/${g.slug}/${slugify(i)}` }))), ...cordisGroups.flatMap(g => g.items.map(i => ({ title: i, meta: `Cordis Primer / ${g.title}`, to: `/cordis/${g.slug}/${slugify(i)}` })))].filter(x => x.title.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
   return <div className="fixed inset-0 z-50 bg-overlay p-4 pt-[10vh]" onMouseDown={onClose}><div className="mx-auto max-w-2xl overflow-hidden rounded-md border border-border bg-popover shadow-modal" onMouseDown={e => e.stopPropagation()}><div className="flex items-center gap-3 border-b border-border px-4"><Search size={18} className="text-muted-foreground"/><input autoFocus value={q} onChange={e => setQ(e.target.value)} placeholder="Search Blends, categories and docs…" className="h-14 flex-1 bg-transparent text-sm outline-none"/><button onClick={onClose} className="font-mono text-xs text-muted-foreground">ESC</button></div><div className="max-h-[60vh] overflow-auto p-2">{entries.map(e => <Link key={e.to} to={e.to} onClick={onClose} className="flex items-center justify-between rounded-sm px-3 py-3 hover:bg-muted"><span className="font-medium">{e.title}</span><span className="font-mono text-xs text-muted-foreground">{e.meta}</span></Link>)}{entries.length === 0 && <p className="p-6 text-center text-sm text-muted-foreground">No matching entries.</p>}</div></div></div>;
 }
 export function Footer() {
