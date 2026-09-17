@@ -14,7 +14,6 @@ export default function CordisPrimer() {
         kicker="Protocol primer — exhaustive edition"
         title="Cordis, in full."
         description="The seven-chapter Cordis tutorial, the Basics/Framework/Practice reference, and the bridge into building a plugin for ACRYL itself — every code sample taken verbatim from the real DeepSeek Harness documentation."
-        actions={<a href="https://deepseek-harness.github.io/deepseek-harness/en/develop/cordis-tutorial/" target="_blank" rel="noreferrer" className="btn-secondary">Read the original at the source</a>}
       />
       <section className="mx-auto max-w-[1200px] px-5 py-16 md:px-8">
         <div className="grid gap-4 md:grid-cols-2">
