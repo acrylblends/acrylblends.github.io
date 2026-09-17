@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, BookOpen, Compass, Hammer, Wrench } from "lucide-react";
 import { PageIntro, SiteLayout, usePageMeta } from "../components/layouts";
-import { Status } from "../components/ui";
 import { cordisGroups } from "../lib/cordis-tutorial";
 import { slugify } from "../lib/content";
 
@@ -14,8 +13,8 @@ export default function CordisPrimer() {
       <PageIntro
         kicker="Protocol primer — exhaustive edition"
         title="Cordis, in full."
-        description="This used to be a five-topic on-ramp. It is now a real recreation of the DeepSeek Harness Cordis/Harness developer documentation — the seven-chapter tutorial, the Basics/Framework/Practice reference, and the bridge into building a plugin for ACRYL itself — with every code sample fetched verbatim from the real source."
-        actions={<><Status tone="success">20 source pages recreated</Status><a href="https://deepseek-harness.github.io/deepseek-harness/en/develop/cordis-tutorial/" target="_blank" rel="noreferrer" className="btn-secondary">Read the original at the source</a></>}
+        description="The seven-chapter Cordis tutorial, the Basics/Framework/Practice reference, and the bridge into building a plugin for ACRYL itself — every code sample taken verbatim from the real DeepSeek Harness documentation."
+        actions={<a href="https://deepseek-harness.github.io/deepseek-harness/en/develop/cordis-tutorial/" target="_blank" rel="noreferrer" className="btn-secondary">Read the original at the source</a>}
       />
       <section className="mx-auto max-w-[1200px] px-5 py-16 md:px-8">
         <div className="grid gap-4 md:grid-cols-2">
