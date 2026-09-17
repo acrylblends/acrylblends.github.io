@@ -6,8 +6,8 @@
 export const cordisGroups = [
   {
     slug: "tutorial",
-    title: "Cordis Framework Tutorial",
-    description: "The real seven-chapter curriculum, built step by step against a scratch Cordis runtime with no API key — plus the bridge into building a plugin for ACRYL.",
+    title: "Part 1 — Cordis Core",
+    description: "The real seven-chapter curriculum, built step by step against a scratch Cordis runtime with no API key.",
     items: [
       "1. Your first plugin",
       "2. Lifecycle and effects",
@@ -16,14 +16,14 @@ export const cordisGroups = [
       "5. Configuration",
       "6. Composition and HMR",
       "7. Into the harness",
-      "Your first ACRYL Harness Plugin",
     ],
   },
   {
     slug: "basics",
-    title: "Basics",
-    description: "The same primitives, now against a real Harness checkout and the Web UI instead of a scratch directory.",
+    title: "Part 2 — ACRYL Harness Basics",
+    description: "The bridge from generic Cordis to a real ACRYL instance, then the same primitives against a real Harness checkout and the Web UI instead of a scratch directory.",
     items: [
+      "Your first ACRYL Harness Plugin",
       "What is a plugin?",
       "Build a tool",
       "Plugin configuration",
@@ -31,9 +31,17 @@ export const cordisGroups = [
     ],
   },
   {
+    slug: "services",
+    title: "Part 3 — ACRYL's Built-in Services",
+    description: "Real named services present on every ACRYL instance, even a blank one — cited by file, not maintained as a second static list.",
+    items: [
+      "ACRYL's built-in services",
+    ],
+  },
+  {
     slug: "framework",
-    title: "Framework",
-    description: "The plugin model, service system, and event system as reference material — the same concepts the tutorial builds, indexed for lookup.",
+    title: "Framework Reference",
+    description: "The plugin model, service system, and event system as standalone reference material — the same concepts Part 1's tutorial builds, indexed for lookup rather than read start to finish.",
     items: [
       "Plugins and lifecycle",
       "Services and dependencies",
@@ -42,7 +50,7 @@ export const cordisGroups = [
   },
   {
     slug: "practice",
-    title: "Practice",
+    title: "Part 4 — Practice",
     description: "Applied patterns for building real, replaceable capabilities: the three-role split, LLM adapters, runtime plugin tools, and ACRYL's own Plugin Manager.",
     items: [
       "Three-role capability design",

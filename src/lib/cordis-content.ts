@@ -468,7 +468,7 @@ tool replied: [{"type":"text","text":"Hello, Cordis!"}]` }] },
     ],
   },
 
-  "tutorial/your-first-acryl-harness-plugin": {
+  "basics/your-first-acryl-harness-plugin": {
     intro: "Every pattern from chapters 1-7 transfers directly to ACRYL: ACRYL Desktop's Cordis Host/Client composition is the exact same Loader mechanism the tutorial just walked through, just running against a real, shipped set of services instead of a scratch directory.",
     sourceUrl: "https://github.com/cordisplugins",
     sourceLabel: "Browse real ACRYL plugins on cordisplugins.github.io",
@@ -681,6 +681,23 @@ export interface Config {
       { heading: "Work with HMR", paragraphs: [
         "A configuration edit hot-replaces the plugin: the framework unloads the old instance and loads a new one. Because registrations are effects and clean themselves up, replacement does not retain the old instance's registrations.",
       ] },
+      { heading: "ACRYL's own Config, for real", paragraphs: [
+        "ACRYL's own plugins follow this exact pattern rather than a different one: apps/acryl-desktop/src/updates.ts's Config is a Schemastery object built with Schema.object({...}), imported as import z from '@deepseek-ai/schemastery' (the z alias is ergonomic naming, not the zod npm package — no ACRYL-owned plugin imports zod). Every field carries a real bound, matching the design principles above: initialDelayMs, intervalMs, and requestTimeoutMs are all z.number().step(1).min(...).max(...).default(...), never a hardcoded constant.",
+      ], code: [{ label: "apps/acryl-desktop/src/updates.ts (real)", code: `import z from '@deepseek-ai/schemastery'
+
+export interface Config {
+  enabled: boolean
+  initialDelayMs: number
+  intervalMs: number
+  requestTimeoutMs: number
+}
+
+export const Config: z<Config> = z.object({
+  enabled: z.boolean().default(true),
+  initialDelayMs: z.number().step(1).min(0).max(MAX_TIMER_DELAY_MS).default(60_000),
+  intervalMs: z.number().step(1).min(1).max(MAX_TIMER_DELAY_MS).default(6 * 60 * 60 * 1000),
+  requestTimeoutMs: z.number().step(1).min(1).max(MAX_TIMER_DELAY_MS).default(15_000),
+})` }] },
     ],
   },
 
@@ -751,6 +768,51 @@ dsh --profile demo` }] },
         "The author ships a prepare script — pnpm runs it after a git install — that builds the published entry points from source, self-contained. The user allowlists the build: pnpm ≥10 refuses to run a git dependency's prepare script until it is explicitly allowed, so the first add fails; dsh points at the fix — copy the exact package key pnpm printed into the profile's pnpm-workspace.yaml.",
       ], code: [{ label: "terminal", code: `dsh plugin --profile demo add github:you/hello-plugin` }, { label: "pnpm-workspace.yaml", code: `allowBuilds:
   dsh-hello-plugin: true` }], note: "Treat that allowance as permission to execute the package's code on your machine at install time, outside any sandbox the agent runs under. Only allow packages whose source you trust, and pin a commit (github:you/hello-plugin#<sha>) so a later push cannot silently change what runs. If you would rather not ask users for the allowance, distribute built artifacts instead: publish to npm with lib/ built at pnpm publish time, or ship a tarball from pnpm pack." },
+      { heading: "The faster local-first path", paragraphs: [
+        "This whole install pipeline is the right gate for a plugin meant for public distribution — pnpm, a bundle manifest, a profile install. It is the wrong tool for a plugin you need for yourself right now. ACRYL's own repository ships a real skill for exactly that gap: .claude/skills/cordis-plugin-quickstart scaffolds a small unpublished plugin, mounts it into a running profile, and lets you iterate without touching npm or cordis-plugin-market's own verified-tarball install path at all. Graduate to this page's pipeline once the plugin has actually reached a shape worth sharing.",
+      ] },
+    ],
+  },
+
+  // ---------------------------------------------------------------------
+  // ACRYL's built-in services (Part 3) — reference-only, real citations.
+  // ---------------------------------------------------------------------
+  "services/acryls-built-in-services": {
+    intro: "Every ACRYL instance — even a blank one — has real named services already mounted on ctx before any user plugin loads. These three are confirmed by reading the actual ACRYL source, not a generic list.",
+    sourceUrl: `${HARNESS_DOCS}/reference/subsystems/core`,
+    sourceLabel: "The generated Harness core-subsystem reference (for the base DSH services this builds on)",
+    body: [
+      { heading: "ctx.acrAgentControl", paragraphs: [
+        "Defined and provided in runtime/acryl-control/src/agent/agent-control.ts as a Service subclass registered under the name acrAgentControl. It resolves and manages coding-agent-runtime providers (Claude, Codex, dsh-native, ACP) — which agent drives a session, not which LLM answers a chat turn.",
+        "Consumed by name, not by importing the class, in runtime/acryl-control/src/agent/providers/factory.ts (inject: ['acrAgentControl'] as const), exactly the Service Definition / Consumer split the Practice section's three-role capability pattern describes.",
+      ], code: [{ label: "runtime/acryl-control/src/agent/agent-control.ts (real shape)", code: `export class AcrAgentControl extends Service {
+  constructor(ctx: Context) {
+    super(ctx, 'acrAgentControl')
+  }
+  // ...registers and resolves agent-runtime providers
+}` }] },
+      { heading: "ctx.acrRuntimeArchitecture", paragraphs: [
+        "runtime/acryl-control/src/architecture/provider.ts. A Service exposing snapshot(plane) — a projection of the running instance's own architecture (which providers, which planes are active) built from runtime/acryl-control/src/architecture/projection.ts's projectRuntimeArchitecture.",
+        "This is the concrete mechanism behind ACRYL knowing its own architecture: any plugin can inject acrRuntimeArchitecture and ask the running instance what it currently is, rather than reading a static document.",
+      ], code: [{ label: "runtime/acryl-control/src/architecture/provider.ts (real)", code: `export interface AcrRuntimeArchitecture {
+  snapshot(plane: ArchitecturePlane): RuntimeArchitectureSnapshot
+}
+
+export class AcrRuntimeArchitectureService extends Service implements AcrRuntimeArchitecture {
+  constructor(ctx: Context) {
+    super(ctx, 'acrRuntimeArchitecture')
+  }
+  snapshot(plane: ArchitecturePlane): RuntimeArchitectureSnapshot {
+    return projectRuntimeArchitecture(this.ctx, plane)
+  }
+}` }] },
+      { heading: "ctx.acrPluginLifecycle", paragraphs: [
+        "runtime/acryl-control/src/plugin/provider.ts. Publishes an existing AcrPluginLifecycleController on ctx.acrPluginLifecycle for the fiber's lifetime — the one Cordis service every surface injects to inspect and steer plugins (list, enable, disable, reload). It takes an already-built controller rather than constructing a host directly, because a surface that also owns package-keyed operations (Desktop's market bridge) needs the controller object itself, and every view of it must share one transition queue.",
+        "Consumed in runtime/acryl-harness-runtime/src/plugin-lifecycle.ts — the same service cordis-plugin-market's own in-instance install/enable/disable flow is built on.",
+      ] },
+      { heading: "Why this matters for a blank-state Blend", paragraphs: [
+        "These three services (plus the agent, the tools registry, and the session object) are present on every ACRYL instance by default, including the blank-canvas starting point — a Blend cannot function without them, so they are not optional composition, they are the floor every other plugin builds on.",
+      ], note: "Reference only. The Harness docs point at a generated per-service reference (reference/subsystems/core) for the base DSH services underneath these — treat that generated page and each service's own TypeScript interface as authoritative for those; the three above are ACRYL-owned additions on top, cited here by file because they aren't in that generated list at all." },
     ],
   },
 
@@ -1099,6 +1161,9 @@ export function apply(ctx: Context) {
         "Do not split preemptively — use separate packages only when the roles need to evolve independently. A simple tool plugin does not.",
         "The Service Definition owns Request/Result types — Service Providers and Consumers depend only on the Service Definition package.",
         "Explicit > implicit — resolve defaults in an explicit resolve(request): Spec step rather than hiding ?? default expressions inside run().",
+      ] },
+      { heading: "ACRYL's own real split", paragraphs: [
+        "ACRYL's agent-runtime capability follows this exact shape. runtime/acryl-control/src/agent/agent-control.ts defines and provides the service: class AcrAgentControl extends Service { constructor(ctx: Context) { super(ctx, 'acrAgentControl') } }, exposed on ctx.acrAgentControl. The consumer lives in a separate file, runtime/acryl-control/src/agent/providers/factory.ts, which injects it by name rather than importing the class directly — the same inject: ['acrAgentControl'] pattern chapter 3 and step 3 above both build.",
       ] },
     ],
   },
