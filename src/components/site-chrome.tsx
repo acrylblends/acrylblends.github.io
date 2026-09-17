@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Menu, Search, X, ArrowUpRight, Layers3 } from "lucide-react";
+import { Menu, Search, X, ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { blends, categories, docGroups, slugify } from "../lib/content";
 import { cordisGroups } from "../lib/cordis-tutorial";
@@ -7,7 +7,7 @@ import { cordisGroups } from "../lib/cordis-tutorial";
 const nav = [{ to: "/", label: "Home" }, { to: "/blends", label: "Browse Blends" }, { to: "/docs", label: "Docs" }, { to: "/cordis", label: "Cordis Primer" }, { to: "/ecosystem", label: "Ecosystem" }, { to: "/blog", label: "Blog" }] as const;
 
 function Mark({ className = "h-7 w-7" }: { className?: string }) {
-  return <div className={`${className} grid shrink-0 place-items-center rounded-sm bg-primary text-primary-foreground`}><Layers3 size={16}/></div>;
+  return <img src="/logo/mark.png" alt="ACRYL Blends" className={`${className} shrink-0 object-contain`}/>;
 }
 
 export function Header() {
