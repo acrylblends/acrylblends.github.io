@@ -4,6 +4,7 @@ import BlendsIndex from "./pages/BlendsIndex";
 import BlendsCategory from "./pages/BlendsCategory";
 import BlendsSubcategory from "./pages/BlendsSubcategory";
 import BlendDetail from "./pages/BlendDetail";
+import UiRegistry from "./pages/UiRegistry";
 import DocsIndex from "./pages/DocsIndex";
 import DocPage from "./pages/DocPage";
 import CordisPrimer from "./pages/CordisPrimer";
@@ -22,6 +23,7 @@ export default function App() {
       <Route path="/blends/b/:slug" element={<BlendDetail/>}/>
       <Route path="/blends/:category/:subcategory" element={<BlendsSubcategory/>}/>
       <Route path="/blends/:category" element={<BlendsCategory/>}/>
+      <Route path="/ui" element={<UiRegistry/>}/>
       <Route path="/docs" element={<DocsIndex/>}/>
       <Route path="/docs/:group/:item" element={<DocPage/>}/>
       <Route path="/docs/:group" element={<DocPage/>}/>

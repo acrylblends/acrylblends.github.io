@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { blends, categories, docGroups, slugify } from "../lib/content";
 import { cordisGroups } from "../lib/cordis-tutorial";
 
-const nav = [{ to: "/", label: "Home" }, { to: "/blends", label: "Browse Blends" }, { to: "/docs", label: "Docs" }, { to: "/cordis", label: "Cordis Primer" }, { to: "/ecosystem", label: "Ecosystem" }, { to: "/blog", label: "Blog" }] as const;
+const nav = [{ to: "/", label: "Home" }, { to: "/blends", label: "Browse Blends" }, { to: "/ui", label: "UI" }, { to: "/docs", label: "Docs" }, { to: "/cordis", label: "Cordis Primer" }, { to: "/ecosystem", label: "Ecosystem" }, { to: "/blog", label: "Blog" }] as const;
 
 function Mark({ className = "h-7 w-7" }: { className?: string }) {
   return <img src="/logo/mark.png" alt="ACRYL Blends" className={`${className} shrink-0 object-contain`}/>;
