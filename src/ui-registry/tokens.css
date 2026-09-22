@@ -1,8 +1,17 @@
 /**
  * Fallback values for the app tokens the registry components' own CSS Modules read
  * (spec 038-ui-component-library). The real ACRYL app defines these on `body` from its
- * theme service; this site has neither, so this file gives them real values (light and
- * dark) purely so a component preview looks correct, not styled by this site's own design.
+ * theme service; this site has neither, so this file gives them real values purely so a
+ * component preview looks correct, not styled by this site's own design.
+ *
+ * This site (acrylblends.github.io) has no dark mode of its own: no theme toggle, no `.dark`
+ * class, a fixed light `:root` in styles.css. Deliberately no `prefers-color-scheme` query
+ * here either - a sibling site (acryldev.github.io) got this wrong first: its own tokens.css
+ * followed the visitor's OS dark-mode preference while the surrounding page did not (or,
+ * after that site's own manual toggle was added, followed a stale rule that ignored it
+ * entirely), so a component preview would go dark on a permanently light page, or the reverse.
+ * Since this site never goes dark, the registry previews here stay light, always, matching
+ * everything else on the page.
  */
 :root {
   --dsw-alias-label-primary: #18181b;
@@ -22,21 +31,6 @@
   --acryl-reasoning: #7C3AED;
   --pv-border: #e4e4e7;
   --pv-surface: #ffffff;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --dsw-alias-label-primary: #fafafa;
-    --dsw-alias-label-secondary: #d4d4d8;
-    --dsw-alias-label-tertiary: #a1a1aa;
-    --dsw-alias-label-dimmed: #71717a;
-    --dsw-alias-bg-layer-1: #18181b;
-    --dsw-alias-bg-layer-2: #27272a;
-    --dsw-alias-border-l4: #3f3f46;
-    --acryl-accent: #818CF8;
-    --acryl-reasoning: #A855F7;
-    --pv-border: #3f3f46;
-    --pv-surface: #27272a;
-  }
 }
 
 .pv-collapsible-trigger {
