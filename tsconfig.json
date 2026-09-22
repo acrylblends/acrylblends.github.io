@@ -14,6 +14,9 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    "paths": { "@/*": ["./src/*"] }
+    "paths": {
+      "@/*": ["./src/*"],
+      "@deepseek-ai/dsh-client-ui-primitives": ["./src/ui-registry/preview-primitives.tsx"]
+    }
   }
 }

@@ -23,5 +23,14 @@ export default defineConfig({
       },
     },
   ],
-  resolve: { alias: { "@": resolve(__dirname, "src") } },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "src"),
+      // The UI registry gallery (spec 038-ui-component-library) renders the real registry
+      // component source unmodified; this swaps its one runtime import for a working, plain
+      // stand-in instead of the ACRYL app's own primitives package, which this site cannot
+      // pull in (internal, CSS-coupled to the app).
+      "@deepseek-ai/dsh-client-ui-primitives": resolve(__dirname, "src/ui-registry/preview-primitives.tsx"),
+    },
+  },
 });
