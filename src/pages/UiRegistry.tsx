@@ -3,6 +3,7 @@ import { Github, Copy, Check } from "lucide-react";
 import { PageIntro, SiteLayout, usePageMeta } from "../components/layouts";
 import manifestJson from "../ui-registry/manifest.json";
 import categoriesJson from "../ui-registry/categories.json";
+import reexportsJson from "../ui-registry/reexports.json";
 import { demos } from "../ui-registry/demos";
 import "../ui-registry/tokens.css";
 
@@ -18,6 +19,24 @@ const categories = (categoriesJson as { categories: Category[] }).categories;
 // ("acryl.ui.badge") - match by the manifest's own exportName, which carries the same name.
 const byExportName = new Map(manifest.map(entry => [entry.exportName, entry]));
 const hasRealEntry = (category: Category) => category.componentIds.some(name => byExportName.has(name));
+
+// The third state. "built" is a registry item (copyable with `acryl ui add`); "provided" is something
+// @acryl/ui exports without publishing it as an item - a re-export of the app's own primitives or an
+// adapter this package owns - so it is importable but there is nothing to copy. Without this, Button,
+// Input, Tooltip, Hover Card, Dropdown Menu, Sonner, Status, Tags, Tree and Code Block sat under
+// "not yet built" while the package shipped them.
+interface ReexportGroup { source: string; exports: string[] }
+const reexportGroups = (reexportsJson as { groups: ReexportGroup[] }).groups;
+const providedSource = new Map<string, string>();
+for (const group of reexportGroups) for (const name of group.exports) providedSource.set(name, group.source);
+const byProvidedName = new Set(providedSource.keys());
+
+const SOURCE_NOTES: Record<string, string> = {
+  "@deepseek-ai/dsh-client-ui-primitives": "a re-export of the app's own primitives",
+  "./contract-adapters.tsx": "an adapter this package owns, backed by the app's primitives",
+};
+const describeSource = (source: string): string => SOURCE_NOTES[source] ?? "a helper this package owns";
+const isProvided = (category: Category) => !hasRealEntry(category) && category.componentIds.some(name => byProvidedName.has(name));
 
 function usageSnippet(entry: ManifestEntry): string {
   const propsList = Object.keys(entry.props).slice(0, 3).map(name => `${name}={...}`).join(" ");
@@ -66,7 +85,8 @@ export default function UiRegistry() {
   usePageMeta("UI component registry", "Source-owned components for @acryl/ui: copy one into your plugin, or install the package.");
   const [active, setActive] = useState<string | null>(null);
   const populated = useMemo(() => categories.filter(hasRealEntry), []);
-  const empty = useMemo(() => categories.filter(category => !hasRealEntry(category)), []);
+  const provided = useMemo(() => categories.filter(isProvided), []);
+  const empty = useMemo(() => categories.filter(category => !hasRealEntry(category) && !isProvided(category)), []);
   const shown = active === null ? categories : categories.filter(category => category.name === active);
 
   return (
@@ -74,8 +94,8 @@ export default function UiRegistry() {
       <PageIntro
         kicker="Component registry"
         title="One catalogue, copy or install."
-        description="Source-owned components for @acryl/ui (spec 038-ui-component-library). Copy one with acryl ui add <id> and own it, or install the package as a dependency. Categories follow shadcnblocks.com's taxonomy (naming only, no code); every category is shown, built or not."
-        actions={<span className="self-center font-mono text-xs text-muted-foreground">{populated.length} built · {empty.length} not yet built · <a href="https://github.com/acryldev/acryl-ui-registry" target="_blank" rel="noreferrer" className="underline">acryl-ui-registry</a></span>}
+        description="Source-owned components for @acryl/ui (spec 038-ui-component-library). Copy one with acryl ui add <id> and own it, or install the package as a dependency. Categories follow shadcnblocks.com's taxonomy (naming only, no code); every category is shown, built or not. A third state, from the app primitives, is a component @acryl/ui exports without publishing it as its own item - import it, and there is nothing to copy."
+        actions={<span className="self-center font-mono text-xs text-muted-foreground">{populated.length} built · {provided.length} from the app primitives · {empty.length} not yet built · <a href="https://github.com/acryldev/acryl-ui-registry" target="_blank" rel="noreferrer" className="underline">acryl-ui-registry</a></span>}
       />
       <section className="mx-auto flex max-w-[1440px] gap-8 px-5 py-12 md:px-8">
         <aside className="w-56 shrink-0">
@@ -85,6 +105,12 @@ export default function UiRegistry() {
             {populated.map(category => (
               <button key={category.name} type="button" onClick={() => setActive(category.name)} className={`flex w-full items-center justify-between px-2 py-1 text-left text-sm ${active === category.name ? "bg-muted" : "hover:bg-muted"}`}>
                 {category.name} <span className="text-muted-foreground">{category.componentIds.filter(name => byExportName.has(name)).length}</span>
+              </button>
+            ))}
+            <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">From the app primitives</div>
+            {provided.map(category => (
+              <button key={category.name} type="button" onClick={() => setActive(category.name)} className={`block w-full px-2 py-1 text-left text-xs text-muted-foreground ${active === category.name ? "bg-muted" : "hover:bg-muted"}`}>
+                {category.name}
               </button>
             ))}
             <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.1em] text-muted-foreground">Not yet built</div>
@@ -103,7 +129,23 @@ export default function UiRegistry() {
               </div>
             </div>
           ))}
-          {active !== null && shown.every(category => !hasRealEntry(category)) && (
+          {shown.filter(isProvided).map(category => (
+            <div key={category.name} className="mb-8">
+              <h2 className="border-b border-border pb-2 text-lg font-semibold">{category.name}</h2>
+              <p className="mt-2 text-xs text-muted-foreground">Provided by import only: a registry item is source this repo owns and acryl ui add can copy, which none of these is.</p>
+              <div className="mt-4 grid gap-3">
+                {category.componentIds.filter(name => byProvidedName.has(name)).map(name => (
+                  <div key={name} className="border border-dashed border-border p-4">
+                    <h3 className="text-sm font-semibold">{name}</h3>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      @acryl/ui exports {name} from <code>{providedSource.get(name)}</code> — {describeSource(providedSource.get(name) ?? "")}. Import it directly.
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+          {active !== null && shown.every(category => !hasRealEntry(category) && !isProvided(category)) && (
             <p className="py-10 text-center text-muted-foreground">Nothing built in this category yet.</p>
           )}
         </div>
