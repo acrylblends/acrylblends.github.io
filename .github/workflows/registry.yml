@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: acryldev/acryl
-          ref: 9751822079f2c99721d61cdf86aa0a6f165f9a63
+          ref: ada904ae45d1e1e7526a46ef8f9fa9cedaaf4138
           path: .acryl
           sparse-checkout: runtime/blends-core
       - uses: oven-sh/setup-bun@v2
