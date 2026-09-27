@@ -1,7 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { copyFileSync } from "node:fs";
+import { copyFileSync, cpSync } from "node:fs";
 import { resolve } from "node:path";
 
 // GitHub Pages serves this repo at the domain root (a <user>.github.io "user
@@ -20,6 +20,14 @@ export default defineConfig({
       name: "copy-index-to-404",
       closeBundle() {
         copyFileSync(resolve(__dirname, "dist/index.html"), resolve(__dirname, "dist/404.html"));
+      },
+    },
+    {
+      // The registry (registry/: starters, their plugins, index.json) is served as it is at /registry/, so the ACRYL CLI and anyone
+      // else can fetch index.json and a starter's files over HTTP. Git clients read the same folder from the repository (`#registry`).
+      name: "copy-registry",
+      closeBundle() {
+        cpSync(resolve(__dirname, "registry"), resolve(__dirname, "dist/registry"), { recursive: true });
       },
     },
   ],

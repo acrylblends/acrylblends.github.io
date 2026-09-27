@@ -1,0 +1,25 @@
+# Organizer: a starter kit grown from Blank. To-dos, a calendar, and meeting booking that refuses overlaps.
+# Start a project from it:  acryl new my-planner --from acryl.organizer
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acryl.organizer
+  name: Organizer
+  version: 0.1.0
+  category: productivity
+  description: To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  extends: acryl.blank
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Organizer
+        tagline: Plan your day by talking to it.
+        accent: "#e8590c"
+        accentDark: "#ff922b"
+    - id: acryl-organizer
+      name: acryl-organizer

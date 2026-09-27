@@ -20,6 +20,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+      # Never deploy a registry that does not validate (same check as registry.yml).
+      - uses: actions/checkout@v4
+        with:
+          repository: acryldev/acryl
+          ref: 9751822079f2c99721d61cdf86aa0a6f165f9a63
+          path: .acryl
+          sparse-checkout: runtime/blends-core
+      - run: bun install --production
+        working-directory: .acryl/runtime/blends-core
+      - run: bun .acryl/runtime/blends-core/src/bin/registry-index.ts registry --check
       - run: bun install --frozen-lockfile
       - run: bun run build
       - name: SPA fallback for client-side routes (GitHub Pages has no server-side rewrite)
