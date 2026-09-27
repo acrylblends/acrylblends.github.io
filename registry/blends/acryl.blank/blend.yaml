@@ -1,0 +1,30 @@
+# Blank: the empty house. Core plugins, the builder inside, the whole infrastructure, and a blank canvas.
+# Start a project from it:  acryl new my-app      (Blank is the default)
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acryl.blank
+  name: Blank
+  version: 0.1.0
+  category: starter
+  description: The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Blank
+        tagline: Ask for what you need. It builds it.
+        accent: "#3b6ef5"
+        accentDark: "#7c9dff"
+    - id: extension-context
+      name: acryl-extension-context
+    - id: acryl-system-prompt
+      name: acryl-system-prompt
+    - id: "@acryl/ui"
+      name: "@acryl/ui"
+    - id: acryl-app-save
+      name: acryl-app-save

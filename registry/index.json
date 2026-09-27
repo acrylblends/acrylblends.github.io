@@ -1,0 +1,26 @@
+{
+  "formatVersion": 1,
+  "entries": [
+    {
+      "id": "acryl.blank",
+      "name": "Blank",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.blank",
+      "license": "MIT",
+      "category": "starter",
+      "description": "The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them."
+    },
+    {
+      "id": "acryl.organizer",
+      "name": "Organizer",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.organizer",
+      "license": "MIT",
+      "category": "productivity",
+      "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
+      "parent": "acryl.blank"
+    }
+  ]
+}

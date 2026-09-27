@@ -1,0 +1,31 @@
+name: Registry
+
+# Every starter under registry/blends/ must validate with @acryl/blends-core, and registry/index.json must be what the index tool writes.
+# A private or unlicensed entry, a misplaced folder, a repeated id or a stale index fails the check; publishing is a reviewed pull request.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The format library, from ACRYL's source until @acryl/blends-core is published on npm. Pinned to a reviewed commit; move the pin with the format.
+      - uses: actions/checkout@v4
+        with:
+          repository: acryldev/acryl
+          ref: ada904ae45d1e1e7526a46ef8f9fa9cedaaf4138
+          path: .acryl
+          sparse-checkout: runtime/blends-core
+      - uses: oven-sh/setup-bun@v2
+      - name: Install the format library
+        working-directory: .acryl/runtime/blends-core
+        run: bun install --production
+      - name: Validate the registry and check its index
+        run: bun .acryl/runtime/blends-core/src/bin/registry-index.ts registry --check
