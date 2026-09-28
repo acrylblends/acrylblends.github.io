@@ -12,6 +12,17 @@
       "description": "The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them."
     },
     {
+      "id": "acryl.focus",
+      "name": "Focus",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.focus",
+      "license": "MIT",
+      "category": "starter",
+      "description": "Blank with the Market wired in, so the agent can install a plugin the moment a task needs one.",
+      "parent": "acryl.blank"
+    },
+    {
       "id": "acryl.organizer",
       "name": "Organizer",
       "kind": "Blueprint",
@@ -20,6 +31,17 @@
       "license": "MIT",
       "category": "productivity",
       "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
+      "parent": "acryl.blank"
+    },
+    {
+      "id": "acryl.studio",
+      "name": "Studio",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.studio",
+      "license": "MIT",
+      "category": "starter",
+      "description": "Blank with keyboard shortcuts and mount anchors, for a builder who lives at the keyboard.",
       "parent": "acryl.blank"
     }
   ]

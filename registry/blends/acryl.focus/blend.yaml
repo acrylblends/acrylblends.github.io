@@ -1,0 +1,25 @@
+# Focus: Blank plus the ACRYL Market, so the builder inside can pull in plugins on request.
+# Start a project from it:  acryl new my-focus-app --from acryl.focus
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acryl.focus
+  name: Focus
+  version: 0.1.0
+  category: starter
+  description: Blank with the Market wired in, so the agent can install a plugin the moment a task needs one.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  extends: acryl.blank
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Focus
+        tagline: One task. Whatever it needs, on request.
+        accent: "#0ca678"
+        accentDark: "#20c997"
+    - id: community-market
+      name: cordis-plugin-market

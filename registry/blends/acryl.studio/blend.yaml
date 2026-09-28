@@ -1,0 +1,27 @@
+# Studio: Blank plus shortcuts and mount anchors, the builder's own power tools, without the full IDE workspace.
+# Start a project from it:  acryl new my-studio-app --from acryl.studio
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acryl.studio
+  name: Studio
+  version: 0.1.0
+  category: starter
+  description: Blank with keyboard shortcuts and mount anchors, for a builder who lives at the keyboard.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  extends: acryl.blank
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Studio
+        tagline: Built for hands that don't leave the keyboard.
+        accent: "#7048e8"
+        accentDark: "#9775fa"
+    - id: acryl-shortcuts
+      name: acryl-shortcuts
+    - id: acryl-mount-anchors
+      name: acryl-mount-anchors
