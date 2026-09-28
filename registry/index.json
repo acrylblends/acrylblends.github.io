@@ -12,6 +12,17 @@
       "description": "The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them."
     },
     {
+      "id": "acryl.gtd",
+      "name": "GTD Planner",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.gtd",
+      "license": "MIT",
+      "category": "productivity",
+      "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
+      "parent": "acryl.blank"
+    },
+    {
       "id": "acryl.organizer",
       "name": "Organizer",
       "kind": "Blueprint",
