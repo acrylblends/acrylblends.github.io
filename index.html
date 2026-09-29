@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.png" type="image/png" />
     <title>ACRYL Blends — start blank, grow into anything</title>
+    <script>
+      // Applied before paint so switching pages or reloading never flashes the wrong theme.
+      // Reads the same key the toggle button writes (theme-toggle.tsx / "acrylblends-theme").
+      (function () {
+        try {
+          var stored = localStorage.getItem("acrylblends-theme");
+          var dark = stored === "dark" || (stored !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.classList.add("dark");
+        } catch (e) {}
+      })();
+    </script>
     <meta name="description" content="Compose stable software from Cordis plugins. Pull a proven starting point, shape it inside the running instance, then publish what works." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
