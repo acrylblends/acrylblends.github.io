@@ -131,7 +131,7 @@ export const blends: Blend[] = [
 for (const c of categories) c.count = blends.filter((b) => b.category === c.name).length;
 
 export const docGroups = [
-  { slug: "getting-started", title: "Getting Started", items: ["What is ACRYL Blends", "Install", "Pull your first Blend", "Publish your first Cordis plugin"] },
+  { slug: "getting-started", title: "Getting Started", items: ["What is ACRYL Blends", "Install", "Create your first app", "Let the agent build a plugin", "Add plugins", "Lock, save and ship"] },
   { slug: "core-concepts", title: "Core Concepts", items: ["Cordis plugins: the atom", "Blends: the composed instance", "The two registries", "The blank canvas", "ACRYL as a maxed-out Blend"] },
   { slug: "building-blocks", title: "Building Blocks", items: ["Generate a plugin from template", "Package identity convention", "Six-part mini-design", "Writing cordis.patch.yml", "Testing in isolation"] },
   { slug: "in-instance-authoring", title: "In-Instance Authoring", items: ["Hot-reload authoring", "Graduating a local plugin", "The acryl-package keyword", "Differentiation Engine"] },

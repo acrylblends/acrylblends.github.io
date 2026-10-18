@@ -6,7 +6,7 @@
 // content file — see src/lib/cordis-content.ts.
 export type DocEntry = {
   intro: string;
-  body: { heading?: string; paragraphs: string[]; note?: string }[];
+  body: { heading?: string; paragraphs: string[]; note?: string; code?: { label: string; code: string } }[];
   code?: { label: string; code: string };
 };
 
@@ -39,38 +39,70 @@ include:
 
 export const docContent: Record<string, DocEntry> = {
   "getting-started/what-is-acryl-blends": {
-    intro: "ACRYL Blends is the practical framework for composing stable software out of Cordis plugins — the machinery and libraries that turn the Cordis protocol into something you can actually spin up, grow, and publish.",
+    intro: "ACRYLBLENDS is a framework for Cordis apps, built from ACRYL's best parts: a library of proven plugins and a command that copies them into your app as code you own.",
     body: [
       { paragraphs: [
-        "A Cordis plugin is the minimal unit — the building block, the brick, the \"cell\" — the smallest thing everything else is built out of. Cordis itself is only the protocol: context, services, injection, lifecycle. It defines how plugins cooperate; it does not ship the tooling to scaffold one, hot-reload it inside a live instance, or compose many of them into a describable, pullable product.",
-        "That's the gap ACRYL Blends fills. Where Cordis is the formal meta-framework both ACRYL and stock DeepSeek Harness build on to stay compatible, ACRYL Blends is the opinionated, practical layer on top: a way to describe a complete instance as a readable YAML recipe, a registry to publish and pull those recipes from, and a workflow for growing one in place with hot reload before anything is published at all.",
+        "Cordis already has what an app framework needs: plugins, services, inject, lifecycle, effects that clean up after themselves, and events. ACRYLBLENDS adds no runtime on top. It is a library of Cordis plugins extracted from ACRYL, plus the acrylblends command that scaffolds an app and copies plugins in.",
+        "Generated apps are plain TypeScript, run by Node 22.18 or newer with no build step, tested with node:test, and depend at run time only on @deepseek-ai/cordis and yaml.",
       ]},
-      { heading: "The three-layer picture", paragraphs: [
-        "Atom : Blend : Registry maps directly onto the model most developers already know from npm and Docker: a Cordis plugin is to a Blend what an npm package is to a Docker image, and the acrylblends registry is to a Blend what Docker Hub is to an image. cordisplugins.github.io is the atom-level registry — the npm analog — and this site, acrylblends.github.io, is the Blend-level registry — the Docker Hub analog.",
-      ], note: "ACRYL, the flagship product, is not a special case of this model — it is just one Blend, the maxed-out one that composes the most plugins into the most complete surface." },
+      { heading: "What the library gives you", paragraphs: [
+        "instance (where an app keeps its data), settings (validated, layered, watched), extensions (install, update and remove plugins while the app runs, with rollback), builder and agent (an agent that writes plugins into the app it runs in), tasks (durable records of every run), manifest (the app as data in blend.yaml) and save (commit the app, refusing secrets).",
+      ], note: "This is a prototype. There is no package registry yet: a plugin comes from the built-in library or from a folder you own." },
     ],
   },
   "getting-started/install": {
-    intro: "Install the CLI that pulls, inspects and develops Blends.",
+    intro: "Build the acrylblends command from a checkout of the repository. You need Node 22.18 or newer, pnpm and git.",
     body: [{ paragraphs: [
-      "The CLI wraps ordinary package-manager operations — pulling a Blend means resolving its manifest and materializing its plugins as real, installed dependencies, the same way any other workspace package gets installed. There is no separate binary format or custom archive; a Blend is a YAML file plus the plugins it names.",
-      "Once installed, `acryl blend inspect ./blend.yml` reads a manifest without booting anything, and `acryl blend dev --hot` brings up a live instance with hot reload wired in from the first plugin.",
+      "The command is not on npm yet, so you run it from the repository. Below, <acrylblends> means the path to your checkout.",
+      "Node runs the generated app's TypeScript directly, so there is no compile step for your own code.",
     ]}],
-    code: { label: "terminal", code: "npm install -g @acryl/cli\nacryl --version" },
+    code: { label: "terminal", code: "git clone https://github.com/acrylblends/acrylblends\ncd acrylblends\npnpm install && pnpm run build\nnode packages/cli/bin/acrylblends.js --help" },
   },
-  "getting-started/pull-your-first-blend": {
-    intro: "Pulling a Blend brings up a real, working Cordis instance from a published manifest.",
-    body: [{ paragraphs: [
-      "`acryl blend pull <publisher>/<slug>@<version>` resolves the Blend's manifest, installs every plugin it names, and boots a Cordis Loader composition from the result. Nothing about the instance is hidden after that: the manifest stays the durable explanation of what's running, and every plugin remains independently inspectable and replaceable.",
-      "The blank-canvas Blend is the deliberate floor of this: it pulls in only `cordis` itself, so the very first thing you get is an empty, addressable instance with nothing to undo before you start adding capability.",
-    ]}],
+  "getting-started/create-your-first-app": {
+    intro: "init scaffolds a Cordis app in an empty directory. Pick the small app template or the agent template.",
+    body: [
+      { paragraphs: [
+        "init never writes into a directory that is not empty. Without --agent you get the smaller app template: instance, http, server, manifest and save. With --agent you also get tasks, agent, extensions and builder, so the app can extend itself while it runs.",
+      ], code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js init ../my-app --agent -y\ncd ../my-app\nnpm install\nnpm run dev      # prints its URL; data lives in .acrylblends/" } },
+      { heading: "Where things live", paragraphs: [
+        "blend.yaml is the app as data: plugin rows, config and parameters. src/app.ts is the registry of plugins your code provides. src/routes.ts is your own plugin. src/plugins/ holds plugins copied from the library and is yours to edit. extensions/ holds plugins installed while the app runs. .acrylblends/ is the app's data and is not committed.",
+        "Set ACRYLBLENDS_HOME to keep the data elsewhere and ACRYLBLENDS_PORT to choose the first port tried (0 for any free port).",
+      ] },
+    ],
   },
-  "getting-started/publish-your-first-cordis-plugin": {
-    intro: "Publishing a plugin is what graduates it from local, hot-reloaded code into something the whole ecosystem can pull.",
+  "getting-started/let-the-agent-build-a-plugin": {
+    intro: "With the agent template running, describe a feature and the agent writes a Cordis plugin, installs it live and checks it works. No restart.",
+    body: [
+      { paragraphs: [
+        "Without a model the agent uses a scripted one that understands a few commands, enough to see the wiring. The question below creates a route, installs it and verifies it answers.",
+      ], code: { label: "offline demo", code: "curl -X POST <url>/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"create route hello /hello Hello\"}'\n# {\"status\":\"completed\",\"output\":\"hello: installed, active.\", ...}\ncurl <url>/hello        # {\"text\":\"Hello\"}\ncurl <url>/tasks        # the run, as a durable task that owns its tool calls" } },
+      { heading: "With a real model", paragraphs: [
+        "Any OpenAI-compatible API works: OpenAI, DeepSeek, Ollama or LM Studio. Keep the key in your own secret store and export it as an environment variable. Never write it into a file.",
+      ], code: { label: "real model", code: "export ACRYLBLENDS_MODEL_URL=https://api.deepseek.com/v1\nexport ACRYLBLENDS_MODEL=deepseek-chat\nexport ACRYLBLENDS_MODEL_KEY=...     # your key\nnpm start\n\ncurl -X POST localhost:3100/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"Build a plugin named clock that adds GET /time returning the ISO time. Install it.\"}'\ncurl localhost:3100/time\ncurl localhost:3100/extensions    # what is installed, its state and version" } },
+      { heading: "If an update fails", paragraphs: [
+        "Ask for a change with another /ask. If the new version fails to start or fails its own check, the previous version comes back and the answer says restoredPrevious. Set approval: true on the extensions row of blend.yaml and an install waits until you answer POST /extensions/approve.",
+      ] },
+    ],
+  },
+  "getting-started/add-plugins": {
+    intro: "Copy a plugin from the library into your app, mount it, and list it in blend.yaml.",
     body: [{ paragraphs: [
-      "A plugin does not need to be published to be useful — in-instance authoring exists precisely so you can build and hot-reload a plugin inside a running Blend without ever touching a registry. Publishing is the deliberate step you take once a plugin has reached a stable shape worth sharing.",
-      "Use `pnpm publish`, not `npm publish` or `npm pack`, for any plugin whose manifest declares workspace-protocol dependencies (`workspace:*`) — only `pnpm publish`/`pnpm pack` rewrite those to real semver ranges before the package leaves your workspace. Publishing with plain `npm` ships the literal `workspace:*` specifier, which breaks the package for anyone installing it standalone. This is not a hypothetical: it is exactly the failure that blocked this ecosystem's own first real release before the fix landed.",
+      "plugins lists the library and what each plugin needs. add copies one into src/plugins/ together with the plugins it requires, and prints the exact line to add. Run npm install afterwards in case it added dependencies.",
+      "Then mount it in src/app.ts and add a row in blend.yaml. Because the code is copied, you can edit it freely.",
     ]}],
+    code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js plugins\nnode <acrylblends>/packages/cli/bin/acrylblends.js add settings --dir ./my-app\nnpm install\nnpm run check" },
+  },
+  "getting-started/lock-save-and-ship": {
+    intro: "Record what the app is built from, commit it safely, and run it in a container.",
+    body: [
+      { paragraphs: [
+        "lock writes acrylblends.lock.json with digests of what the app is built from. save commits the app to its own git repository and pushes only if a remote is set. It refuses any file that looks like it holds a secret, and refuses to push an app that is not visibility: public to a public remote. Nothing is committed when it refuses.",
+      ], code: { label: "terminal", code: "npm run lock\nnpm run save -- \"add hello\"" } },
+      { heading: "In a container", paragraphs: [
+        "The agent template includes a Dockerfile. The data lives in /data, so what the agent built survives restarts.",
+      ], code: { label: "docker", code: "docker build -t my-agent .\ndocker run -p 3100:3100 -v my-agent-data:/data \\\n  -e ACRYLBLENDS_MODEL_URL=... -e ACRYLBLENDS_MODEL=... -e ACRYLBLENDS_MODEL_KEY=... my-agent" },
+      note: "Known gap: the plugin's editable source sits in /app/extensions, which is not on the volume. After a container is recreated the plugin shows as stale until it is reinstalled." },
+    ],
   },
   "core-concepts/cordis-plugins-the-atom": {
     intro: "A Cordis plugin does one thing, with an explicit lifecycle and an explicit dependency graph.",
