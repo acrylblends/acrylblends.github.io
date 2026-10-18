@@ -104,6 +104,96 @@ export const docContent: Record<string, DocEntry> = {
       note: "Known gap: the plugin's editable source sits in /app/extensions, which is not on the volume. After a container is recreated the plugin shows as stale until it is reinstalled." },
     ],
   },
+  "framework/cli-reference": {
+    intro: "The acrylblends command has three verbs: init, add and plugins. It is run from a checkout of the repository until it is published.",
+    body: [
+      { heading: "init", paragraphs: [
+        "Creates a Cordis app in an empty or new directory. It never writes into a directory that is not empty.",
+      ], code: { label: "usage", code: "acrylblends init [dir] [--agent | --no-agent] [--name <name>] [--install] [-y]" } },
+      { paragraphs: [
+        "--agent includes the offline agent and the plugins it needs (tasks, agent, extensions, builder); --no-agent gives the smaller app template. --install runs npm install afterwards. -y asks nothing and uses the defaults: no agent, no install.",
+      ] },
+      { heading: "add", paragraphs: [
+        "Copies library plugins, and the plugins they require, into the app's src/plugins/. Given a folder path instead of a name, it brings an external plugin into the app's extensions/, where it installs at the next start through the same checks as any extension. It prints the exact line to add to src/app.ts and blend.yaml.",
+      ], code: { label: "usage", code: "acrylblends add <plugin...> [--dir <app>]\nacrylblends add settings --dir ./my-app\nacrylblends add ./plugin-packages/clock --dir ./my-app" } },
+      { heading: "plugins", paragraphs: [
+        "Lists the plugin library with what each plugin does and what it requires.",
+      ], code: { label: "usage", code: "acrylblends plugins" } },
+      { heading: "Scripts in a generated app", paragraphs: [
+        "npm run dev and npm start run the app. npm test runs node:test. npm run check type-checks. npm run lock writes acrylblends.lock.json. npm run save commits the app, refusing secrets and public remotes for private apps. The agent template also has npm run upgrade, which plans an upgrade before applying it.",
+      ], note: "Environment: ACRYLBLENDS_HOME (where the app keeps its data), ACRYLBLENDS_PORT (first port tried, 0 for any), ACRYLBLENDS_HOST (the interface). The agent template also reads ACRYLBLENDS_MODEL_URL, ACRYLBLENDS_MODEL and ACRYLBLENDS_MODEL_KEY." },
+    ],
+  },
+  "framework/templates": {
+    intro: "Two templates ship with the CLI: app, a Cordis app that serves routes, and agent, the same app with an agent that can extend it while it runs.",
+    body: [
+      { paragraphs: [
+        "Both are TypeScript run directly by Node 22.18 or newer, tested with node:test, and depend at run time on @deepseek-ai/cordis and yaml. Both mount their plugins from blend.yaml, so you choose, order and switch off plugins without editing code.",
+      ] },
+      { heading: "app", paragraphs: [
+        "instance, http, server, manifest and save, plus your own routes plugin in src/routes.ts. The smallest useful base for any app, not only an IDE.",
+      ] },
+      { heading: "agent", paragraphs: [
+        "Everything in app plus tasks (durable run records), agent (an offline scripted model by default), extensions (live install with rollback) and builder (tools that let the agent write and install plugins). Set ACRYLBLENDS_MODEL_URL, ACRYLBLENDS_MODEL and ACRYLBLENDS_MODEL_KEY and the agent uses a real OpenAI-compatible model instead. It also includes a Dockerfile whose data lives in /data.",
+      ], note: "Parameters in blend.yaml: steps (the agent's step budget), taskStore (jsonl or sqlite) and approval (true makes an agent-installed plugin wait for POST /extensions/approve)." },
+    ],
+  },
+  "framework/the-plugin-library": {
+    intro: "Every plugin in the library is plain Cordis code, extracted from ACRYL, tested against a real Cordis context including disposal, and copied into your app so you own it.",
+    body: [
+      { paragraphs: [
+        "instance: where the app keeps its data and which port it uses. http and server: a router whose routes leave with the plugin that added them, and the node:http server. settings: validated, layered, watched settings in one YAML file. extensions: install, update, remove and reload plugins while the app runs; a failed update restores the previous version, and a ledger records every change.",
+        "sandbox: runs untrusted code (an agent-written tool) in a separate Node process under the permission model, with a time limit and a memory cap. It does not block the network. builder and agent: the agent loop and its tools for building the app it runs in. openai: any OpenAI-compatible model over fetch, no SDK. tasks: durable records of every run and tool call, readable after a restart. events: a server-sent event stream. manifest: reads and validates blend.yaml, with Blueprints and Blends resolving over them. save: commit the app, refusing secrets. digest: the one definition of a folder's content digest.",
+      ], note: "acrylblends plugins prints this list with what each plugin requires. The full reference is docs/plugins.md in the repository." },
+    ],
+  },
+  "framework/the-app-manifest": {
+    intro: "blend.yaml is the app as data: which plugins it mounts, in what order and with what config. It uses ACRYL's own Blend format, so an app can move into ACRYL without conversion.",
+    body: [
+      { paragraphs: [
+        "Rows mount in order. A row's id names the slot and its name is the plugin it loads. Parameters are typed and a config value that is exactly a parameter reference keeps its type. disabled: true switches a row off without touching code. Runtime values such as the port win over the manifest.",
+        "A Blueprint is a definition others build on. A Blend is an instance of one: it names its Blueprint and version in lineage, overrides inherited rows by id and adds its own rows. npm run lock records what the app is built from in acrylblends.lock.json.",
+      ], code: { label: "blend.yaml", code: "apiVersion: blends.acryl.dev/v1alpha1\nkind: Blueprint\nmetadata:\n  id: acrylblends.my-app\n  name: my-app\n  version: 0.1.0\n  visibility: private\nspec:\n  runtime: cordis\n  parameters:\n    hostname: { type: string, default: 127.0.0.1 }\n  rows:\n    - id: http\n      name: http\n    - id: routes\n      name: routes\n    - id: server\n      name: server\n      config:\n        hostname: \"{{parameters.hostname}}\"" },
+      note: "The lock file is being unified with ACRYL's blend.lock.json. Until that lands, the framework writes acrylblends.lock.json." },
+    ],
+  },
+  "framework/the-blend-registry": {
+    intro: "The registry at acrylblends.github.io/registry holds starting points: Blank, and Blueprints such as the GTD Planner and the Organizer. A project started from one belongs to its owner.",
+    body: [
+      { paragraphs: [
+        "The registry is the source of truth for Blends. Its index is plain JSON at https://acrylblends.github.io/registry/index.json, so any tool can read it. Each entry has an id, name, kind, version, path, license, category, description and, for a Blueprint grown from another, its parent. A starter's files are served at https://acrylblends.github.io/registry/blends/<id>/blend.yaml.",
+        "From ACRYL, acryl new my-app --from <id> starts a project from an entry, for example acryl.organizer. A private starter needs no registry: start from its git repository instead.",
+      ], code: { label: "index entry", code: "{\n  \"id\": \"acryl.gtd\",\n  \"name\": \"GTD Planner\",\n  \"kind\": \"Blueprint\",\n  \"version\": \"0.1.0\",\n  \"path\": \"blends/acryl.gtd\",\n  \"license\": \"MIT\",\n  \"category\": \"productivity\",\n  \"description\": \"Getting Things Done - ...\",\n  \"parent\": \"acryl.blank\"\n}" } },
+      { heading: "Publishing", paragraphs: [
+        "Open a pull request that adds blends/<id>/ with a blend.yaml (kind Blueprint, an id you own, license, visibility public, category, description), the plugins it adds under extensions/, and a README. CI validates every entry with blends-core and fails when the index is stale. A private or unlicensed entry is refused.",
+      ], note: "Plugins have their own registry, cordisplugins.github.io, with an index at https://cordisplugins.github.io/registry/index.json. acryl.dev/blends and acryl.dev/packages mirror both." },
+    ],
+  },
+  "framework/extending-a-running-app": {
+    intro: "An app with the agent template can be extended while it runs, by you or by its agent, and a failed update leaves the previous version running.",
+    body: [
+      { paragraphs: [
+        "An extension is a folder in the app's extensions/ whose name is the plugin's name, with an index.ts that exports a Cordis plugin. Installing it checks the folder, stages a copy named by its content digest, starts it as a child fiber, verifies its optional check function, and records the result in a ledger. If it fails to start or fails its check, the previous version starts again and the answer says restoredPrevious.",
+        "A plugin is trusted code and is gated by approval. A tool is code you do not trust, such as a function an agent just wrote: it never runs inside the app, only in the sandbox, and its examples are the install's self-check. At startup, folders in a source marked trust: list are only reported, so code that arrived through a git pull does not run until someone asks.",
+        "Look at GET /extensions for what is installed and its state, GET /tasks for every agent run as a durable task, and GET /events for a live stream of changes.",
+      ], note: "The full contract, including approval, the builder tools and packaging a plugin for sharing, is in docs/extending-apps.md in the repository." },
+    ],
+  },
+  "framework/examples-and-demos": {
+    intro: "Three end-to-end demos, each checked against the real repository: a blank app with a plugin added, an agent that builds a plugin live, and an app in a container.",
+    body: [
+      { heading: "1. A blank app, then add a plugin", paragraphs: [
+        "A blank app mounts only what it needs. Add settings from the library, then mount it in src/app.ts and list it in blend.yaml.",
+      ], code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js init ./my-app --no-agent --yes\ncd my-app && npm install && npm run check\nnode <acrylblends>/packages/cli/bin/acrylblends.js add settings --dir .\nnpm install && npm run check" } },
+      { heading: "2. The agent builds a clock", paragraphs: [
+        "Start the agent template, then ask it to build and install a plugin. It writes the plugin, installs it live and calls it. The plugin survives a restart. Ask again to change it; if the update fails, the previous version comes back.",
+      ], code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js init ./my-agent --agent --yes\ncd my-agent && npm install && npm start\n\ncurl -X POST localhost:3100/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"Build a plugin named clock that adds GET /time returning the ISO time. Install it.\"}'\ncurl localhost:3100/time\ncurl localhost:3100/tasks" } },
+      { heading: "3. In a container", paragraphs: [
+        "The agent template's Dockerfile keeps the app's data in /data. A recreated container on the same volume still serves the plugin.",
+      ], code: { label: "docker", code: "docker build -t my-agent .\ndocker run -p 3100:3100 -v my-agent-data:/data my-agent" },
+      note: "Known gaps: there is no package registry for plugins yet, the sandbox does not restrict network access, its OS layer is tested only on macOS, and hosted approval needs a web route that is not built yet." },
+    ],
+  },
   "core-concepts/cordis-plugins-the-atom": {
     intro: "A Cordis plugin does one thing, with an explicit lifecycle and an explicit dependency graph.",
     body: [{ paragraphs: [
