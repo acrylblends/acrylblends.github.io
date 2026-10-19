@@ -1,0 +1,25 @@
+# Music: Blank plus a step sequencer / drum machine - tools the agent plays, and a live page that makes the sound.
+# Start a project from it:  acryl new my-beats --from acryl.music
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acryl.music
+  name: Music
+  version: 0.1.0
+  category: creative
+  description: A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the page updates as the agent works.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  extends: acryl.blank
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Music
+        tagline: Say the beat, hear the beat.
+        accent: "#7048e8"
+        accentDark: "#b197fc"
+    - id: acryl-music
+      name: acryl-music

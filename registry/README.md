@@ -13,7 +13,7 @@ Open a pull request that adds `blends/<id>/`:
 
 - `blend.yaml`: `kind: Blueprint`, `spec.extends` naming the Blueprint it grew from (usually `acryl.blank`), and in `metadata`: an id you own (`yourname.thing`),
   `license`, `visibility: public`, a `category` and a one-line `description`.
-- `extensions/`: the plugins it adds (source, no `node_modules`).
+- `plugins/`: the plugins it adds (source, no `node_modules`).
 - `README.md`: what it is and how to start from it.
 
 CI validates every entry with `@acryl/blends-core` and fails when `index.json` is stale; run the index tool locally to regenerate it. A private or unlicensed entry

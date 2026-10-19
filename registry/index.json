@@ -2,6 +2,17 @@
   "formatVersion": 1,
   "entries": [
     {
+      "id": "acryl.accounting",
+      "name": "Accounting",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.accounting",
+      "license": "MIT",
+      "category": "finance",
+      "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the page updates as the agent works.",
+      "parent": "acryl.blank"
+    },
+    {
       "id": "acryl.blank",
       "name": "Blank",
       "kind": "Blueprint",
@@ -20,6 +31,17 @@
       "license": "MIT",
       "category": "productivity",
       "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
+      "parent": "acryl.blank"
+    },
+    {
+      "id": "acryl.music",
+      "name": "Music",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.music",
+      "license": "MIT",
+      "category": "creative",
+      "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the page updates as the agent works.",
       "parent": "acryl.blank"
     },
     {
