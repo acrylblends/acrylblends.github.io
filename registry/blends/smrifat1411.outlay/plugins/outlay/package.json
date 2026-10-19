@@ -1,6 +1,6 @@
 {
   "name": "outlay",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Expense books an agent keeps for you: say what you spent, see today, this week and this month in a panel beside the chat",
   "license": "MIT",

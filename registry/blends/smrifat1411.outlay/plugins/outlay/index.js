@@ -13,6 +13,7 @@ export const DEFAULT_CATEGORIES = ['food', 'travel', 'bills', 'shopping', 'healt
 const MAX_BODY = 64 * 1024
 const MAX_NOTE = 200
 const MAX_CATEGORY = 24
+const MAX_RECURRING = 20
 
 /** Where the books live: the app's own folder, never the plugin's code folder. */
 function homeOf(ctx) {
@@ -26,6 +27,9 @@ function categoriesFile(ctx) {
 }
 function budgetsFile(ctx) {
   return join(homeOf(ctx), 'data', 'outlay.budgets.json')
+}
+function recurringFile(ctx) {
+  return join(homeOf(ctx), 'data', 'outlay.recurring.json')
 }
 
 function currencyOf(config) {
@@ -79,6 +83,127 @@ function writeBudgets(ctx, budgets) {
   const file = budgetsFile(ctx)
   mkdirSync(dirname(file), { recursive: true })
   writeFileSync(file, JSON.stringify(budgets, null, 2) + '\n')
+}
+
+/** A recurring rule posts itself on its day each month: `{ amount, note, category, day }`. */
+function clampDay(value) {
+  const day = Math.trunc(Number(value))
+  return Number.isFinite(day) ? Math.min(Math.max(day, 1), 31) : 1
+}
+
+function readRecurring(ctx) {
+  const file = recurringFile(ctx)
+  if (!existsSync(file)) return []
+  try {
+    const parsed = JSON.parse(readFileSync(file, 'utf8'))
+    if (!Array.isArray(parsed)) return []
+    const rules = []
+    for (const rule of parsed) {
+      if (rule === null || typeof rule !== 'object' || typeof rule.id !== 'string') continue
+      const amount = Number(rule.amount)
+      if (!Number.isFinite(amount) || amount <= 0) continue
+      rules.push({
+        id: rule.id,
+        amount: Math.round(amount * 100) / 100,
+        note: String(rule.note ?? '').slice(0, MAX_NOTE),
+        category: typeof rule.category === 'string' && rule.category !== '' ? rule.category : 'other',
+        day: clampDay(rule.day),
+        start: typeof rule.start === 'string' && /^\d{4}-\d{2}-\d{2}$/u.test(rule.start) ? rule.start : dayKey(new Date()),
+        lastPosted: typeof rule.lastPosted === 'string' ? rule.lastPosted : null,
+        active: rule.active !== false,
+      })
+    }
+    return rules
+  } catch {
+    // A broken rules file means no rules, never a crash.
+    return []
+  }
+}
+
+function writeRecurring(ctx, rules) {
+  const file = recurringFile(ctx)
+  mkdirSync(dirname(file), { recursive: true })
+  writeFileSync(file, JSON.stringify(rules, null, 2) + '\n')
+}
+
+/** The rule's day in one month, pulled back to that month's last day (31 in February = 28/29). */
+function scheduledDay(rule, year, month) {
+  const lastDay = new Date(year, month + 1, 0).getDate()
+  return `${year}-${String(month + 1).padStart(2, '0')}-${String(Math.min(rule.day, lastDay)).padStart(2, '0')}`
+}
+
+/** The first occurrence strictly after today, for display. */
+function nextOccurrence(rule, today = dayKey(new Date())) {
+  const [year, month] = today.split('-').map(Number)
+  let cursor = new Date(year, month - 1, 1)
+  for (let step = 0; step < 24; step += 1) {
+    const scheduled = scheduledDay(rule, cursor.getFullYear(), cursor.getMonth())
+    if (scheduled > today && scheduled >= rule.start) return scheduled
+    cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1)
+  }
+  return null
+}
+
+/**
+ * Post every occurrence that came due since the last one. Idempotent: an occurrence is skipped
+ * when an entry with the same rule id and scheduled date already exists, so reading twice in the
+ * same minute cannot double-post, and a deleted occurrence is not brought back.
+ */
+function postDue(ctx) {
+  const rules = readRecurring(ctx)
+  if (rules.length === 0) return 0
+  const today = dayKey(new Date())
+  const entries = readEntries(ctx)
+  const seen = new Set()
+  for (const entry of entries) {
+    if (typeof entry.recurring === 'string' && typeof entry.scheduled === 'string') {
+      seen.add(`${entry.recurring}:${entry.scheduled}`)
+    }
+  }
+  let posted = 0
+  let changed = false
+  const nextRules = rules.map((rule) => {
+    if (!rule.active) return rule
+    const from = rule.lastPosted ?? rule.start
+    const [fromYear, fromMonth] = from.split('-').map(Number)
+    if (!Number.isFinite(fromYear) || !Number.isFinite(fromMonth)) return rule
+    let cursor = new Date(fromYear, fromMonth - 1, 1)
+    let last = rule.lastPosted
+    // Walk month by month up to this one; a future day stops the walk.
+    while (dayKey(cursor).slice(0, 7) <= today.slice(0, 7)) {
+      const scheduled = scheduledDay(rule, cursor.getFullYear(), cursor.getMonth())
+      if (scheduled > today) break
+      if (scheduled >= rule.start && (last === null || scheduled > last) && !seen.has(`${rule.id}:${scheduled}`)) {
+        entries.push({
+          id: randomUUID(),
+          ts: new Date(`${scheduled}T09:00:00`).toISOString(),
+          amount: rule.amount,
+          note: rule.note,
+          category: rule.category,
+          recurring: rule.id,
+          scheduled,
+        })
+        seen.add(`${rule.id}:${scheduled}`)
+        posted += 1
+      }
+      if (scheduled > (last ?? '')) last = scheduled
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1)
+    }
+    if (last !== rule.lastPosted) {
+      changed = true
+      return { ...rule, lastPosted: last }
+    }
+    return rule
+  })
+  if (posted > 0) writeEntries(ctx, entries)
+  if (changed) writeRecurring(ctx, nextRules)
+  return posted
+}
+
+/** The rules as the dashboard shows them: each one with its next date. */
+function recurringRows(ctx) {
+  const today = dayKey(new Date())
+  return readRecurring(ctx).map(rule => ({ ...rule, next: nextOccurrence(rule, today) }))
 }
 
 function slugify(value) {
@@ -317,17 +442,20 @@ function mutate(req, res, reply, action) {
 export function apply(ctx, config) {
   const currency = currencyOf(config)
   const payload = () => {
+    postDue(ctx)
     const entries = readEntries(ctx)
     return {
       currency,
       categories: readCategories(ctx),
       entries: entries.slice(-500),
       budgets: budgetRows(ctx, entries),
+      recurring: recurringRows(ctx),
       ...summary(entries),
     }
   }
   /** The one-paragraph answer the agent sees after every mutation. */
   const summaryText = () => {
+    postDue(ctx)
     const entries = readEntries(ctx)
     return brief(entries, currency, budgetRows(ctx, entries))
   }
@@ -342,6 +470,7 @@ export function apply(ctx, config) {
     },
     output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },
     async execute(args) {
+      postDue(ctx)
       const entry = addEntry(ctx, args)
       return `Saved ${money(entry.amount, currency)} (${entry.category}) - ${entry.note}\n${summaryText()}`
     },
@@ -355,6 +484,7 @@ export function apply(ctx, config) {
     },
     output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },
     async execute(args) {
+      postDue(ctx)
       const limit = Math.min(Math.max(Number(args.limit) || 15, 1), 50)
       const entries = readEntries(ctx)
       const categories = `Categories: ${readCategories(ctx).join(', ')}`
@@ -377,6 +507,7 @@ export function apply(ctx, config) {
     },
     output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },
     async execute(args) {
+      postDue(ctx)
       const entry = updateEntry(ctx, args)
       return `Updated: ${money(entry.amount, currency)} (${entry.category}) - ${entry.note}\n${summaryText()}`
     },
@@ -390,6 +521,7 @@ export function apply(ctx, config) {
     },
     output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },
     async execute(args) {
+      postDue(ctx)
       const id = String(args.id ?? '').trim()
       if (id === '') throw new Error('id is required')
       const match = readEntries(ctx).find(entry => entry.id === id || entry.id.startsWith(id))
@@ -437,6 +569,7 @@ export function apply(ctx, config) {
     },
     output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },
     async execute(args) {
+      postDue(ctx)
       const action = String(args.action ?? 'list')
       const budgets = readBudgets(ctx)
       if (action === 'set') {
@@ -468,6 +601,61 @@ export function apply(ctx, config) {
     },
   }))
 
+  ctx.tools.register(defineTool({
+    name: 'outlay_recurring',
+    description: 'Recurring monthly expenses (rent, subscriptions): "list" shows the rules and their next date; "add" needs amount, note, category and day of month (1-31, clamped to the month\'s last day); "remove", "pause" or "resume" need the rule id. A rule posts itself on its day, and missed months are caught up the next time the books are read.',
+    parameters: {
+      action: { type: 'string', required: true, description: 'list | add | remove | pause | resume' },
+      amount: { type: 'number', description: 'Monthly amount for add, in the app currency' },
+      note: { type: 'string', description: 'What it pays for, e.g. rent' },
+      category: { type: 'string', description: 'Category id (see outlay_categories)' },
+      day: { type: 'number', description: 'Day of the month to post on for add (default 1)' },
+      id: { type: 'string', description: 'Rule id, or its first 8 characters, for remove/pause/resume' },
+    },
+    output: { schema: { type: 'string' }, render: (_args, value) => [{ type: 'text', text: value }] },
+    async execute(args) {
+      postDue(ctx)
+      const action = String(args.action ?? 'list')
+      let rules = readRecurring(ctx)
+      if (action === 'add') {
+        const categories = readCategories(ctx)
+        const category = slugify(args.category ?? '')
+        if (category === '') throw new Error('category is required')
+        if (!categories.includes(category)) throw new Error(`unknown category ${category}; categories: ${categories.join(', ')}`)
+        if (rules.length >= MAX_RECURRING) throw new Error(`too many recurring rules (max ${MAX_RECURRING})`)
+        writeRecurring(ctx, [...rules, {
+          id: randomUUID(),
+          amount: cleanAmount(args.amount),
+          note: cleanNote(args.note),
+          category,
+          day: clampDay(args.day ?? 1),
+          start: dayKey(new Date()),
+          lastPosted: null,
+          active: true,
+        }])
+        postDue(ctx)
+        rules = readRecurring(ctx)
+      } else if (action !== 'list') {
+        if (action !== 'remove' && action !== 'pause' && action !== 'resume') throw new Error('action must be list, add, remove, pause or resume')
+        const id = String(args.id ?? '').trim()
+        if (id === '') throw new Error('id is required')
+        const match = rules.find(rule => rule.id === id || rule.id.startsWith(id))
+        if (match === undefined) throw new Error(`no rule matches ${id}`)
+        if (action === 'remove') writeRecurring(ctx, rules.filter(rule => rule.id !== match.id))
+        else writeRecurring(ctx, rules.map(rule => (rule.id === match.id ? { ...rule, active: action === 'resume' } : rule)))
+        rules = readRecurring(ctx)
+      }
+      if (rules.length === 0) return 'No recurring expenses yet. Add one with amount, note, category and day.'
+      const today = dayKey(new Date())
+      const lines = rules.map((rule) => {
+        const next = nextOccurrence(rule, today)
+        const when = rule.active ? `next ${next ?? 'never'}` : 'paused'
+        return `- ${rule.note}: ${money(rule.amount, currency)} on day ${rule.day} (${rule.category}), ${when} [${rule.id.slice(0, 8)}]`
+      })
+      return ['Recurring monthly:', ...lines].join('\n')
+    },
+  }))
+
   /** The budget route: set a category's monthly amount, or delete it. */
   const setBudget = (body) => {
     const budgets = readBudgets(ctx)
@@ -485,6 +673,34 @@ export function apply(ctx, config) {
     if (amount <= 0) delete budgets[category]
     else budgets[category] = Math.round(amount * 100) / 100
     writeBudgets(ctx, budgets)
+  }
+
+  /** The recurring route: add a rule, remove one, or pause/resume one. */
+  const setRecurring = (body) => {
+    const rules = readRecurring(ctx)
+    if (body.remove !== undefined || body.toggle !== undefined) {
+      const id = String(body.remove ?? body.toggle).trim()
+      const match = rules.find(rule => rule.id === id || rule.id.startsWith(id))
+      if (match === undefined) throw new Error(`no rule matches ${id}`)
+      if (body.remove !== undefined) writeRecurring(ctx, rules.filter(rule => rule.id !== match.id))
+      else writeRecurring(ctx, rules.map(rule => (rule.id === match.id ? { ...rule, active: !rule.active } : rule)))
+      return
+    }
+    const categories = readCategories(ctx)
+    const category = slugify(body.category ?? '')
+    if (category === '') throw new Error('category is required')
+    if (!categories.includes(category)) throw new Error(`unknown category ${category}`)
+    if (rules.length >= MAX_RECURRING) throw new Error(`too many recurring rules (max ${MAX_RECURRING})`)
+    writeRecurring(ctx, [...rules, {
+      id: randomUUID(),
+      amount: cleanAmount(body.amount),
+      note: cleanNote(body.note),
+      category,
+      day: clampDay(body.day ?? 1),
+      start: dayKey(new Date()),
+      lastPosted: null,
+      active: true,
+    }])
   }
 
   const routes = [
@@ -508,6 +724,7 @@ export function apply(ctx, config) {
       if (!current.includes(id)) writeCategories(ctx, [...current, id])
     })],
     ['/api/outlay/budget', (req, res) => mutate(req, res, payload, setBudget)],
+    ['/api/outlay/recurring', (req, res) => mutate(req, res, payload, setRecurring)],
     ['/api/outlay/export.csv', (req, res) => {
       if (req.method !== 'GET') return sendJson(res, 405, { error: 'GET only' })
       res.writeHead(200, {

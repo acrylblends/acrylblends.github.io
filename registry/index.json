@@ -70,11 +70,11 @@
       "id": "smrifat1411.outlay",
       "name": "Outlay",
       "kind": "Blueprint",
-      "version": "0.2.0",
+      "version": "0.4.0",
       "path": "blends/smrifat1411.outlay",
       "license": "MIT",
       "category": "finance",
-      "description": "Say what you spent; the agent writes it down. Today, this week, this month, per category and against monthly budgets, with CSV export.",
+      "description": "Say what you spent; the agent writes it down. A modern dashboard for today, this week and this month, per category, against monthly budgets, with recurring rules that post themselves and CSV export.",
       "parent": "acryl.blank"
     }
   ]
