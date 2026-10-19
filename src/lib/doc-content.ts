@@ -51,19 +51,19 @@ export const docContent: Record<string, DocEntry> = {
     ],
   },
   "getting-started/install": {
-    intro: "Build the acrylblends command from a checkout of the repository. You need Node 22.18 or newer, pnpm and git.",
+    intro: "There is nothing to install: npx runs the acrylblends command from npm. You need Node 22.19 or newer and npm; git, to save your app.",
     body: [{ paragraphs: [
-      "The command is not on npm yet, so you run it from the repository. Below, <acrylblends> means the path to your checkout.",
+      "The package is acrylblends on npm and its source is public at github.com/acrylblends/acrylblends. To work on the framework itself, clone the repository, run pnpm install and pnpm run build, and use packages/cli/bin/acrylblends.js in place of npx acrylblends.",
       "Node runs the generated app's TypeScript directly, so there is no compile step for your own code.",
     ]}],
-    code: { label: "terminal", code: "git clone https://github.com/acrylblends/acrylblends\ncd acrylblends\npnpm install && pnpm run build\nnode packages/cli/bin/acrylblends.js --help" },
+    code: { label: "terminal", code: "npx acrylblends --help\nnpx acrylblends --version" },
   },
   "getting-started/create-your-first-app": {
     intro: "init scaffolds a Cordis app in an empty directory. Pick the small app template or the agent template.",
     body: [
       { paragraphs: [
         "init never writes into a directory that is not empty. Without --agent you get the smaller app template: instance, http, server, manifest and save. With --agent you also get tasks, agent, extensions and builder, so the app can extend itself while it runs.",
-      ], code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js init ../my-app --agent -y\ncd ../my-app\nnpm install\nnpm run dev      # prints its URL; data lives in .acrylblends/" } },
+      ], code: { label: "terminal", code: "npx acrylblends init my-app --agent -y\ncd my-app\nnpm install\nnpm run dev      # prints its URL; data lives in .acrylblends/" } },
       { heading: "Where things live", paragraphs: [
         "blend.yaml is the app as data: plugin rows, config and parameters. src/app.ts is the registry of plugins your code provides. src/routes.ts is your own plugin. src/plugins/ holds plugins copied from the library and is yours to edit. extensions/ holds plugins installed while the app runs. .acrylblends/ is the app's data and is not committed.",
         "Set ACRYLBLENDS_HOME to keep the data elsewhere and ACRYLBLENDS_PORT to choose the first port tried (0 for any free port).",
@@ -90,7 +90,7 @@ export const docContent: Record<string, DocEntry> = {
       "plugins lists the library and what each plugin needs. add copies one into src/plugins/ together with the plugins it requires, and prints the exact line to add. Run npm install afterwards in case it added dependencies.",
       "Then mount it in src/app.ts and add a row in blend.yaml. Because the code is copied, you can edit it freely.",
     ]}],
-    code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js plugins\nnode <acrylblends>/packages/cli/bin/acrylblends.js add settings --dir ./my-app\nnpm install\nnpm run check" },
+    code: { label: "terminal", code: "npx acrylblends plugins\nnpx acrylblends add settings --dir ./my-app\nnpm install\nnpm run check" },
   },
   "getting-started/lock-save-and-ship": {
     intro: "Record what the app is built from, commit it safely, and run it in a container.",
@@ -105,7 +105,7 @@ export const docContent: Record<string, DocEntry> = {
     ],
   },
   "framework/cli-reference": {
-    intro: "The acrylblends command has three verbs: init, add and plugins. It is run from a checkout of the repository until it is published.",
+    intro: "The acrylblends command has three verbs: init, add and plugins. Run it with npx acrylblends, or install it globally with npm install -g acrylblends.",
     body: [
       { heading: "init", paragraphs: [
         "Creates a Cordis app in an empty or new directory. It never writes into a directory that is not empty.",
@@ -184,10 +184,10 @@ export const docContent: Record<string, DocEntry> = {
     body: [
       { heading: "1. A blank app, then add a plugin", paragraphs: [
         "A blank app mounts only what it needs. Add settings from the library, then mount it in src/app.ts and list it in blend.yaml.",
-      ], code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js init ./my-app --no-agent --yes\ncd my-app && npm install && npm run check\nnode <acrylblends>/packages/cli/bin/acrylblends.js add settings --dir .\nnpm install && npm run check" } },
+      ], code: { label: "terminal", code: "npx acrylblends init ./my-app --no-agent --yes\ncd my-app && npm install && npm run check\nnpx acrylblends add settings --dir .\nnpm install && npm run check" } },
       { heading: "2. The agent builds a clock", paragraphs: [
         "Start the agent template, then ask it to build and install a plugin. It writes the plugin, installs it live and calls it. The plugin survives a restart. Ask again to change it; if the update fails, the previous version comes back.",
-      ], code: { label: "terminal", code: "node <acrylblends>/packages/cli/bin/acrylblends.js init ./my-agent --agent --yes\ncd my-agent && npm install && npm start\n\ncurl -X POST localhost:3100/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"Build a plugin named clock that adds GET /time returning the ISO time. Install it.\"}'\ncurl localhost:3100/time\ncurl localhost:3100/tasks" } },
+      ], code: { label: "terminal", code: "npx acrylblends init ./my-agent --agent --yes\ncd my-agent && npm install && npm start\n\ncurl -X POST localhost:3100/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"Build a plugin named clock that adds GET /time returning the ISO time. Install it.\"}'\ncurl localhost:3100/time\ncurl localhost:3100/tasks" } },
       { heading: "3. In a container", paragraphs: [
         "The agent template's Dockerfile keeps the app's data in /data. A recreated container on the same volume still serves the plugin.",
       ], code: { label: "docker", code: "docker build -t my-agent .\ndocker run -p 3100:3100 -v my-agent-data:/data my-agent" },
