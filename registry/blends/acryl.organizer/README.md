@@ -1,7 +1,8 @@
 # Organizer
 
-A starter kit grown from Blank: to-dos, a calendar, and meeting booking that refuses overlapping meetings. Everything is tools the assistant inside calls for you
-("book a one hour meeting with Sam on Friday at 14:00"); your data stays in your project (`.acryl/organizer.json`).
+A starter kit grown from Blank: to-dos, a calendar, and meeting booking that refuses overlapping meetings. The app opens on your day (to-dos and the
+day's calendar), with the assistant beside it: use the forms yourself, or ask ("book a one hour meeting with Sam on Friday at 14:00") and watch the day change.
+Your data stays in your app (`.acryl/organizer.json`).
 
 ```bash
 acryl new my-planner --from acryl.organizer

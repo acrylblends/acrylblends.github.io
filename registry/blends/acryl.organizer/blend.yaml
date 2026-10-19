@@ -1,4 +1,4 @@
-# Organizer: a starter kit grown from Blank. To-dos, a calendar, and meeting booking that refuses overlaps.
+# Organizer: a starter kit grown from Blank. To-dos, a calendar, and meeting booking that refuses overlaps - your day is the window, the agent sits beside it.
 # Start a project from it:  acryl new my-planner --from acryl.organizer
 apiVersion: blends.acryl.dev/v1alpha1
 kind: Blueprint
@@ -21,5 +21,7 @@ spec:
         tagline: Plan your day by talking to it.
         accent: "#e8590c"
         accentDark: "#ff922b"
+    - id: acryl-app-shell
+      name: acryl-app-shell
     - id: acryl-organizer
       name: acryl-organizer
