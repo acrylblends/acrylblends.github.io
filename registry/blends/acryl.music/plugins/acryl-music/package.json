@@ -2,22 +2,30 @@
   "name": "acryl-music",
   "version": "0.1.0",
   "private": true,
-  "description": "A step sequencer and drum machine: tools the agent plays and a live page that makes the sound, synthesized in the browser",
+  "description": "A step sequencer and drum machine as the app itself: tools the agent plays and the sequencer surface that makes the sound, synthesized in the browser",
   "license": "MIT",
   "type": "module",
   "main": "./index.js",
   "exports": {
     ".": "./index.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./client": "./client.js"
   },
   "files": [
     "index.js",
+    "client.js",
     "lib/**",
     "cordis.patch.yml"
   ],
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme"
+      ],
+      "platform": "web"
     }
   },
   "scripts": {

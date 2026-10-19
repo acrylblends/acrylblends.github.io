@@ -41,7 +41,7 @@
       "path": "blends/acryl.music",
       "license": "MIT",
       "category": "creative",
-      "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the page updates as the agent works.",
+      "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works.",
       "parent": "acryl.blank"
     },
     {

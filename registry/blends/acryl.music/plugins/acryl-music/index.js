@@ -1,20 +1,20 @@
 /**
  * acryl-music: a step sequencer / drum machine, grown from the Blank Blueprint as one ordinary Cordis plugin. The agent plays it through tools ("make a 128 bpm
- * techno beat", "add a snare on 2 and 4", "slow it down to 90"); the page (`/music`) plays the pattern with WebAudio, sounds synthesized in the browser, no audio files,
- * and shows every change the agent makes within a moment. The pattern and the saved patterns live in `<app home>/.acryl/music.json`. Remove the plugin and the
- * tools and page go; the data file stays with the project.
+ * techno beat", "add a snare on 2 and 4", "slow it down to 90"); the browser half (`client.js`) makes the sequencer this app's main surface, with the agent's
+ * conversation beside it, plays the pattern with WebAudio (synthesized, no audio files) and shows every change the agent makes within a moment. The pattern and the
+ * saved patterns live in `<app home>/.acryl/music.json`, read and written by the tools and by the surface through `/api/acryl-music/*`. Remove the plugin and the
+ * tools and the surface go; the data file stays with the project.
  *
- * Surfaces: tui web desktop (tools need no browser; the page and the sound need `webServer` and a browser, web/desktop only).
+ * Surfaces: tui web desktop (tools need no browser; the sequencer and the sound need `webServer` and a browser, web/desktop only).
  */
 import { isAbsolute, join } from 'node:path'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import * as domain from './lib/domain.js'
-import { pageHtml } from './lib/page.js'
 import { error, finishJson, isLoopbackAddress, isSameOriginLoopbackRequest, parseJsonPostBody, INVALID_BODY } from './lib/http.js'
 import { fileStore } from './lib/store.js'
 
 export const name = 'acryl-music'
-// appInstance: the data belongs to the app, not to the chat's workspace, so the tools and the page both keep it in the app's own home.
+// appInstance: the data belongs to the app, not to the chat's workspace, so the tools and the sequencer both keep it in the app's own home.
 export const inject = ['tools', 'webServer', 'appInstance']
 
 function resolveCwd(value, appHome) {
@@ -88,18 +88,6 @@ export function apply(ctx) {
 
   const webOrigin = () => ctx.webServer.origin ?? `http://127.0.0.1:${String(ctx.webServer.port)}`
 
-  ctx.effect(() => ctx.webServer.register({
-    kind: 'exact',
-    path: '/music',
-    handler: (req, res) => {
-      if (!isLoopbackAddress(req.socket.remoteAddress)) { res.statusCode = 403; res.end(); return }
-      if (req.method !== 'GET') { res.statusCode = 405; res.setHeader('allow', 'GET'); res.end(); return }
-      res.statusCode = 200
-      res.setHeader('content-type', 'text/html; charset=utf-8')
-      res.setHeader('cache-control', 'no-store')
-      res.end(pageHtml())
-    },
-  }), 'acryl-music: page')
 
   const api = (path, method, run) => ctx.effect(() => ctx.webServer.register({
     kind: 'exact',
