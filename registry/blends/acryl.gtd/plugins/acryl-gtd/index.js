@@ -26,17 +26,12 @@ import { defineTool } from '@deepseek-ai/dsh-tools'
 import * as domain from './lib/domain.js'
 import { boardPageHtml } from './lib/board-page.js'
 import { error, finishJson, isLoopbackAddress, isSameOriginLoopbackRequest, parseJsonPostBody, INVALID_BODY } from './lib/http.js'
-import { fileStore, storeFor } from './lib/store.js'
+import { fileStore } from './lib/store.js'
 
 export const name = 'acryl-gtd'
-// appInstance: the app's own bulkhead (docs/acryl/APP-INSTANCES-AND-BULKHEADS.md). The board route has no
-// session/exec context to read a cwd from (unlike the tools, which get one from `exec.agent.session.header.cwd`
-// via storeFor), so it needs its own source for "this app's own directory" - and that source must be the app's
-// instance home, never `process.cwd()`. Caught live: `process.cwd()` inside this engine process is the shared
-// monorepo checkout that launched it, not the per-app folder passed as `--dir`, so a first version of this
-// default wrote every app's board data into one shared file at the checkout's own root - exactly the ambient
-// lookup `tests/bulkhead.spec.ts` exists to catch elsewhere in this codebase, reproduced here in an extension
-// outside that test's reach.
+// appInstance: the app's own bulkhead (docs/acryl/APP-INSTANCES-AND-BULKHEADS.md). Both the board and the tools keep the data in the app's instance
+// home, never in `process.cwd()` (inside this engine process that is the shared checkout that launched it, not the per-app folder) and never in the
+// chat session's workspace (a tool that wrote there left the board empty: the agent captured items and the page showed none, found live 2026-10-19).
 export const inject = ['tools', 'webServer', 'appInstance']
 
 /**
@@ -55,13 +50,13 @@ const storeForCwd = cwd => fileStore(join(cwd, '.acryl', 'gtd.json'))
 const text = (_args, value) => [{ type: 'text', text: value }]
 const output = { schema: { type: 'string' }, render: text }
 
-/** One use case = one tool: load, apply a domain rule, save, describe the result. */
-function useCase(definition, run) {
+/** One use case = one tool: load, apply a domain rule, save, describe the result. The data is the app's own, wherever the chat's workspace is, so the board shows what the agent captures. */
+const makeUseCase = openStore => (definition, run) => {
   return defineTool({
     ...definition,
     output,
-    async execute(args, exec) {
-      const store = storeFor(exec)
+    async execute(args) {
+      const store = openStore()
       const state = store.load()
       try {
         return run(state, args, store)
@@ -84,6 +79,7 @@ const itemLine = item => {
 const projectLine = summary => `${summary.project}: ${summary.open} open, ${summary.done} done`
 
 export function apply(ctx) {
+  const useCase = makeUseCase(() => storeForCwd(ctx.appInstance.home))
   const tools = [
     useCase({ name: 'gtd_capture', description: 'Capture something into the inbox - get it out of your head. Nothing is decided yet.', parameters: { title: { type: 'string', required: true, description: 'What it is' }, note: { type: 'string', description: 'Extra detail' }, due: { type: 'string', description: 'Due day, YYYY-MM-DD, if it has one' }, tags: { type: 'array', items: { type: 'string' }, description: 'Contexts, e.g. @calls, @errands' } } },
       (state, args, store) => { const next = domain.capture(state, args); store.save(next); return `Captured ${itemLine(next.items.at(-1))}` }),

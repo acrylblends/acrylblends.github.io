@@ -118,7 +118,11 @@ export function boardPageHtml() {
   function setErr(message) { document.getElementById('err').innerHTML = message ? '<div class="err">' + esc(message) + '</div>' : '' }
 
   function load() {
-    api('/api/acryl-gtd/state').then(function (s) { state = s; setErr(''); renderAll() }).catch(function (e) { setErr('GTD board: ' + e.message) })
+    api('/api/acryl-gtd/state').then(function (s) {
+      setErr('')
+      if (state && JSON.stringify(s) === JSON.stringify(state)) return
+      state = s; renderAll()
+    }).catch(function (e) { setErr('GTD board: ' + e.message) })
   }
   function triage(id, status) {
     post('/api/acryl-gtd/triage', { id: id, status: status }).then(function (s) { state = s; renderAll() }).catch(function (e) { setErr(e.message) })
@@ -220,6 +224,8 @@ export function boardPageHtml() {
   }
 
   load()
+  // The agent changes the same data through its tools: show it within a moment, without a reload.
+  setInterval(load, 2000)
 })()
 </script>
 </body>
