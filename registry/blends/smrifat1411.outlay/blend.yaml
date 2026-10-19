@@ -1,0 +1,27 @@
+# Outlay: expense books an agent keeps for you. Grown from Blank.
+# Start a project from it:  acryl new my-expenses --from smrifat1411.outlay
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: smrifat1411.outlay
+  name: Outlay
+  version: 0.2.0
+  category: finance
+  description: Say what you spent; the agent writes it down. Today, this week, this month, per category and against monthly budgets, with CSV export.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  extends: acryl.blank
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Outlay
+        tagline: Say what you spent. The books keep themselves.
+        accent: "#0b7285"
+        accentDark: "#66d9e8"
+    - id: outlay
+      name: outlay
+      config:
+        currency: "$"

@@ -65,6 +65,17 @@
       "category": "productivity",
       "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
       "parent": "acryl.blank"
+    },
+    {
+      "id": "smrifat1411.outlay",
+      "name": "Outlay",
+      "kind": "Blueprint",
+      "version": "0.2.0",
+      "path": "blends/smrifat1411.outlay",
+      "license": "MIT",
+      "category": "finance",
+      "description": "Say what you spent; the agent writes it down. Today, this week, this month, per category and against monthly budgets, with CSV export.",
+      "parent": "acryl.blank"
     }
   ]
 }

@@ -1,0 +1,42 @@
+{
+  "name": "outlay",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Expense books an agent keeps for you: say what you spent, see today, this week and this month in a panel beside the chat",
+  "license": "MIT",
+  "type": "module",
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./package.json": "./package.json",
+    "./client": "./client.js"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ],
+      "platform": "web"
+    }
+  },
+  "acryl": {
+    "apiVersion": 1,
+    "permissions": [
+      "fs.read",
+      "fs.write",
+      "ui"
+    ]
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-tools": "0.2.0-rc.2"
+  }
+}
