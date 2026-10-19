@@ -9,7 +9,7 @@
       "path": "blends/acryl.accounting",
       "license": "MIT",
       "category": "finance",
-      "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the page updates as the agent works.",
+      "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.",
       "parent": "acryl.blank"
     },
     {

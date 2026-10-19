@@ -1,4 +1,4 @@
-# Accounting: Blank plus invoices, expenses and a VAT and income summary, as tools the agent calls and a live page.
+# Accounting: Blank plus invoices, expenses and a VAT and income summary as the app itself - the books are the window, the agent sits beside them.
 # Start a project from it:  acryl new my-books --from acryl.accounting
 apiVersion: blends.acryl.dev/v1alpha1
 kind: Blueprint
@@ -7,7 +7,7 @@ metadata:
   name: Accounting
   version: 0.1.0
   category: finance
-  description: Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the page updates as the agent works.
+  description: Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.
   license: MIT
   visibility: public
 spec:
@@ -21,5 +21,7 @@ spec:
         tagline: Book it by saying it.
         accent: "#2f9e44"
         accentDark: "#51cf66"
+    - id: acryl-app-shell
+      name: acryl-app-shell
     - id: acryl-accounting
       name: acryl-accounting

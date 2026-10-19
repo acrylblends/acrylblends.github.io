@@ -1,20 +1,19 @@
 /**
  * acryl-accounting: invoices (create, list, mark paid), expenses, and a VAT and income summary for a period, grown from the Blank Blueprint as one
  * ordinary Cordis plugin. Plain local data in `<app home>/.acryl/accounting.json`, no external service. Tools the agent calls on the user's behalf,
- * and a page of its own (`/accounting`) that reads and writes the same file through same-origin loopback routes this plugin owns. Remove the plugin
- * and the tools and page go; the data file stays with the project.
+ * and the books as this app's main surface (`client.js`, with the agent's conversation beside them), which reads and writes the same file through
+ * same-origin loopback routes this plugin owns. Remove the plugin and the tools and the surface go; the data file stays with the project.
  *
- * Surfaces: tui web desktop (tools need no browser; the page needs `webServer`, web/desktop only).
+ * Surfaces: tui web desktop (tools need no browser; the surface needs `webServer`, web/desktop only).
  */
 import { isAbsolute, join } from 'node:path'
 import { defineTool } from '@deepseek-ai/dsh-tools'
 import * as domain from './lib/domain.js'
-import { pageHtml } from './lib/page.js'
 import { error, finishJson, isLoopbackAddress, isSameOriginLoopbackRequest, parseJsonPostBody, INVALID_BODY } from './lib/http.js'
 import { fileStore } from './lib/store.js'
 
 export const name = 'acryl-accounting'
-// appInstance: the data belongs to the app, not to the chat's workspace, so the tools and the page both keep it in the app's own home.
+// appInstance: the data belongs to the app, not to the chat's workspace, so the tools and the surface both keep it in the app's own home.
 export const inject = ['tools', 'webServer', 'appInstance']
 
 const today = () => new Date().toISOString().slice(0, 10)
@@ -104,18 +103,6 @@ export function apply(ctx) {
   const origin = `http://127.0.0.1:${ctx.webServer.port ?? ''}`
   const webOrigin = () => ctx.webServer.origin ?? origin
 
-  ctx.effect(() => ctx.webServer.register({
-    kind: 'exact',
-    path: '/accounting',
-    handler: (req, res) => {
-      if (!isLoopbackAddress(req.socket.remoteAddress)) { res.statusCode = 403; res.end(); return }
-      if (req.method !== 'GET') { res.statusCode = 405; res.setHeader('allow', 'GET'); res.end(); return }
-      res.statusCode = 200
-      res.setHeader('content-type', 'text/html; charset=utf-8')
-      res.setHeader('cache-control', 'no-store')
-      res.end(pageHtml())
-    },
-  }), 'acryl-accounting: page')
 
   const api = (path, method, run) => ctx.effect(() => ctx.webServer.register({
     kind: 'exact',
