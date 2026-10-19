@@ -1,0 +1,28 @@
+# Order desk: a starter for a small business. Customer emails become orders, orders reserve stock, large ones wait for approval, shipping
+# writes the delivery note and tells the customer - the pipeline is the window, the agent sits beside it.
+# Start a project from it:  acryl new my-desk --from acryl.orderdesk
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acryl.orderdesk
+  name: Order Desk
+  version: 0.1.0
+  category: business
+  description: Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  extends: acryl.blank
+  rows:
+    - id: brand
+      name: acryl-brand
+      config:
+        name: Order Desk
+        tagline: Customer emails in, orders out.
+        accent: "#0c8599"
+        accentDark: "#3bc9db"
+    - id: acryl-app-shell
+      name: acryl-app-shell
+    - id: acryl-orderdesk
+      name: acryl-orderdesk

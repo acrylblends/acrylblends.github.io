@@ -45,6 +45,17 @@
       "parent": "acryl.blank"
     },
     {
+      "id": "acryl.orderdesk",
+      "name": "Order Desk",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.orderdesk",
+      "license": "MIT",
+      "category": "business",
+      "description": "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.",
+      "parent": "acryl.blank"
+    },
+    {
       "id": "acryl.organizer",
       "name": "Organizer",
       "kind": "Blueprint",
