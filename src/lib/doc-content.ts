@@ -192,11 +192,11 @@ export const docContent: Record<string, DocEntry> = {
       { heading: "One source of truth", paragraphs: [
         "The framework lives in ACRYL (github.com/acryldev/acryl, plugins/acryl-*), where the Web, Desktop and terminal surfaces test it. This library vendors it: a sync script copies the source and the tests, rewrites only the imports between the plugins, and records the ACRYL commit and a digest in each plugin's upstream.json. pnpm run verify:framework fails when a copy was edited, so a change is made in ACRYL first and synced here.",
         "The docs are organized as concepts, api, guides and middleware, and are ACRYL's own text, copied the same way into docs/framework of the repository.",
-      ], note: "The notice that acryl-state carries travels with the plugin (a NOTICE file in its folder)." },
+      ] },
     ],
   },
   "framework/release-notes-0-3-0": {
-    intro: "0.3.0 moves generated apps onto the ACRYL framework. It is breaking, and the migration of a route is three lines. This is a draft: the release is not published yet.",
+    intro: "0.3.0 moves generated apps onto the ACRYL framework. It is breaking, and the migration of a route is three lines.",
     body: [
       { heading: "Breaking", paragraphs: [
         "The http, server and events plugins are removed: use acryl-router (ctx.router), acryl-node-server and acryl-state. The app template is now blank, and init takes --template with blank, todo or agent (--agent and --no-agent still work). In blend.yaml the rows http and server become acryl-router and acryl-node-server, and GET /events becomes /api/state/tasks/events and /api/state/extensions/events. Generated apps also depend on @deepseek-ai/schemastery. Node 22.19 or newer, as before.",
