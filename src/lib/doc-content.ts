@@ -183,16 +183,16 @@ export const docContent: Record<string, DocEntry> = {
     ],
   },
   "framework/the-acryl-framework": {
-    intro: "The router, shared state and the node server are ACRYL's own framework: Hono's design rewritten as Cordis plugins, copied into your app as they are.",
+    intro: "The router, shared state and the node server are ACRYL's own framework, written as Cordis plugins and copied into your app as they are.",
     body: [
       { paragraphs: [
-        "acryl-router gives ctx.router: Hono-shaped routes, groups, middleware, helpers (validate, readJson, streamSSE) and an in-process request() for tests. acryl-node-server is one node:http listener that sends every request to the router (port, loopback host, next-free-port scan; it ends open streams and frees the port when unloaded). acryl-state gives observable cells that the router serves as JSON and as server-sent events at /api/state/<key> and /api/state/<key>/events. acryl-inspect reports what every plugin requires, provides and registers.",
+        "acryl-router gives ctx.router: routes, groups, middleware, helpers (validate, readJson, streamSSE) and an in-process request() for tests. acryl-node-server is one node:http listener that sends every request to the router (port, loopback host, next-free-port scan; it ends open streams and frees the port when unloaded). acryl-state gives observable cells that the router serves as JSON and as server-sent events at /api/state/<key> and /api/state/<key>/events. acryl-inspect reports what every plugin requires, provides and registers.",
         "Everything a plugin registers on the router, state or the inspector goes away when that plugin unloads. A plugin installed while the app runs reads the router as ctx.router.",
       ], code: { label: "a plugin", code: "export const name = 'hello'\nexport const inject = ['router']\nexport function apply(ctx) {\n  ctx.router.get('/hello/:who', (c) => c.json({ hello: c.param('who') }))\n}" } },
       { heading: "One source of truth", paragraphs: [
         "The framework lives in ACRYL (github.com/acryldev/acryl, plugins/acryl-*), where the Web, Desktop and terminal surfaces test it. This library vendors it: a sync script copies the source and the tests, rewrites only the imports between the plugins, and records the ACRYL commit and a digest in each plugin's upstream.json. pnpm run verify:framework fails when a copy was edited, so a change is made in ACRYL first and synced here.",
-        "The docs follow Hono's shape (concepts, api, guides, middleware, hono-parity) and are ACRYL's own text, copied the same way into docs/framework of the repository.",
-      ], note: "Hono and VanJS are MIT licensed; their notices travel with the plugins (LICENSE and NOTICE in each folder)." },
+        "The docs are organized as concepts, api, guides and middleware, and are ACRYL's own text, copied the same way into docs/framework of the repository.",
+      ], note: "The notice that acryl-state carries travels with the plugin (a NOTICE file in its folder)." },
     ],
   },
   "framework/release-notes-0-3-0": {
@@ -205,7 +205,7 @@ export const docContent: Record<string, DocEntry> = {
         "The old handler shape maps directly: { status: 404, body } is c.json(body, 404), the request body is await c.req.json(), a path parameter is c.param('id'), and ctx.http.handle(...) in a test is await ctx.router.request('/hello'). A route registered through the plugin's context is removed when the plugin unloads, so the ctx.effect wrapper goes.",
       ], code: { label: "0.2.x to 0.3.0", code: "// 0.2.x\nexport const inject = ['http']\nctx.effect(() => ctx.http.route('GET', '/hello', () => ({ body: { text: 'Hello' } })))\n\n// 0.3.0\nexport const inject = ['router']\nctx.router.get('/hello', (c) => c.json({ text: 'Hello' }))" } },
       { heading: "New", paragraphs: [
-        "The framework plugins in the library, the todo template, state cells for tasks and extensions, a fix that lets a plugin installed live read ctx.router, an offline agent and a model prompt that write router plugins, and docs in Hono's shape. The full list is docs/release-notes/0.3.0.md in the repository.",
+        "The framework plugins in the library, the todo template, state cells for tasks and extensions, a fix that lets a plugin installed live read ctx.router, an offline agent and a model prompt that write router plugins, and docs in one tree. The full list is docs/release-notes/0.3.0.md in the repository.",
       ] },
     ],
   },
