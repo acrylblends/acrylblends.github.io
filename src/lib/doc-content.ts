@@ -62,8 +62,8 @@ export const docContent: Record<string, DocEntry> = {
     intro: "init scaffolds a Cordis app in an empty directory. Pick the small app template or the agent template.",
     body: [
       { paragraphs: [
-        "init never writes into a directory that is not empty. Without --agent you get the smaller app template: instance, http, server, manifest and save. With --agent you also get tasks, agent, extensions and builder, so the app can extend itself while it runs.",
-      ], code: { label: "terminal", code: "npx acrylblends init my-app --agent -y\ncd my-app\nnpm install\nnpm run dev      # prints its URL; data lives in .acrylblends/" } },
+        "init never writes into a directory that is not empty. --template picks one of three: blank (the default: instance, the router, the node server, manifest and save), todo (a todo list built only on the router and state) and agent (blank plus state, tasks, agent, extensions and builder, so the app can extend itself while it runs). --agent still means --template agent.",
+      ], code: { label: "terminal", code: "npx acrylblends init my-app --template todo -y\ncd my-app\nnpm install\nnpm test\nnpm run dev      # prints its URL; data lives in .acrylblends/" } },
       { heading: "Where things live", paragraphs: [
         "blend.yaml is the app as data: plugin rows, config and parameters. src/app.ts is the registry of plugins your code provides. src/routes.ts is your own plugin. src/plugins/ holds plugins copied from the library and is yours to edit. extensions/ holds plugins installed while the app runs. .acrylblends/ is the app's data and is not committed.",
         "Set ACRYLBLENDS_HOME to keep the data elsewhere and ACRYLBLENDS_PORT to choose the first port tried (0 for any free port).",
@@ -109,9 +109,9 @@ export const docContent: Record<string, DocEntry> = {
     body: [
       { heading: "init", paragraphs: [
         "Creates a Cordis app in an empty or new directory. It never writes into a directory that is not empty.",
-      ], code: { label: "usage", code: "acrylblends init [dir] [--agent | --no-agent] [--name <name>] [--install] [-y]" } },
+      ], code: { label: "usage", code: "acrylblends init [dir] [--template blank|todo|agent] [--agent | --no-agent] [--name <name>] [--install] [-y]" } },
       { paragraphs: [
-        "--agent includes the offline agent and the plugins it needs (tasks, agent, extensions, builder); --no-agent gives the smaller app template. --install runs npm install afterwards. -y asks nothing and uses the defaults: no agent, no install.",
+        "--template chooses blank, todo or agent (asked when not given). --agent is --template agent and --no-agent is --template blank, so older scripts keep working. --install runs npm install afterwards. -y asks nothing and uses the defaults: the blank template, no install.",
       ] },
       { heading: "add", paragraphs: [
         "Copies library plugins, and the plugins they require, into the app's src/plugins/. Given a folder path instead of a name, it brings an external plugin into the app's extensions/, where it installs at the next start through the same checks as any extension. It prints the exact line to add to src/app.ts and blend.yaml.",
@@ -125,16 +125,19 @@ export const docContent: Record<string, DocEntry> = {
     ],
   },
   "framework/templates": {
-    intro: "Two templates ship with the CLI: app, a Cordis app that serves routes, and agent, the same app with an agent that can extend it while it runs.",
+    intro: "Three templates ship with the CLI: blank, a Cordis app that serves routes on the ACRYL router; todo, a todo list built only on the router and state; and agent, the blank app with an agent that can extend it while it runs.",
     body: [
       { paragraphs: [
-        "Both are TypeScript run directly by Node 22.18 or newer, tested with node:test, and depend at run time on @deepseek-ai/cordis and yaml. Both mount their plugins from blend.yaml, so you choose, order and switch off plugins without editing code.",
+        "All three are TypeScript run directly by Node 22.19 or newer, tested with node:test, and depend at run time on @deepseek-ai/cordis, @deepseek-ai/schemastery, yaml and ACRYL's published blends-core and app-persistence packages. All mount their plugins from blend.yaml, so you choose, order and switch off plugins without editing code.",
       ] },
-      { heading: "app", paragraphs: [
-        "instance, http, server, manifest and save, plus your own routes plugin in src/routes.ts. The smallest useful base for any app, not only an IDE.",
+      { heading: "blank", paragraphs: [
+        "instance, acryl-router, acryl-node-server, manifest and save, plus your own routes plugin in src/routes.ts (ctx.router.get('/', (c) => c.json({ ok: true }))). The smallest useful base for any app, not only an IDE.",
       ] },
+      { heading: "todo", paragraphs: [
+        "ACRYL's reference app, copied as it is: a todo list in one plugin on the router and state. GET and POST /todo/api, PATCH and DELETE /todo/api/:id, a page at /todo, a server-sent stream at /todo/events, and a file in the app's home that keeps the list across restarts. Its tests run with node:test and cover the CRUD, the validation, the stream and the restart.",
+      ], code: { label: "terminal", code: "npx acrylblends init todo --template todo\ncd todo && npm install && npm test\nnpm run dev            # prints its URL\ncurl -X POST $URL/todo/api -H 'content-type: application/json' -d '{\"title\":\"write the docs\"}\ncurl $URL/todo/api" } },
       { heading: "agent", paragraphs: [
-        "Everything in app plus tasks (durable run records), agent (an offline scripted model by default), extensions (live install with rollback) and builder (tools that let the agent write and install plugins). Set ACRYLBLENDS_MODEL_URL, ACRYLBLENDS_MODEL and ACRYLBLENDS_MODEL_KEY and the agent uses a real OpenAI-compatible model instead. It also includes a Dockerfile whose data lives in /data.",
+        "Everything in blank plus acryl-state, tasks (durable run records), agent (an offline scripted model by default), extensions (live install with rollback) and builder (tools that let the agent write and install plugins). Set ACRYLBLENDS_MODEL_URL, ACRYLBLENDS_MODEL and ACRYLBLENDS_MODEL_KEY and the agent uses a real OpenAI-compatible model instead. It also includes a Dockerfile whose data lives in /data.",
       ], note: "Parameters in blend.yaml: steps (the agent's step budget), taskStore (jsonl or sqlite) and approval (true makes an agent-installed plugin wait for POST /extensions/approve)." },
     ],
   },
@@ -142,8 +145,8 @@ export const docContent: Record<string, DocEntry> = {
     intro: "Every plugin in the library is plain Cordis code, extracted from ACRYL, tested against a real Cordis context including disposal, and copied into your app so you own it.",
     body: [
       { paragraphs: [
-        "instance: where the app keeps its data and which port it uses. http and server: a router whose routes leave with the plugin that added them, and the node:http server. settings: validated, layered, watched settings in one YAML file. extensions: install, update, remove and reload plugins while the app runs; a failed update restores the previous version, and a ledger records every change.",
-        "sandbox: runs untrusted code (an agent-written tool) in a separate Node process under the permission model, with a time limit and a memory cap. It does not block the network. builder and agent: the agent loop and its tools for building the app it runs in. openai: any OpenAI-compatible model over fetch, no SDK. tasks: durable records of every run and tool call, readable after a restart. events: a server-sent event stream. manifest: reads and validates blend.yaml, with Blueprints and Blends resolving over them. save: commit the app, refusing secrets. digest: the one definition of a folder's content digest.",
+        "instance: where the app keeps its data and which port it uses. acryl-router, acryl-node-server, acryl-state, acryl-inspect and acryl-router-http: ACRYL's framework, vendored as it is (see The ACRYL framework). settings: validated, layered, watched settings in one YAML file. settings: validated, layered, watched settings in one YAML file. extensions: install, update, remove and reload plugins while the app runs; a failed update restores the previous version, and a ledger records every change.",
+        "sandbox: runs untrusted code (an agent-written tool) in a separate Node process under the permission model, with a time limit and a memory cap. It does not block the network. builder and agent: the agent loop and its tools for building the app it runs in. openai: any OpenAI-compatible model over fetch, no SDK. tasks: durable records of every run and tool call, readable after a restart. manifest: reads and validates blend.yaml, with Blueprints and Blends resolving over them. save: commit the app, refusing secrets. digest: the one definition of a folder's content digest.",
       ], note: "acrylblends plugins prints this list with what each plugin requires. The full reference is docs/plugins.md in the repository." },
     ],
   },
@@ -175,8 +178,35 @@ export const docContent: Record<string, DocEntry> = {
       { paragraphs: [
         "An extension is a folder in the app's extensions/ whose name is the plugin's name, with an index.ts that exports a Cordis plugin. Installing it checks the folder, stages a copy named by its content digest, starts it as a child fiber, verifies its optional check function, and records the result in a ledger. If it fails to start or fails its check, the previous version starts again and the answer says restoredPrevious.",
         "A plugin is trusted code and is gated by approval. A tool is code you do not trust, such as a function an agent just wrote: it never runs inside the app, only in the sandbox, and its examples are the install's self-check. At startup, folders in a source marked trust: list are only reported, so code that arrived through a git pull does not run until someone asks.",
-        "Look at GET /extensions for what is installed and its state, GET /tasks for every agent run as a durable task, and GET /events for a live stream of changes.",
+        "Look at GET /extensions for what is installed and its state, GET /tasks for every agent run as a durable task, and GET /api/state/tasks/events and GET /api/state/extensions/events for live streams of changes (GET /api/state/tasks and GET /api/state/extensions read the current value).",
       ], note: "The full contract, including approval, the builder tools and packaging a plugin for sharing, is in docs/extending-apps.md in the repository." },
+    ],
+  },
+  "framework/the-acryl-framework": {
+    intro: "The router, shared state and the node server are ACRYL's own framework: Hono's design rewritten as Cordis plugins, copied into your app as they are.",
+    body: [
+      { paragraphs: [
+        "acryl-router gives ctx.router: Hono-shaped routes, groups, middleware, helpers (validate, readJson, streamSSE) and an in-process request() for tests. acryl-node-server is one node:http listener that sends every request to the router (port, loopback host, next-free-port scan; it ends open streams and frees the port when unloaded). acryl-state gives observable cells that the router serves as JSON and as server-sent events at /api/state/<key> and /api/state/<key>/events. acryl-inspect reports what every plugin requires, provides and registers.",
+        "Everything a plugin registers on the router, state or the inspector goes away when that plugin unloads. A plugin installed while the app runs reads the router as ctx.router.",
+      ], code: { label: "a plugin", code: "export const name = 'hello'\nexport const inject = ['router']\nexport function apply(ctx) {\n  ctx.router.get('/hello/:who', (c) => c.json({ hello: c.param('who') }))\n}" } },
+      { heading: "One source of truth", paragraphs: [
+        "The framework lives in ACRYL (github.com/acryldev/acryl, plugins/acryl-*), where the Web, Desktop and terminal surfaces test it. This library vendors it: a sync script copies the source and the tests, rewrites only the imports between the plugins, and records the ACRYL commit and a digest in each plugin's upstream.json. pnpm run verify:framework fails when a copy was edited, so a change is made in ACRYL first and synced here.",
+        "The docs follow Hono's shape (concepts, api, guides, middleware, hono-parity) and are ACRYL's own text, copied the same way into docs/framework of the repository.",
+      ], note: "Hono and VanJS are MIT licensed; their notices travel with the plugins (LICENSE and NOTICE in each folder)." },
+    ],
+  },
+  "framework/release-notes-0-3-0": {
+    intro: "0.3.0 moves generated apps onto the ACRYL framework. It is breaking, and the migration of a route is three lines. This is a draft: the release is not published yet.",
+    body: [
+      { heading: "Breaking", paragraphs: [
+        "The http, server and events plugins are removed: use acryl-router (ctx.router), acryl-node-server and acryl-state. The app template is now blank, and init takes --template with blank, todo or agent (--agent and --no-agent still work). In blend.yaml the rows http and server become acryl-router and acryl-node-server, and GET /events becomes /api/state/tasks/events and /api/state/extensions/events. Generated apps also depend on @deepseek-ai/schemastery. Node 22.19 or newer, as before.",
+      ] },
+      { heading: "Migrating a route", paragraphs: [
+        "The old handler shape maps directly: { status: 404, body } is c.json(body, 404), the request body is await c.req.json(), a path parameter is c.param('id'), and ctx.http.handle(...) in a test is await ctx.router.request('/hello'). A route registered through the plugin's context is removed when the plugin unloads, so the ctx.effect wrapper goes.",
+      ], code: { label: "0.2.x to 0.3.0", code: "// 0.2.x\nexport const inject = ['http']\nctx.effect(() => ctx.http.route('GET', '/hello', () => ({ body: { text: 'Hello' } })))\n\n// 0.3.0\nexport const inject = ['router']\nctx.router.get('/hello', (c) => c.json({ text: 'Hello' }))" } },
+      { heading: "New", paragraphs: [
+        "The framework plugins in the library, the todo template, state cells for tasks and extensions, a fix that lets a plugin installed live read ctx.router, an offline agent and a model prompt that write router plugins, and docs in Hono's shape. The full list is docs/release-notes/0.3.0.md in the repository.",
+      ] },
     ],
   },
   "framework/examples-and-demos": {
@@ -184,10 +214,10 @@ export const docContent: Record<string, DocEntry> = {
     body: [
       { heading: "1. A blank app, then add a plugin", paragraphs: [
         "A blank app mounts only what it needs. Add settings from the library, then mount it in src/app.ts and list it in blend.yaml.",
-      ], code: { label: "terminal", code: "npx acrylblends init ./my-app --no-agent --yes\ncd my-app && npm install && npm run check\nnpx acrylblends add settings --dir .\nnpm install && npm run check" } },
+      ], code: { label: "terminal", code: "npx acrylblends init ./my-app --template blank --yes\ncd my-app && npm install && npm run check\nnpx acrylblends add settings --dir .\nnpm install && npm run check" } },
       { heading: "2. The agent builds a clock", paragraphs: [
         "Start the agent template, then ask it to build and install a plugin. It writes the plugin, installs it live and calls it. The plugin survives a restart. Ask again to change it; if the update fails, the previous version comes back.",
-      ], code: { label: "terminal", code: "npx acrylblends init ./my-agent --agent --yes\ncd my-agent && npm install && npm start\n\ncurl -X POST localhost:3100/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"Build a plugin named clock that adds GET /time returning the ISO time. Install it.\"}'\ncurl localhost:3100/time\ncurl localhost:3100/tasks" } },
+      ], code: { label: "terminal", code: "npx acrylblends init ./my-agent --template agent --yes\ncd my-agent && npm install && npm start\n\ncurl -X POST localhost:3100/ask -H 'content-type: application/json' \\\n  -d '{\"question\":\"Build a plugin named clock that adds GET /time returning the ISO time. Install it.\"}'\ncurl localhost:3100/time\ncurl localhost:3100/tasks" } },
       { heading: "3. In a container", paragraphs: [
         "The agent template's Dockerfile keeps the app's data in /data. A recreated container on the same volume still serves the plugin.",
       ], code: { label: "docker", code: "docker build -t my-agent .\ndocker run -p 3100:3100 -v my-agent-data:/data my-agent" },
