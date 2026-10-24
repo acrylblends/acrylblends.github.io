@@ -209,6 +209,15 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-6-1": {
+    intro: "0.6.0 and 0.6.1 add the desktop shell: an Electron window on the app's own server, for a Blend app and for a plain Acryl app.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends init my-app --template todo --desktop, or acrylblends add desktop in an existing app, adds npm run desktop. It starts the app's own server in an Electron main process and opens one window on it, with a locked-down renderer, navigation limited to the app's own origin, a single-instance lock, Electron's user data inside the app's own folder (.acrylblends/electron), and a bounded shutdown when the window closes. In a plain Acryl app (npm create acrylblends@latest, template nodejs) add desktop adds src/plugins/desktop-web, which serves app.fetch on 127.0.0.1 with a free port through acrylblends/node-server. Only that folder imports electron.",
+        "create-acrylblends 0.1.2 stamps the acrylblends version it was released with into a new app's package.json, so a new app depends on the release that created it. Electron is pinned to 44.0.0 and downloads its binary the first time npm run desktop runs, about 100 MB once per machine. It runs from source; packaging a distributable app is not part of it. The full text is docs/desktop.md and docs/release-notes/0.6.1.md in the repository.",
+      ], code: { label: "terminal", code: "npm create acrylblends@latest my-app -- --template nodejs\ncd my-app && npm install\nnpx acrylblends add desktop && npm install\nnpm run desktop" } },
+    ],
+  },
   "framework/release-notes-0-5-0": {
     intro: "0.5.0 makes acrylblends the framework: import { Acryl } from 'acrylblends', with every middleware and helper at its own subpath, and npm create acrylblends@latest to start a project.",
     body: [
