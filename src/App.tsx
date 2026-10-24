@@ -7,6 +7,7 @@ import BlendDetail from "./pages/BlendDetail";
 import UiRegistry from "./pages/UiRegistry";
 import DocsIndex from "./pages/DocsIndex";
 import DocPage from "./pages/DocPage";
+import FrameworkDocPage from "./pages/FrameworkDocPage";
 import CordisPrimer from "./pages/CordisPrimer";
 import CordisPage from "./pages/CordisPage";
 import EcosystemIndex from "./pages/EcosystemIndex";
@@ -24,9 +25,11 @@ export default function App() {
       <Route path="/blends/:category/:subcategory" element={<BlendsSubcategory/>}/>
       <Route path="/blends/:category" element={<BlendsCategory/>}/>
       <Route path="/ui" element={<UiRegistry/>}/>
-      <Route path="/docs" element={<DocsIndex/>}/>
-      <Route path="/docs/:group/:item" element={<DocPage/>}/>
-      <Route path="/docs/:group" element={<DocPage/>}/>
+      <Route path="/docs/blends" element={<DocsIndex/>}/>
+      <Route path="/docs/blends/:group/:item" element={<DocPage/>}/>
+      <Route path="/docs/blends/:group" element={<DocPage/>}/>
+      <Route path="/docs" element={<FrameworkDocPage/>}/>
+      <Route path="/docs/*" element={<FrameworkDocPage/>}/>
       <Route path="/cordis" element={<CordisPrimer/>}/>
       <Route path="/cordis/:group/:item" element={<CordisPage/>}/>
       <Route path="/cordis/:group" element={<CordisPage/>}/>
