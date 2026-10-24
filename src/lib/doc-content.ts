@@ -131,10 +131,10 @@ export const docContent: Record<string, DocEntry> = {
         "All three are TypeScript run directly by Node 22.19 or newer, tested with node:test, and depend at run time on @deepseek-ai/cordis, @deepseek-ai/schemastery, yaml and ACRYL's published blends-core and app-persistence packages. All mount their plugins from blend.yaml, so you choose, order and switch off plugins without editing code.",
       ] },
       { heading: "blank", paragraphs: [
-        "instance, acryl-router, acryl-node-server, manifest and save, plus your own routes plugin in src/routes.ts (ctx.router.get('/', (c) => c.json({ ok: true }))). The smallest useful base for any app, not only an IDE.",
+        "instance, acryl-router, acryl-node-server, manifest and save, plus your own routes plugin in src/routes.ts (an App with a route, mounted by ctx.router.route('/', app)). The smallest useful base for any app, not only an IDE.",
       ] },
       { heading: "todo", paragraphs: [
-        "ACRYL's reference app, copied as it is: a todo list in one plugin on the router and state. GET and POST /todo/api, PATCH and DELETE /todo/api/:id, a page at /todo, a server-sent stream at /todo/events, and a file in the app's home that keeps the list across restarts. Its tests run with node:test and cover the CRUD, the validation, the stream and the restart.",
+        "ACRYL's reference app, copied as it is: a todo list in one plugin that mounts an App on the router and uses state. GET and POST /todo/api, PATCH and DELETE /todo/api/:id, a page at /todo, a server-sent stream at /todo/events, and a file in the app's home that keeps the list across restarts. Its tests run with node:test and cover the CRUD, the validation, the stream and the restart.",
       ], code: { label: "terminal", code: "npx acrylblends init todo --template todo\ncd todo && npm install && npm test\nnpm run dev            # prints its URL\ncurl -X POST $URL/todo/api -H 'content-type: application/json' -d '{\"title\":\"write the docs\"}\ncurl $URL/todo/api" } },
       { heading: "agent", paragraphs: [
         "Everything in blank plus acryl-state, tasks (durable run records), agent (an offline scripted model by default), extensions (live install with rollback) and builder (tools that let the agent write and install plugins). Set ACRYLBLENDS_MODEL_URL, ACRYLBLENDS_MODEL and ACRYLBLENDS_MODEL_KEY and the agent uses a real OpenAI-compatible model instead. It also includes a Dockerfile whose data lives in /data.",
@@ -186,17 +186,17 @@ export const docContent: Record<string, DocEntry> = {
     intro: "The router, shared state and the node server are ACRYL's own framework, written as Cordis plugins and copied into your app as they are.",
     body: [
       { paragraphs: [
-        "acryl-router gives ctx.router: routes, groups, middleware, helpers (validate, readJson, streamSSE) and an in-process request() for tests. acryl-node-server is one node:http listener that sends every request to the router (port, loopback host, next-free-port scan; it ends open streams and frees the port when unloaded). acryl-state gives observable cells that the router serves as JSON and as server-sent events at /api/state/<key> and /api/state/<key>/events. acryl-inspect reports what every plugin requires, provides and registers.",
+        "acryl-router gives ctx.router: a plugin builds an ordinary App (the ported core of a mature Web-standard framework, with its routing, middleware, validators and test suites) and mounts it with ctx.router.route(prefix, app), and an in-process request() serves tests. acryl-node-server is one node:http listener that sends every request to the router (port, loopback host, next-free-port scan; it ends open streams and frees the port when unloaded). acryl-state gives observable cells that the router serves as JSON and as server-sent events at /api/state/<key> and /api/state/<key>/events. acryl-inspect reports what every plugin requires, provides and registers.",
         "Everything a plugin registers on the router, state or the inspector goes away when that plugin unloads. A plugin installed while the app runs reads the router as ctx.router.",
-      ], code: { label: "a plugin", code: "export const name = 'hello'\nexport const inject = ['router']\nexport function apply(ctx) {\n  ctx.router.get('/hello/:who', (c) => c.json({ hello: c.param('who') }))\n}" } },
+      ], code: { label: "a plugin", code: "import { App } from 'acryl-router'\nexport const name = 'hello'\nexport const inject = ['router']\nexport function apply(ctx) {\n  ctx.router.route('/', new App().get('/hello/:who', (c) => c.json({ hello: c.req.param('who') })))\n}" } },
       { heading: "One source of truth", paragraphs: [
         "The framework lives in ACRYL (github.com/acryldev/acryl, plugins/acryl-*), where the Web, Desktop and terminal surfaces test it. This library vendors it: a sync script copies the source and the tests, rewrites only the imports between the plugins, and records the ACRYL commit and a digest in each plugin's upstream.json. pnpm run verify:framework fails when a copy was edited, so a change is made in ACRYL first and synced here.",
-        "The docs are organized as concepts, api, guides and middleware, and are ACRYL's own text, copied the same way into docs/framework of the repository.",
+        "The docs (concepts, routing, context, request, middleware, validation, the node server and the migration from 0.3) are ACRYL's own text, copied the same way into docs/framework of the repository.",
       ] },
     ],
   },
   "framework/release-notes-0-3-0": {
-    intro: "0.3.0 moves generated apps onto the ACRYL framework. It is breaking, and the migration of a route is three lines.",
+    intro: "0.3.0 moves generated apps onto the ACRYL framework. It is breaking, and the migration of a route is three lines. Superseded by 0.4.0, which replaces ctx.router.get with an App mounted by ctx.router.route.",
     body: [
       { heading: "Breaking", paragraphs: [
         "The http, server and events plugins are removed: use acryl-router (ctx.router), acryl-node-server and acryl-state. The app template is now blank, and init takes --template with blank, todo or agent (--agent and --no-agent still work). In blend.yaml the rows http and server become acryl-router and acryl-node-server, and GET /events becomes /api/state/tasks/events and /api/state/extensions/events. Generated apps also depend on @deepseek-ai/schemastery. Node 22.19 or newer, as before.",
@@ -206,6 +206,21 @@ export const docContent: Record<string, DocEntry> = {
       ], code: { label: "0.2.x to 0.3.0", code: "// 0.2.x\nexport const inject = ['http']\nctx.effect(() => ctx.http.route('GET', '/hello', () => ({ body: { text: 'Hello' } })))\n\n// 0.3.0\nexport const inject = ['router']\nctx.router.get('/hello', (c) => c.json({ text: 'Hello' }))" } },
       { heading: "New", paragraphs: [
         "The framework plugins in the library, the todo template, state cells for tasks and extensions, a fix that lets a plugin installed live read ctx.router, an offline agent and a model prompt that write router plugins, and docs in one tree. The full list is docs/release-notes/0.3.0.md in the repository.",
+      ] },
+    ],
+  },
+  "framework/release-notes-0-4-0": {
+    intro: "0.4.0 ships the ported framework core. It is breaking for every plugin that registered a route: build an App and mount it once.",
+    body: [
+      { heading: "Breaking", paragraphs: [
+        "Routes are an App mounted with ctx.router.route(prefix, app); ctx.router.get, post, put, patch, delete, all, on, use and group are gone, with no aliases. The handler context is the ported one: c.req.param('id'), c.req.query(name), c.req.raw, HTTPException, schemaValidator with c.req.valid, bodyLimit with maxSize, and transport facts in c.env.connection. A server-sent stream is written with stream.writeSSE. Routes added to an app after it was mounted are not served.",
+        "Plugins the agent writes while the app runs import App from 'acryl-router', the app's own copy; the model prompt and the builder write them this way.",
+      ] },
+      { heading: "Migrating a route", paragraphs: [
+        "Build an App, register on it, mount it once from the plugin's own context. The mount is removed when the plugin unloads and public paths do not change. The complete table of old and new calls is the Migration from 0.3 page in docs/framework of the repository.",
+      ], code: { label: "0.3.0 to 0.4.0", code: "// 0.3.0\nctx.router.get('/hello', (c) => c.json({ text: 'Hello' }))\n\n// 0.4.0\nimport { App } from 'acryl-router'\nctx.router.route('/', new App().get('/hello', (c) => c.json({ text: 'Hello' })))" } },
+      { heading: "Changed", paragraphs: [
+        "acryl-router and acryl-node-server carry the ported core with its test suites (about 3,100 tests run in the repository), vendored from ACRYL and checked for drift. Generated apps type-check with lib ES2024 plus DOM and strict on. The todo template is ACRYL's updated reference app. An app no longer receives a plugin's colocated test files. The full list is docs/release-notes/0.4.0.md.",
       ] },
     ],
   },
