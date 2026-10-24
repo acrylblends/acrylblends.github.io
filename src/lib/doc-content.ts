@@ -125,7 +125,7 @@ export const docContent: Record<string, DocEntry> = {
     ],
   },
   "framework/templates": {
-    intro: "Three templates ship with the CLI: blank, a Cordis app that serves routes on the ACRYL router; todo, a todo list built only on the router and state; and agent, the blank app with an agent that can extend it while it runs.",
+    intro: "Three templates ship with the CLI, each with the framework docs (docs/framework) and an AGENTS.md inside the app for a coding agent: blank, a Cordis app that serves routes on the ACRYL router; todo, a todo list built only on the router and state; and agent, the blank app with an agent that can extend it while it runs.",
     body: [
       { paragraphs: [
         "All three are TypeScript run directly by Node 22.19 or newer, tested with node:test, and depend at run time on @deepseek-ai/cordis, @deepseek-ai/schemastery, yaml and ACRYL's published blends-core and app-persistence packages. All mount their plugins from blend.yaml, so you choose, order and switch off plugins without editing code.",
@@ -206,6 +206,17 @@ export const docContent: Record<string, DocEntry> = {
       ], code: { label: "0.2.x to 0.3.0", code: "// 0.2.x\nexport const inject = ['http']\nctx.effect(() => ctx.http.route('GET', '/hello', () => ({ body: { text: 'Hello' } })))\n\n// 0.3.0\nexport const inject = ['router']\nctx.router.get('/hello', (c) => c.json({ text: 'Hello' }))" } },
       { heading: "New", paragraphs: [
         "The framework plugins in the library, the todo template, state cells for tasks and extensions, a fix that lets a plugin installed live read ctx.router, an offline agent and a model prompt that write router plugins, and docs in one tree. The full list is docs/release-notes/0.3.0.md in the repository.",
+      ] },
+    ],
+  },
+  "framework/release-notes-0-4-1": {
+    intro: "0.4.1 puts the framework's docs inside every generated app, so a coding agent working there finds the API in the folder it is in. Nothing breaks.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends init copies docs/framework (routing, request, context, validation, helpers, middleware, plugin lifecycle, the node server, a one-page API summary and the migration from 0.3) into the app, for all three templates: 15 files, about 63 KB of text. It also writes AGENTS.md, which says where the API is, how to build a feature (an App mounted with ctx.router.route, a plugin registered in src/app.ts and blend.yaml, a state cell) and the things that surprise people, and CLAUDE.md, which is @AGENTS.md. A manual gate, scripts/verify-coding-agent.mjs, starts a headless coding agent in a fresh app with a one-line task and checks that the tests and the type-check pass afterwards.",
+      ] },
+      { heading: "Changed", paragraphs: [
+        "A live plugin's check receives the plugin's own context, so ctx.router reads the same in apply and in check. The framework docs are re-synced from ACRYL: the trailing-slash rule with a measured table (trimTrailingSlash redirects /x/ for GET and HEAD), the exact validation failure shape, and the JSON Content-Type trap. The todo template uses trimTrailingSlash with tests, and the inspector lists each route as its own entry. The full list is docs/release-notes/0.4.1.md.",
       ] },
     ],
   },
