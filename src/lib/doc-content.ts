@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-5-0": {
+    intro: "0.5.0 makes acrylblends the framework: import { Acryl } from 'acrylblends', with every middleware and helper at its own subpath, and npm create acrylblends@latest to start a project.",
+    body: [
+      { heading: "Breaking", paragraphs: [
+        "The package root is the framework. What the root exported before (runCli, init, copyPlugin and the rest of the scaffolder) moved to acrylblends/cli; the acrylblends command is unchanged. The application class is Acryl and the request type is AcrylRequest; App and AppRequest still work in Blend apps and are deprecated. A plugin the agent writes while the app runs imports the framework by the docs' names (acrylblends, acrylblends/cors, ...).",
+      ] },
+      { heading: "New", paragraphs: [
+        "74 subpaths: the root, 25 middleware, the helpers, the five routers, utils and the Node.js adapter at acrylblends/node-server, plus two of ours, acrylblends/schema-validator and acrylblends/loopback-only. No dependencies, ESM, types that stand without the DOM library. create-acrylblends asks for a template (nodejs, bun (experimental) or acryl-app) or takes --template, --install, --pm and -y, and every template includes AGENTS.md, CLAUDE.md and the docs. The framework documentation is a new tree of 87 pages, and every code block that imports the package is type-checked against it. Node.js is the verified runtime; Bun is experimental. The full list is docs/release-notes/0.5.0.md.",
+      ], code: { label: "terminal", code: "npm create acrylblends@latest my-app -- --template nodejs\ncd my-app && npm run dev" } },
+    ],
+  },
   "framework/release-notes-0-4-1": {
     intro: "0.4.1 puts the framework's docs inside every generated app, so a coding agent working there finds the API in the folder it is in. Nothing breaks.",
     body: [
