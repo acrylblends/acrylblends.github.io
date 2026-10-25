@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-1": {
+    intro: "0.7.1 updates Electron in the desktop window, removes a warning on Windows and makes the first hour with a coding agent smoother.",
+    body: [
+      { heading: "Fixed", paragraphs: [
+        "Electron 44.9.3 (was 44.0.0, which has published advisories) in both desktop plugins; an app that already has the shell sets electron to 44.9.3 in package.json and runs npm install. acrylblends init --install and create-acrylblends start the package manager without a shell, so Node no longer prints the DEP0190 warning on Windows.",
+      ] },
+      { heading: "Better for coding agents", paragraphs: [
+        "A nodejs app's AGENTS.md says how to run the app as a desktop window and that testClient only types chained routes. The framework docs gain Forms, sessions and a database: node:sqlite, scrypt passwords, a cookie session, validated HTML forms, a JSON API that shares the rules and tests for every route. create-acrylblends 0.2.1 depends on acrylblends ^0.7.1.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-0": {
     intro: "0.7.0 lets you write pages in .tsx on Node.js with no build step, as the framework docs show.",
     body: [
