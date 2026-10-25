@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-2": {
+    intro: "0.7.2 adds client components without a bundler, binds serve() to 127.0.0.1 by default and ships a production-ready notes starter.",
+    body: [
+      { heading: "New", paragraphs: [
+        "clientModules and buildClientModules from acrylblends/node-server serve a folder of .tsx client modules to the browser, compiled when the browser asks; acrylblends build-client compiles them once for production. create-acrylblends --template notes makes a small full-stack app: sign up and log in, notes in SQLite through node:sqlite, validated forms, search, a JSON API with a typed test client, csrf, a test for every route, and a client-component character counter. The docs gain a Deploy page and a client components guide. schemaValidator takes the full Standard Schema shape and testClient takes default headers.",
+      ] },
+      { heading: "Changed", paragraphs: [
+        "serve() binds 127.0.0.1 unless hostname is given (it used to listen on every interface); set HOST=0.0.0.0 or pass hostname where you mean to expose the app. The nodejs and notes templates read HOST and PORT, stop gracefully on SIGTERM and SIGINT, and keep typescript as a runtime dependency so npm ci --omit=dev can start an app with .tsx pages. create-acrylblends 0.2.2 depends on acrylblends ^0.7.2.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-1": {
     intro: "0.7.1 updates Electron in the desktop window, removes a warning on Windows and makes the first hour with a coding agent smoother.",
     body: [
