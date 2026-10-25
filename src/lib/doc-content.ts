@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-3": {
+    intro: "0.7.3 adds an AI chat starter and the documentation for streaming an answer from a model.",
+    body: [
+      { heading: "New", paragraphs: [
+        "create-acrylblends --template chat makes a small chat app: the answer streams token by token over Server-Sent Events from an OpenAI-compatible API (DeepSeek by default, the key only from the DEEPSEEK_API_KEY environment variable), a client component shows it as it arrives, and a Stop button aborts the request and the server's own request to the model. History is stored with node:sqlite; the tests use a mock model. The streaming helper page gains cancelling work when the client leaves, a server example that reads a streaming upstream, and a snippet that reads a POST event stream in the browser.",
+      ] },
+      { heading: "Fixed", paragraphs: [
+        "A production check meant for the 0.7.2 release gate had silently not been applied; it is in now for the notes and chat templates. create-acrylblends 0.2.3 depends on acrylblends ^0.7.3.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-2": {
     intro: "0.7.2 adds client components without a bundler, binds serve() to 127.0.0.1 by default and ships a production-ready notes starter.",
     body: [
