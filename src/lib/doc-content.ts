@@ -209,6 +209,14 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-0": {
+    intro: "0.7.0 lets you write pages in .tsx on Node.js with no build step, as the framework docs show.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends/node-server/register is a Node.js module hook: node --import acrylblends/node-server/register app.tsx compiles .tsx and .jsx files with the app's own typescript (react-jsx, the jsxImportSource of the nearest tsconfig.json, acrylblends/jsx by default) and leaves every other module to Node. An error stack names the .tsx line. The templates use it: create-acrylblends 0.2.0 apps run dev, start and test with the hook and have a .tsx page at /about with a test that renders it and a test that an error in it names the .tsx line; the Blend templates use the vendored hook and the blank template has the same page. The desktop shells register the hook before they load the app. AGENTS.md makes .tsx the normal path, with jsx(tag, props, ...children) as the build-free alternative.",
+      ], code: { label: "package.json", code: "\"scripts\": {\n  \"dev\": \"node --watch --import acrylblends/node-server/register src/index.ts\",\n  \"start\": \"node --import acrylblends/node-server/register src/index.ts\",\n  \"test\": \"node --import acrylblends/node-server/register --test \\\"test/**/*.test.{ts,tsx}\\\"\"\n}" } },
+    ],
+  },
   "framework/release-notes-0-6-1": {
     intro: "0.6.0 and 0.6.1 add the desktop shell: an Electron window on the app's own server, for a Blend app and for a plain Acryl app.",
     body: [
