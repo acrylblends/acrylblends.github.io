@@ -209,6 +209,18 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-5": {
+    intro: "0.7.5 adds a database for the starters: the db port, numbered migrations, and the notes and chat templates on them.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends/db and acrylblends/db/sqlite (105 subpaths). openDb({ path, migrations }) opens one SQLite file (its folder is created), enforces foreign keys, applies the numbered SQL files in migrations/ once, in order, in one transaction, and returns { db, close }. db is the same small interface a Postgres provider will serve: exec, run (resolves { changes }), get, all and transaction, every call a promise, ? bindings. The new data guide covers the port, migrations, a table for choosing a store, transactions, tests, shutdown and writing SQL that moves to Postgres.",
+        "The notes and chat templates use it: migrations/001-notes.sql and 001-chat.sql hold the schema, the stores take a Db, the files live in data/, and the tests open :memory: with the real migrations. To change the schema, add the next numbered file; never edit one that has run. acrylblends add db brings the port and the SQLite provider to a Blend app.",
+      ] },
+      { heading: "Changed", paragraphs: [
+        "A new notes or chat app keeps its file in data/ (it was notes.db and chat.db). Existing apps are not touched. create-acrylblends 0.2.5 depends on acrylblends ^0.7.5. Postgres, kv and durable are planned, not released.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-4": {
     intro: "0.7.4 adds hosting adapters for AWS Lambda, Cloudflare, Vercel, Netlify and Bun, and templates from other people's repositories.",
     body: [
