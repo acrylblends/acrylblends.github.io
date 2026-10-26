@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-4": {
+    intro: "0.7.4 adds hosting adapters for AWS Lambda, Cloudflare, Vercel, Netlify and Bun, and templates from other people's repositories.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends/aws-lambda (API Gateway, ALB, Function URLs, VPC Lattice, response streaming), lambda-edge, cloudflare-workers, cloudflare-pages, vercel, netlify, service-worker and bun are part of the package (103 subpaths). The release check calls each handler with the platform's own events, runs a Worker in workerd with wrangler dev --local, and runs the Bun adapter on Bun; none has been deployed to a platform account by the ACRYL team. Each has a getting-started page. create-acrylblends accepts a template source: github:owner/repo[#ref], @scope/name or a packed tarball, fetched without running anything, with an acryl.template.json manifest required, secrets scanned before the folder is created, and install scripts listed and never run without --install.",
+      ] },
+      { heading: "Fixed", paragraphs: [
+        "Importing acrylblends/bun on Node no longer throws. create-acrylblends 0.2.4 depends on acrylblends ^0.7.4.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-3": {
     intro: "0.7.3 adds an AI chat starter and the documentation for streaming an answer from a model.",
     body: [
