@@ -209,6 +209,18 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-7": {
+    intro: "0.7.7 adds kv: named JSON documents for an app too small for SQL.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends/kv, acrylblends/kv/json and acrylblends/kv/db (108 subpaths). openKv({ path }) opens one JSON file and returns { kv, close }; kv has get, set, update, delete and list(prefix), every call a promise, values JSON. update is atomic and its callback is a plain synchronous function (an async one is a type error and is rejected with a message that says what to do). Every write is a whole new file renamed over the old one, so a crash leaves the old file or the new one, never half of one; a file that does not parse stops the app with a message that names it. The release check kills a writer with SIGKILL forty times and reads the file every time.",
+        "Moving to SQL keeps the data: kvOnDb(db) gives the same kv over a kv table of the database openDb returned, copyKv copies a store into another, and npx acrylblends kv import data/kv.json data/app.sqlite does it from the command line. acrylblends add kv brings the port and the JSON-file provider to a Blend app. The data guide gains A tiny app: kv, including when to move to SQL: more than one process, or a file above a few megabytes.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "create-acrylblends 0.2.7 depends on acrylblends ^0.7.7. The starters stay on db. One process owns a JSON file; keys are listed in code point order.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-6": {
     intro: "0.7.6 adds the dependency rule: app code takes the db port, and one file opens the database.",
     body: [
