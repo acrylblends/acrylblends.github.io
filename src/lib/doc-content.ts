@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-6": {
+    intro: "0.7.6 adds the dependency rule: app code takes the db port, and one file opens the database.",
+    body: [
+      { heading: "New", paragraphs: [
+        "acrylblends check-deps fails when a file of the app imports a database driver (node:sqlite, pg, postgres, @electric-sql/pglite and the like), an opener (acrylblends/db/sqlite, acryl-db-sqlite) or electron outside src/plugins/desktop, other than the one file the app names in package.json as its opener. It names the file and the line. The notes and chat templates declare src/db.ts as their opener and run the check in npm test and npm run check; the nodejs template runs it with no opener. acrylblends add db declares src/app.ts, where the provider is mounted, as the opener of a Blend app. The data guide gains Why the database is opened in one place.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "create-acrylblends 0.2.6 depends on acrylblends ^0.7.6. An existing app is not changed: add the acryl.opener entry and run npx acrylblends check-deps to adopt the rule.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-5": {
     intro: "0.7.5 adds a database for the starters: the db port, numbered migrations, and the notes and chat templates on them.",
     body: [
