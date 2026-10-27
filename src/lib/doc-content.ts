@@ -209,6 +209,29 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-9-1": {
+    intro: "0.9.1 fixes 0.9.0: apps made by the installed command line start again.",
+    body: [
+      { heading: "Fixed", paragraphs: [
+        "acrylblends init, add and create-acrylblends made apps whose framework plugins could not find each other (Cannot find package 'acryl-router'). 0.9.0 rewrote the imports between the plugins at copy time only when the plugin's source folder in the package had a package.json, which the published package leaves out, so it worked from the repository and not from the installed package. The rewrite now goes by the entries table of each plugin's plugin.json. Use 0.9.1; 0.9.0 is deprecated. pnpm run verify:packed installs only the two tarballs, makes an app of every template with the installed commands and runs its tests and type-check; it fails on 0.9.0.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "create-acrylblends 0.3.3 depends on acrylblends ^0.9.1.",
+      ] },
+    ],
+  },
+  "framework/release-notes-0-9-0": {
+    intro: "0.9.0: the framework has one home, this repository.",
+    body: [
+      { heading: "New", paragraphs: [
+        "The Cordis forms are subpaths of acrylblends: cordis/router, cordis/router-http, cordis/state, cordis/inspect, cordis/node-server, cordis/db, cordis/db-sqlite, cordis/kv, cordis/kv-json, cordis/kv-db and cordis/door, with optional peers (@deepseek-ai/cordis, @deepseek-ai/schemastery, react, vitest). new Acryl() from acrylblends is the class cordis/router mounts. More subpaths (126 in all): door/host, door/protocol, door/page, db/conformance and kv/conformance.",
+        "The source, tests and history of the router, node server, state, inspect, db, kv providers and the door moved here from ACRYL; their suites run on Linux, macOS and Windows with Node 22 and 24. acrylblends init and add rewrite the imports of a library plugin to relative paths when they copy it; the sync, vendor and verify scripts are gone.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "acrylblends add kv --suite installs vitest 3.2.4, because npm 10 (Node 22) crashes on the dependency tree of vitest 4 and 5. This release is deprecated: it has a defect fixed in 0.9.1.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-8-1": {
     intro: "0.8.1 makes the door's plugin verbs work in every web template.",
     body: [
