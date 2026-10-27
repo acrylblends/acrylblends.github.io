@@ -209,6 +209,19 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-7-8": {
+    intro: "0.7.8 gives an app one plugin folder and its own self-knowledge, and adds readSSE for the browser.",
+    body: [
+      { heading: "New", paragraphs: [
+        "One plugin folder, plugins/. In an app made by acrylblends init, every plugin lives in plugins/<name>/ at the root of the app: the library plugins acrylblends add copies, and the plugins you or an agent write. src/plugins/ and extensions/ are gone. plugins/library.json lists the library copies, so the extensions plugin never mounts a copy twice. acrylblends check-deps scans plugins/. An app made before 0.7.8 keeps working for this release, with a warning that names the move.",
+        "Self-knowledge in every new app. AGENTS.md and CLAUDE.md carry the same text, and one skill, app-guide, is written to .claude/skills/app-guide/SKILL.md and .agents/skills/app-guide/SKILL.md. Both name the defaults (database, key-value store, server, window, browser code) and how each is swapped: every choice is a plugin behind a port, and the default is only a fallback. .acryl/ is ignored by git in every template.",
+        "acrylblends/read-sse (109 subpaths): readSSE(response) reads a server-sent event stream as an async iterable of { event, data, id, retry }, in the browser and on Node. acryl-kv-json groups concurrent writes into one file write, with the same crash guarantees.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "create-acrylblends 0.2.8 depends on acrylblends ^0.7.8. Postgres is not part of this package: it is an optional provider you add when an app needs a server database.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-7": {
     intro: "0.7.7 adds kv: named JSON documents for an app too small for SQL.",
     body: [
