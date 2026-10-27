@@ -209,6 +209,17 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-8-1": {
+    intro: "0.8.1 makes the door's plugin verbs work in every web template.",
+    body: [
+      { heading: "New", paragraphs: [
+        "nodejs, notes and chat now mount the extensions plugin (and its sandbox), so .acryl/bin/acryl plugin list|add|remove|reload work in them as they do in the agent template: an agent working in the folder can add a plugin to the running app, take it out again, or swap a provider, and brief no longer says Live plugins: unavailable. What is installed lives in plugins/, next to the plugins copied from the library. Development only, like the door: the extensions row is left out with NODE_ENV=production. verify:scaffolder adds a plugin live in each web template, calls its route and removes it.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "create-acrylblends 0.3.1 depends on acrylblends ^0.8.1. An app made with 0.8.0 does not change: copy the extensions row, the registry entry and the sources config from a new app.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-8-0": {
     intro: "0.8.0 makes every new app a Cordis app and lets an agent working in the app folder look at the running page and act on it.",
     body: [
