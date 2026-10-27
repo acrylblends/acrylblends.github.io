@@ -209,6 +209,21 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-8-0": {
+    intro: "0.8.0 makes every new app a Cordis app and lets an agent working in the app folder look at the running page and act on it.",
+    body: [
+      { heading: "New", paragraphs: [
+        "Every template is a Cordis app. nodejs, notes and chat are made by acrylblends init like blank, todo and agent: blend.yaml lists the plugins, every plugin is a folder in plugins/, src/main.ts starts the app and src/routes.ts is the app's own plugin. create-acrylblends only calls init now, bun is no longer a template, and a bare template name works: npm create acrylblends@latest my-app notes.",
+        "The door. The running app writes .acryl/bin/acryl, a command that reaches only the app running from that folder: brief, look (the page as text with refs, including its visible text), act (click, type, select, press, scroll, wait), plugin add|remove|reload|list and tool list|call. Loopback only, a per-run secret in .acryl/door.json, an audit log, an in-page indicator with a stop button, and .acryl/ ignored by git. On in development, off with NODE_ENV=production or ACRYL_DOOR=off.",
+        "The agent panel (opt-in, development only): acrylblends add agent-panel adds a chat panel to the running app. Say what you want; the app's own agent, or Claude Code, Codex or pi started in the app folder, builds it through the door, and the page reloads when a plugin was installed or removed, with no restart.",
+        "Bring your own tool: one guide wraps an npm package as a provider of a port, passes the port's conformance suite and swaps it into the running app through the door. acrylblends add kv --suite copies the suite and vitest, and package.json imports (#acryl-kv, #acryl-db) let your provider import the port by name. Three agents followed the guide alone and swapped in a different tool.",
+        "Every template passes its own tests in Codex's default sandbox (no network, no system temp folder). The product test: Claude Code, Codex and pi each build the same feature in a fresh app from the docs alone; the gate reads it off the running page through the door in a real browser, restarts the app, installs and tests a fresh git clone, and checks that git stages no secret. clientModules also works inside a sub-app now.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "For claude, codex and pi the Stop button of the panel ends the program; the app's own agent cannot be cancelled yet (the run finishes in the background). One process at a time serves a folder's door. The extensions plugin (live plugin add) is part of the agent template; the web templates do not mount it yet. create-acrylblends 0.3.0 depends on acrylblends ^0.8.0.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-7-8": {
     intro: "0.7.8 gives an app one plugin folder and its own self-knowledge, and adds readSSE for the browser.",
     body: [
