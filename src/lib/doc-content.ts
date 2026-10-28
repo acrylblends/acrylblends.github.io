@@ -243,6 +243,9 @@ export const docContent: Record<string, DocEntry> = {
       { heading: "New", paragraphs: [
         "The framework plugins in the library, the todo template, state cells for tasks and extensions, a fix that lets a plugin installed live read ctx.router, an offline agent and a model prompt that write router plugins, and docs in one tree. The full list is docs/release-notes/0.3.0.md in the repository.",
       ] },
+      { heading: "Every release", paragraphs: [
+        "This page is the oldest of the releases written up here. The releases in between without a page of their own (0.5.1, 0.6.0, 0.6.2, 0.6.3, 0.6.4) and everything published since 0.3.0 are in the GitHub releases list: https://github.com/acrylblends/acrylblends/releases.",
+      ] },
     ],
   },
   "framework/release-notes-0-11-0": {
