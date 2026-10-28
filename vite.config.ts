@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import { copyFileSync, cpSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { blends, categories, docGroups, slugify } from "./src/lib/content";
+import { categories, docGroups, slugify } from "./src/lib/content";
 import { posts } from "./src/lib/blog";
 import { cordisGroups } from "./src/lib/cordis-tutorial";
 
@@ -49,7 +49,7 @@ export default defineConfig({
           add(`/blends/${category.slug}`, category.name, `Blends in the ${category.name} category.`);
           for (const sub of category.subs) add(`/blends/${category.slug}/${slugify(sub)}`, sub, `Blends for ${sub}.`);
         }
-        for (const blend of blends) add(`/blends/b/${blend.slug}`, blend.name, blend.description);
+        // One page per Blend: the registry's entries are the only Blends that exist, so registry/index.json is the list.
         const registry = JSON.parse(readFileSync(resolve(__dirname, "registry/index.json"), "utf8")) as { entries: { id: string; name: string; description: string }[] };
         for (const entry of registry.entries) add(`/blends/b/${entry.id}`, entry.name, entry.description);
         add("/docs/blends", "Blends guide", "Practical guides for pulling a Blend, authoring Cordis plugins in place, and publishing stable compositions.");

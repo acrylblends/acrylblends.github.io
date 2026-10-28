@@ -1,8 +1,3 @@
-export type Blend = {
-  slug: string; name: string; description: string; category: string; subcategory: string;
-  tags: string[]; plugins: string[]; publisher: string; version: string; license: string; pulls: string;
-};
-
 export const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
 // The real, complete 100-category software taxonomy this registry is organized
@@ -112,23 +107,7 @@ const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "Meta-software", subs: ["Compilers", "AI coding agents", "Software factories", "DSLs"] },
 ];
 
-export const categories = categoriesRaw.map((c) => ({ slug: slugify(c.name), name: c.name, subs: c.subs, count: 0 }));
-
-// Illustrative preview Blends — real category/taxonomy alignment, real plugin
-// package names drawn from acryldev/acryl where they exist (cordis-plugin-market,
-// dsh-client-ui-brand-acryl, acryl-control, acryl-harness-runtime), fictional
-// names elsewhere clearly scoped as preview data, not a claim of a populated registry.
-export const blends: Blend[] = [
-  { slug: "acryl", name: "ACRYL", description: "The flagship, maxed-out Blend. One complete expression of the model: agent control plane, terminal/web/desktop surfaces, editor, market and brand slots composed into a single working product.", category: "Developer", subcategory: "Agentic development environments", tags: ["flagship", "agents", "multi-surface"], plugins: ["cordis", "acryl-control", "acryl-harness-runtime", "cordis-plugin-market", "dsh-client-ui-brand-acryl"], publisher: "acryldev", version: "0.1.44", license: "MIT", pulls: "—" },
-  { slug: "blank-canvas", name: "Blank Canvas", description: "The smallest viable Blend. Start empty, then grow only what the work needs.", category: "Developer", subcategory: "Code editors", tags: ["starter", "minimal", "hot-reload"], plugins: ["cordis"], publisher: "acrylblends", version: "0.1.0", license: "MIT", pulls: "—" },
-  { slug: "agent-workbench", name: "Agent Workbench", description: "A focused environment for tool-using agents, evaluations, memory and human checkpoints.", category: "AI", subcategory: "Agent infrastructure", tags: ["agents", "evaluation", "memory"], plugins: ["cordis", "agent-runtime", "checkpoint-store", "tool-router"], publisher: "acrylblends", version: "0.1.0", license: "Apache-2.0", pulls: "—" },
-  { slug: "local-first-studio", name: "Local-first Studio", description: "Desktop-ready composition with local storage, sync boundaries and a visual work surface.", category: "Application", subcategory: "Productivity", tags: ["desktop", "local-first", "sync"], plugins: ["cordis", "desktop-surface", "local-store", "sync-adapter"], publisher: "webboxes", version: "0.1.0", license: "MIT", pulls: "—" },
-  { slug: "secure-ops", name: "Secure Ops", description: "Auditable operations console with identity, secrets and policy-aware tool execution.", category: "Cybersecurity", subcategory: "Identity security", tags: ["security", "audit", "operations"], plugins: ["cordis", "identity-gate", "secret-vault", "audit-log"], publisher: "webboxes", version: "0.1.0", license: "BUSL-1.1", pulls: "—" },
-  { slug: "data-pipeline", name: "Data Pipeline", description: "Composable ingestion, transformation and validation for durable data workflows.", category: "Data", subcategory: "Data engineering", tags: ["data", "etl", "validation"], plugins: ["cordis", "source-connectors", "transform-engine", "schema-guard"], publisher: "community", version: "0.1.0", license: "MIT", pulls: "—" },
-  { slug: "release-pilot", name: "Release Pilot", description: "A release engineering Blend for testing, packaging and coordinated deployments.", category: "DevOps", subcategory: "CI/CD", tags: ["release", "ci", "automation"], plugins: ["cordis", "test-runner", "release-graph", "deploy-adapter"], publisher: "community", version: "0.1.0", license: "MIT", pulls: "—" },
-];
-
-for (const c of categories) c.count = blends.filter((b) => b.category === c.name).length;
+export const categories = categoriesRaw.map((c) => ({ slug: slugify(c.name), name: c.name, subs: c.subs }));
 
 export const docGroups = [
   { slug: "getting-started", title: "Getting Started", items: ["What is ACRYL Blends", "Install", "Create your first app", "Let the agent build a plugin", "Add plugins", "Lock, save and ship"] },
