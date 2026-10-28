@@ -19,4 +19,7 @@ export const registryPlacement: Record<string, Placement> = {
   "acryl.music": { category: "Media", subcategory: "Music" },
   "acryl.orderdesk": { category: "E-commerce", subcategory: "Order management" },
   "acryl.organizer": { category: "Application", subcategory: "Productivity" },
+  "acrylblends.notes-desktop": { category: "Application", subcategory: "Productivity" },
+  "acrylblends.chat": { category: "AI", subcategory: "AI assistants" },
+  "acrylblends.agent": { category: "AI", subcategory: "AI agents" },
 };

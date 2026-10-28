@@ -1,7 +1,8 @@
 name: Registry
 
-# Every starter under registry/blends/ must validate with @acryl/blends-core, and registry/index.json must be what the index tool writes.
-# A private or unlicensed entry, a misplaced folder, a repeated id or a stale index fails the check; publishing is a reviewed pull request.
+# Every starter under registry/blends/ must validate with @acryl/blends-core, and registry/index.json must be what scripts/registry-index.ts writes (blends-core's index plus the
+# runtime each entry is for: an entry with an acryl.template.json is an app for acrylblends, every other one is for the ACRYL app). A private or unlicensed entry, a misplaced folder,
+# a repeated id, a stale index, or an app entry that is not a sound starter fails the check; each app entry must also be creatable by create-acrylblends. Publishing is a reviewed pull request.
 
 on:
   pull_request:
@@ -28,4 +29,13 @@ jobs:
         working-directory: .acryl/runtime/blends-core
         run: bun install --production
       - name: Validate the registry and check its index
-        run: bun .acryl/runtime/blends-core/src/bin/registry-index.ts registry --check
+        run: bun scripts/registry-index.ts registry --check
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # Nothing is installed or run: create-acrylblends downloads nothing here (the registry is a folder), unpacks the entry, and writes the app.
+      - name: Every app starter can be created
+        run: |
+          for id in $(node -e "console.log(require('./registry/index.json').entries.filter(e => e.runtime === 'acrylblends').map(e => e.id).join(' '))"); do
+            npm create acrylblends@latest "$RUNNER_TEMP/check-$id" -- --from "$id" --registry ./registry -y
+          done
