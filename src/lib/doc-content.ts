@@ -209,6 +209,48 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-0-11-0": {
+    intro: "0.11.0 adds WebSocket upgrades to the router: upgrade routes are ordinary routes, and the plugin that mounts one owns its sockets.",
+    body: [
+      { heading: "New", paragraphs: [
+        "A plugin takes upgrades with ctx.nodeServer.upgrades() (the standalone server) or ctx.routerHttp.upgrades() with ctx.routerHttp.mount(prefix, { upgrade: [paths] }) (the ACRYL Host's web server): the ported upgradeWebSocket on an ordinary route, with ordinary middleware in front of it. The origin, loopback and host checks run before the upgrade, and a refusal is a plain HTTP status with Connection: close. A non-WebSocket Upgrade request is answered 400.",
+        "The plugin owns its sockets. When it unloads, every socket its routes accepted is closed with 1001 within websocket.grace, the handler sees close exactly once, other plugins' sockets are untouched, and ctx.nodeServer.sockets and ctx.routerHttp.sockets count what is open.",
+        "Limits: text frames only with { textOnly: true }, websocket.maxPayload (default 1 MiB, a bigger frame closes with 1009), no per-message compression, bufferedAmount on the socket for back-pressure, application close codes, and a ping every websocket.heartbeat ms that ends a peer that stops answering. testWebSocket from acrylblends/node-server runs an upgrade route in process, with no network.",
+        "acryl brief prints the app's address (text and --json), so an agent can curl a route it just added.",
+      ] },
+      { heading: "Fixed", paragraphs: [
+        "The app guide names the import a plugin installed into the running app uses: import { Acryl } from 'acrylblends'.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "ws is a new optional peer of acrylblends; install it to use upgrades. acryl-node-server no longer requires acryl-router-http, and acryl-router-http requires acryl-node-server. create-acrylblends 0.4.1 depends on acrylblends ^0.11.0.",
+      ] },
+    ],
+  },
+  "framework/release-notes-0-10-0": {
+    intro: "0.10.0 puts a coding agent in a real terminal inside your app.",
+    body: [
+      { heading: "New", paragraphs: [
+        "driver-pty: acrylblends add driver-pty (next to agent-panel) offers pty:claude, pty:codex and pty:pi in the panel. Choosing one shows the program's own interactive terminal (xterm.js) in the app folder, with .acryl/bin on its PATH, so it builds through the door in its interactive mode. When it installs or removes a plugin the page reloads and the same terminal comes back with its output. Server-sent events down, POST up, no WebSocket. Every process is started in one effect and ended with the plugin. Development only.",
+        "The panel's drivers are a registry: each driver is a chat or a terminal session, and other plugins can add drivers with ctx.drivers.register inside ctx.effect.",
+        "Evidence: claude, codex and pi each built a feature in the terminal tab from the published 0.10.0 (see the PTY driver evidence page in the repository).",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "node-pty is installed by acrylblends add driver-pty; xterm.js 6.0.0 and its fit addon 0.11.0 are vendored with their licenses. GET /api/agent-panel/session now answers drivers as [{ name, kind }]. create-acrylblends 0.4.0 depends on acrylblends ^0.10.0.",
+      ] },
+    ],
+  },
+  "framework/release-notes-0-9-2": {
+    intro: "0.9.2: Stop cancels the app's own agent, and a secrets scan guards what ships into apps.",
+    body: [
+      { heading: "New", paragraphs: [
+        "agent.run(question, { signal }) ends the run cancelled as soon as the signal aborts: the model call or tool in flight is dropped, the trace marks an interrupted tool call as cancelled, and a task record is marked failed. The agent panel's Stop button uses it.",
+        "pnpm run check runs verify:secrets, the scan save uses, over the framework docs, the templates and the packages' source.",
+      ] },
+      { heading: "Fixed", paragraphs: [
+        "The npm page of acrylblends shows the logo from the site. Flaky gates: the node server's memory-leak tests collect until the request objects are gone, and the probes never take a port fetch refuses. create-acrylblends 0.3.4 depends on acrylblends ^0.9.2.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-9-1": {
     intro: "0.9.1 fixes 0.9.0: apps made by the installed command line start again.",
     body: [
