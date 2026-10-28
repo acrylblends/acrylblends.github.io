@@ -1,0 +1,5 @@
+- insert:
+    - id: outlay
+      name: outlay
+      config:
+        currency: "$"
