@@ -195,6 +195,36 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-1-0-0": {
+    intro: "This is also the text of the release candidate 1.0.0-rc.1 (on the next tag). acrylblends 1.0 fixes the public surface, gives an app a way to move its copies of the framework plugins forward, and says plainly what is for development only. Move an 0.9.1 or later app with Migration to 1.0.",
+    body: [
+      { heading: "Added", paragraphs: [
+        "acrylblends upgrade. Replaces the library plugins an app carries (the router, the server, the door, extensions, ...) with the installed version's. An untouched file is replaced; a file the app edited stops the upgrade with the diff of what would be lost, unless --force, which saves the edit under .acrylblends/upgrade-backup/ first. --dry-run shows the plan, --diff every changed file. plugins/library.lock.json records what was copied; apps made by 0.9.1 to 0.11.0 are covered by the hashes of those releases. Tested on apps made by the published 0.9.1 and 0.10.0, which then install, type-check and pass their tests.",
+        "One list of templates, the same in npm create acrylblends and acrylblends init: blank, nodejs, notes, chat, todo, agent, each with a one-line summary in both helps (acryl-app still means agent).",
+        "The API surface is written down. packages/framework/api-surface.mjs lists every subpath as PUBLIC (96 of them, in exports and covered by semver), EXPERIMENTAL (bun, the door) or INTERNAL, and a test fails when a built subpath is in neither list or exports differs from PUBLIC.",
+        "acrylblends/drivers: the driver contract (ChatDriver, ChatEvent, TerminalDriver, TerminalSession, Drivers, createDrivers), with no Cordis in it, that the agent panel and the driver plugins (driver-pty, and driver-acp for the Agent Client Protocol) are written against.",
+        "driver-acp: any agent that speaks the Agent Client Protocol (v1, over stdio) as a chat in the agent panel. acrylblends add driver-acp (next to agent-panel) offers acp:dsh (DeepSeek Harness, dsh --profile acp) when dsh is on the PATH, and config.agents adds other ACP agents. Written against acrylblends/drivers, with its own small stdio client checked against the official ACP v1 JSON schema; each agent process is started in one effect and ended, with the tools it started, when the plugin unloads. Development only, like the panel.",
+        "What runs in production: which parts are development-only, exactly what live plugin install and the sandbox do and do not stop, and a test that mounts every development tool in one app and checks NODE_ENV=production.",
+        "scripts/sync-sites.mjs: one release-checklist step brings both sites up to the repository (docs, new release notes, build, push, live check). Every published version 0.3.0 to 0.11.0 now has a git tag and a GitHub release.",
+      ] },
+      { heading: "Changed", paragraphs: [
+        "The door plugin starts nothing with NODE_ENV=production (no service, route or .acryl/ folder), as the agent panel and the PTY driver already did. A host that means to run it in production sets allowInProduction: true; ACRYL_DOOR=off always wins.",
+        "The docs use the published names (acrylblends/cordis/router, acrylblends/cordis/node-server, ...) instead of the names of an app's copies.",
+      ] },
+      { heading: "Removed", paragraphs: [
+        "App and AppRequest (the 0.4 names): use Acryl and AcrylRequest.",
+        "acrylblends/utils/* and acrylblends/acryl-base are internal and no longer exported.",
+        "The adapters for AWS Lambda, Lambda@Edge, Cloudflare Workers and Pages, Vercel, Netlify and Service Workers: no gate of ours deploys to them. An app is plain fetch code, so a platform that calls a fetch handler can call app.fetch. Their ported sources stay in the repository and may return as separate plugins, each with its own gate.",
+      ] },
+      { heading: "Experimental", paragraphs: [
+        "The door, the agent panel, the PTY driver, live plugin install (extensions, builder) and acrylblends/bun are experimental: they work and are gated, their interface may still change in a minor version, and none of them is for the public internet. Bun has one smoke gate, run on Bun in CI.",
+      ] },
+      { heading: "Things to know", paragraphs: [
+        "Node.js 22.19 or newer. Bun is optional; Deno is not supported.",
+        "create-acrylblends 1.0.0 depends on acrylblends ^1.0.0.",
+      ] },
+    ],
+  },
   "framework/release-notes-0-3-0": {
     intro: "0.3.0 moves generated apps onto the ACRYL framework. It is breaking, and the migration of a route is three lines. Superseded by 0.4.0, which replaces ctx.router.get with an App mounted by ctx.router.route.",
     body: [
