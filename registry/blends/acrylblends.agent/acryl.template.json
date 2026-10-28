@@ -1,0 +1,5 @@
+{
+  "name": "An app that builds itself",
+  "description": "A small app with an offline agent and live plugin install: ask for a feature and the agent writes it into the running app, through the door. Development only: production leaves the agent out.",
+  "plugins": []
+}

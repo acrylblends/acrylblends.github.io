@@ -1,0 +1,5 @@
+{
+  "name": "Notes, in a window",
+  "description": "A multi-user notes app (sign-up, log-in, search, SQLite with migrations) that opens in its own desktop window as well as in the browser.",
+  "plugins": []
+}

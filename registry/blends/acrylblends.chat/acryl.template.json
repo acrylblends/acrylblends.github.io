@@ -1,0 +1,5 @@
+{
+  "name": "Chat",
+  "description": "An AI chat app: the answer streams token by token from an OpenAI-compatible API (DeepSeek by default), history in SQLite, a Stop button. Closed in production until it has an access token.",
+  "plugins": []
+}

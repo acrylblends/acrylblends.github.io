@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    "acryl-db",
+    "acryl-db-sqlite",
+    "acryl-door",
+    "acryl-node-server",
+    "acryl-router",
+    "desktop",
+    "extensions",
+    "instance",
+    "manifest",
+    "sandbox",
+    "save"
+  ]
+}

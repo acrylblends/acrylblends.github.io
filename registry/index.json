@@ -10,7 +10,8 @@
       "license": "MIT",
       "category": "finance",
       "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.",
-      "parent": "acryl.blank"
+      "parent": "acryl.blank",
+      "runtime": "acryl"
     },
     {
       "id": "acryl.blank",
@@ -20,7 +21,8 @@
       "path": "blends/acryl.blank",
       "license": "MIT",
       "category": "starter",
-      "description": "The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them."
+      "description": "The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them.",
+      "runtime": "acryl"
     },
     {
       "id": "acryl.gtd",
@@ -31,7 +33,8 @@
       "license": "MIT",
       "category": "productivity",
       "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
-      "parent": "acryl.blank"
+      "parent": "acryl.blank",
+      "runtime": "acryl"
     },
     {
       "id": "acryl.music",
@@ -42,7 +45,8 @@
       "license": "MIT",
       "category": "creative",
       "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works.",
-      "parent": "acryl.blank"
+      "parent": "acryl.blank",
+      "runtime": "acryl"
     },
     {
       "id": "acryl.orderdesk",
@@ -53,7 +57,8 @@
       "license": "MIT",
       "category": "business",
       "description": "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.",
-      "parent": "acryl.blank"
+      "parent": "acryl.blank",
+      "runtime": "acryl"
     },
     {
       "id": "acryl.organizer",
@@ -64,7 +69,41 @@
       "license": "MIT",
       "category": "productivity",
       "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
-      "parent": "acryl.blank"
+      "parent": "acryl.blank",
+      "runtime": "acryl"
+    },
+    {
+      "id": "acrylblends.agent",
+      "name": "An app that builds itself",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.agent",
+      "license": "MIT",
+      "category": "starter",
+      "description": "A small app with an offline agent and live plugin install: ask for a feature and the agent writes it into the running app, through the door. Development only: production leaves the agent out.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.chat",
+      "name": "Chat",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.chat",
+      "license": "MIT",
+      "category": "ai",
+      "description": "An AI chat app: the answer streams token by token from an OpenAI-compatible API (DeepSeek by default), history in SQLite, a Stop button. Closed in production until it has an access token.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.notes-desktop",
+      "name": "Notes, in a window",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.notes-desktop",
+      "license": "MIT",
+      "category": "productivity",
+      "description": "A multi-user notes app (sign-up, log-in, search, SQLite with migrations) that opens in its own desktop window as well as in the browser.",
+      "runtime": "acrylblends"
     }
   ]
 }
