@@ -5,6 +5,7 @@
     "acryl-router",
     "acryl-state",
     "agent",
+    "agent-panel",
     "builder",
     "extensions",
     "instance",

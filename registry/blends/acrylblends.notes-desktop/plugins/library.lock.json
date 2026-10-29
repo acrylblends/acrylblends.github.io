@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "acryl-db": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cordis.ts": "5521f8caba096ed0c924",
@@ -14,7 +14,7 @@
       }
     },
     "acryl-db-sqlite": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "LICENSE": "ef3897302ab91dccedfc",
         "src/facade/node.ts": "8b9405055c5da973ef2c",
@@ -23,23 +23,23 @@
       }
     },
     "acryl-door": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cli/acryl.ts": "db534eeaa7fdf6b39525",
         "src/host/api.ts": "0626ef27ad2065b3b379",
         "src/host/audit.ts": "fb718ee832bdcbaf13e4",
         "src/host/channel.ts": "3ed33fb04bbbab7e989e",
-        "src/host/chat-tools.ts": "d0dd41066eef663649cb",
+        "src/host/chat-tools.ts": "115db97b520f46dbf6c3",
         "src/host/door-file.ts": "aeba058f761cb2b46c03",
-        "src/host/door.ts": "172fd9dc0f1ed1db9314",
+        "src/host/door.ts": "f6833899f211aa23f93f",
         "src/host/http.ts": "e894092402938071b346",
         "src/host/mcp-routes.ts": "d139b336307d391d0696",
         "src/host/operator-routes.ts": "4dbceec2a79224770ddf",
         "src/host/page-routes.ts": "7c2367a408dab92ae9d8",
         "src/host/shim.ts": "14c4d5e7f00627fd42a4",
         "src/host/verbs.ts": "bf5e6242a3fa6952cad5",
-        "src/index.ts": "b5a87123401138339799",
+        "src/index.ts": "039be1f058c06dd89f1e",
         "src/page/api.ts": "5644cb5607452893bc11",
         "src/page/channel.ts": "134f38cb134706a62e32",
         "src/page/driver/accessibility.ts": "1532845253f73399a726",
@@ -57,7 +57,7 @@
       }
     },
     "acryl-node-server": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "10eaa407ab6767842ec0",
@@ -80,14 +80,14 @@
         "src/adapter/websocket.ts": "3b81af41e36d046ca389",
         "src/client-modules.ts": "80e5b1c8c29be915e4ea",
         "src/index.ts": "d7b806b1e1eef48a63b3",
-        "src/register.ts": "919c6aeda137f6b03282",
+        "src/register.ts": "9347924b80c3c209dab9",
         "src/test-websocket.ts": "a91e1e4b4b37e7b77bf2",
         "src/transpile.ts": "5e7afa4390fbcbc564a0",
         "src/upgrade-hub.ts": "a18b5cece2d2c571463e"
       }
     },
     "acryl-router": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -383,32 +383,33 @@
       }
     },
     "desktop": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
+        "attach.ts": "ddd0e3e4e8a3914c9699",
         "launch.ts": "d7468b2289b0d6b99706",
-        "main.ts": "e72fe0e887272789fb13",
+        "main.ts": "c3c5e72972b3b1757429",
         "shutdown.ts": "a4d94f8a92081af96251",
         "user-data.ts": "9a79f5f8b0593085cd6f",
         "window.ts": "dbd0e5e91c5bc386ff1e"
       }
     },
     "extensions": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
-        "index.ts": "467841345b312a8b59a1",
+        "index.ts": "5d949f6f93f5c19b769d",
         "ledger.ts": "2af8407a66e314b9bbbb",
         "resolve.ts": "fa65b507a362adc396e3",
-        "stage.ts": "0b6e0c98294d65d78819"
+        "stage.ts": "c65c1e452c3613b4655d"
       }
     },
     "instance": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "index.ts": "ede01b973dad78445111"
       }
     },
     "manifest": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "index.ts": "eab7e185ab13029aff8f",
         "lock.ts": "03f8033bbdffad3f9431",
@@ -417,14 +418,14 @@
       }
     },
     "sandbox": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "index.ts": "c1c60f42d30c0417a6fc",
         "runner.mjs": "6437184989f4848075ba"
       }
     },
     "save": {
-      "from": "1.0.4",
+      "from": "1.0.5",
       "files": {
         "cli.ts": "fccad83af5a41bde542b",
         "index.ts": "48f96cde6c73e781e3e6"
