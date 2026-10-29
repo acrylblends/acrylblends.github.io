@@ -2,41 +2,41 @@
   "version": 1,
   "plugins": {
     "acryl-door": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
-        "src/cli/acryl.ts": "0dcfd9e51ac6eba760fa",
+        "src/cli/acryl.ts": "db534eeaa7fdf6b39525",
         "src/host/api.ts": "0626ef27ad2065b3b379",
         "src/host/audit.ts": "fb718ee832bdcbaf13e4",
-        "src/host/channel.ts": "3dee2f7f45181408c1b2",
+        "src/host/channel.ts": "3ed33fb04bbbab7e989e",
         "src/host/chat-tools.ts": "d0dd41066eef663649cb",
         "src/host/door-file.ts": "aeba058f761cb2b46c03",
-        "src/host/door.ts": "f7eebdaebe24c1c8ee80",
+        "src/host/door.ts": "172fd9dc0f1ed1db9314",
         "src/host/http.ts": "e894092402938071b346",
         "src/host/mcp-routes.ts": "d139b336307d391d0696",
         "src/host/operator-routes.ts": "4dbceec2a79224770ddf",
         "src/host/page-routes.ts": "7c2367a408dab92ae9d8",
-        "src/host/shim.ts": "b1a03003568ea3a10ec8",
-        "src/host/verbs.ts": "3746905e14426042afd9",
-        "src/index.ts": "97f546c85d41c8de3968",
+        "src/host/shim.ts": "14c4d5e7f00627fd42a4",
+        "src/host/verbs.ts": "bf5e6242a3fa6952cad5",
+        "src/index.ts": "b5a87123401138339799",
         "src/page/api.ts": "5644cb5607452893bc11",
         "src/page/channel.ts": "134f38cb134706a62e32",
         "src/page/driver/accessibility.ts": "1532845253f73399a726",
         "src/page/driver/actions.ts": "38d7761494116bdf3807",
-        "src/page/driver/driver.ts": "567079c6ab38199678db",
+        "src/page/driver/driver.ts": "91c78398858a6192e23e",
         "src/page/driver/ref-table.ts": "ee4372af68a383ffe91a",
         "src/page/driver/sensitivity.ts": "9e73e84e23cf7f477c2a",
         "src/page/driver/snapshot.ts": "6d7d42db6577c2e4d598",
         "src/page/index.ts": "9391a7defe4302c4b33b",
         "src/page/indicator.ts": "ef995d1bbf0154f24997",
         "src/page/main.ts": "114a9fbe1a3f278bcb2a",
-        "src/page/protocol.ts": "2c5e4df9fd1f626b9457",
+        "src/page/protocol.ts": "e38ede653b631ff2c8c8",
         "src/page/snapshot-text.ts": "d1ab0f5eff70cfba77eb",
         "src/page/user-input.ts": "edf3e28136a947b16ba1"
       }
     },
     "acryl-node-server": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "10eaa407ab6767842ec0",
@@ -66,7 +66,7 @@
       }
     },
     "acryl-router": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -358,11 +358,11 @@
         "src/index.ts": "f079aca13fa8b336d69f",
         "src/middleware/index.ts": "a914ea698fd8c80aed1f",
         "src/middleware/loopback-only.ts": "41b210e51d004ba94cff",
-        "src/service.ts": "f5067022124cde0d7a49"
+        "src/service.ts": "35cfc4bdc38f364783fb"
       }
     },
     "acryl-state": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "LICENSE": "9e159eea922378a88a12",
         "src/cell.ts": "2add14530d4a39c2b358",
@@ -371,7 +371,7 @@
       }
     },
     "agent": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "agent.ts": "375b09fe4b2af56fcfbd",
         "index.ts": "91147873ccdb9a9d991c",
@@ -381,14 +381,14 @@
       }
     },
     "builder": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "74c6e252e3ef1154f113",
         "script.ts": "fd1964df061b97d5cfa8"
       }
     },
     "extensions": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "467841345b312a8b59a1",
         "ledger.ts": "2af8407a66e314b9bbbb",
@@ -397,13 +397,13 @@
       }
     },
     "instance": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "ede01b973dad78445111"
       }
     },
     "manifest": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "eab7e185ab13029aff8f",
         "lock.ts": "03f8033bbdffad3f9431",
@@ -412,28 +412,28 @@
       }
     },
     "openai": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "6be04e3f6ab27c99bf1e",
         "prompt.ts": "18b6a53a503d2dd2c9db"
       }
     },
     "sandbox": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "c1c60f42d30c0417a6fc",
         "runner.mjs": "6437184989f4848075ba"
       }
     },
     "save": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "cli.ts": "fccad83af5a41bde542b",
         "index.ts": "48f96cde6c73e781e3e6"
       }
     },
     "tasks": {
-      "from": "1.0.3",
+      "from": "1.0.4",
       "files": {
         "index.ts": "2b9c53731a4c6c59b2a2",
         "store.ts": "3d24c2b53874e3e14928"
