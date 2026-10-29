@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "acryl-db": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cordis.ts": "5521f8caba096ed0c924",
@@ -14,7 +14,7 @@
       }
     },
     "acryl-db-sqlite": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "LICENSE": "ef3897302ab91dccedfc",
         "src/facade/node.ts": "8b9405055c5da973ef2c",
@@ -23,7 +23,7 @@
       }
     },
     "acryl-door": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cli/acryl.ts": "1ddb15d45854dc3547cd",
@@ -37,29 +37,31 @@
         "src/host/mcp-routes.ts": "d139b336307d391d0696",
         "src/host/operator-routes.ts": "4dbceec2a79224770ddf",
         "src/host/page-routes.ts": "7346b508aadc306071fa",
+        "src/host/page-socket.ts": "ed3254d0d947c3e17556",
         "src/host/shell.ts": "c1d49a1ce31b900a53f2",
         "src/host/shim.ts": "5d262506a024163e1f61",
         "src/host/verbs.ts": "ddf646e3d7abe81c86a1",
-        "src/index.ts": "4176a0c98df7ba6f9f76",
+        "src/index.ts": "12bb1f768d06ff0d67b2",
         "src/page/api.ts": "5644cb5607452893bc11",
-        "src/page/channel.ts": "37398c7cdd2380355506",
+        "src/page/channel.ts": "a4453e42578cbef1631a",
         "src/page/driver/accessibility.ts": "1532845253f73399a726",
         "src/page/driver/actions.ts": "38d7761494116bdf3807",
         "src/page/driver/driver.ts": "91c78398858a6192e23e",
         "src/page/driver/ref-table.ts": "ee4372af68a383ffe91a",
         "src/page/driver/sensitivity.ts": "699111c1e667ce4a5645",
         "src/page/driver/snapshot.ts": "6d7d42db6577c2e4d598",
-        "src/page/index.ts": "114a9c88a5455ace0443",
+        "src/page/index.ts": "17ccaa3733ac13482913",
         "src/page/indicator.ts": "ef995d1bbf0154f24997",
         "src/page/main.ts": "114a9fbe1a3f278bcb2a",
         "src/page/protocol.ts": "91023969f3e1183fff8c",
         "src/page/snapshot-text.ts": "d1ab0f5eff70cfba77eb",
+        "src/page/socket-source.ts": "e5cf8719685db8a61fae",
         "src/page/user-input.ts": "edf3e28136a947b16ba1",
         "src/shell/protocol.ts": "2e2ce749a8a64ef5ff70"
       }
     },
     "acryl-node-server": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "10eaa407ab6767842ec0",
@@ -89,7 +91,7 @@
       }
     },
     "acryl-router": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -290,7 +292,7 @@
       }
     },
     "extensions": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "index.ts": "8ce47493abda9a3674f3",
         "ledger.ts": "2af8407a66e314b9bbbb",
@@ -299,13 +301,13 @@
       }
     },
     "instance": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "index.ts": "ede01b973dad78445111"
       }
     },
     "manifest": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "index.ts": "eab7e185ab13029aff8f",
         "lock.ts": "03f8033bbdffad3f9431",
@@ -314,14 +316,14 @@
       }
     },
     "sandbox": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "index.ts": "c1c60f42d30c0417a6fc",
         "runner.mjs": "6437184989f4848075ba"
       }
     },
     "save": {
-      "from": "1.0.7",
+      "from": "1.0.8",
       "files": {
         "cli.ts": "fccad83af5a41bde542b",
         "index.ts": "48f96cde6c73e781e3e6"

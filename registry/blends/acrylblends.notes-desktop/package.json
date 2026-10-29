@@ -33,13 +33,14 @@
     "@deepseek-ai/schemastery": "3.18.4",
     "@webboxes/app-persistence": "0.1.1",
     "@webboxes/blends-core": "0.4.0",
-    "acrylblends": "^1.0.7",
+    "acrylblends": "^1.0.8",
     "typescript": "6.0.3",
     "yaml": "2.9.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
-    "electron": "44.9.3"
+    "electron": "44.9.3",
+    "ws": "8.21.3"
   },
   "acryl": {
     "opener": "src/app.ts"
