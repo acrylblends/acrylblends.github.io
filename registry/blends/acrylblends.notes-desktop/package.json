@@ -33,7 +33,7 @@
     "@deepseek-ai/schemastery": "3.18.4",
     "@webboxes/app-persistence": "0.1.1",
     "@webboxes/blends-core": "0.4.0",
-    "acrylblends": "^1.0.9",
+    "acrylblends": "^1.0.10",
     "typescript": "6.0.3",
     "yaml": "2.9.0"
   },

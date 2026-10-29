@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "acryl-db": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cordis.ts": "5521f8caba096ed0c924",
@@ -14,7 +14,7 @@
       }
     },
     "acryl-db-sqlite": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "LICENSE": "ef3897302ab91dccedfc",
         "src/facade/node.ts": "8b9405055c5da973ef2c",
@@ -23,13 +23,13 @@
       }
     },
     "acryl-door": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cli/acryl.ts": "1ddb15d45854dc3547cd",
         "src/host/api.ts": "0626ef27ad2065b3b379",
         "src/host/audit.ts": "fb718ee832bdcbaf13e4",
-        "src/host/channel.ts": "123a49624b9562787820",
+        "src/host/channel.ts": "7126cc193d21014a8ef9",
         "src/host/chat-tools.ts": "115db97b520f46dbf6c3",
         "src/host/door-file.ts": "aeba058f761cb2b46c03",
         "src/host/door.ts": "eeee88bfb0449106a1e5",
@@ -61,7 +61,7 @@
       }
     },
     "acryl-node-server": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "10eaa407ab6767842ec0",
@@ -91,7 +91,7 @@
       }
     },
     "acryl-router": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -292,12 +292,12 @@
       }
     },
     "desktop": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "attach.ts": "ddd0e3e4e8a3914c9699",
         "door-shell.ts": "3e535eff746a41525dbb",
         "launch.ts": "d7468b2289b0d6b99706",
-        "main.ts": "1e188b14257867c9c953",
+        "main.ts": "bdb9c4d74d0fc86d5a05",
         "menu.ts": "9b88cda709178fffc66d",
         "shutdown.ts": "a4d94f8a92081af96251",
         "user-data.ts": "9a79f5f8b0593085cd6f",
@@ -305,7 +305,7 @@
       }
     },
     "extensions": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "index.ts": "8ce47493abda9a3674f3",
         "ledger.ts": "2af8407a66e314b9bbbb",
@@ -314,13 +314,13 @@
       }
     },
     "instance": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "index.ts": "ede01b973dad78445111"
       }
     },
     "manifest": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "index.ts": "eab7e185ab13029aff8f",
         "lock.ts": "03f8033bbdffad3f9431",
@@ -329,14 +329,14 @@
       }
     },
     "sandbox": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "index.ts": "c1c60f42d30c0417a6fc",
         "runner.mjs": "6437184989f4848075ba"
       }
     },
     "save": {
-      "from": "1.0.9",
+      "from": "1.0.10",
       "files": {
         "cli.ts": "fccad83af5a41bde542b",
         "index.ts": "48f96cde6c73e781e3e6"
