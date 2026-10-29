@@ -16,12 +16,13 @@ for (const [path, markdown] of Object.entries(files)) {
 for (const markdown of Object.values(licenses)) pages.set("LICENSE", { key: "LICENSE", title: "License", markdown: `# License\n\n\`\`\`text\n${markdown.trim()}\n\`\`\`\n` });
 
 /** The URL of a page: the index is /docs itself. */
-export const docUrl = (key: string) => (key === "README" ? "/docs" : `/docs/${key === "LICENSE" ? "license" : key}`);
+/** A folder's README is the folder's own page: workshop/README is /docs/workshop. */
+export const docUrl = (key: string) => (key === "README" ? "/docs" : key.endsWith("/README") ? `/docs/${key.slice(0, -"/README".length)}` : `/docs/${key === "LICENSE" ? "license" : key}`);
 export const keyFromUrl = (splat: string | undefined) => {
   const path = (splat ?? "").replace(/\/$/, "");
   if (path === "") return "README";
   if (path === "license") return "LICENSE";
-  return path;
+  return pages.has(path) || !pages.has(`${path}/README`) ? path : `${path}/README`;
 };
 
 const SECTIONS: { title: string; folder?: string; keys: string[] }[] = [
@@ -34,6 +35,7 @@ const SECTIONS: { title: string; folder?: string; keys: string[] }[] = [
   { title: "Middleware", folder: "middleware", keys: [] },
   { title: "Cordis", folder: "cordis", keys: ["cordis/acryl-in-a-cordis-app", "cordis/concepts", "cordis/mounting", "cordis/validation", "cordis/middleware", "cordis/transport-and-cancellation", "cordis/plugin-lifecycle", "cordis/node-server", "cordis/surfaces", "cordis/migration-from-0-3", "cordis/migration-from-dsh-webserver"] },
   { title: "Agents", folder: "agents", keys: ["agents/index"] },
+  { title: "Workshop", folder: "workshop", keys: ["workshop/README", "workshop/facilitator"] },
   { title: "License", keys: ["LICENSE"] },
 ];
 

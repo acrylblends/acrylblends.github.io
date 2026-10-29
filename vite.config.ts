@@ -70,6 +70,8 @@ export default defineConfig({
           const title = /^#\s+(.+)$/m.exec(markdown)?.[1]?.trim() ?? key;
           const lead = markdown.split("\n").find((line) => line.trim() !== "" && !/^(#|>|```|\||\*\*|-|\d+\.)/.test(line.trim()))?.replace(/[`*_]|\[([^\]]+)\]\([^)]*\)/g, "$1").trim().slice(0, 200) ?? "";
           add(key === "README" ? "/docs" : `/docs/${key}`, `${title} - Acryl documentation`, lead || `Acryl framework documentation: ${title}.`);
+          // A folder's README is the folder's page too (/docs/workshop), as a real file so it answers 200.
+          if (key.endsWith("/README")) add(`/docs/${key.slice(0, -"/README".length)}`, `${title} - Acryl documentation`, lead || `Acryl framework documentation: ${title}.`);
         }
         add("/docs/license", "License - Acryl documentation", "The license of the Acryl framework documentation.");
         for (const [path, page] of routes) {
