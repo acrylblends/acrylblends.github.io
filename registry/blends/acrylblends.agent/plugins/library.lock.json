@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "acryl-door": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cli/acryl.ts": "0dcfd9e51ac6eba760fa",
@@ -36,7 +36,7 @@
       }
     },
     "acryl-node-server": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "10eaa407ab6767842ec0",
@@ -66,7 +66,7 @@
       }
     },
     "acryl-router": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -362,7 +362,7 @@
       }
     },
     "acryl-state": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "LICENSE": "9e159eea922378a88a12",
         "src/cell.ts": "2add14530d4a39c2b358",
@@ -371,7 +371,7 @@
       }
     },
     "agent": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "agent.ts": "375b09fe4b2af56fcfbd",
         "index.ts": "91147873ccdb9a9d991c",
@@ -381,14 +381,14 @@
       }
     },
     "builder": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "74c6e252e3ef1154f113",
         "script.ts": "fd1964df061b97d5cfa8"
       }
     },
     "extensions": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "467841345b312a8b59a1",
         "ledger.ts": "2af8407a66e314b9bbbb",
@@ -397,13 +397,13 @@
       }
     },
     "instance": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "ede01b973dad78445111"
       }
     },
     "manifest": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "eab7e185ab13029aff8f",
         "lock.ts": "03f8033bbdffad3f9431",
@@ -412,28 +412,28 @@
       }
     },
     "openai": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "6be04e3f6ab27c99bf1e",
         "prompt.ts": "18b6a53a503d2dd2c9db"
       }
     },
     "sandbox": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "c1c60f42d30c0417a6fc",
         "runner.mjs": "6437184989f4848075ba"
       }
     },
     "save": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "cli.ts": "fccad83af5a41bde542b",
         "index.ts": "48f96cde6c73e781e3e6"
       }
     },
     "tasks": {
-      "from": "1.0.2",
+      "from": "1.0.3",
       "files": {
         "index.ts": "2b9c53731a4c6c59b2a2",
         "store.ts": "3d24c2b53874e3e14928"
