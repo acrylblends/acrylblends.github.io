@@ -66,7 +66,7 @@
         "src/adapter/headers.ts": "6cb4777ef5343c38be37",
         "src/adapter/index.ts": "09ca4a9e68e4475f542f",
         "src/adapter/listener.ts": "585ac76c33ff561f7340",
-        "src/adapter/request.ts": "7a7c605fafc9ddd4ec97",
+        "src/adapter/request.ts": "1768785e688eb892b9fc",
         "src/adapter/response.ts": "24d52364b21773acee18",
         "src/adapter/serve-static.ts": "84b6909a4503255c3ab3",
         "src/adapter/server.ts": "70d6559721dc77ef9776",
