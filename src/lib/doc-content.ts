@@ -201,6 +201,30 @@ export const docContent: Record<string, DocEntry> = {
       ] },
     ],
   },
+  "framework/release-notes-1-0-7": {
+    intro: "The fixes from the first walk of the workshop on Windows, and one for every machine: a deployed app keeps what the agent built.",
+    body: [
+      { heading: "Before the workshop", paragraphs: [
+        "npx acrylblends@latest preflight checks a machine before the first command and needs no app folder: Node 22.19+, npm, git, a coding agent the panel would offer (claude, codex, or pi with a DeepSeek key), a free port in the apps' range (so a firewall or security tool that blocks loopback shows up here), and gh for the publish step; on Windows also the PowerShell version (5.1 needs the guide's PowerShell lines) and long paths. One line per check: PASS with what was found, FIX with the exact command or address, NOTE for what the first blocks do without; exit 1 while anything needs a fix. (An older Node gets the bin's own plain refusal before anything else.)",
+      ] },
+      { heading: "Deploy", paragraphs: [
+        "Production serves the extensions the agent installed. With NODE_ENV=production the agent template left the extensions row out (1.0.1), so an app whose pages were extensions, such as the workshop's board, answered 404 for them once deployed. The row now starts again, read-only: the extension folders of plugins/ (committed with the app) are loaded once from where they are; install, update, remove, reload and approve are refused; /ask, /extensions* and /tasks* stay unmounted. The start prints extensions (read-only): board, or extensions: none found in plugins/, and a WARNING when .acrylblends/extensions.json records an extension whose folder plugins/ lacks. verify:production builds one in development and serves it in production. An app made before 1.0.7 keeps its own src/app.ts: copy the production switch from a fresh npm create acrylblends@latest my-app agent (or upgrade the extensions plugin and set readOnly: true for it in production).",
+      ] },
+      { heading: "The door", paragraphs: [
+        "Git Bash on Windows. acryl act navigate --path /nope arrived as C:/Program Files/Git/nope (MSYS rewrites an argument that looks like a Unix path before a native program sees it), so the agent of every attendee whose shell is Git Bash (pi's is) could not navigate. The shim now exports MSYS_NO_PATHCONV and MSYS2_ARG_CONV_EXCL, and the client turns a --path under the Git folder back into the path typed, with a warning. A test runs the shim through a real sh (and, on Windows, shows that MSYS rewrites the same argument without the exports).",
+        "Two tabs of the app no longer make a look wait 30 s. A page that was left stayed alive in the browser's back/forward cache with its event stream open; a browser allows six connections per host, so after a few navigations the live page's own answers queued behind dead pages. A page now lets go of its stream when it is left and reopens it if it is restored. The door also chooses the page that answers the same way every time (the page it just sent somewhere, then the one in front, then the most recent); pages acknowledge a call, a read-only call (look, act wait) to a page that does not acknowledge in 3 s goes to the next page and puts the silent one last, and when none answers it says so and what to do, instead of waiting 30 s. verify:door drives two real tabs.",
+        "A field is a secret by what it is. Any text field whose label contained \"card\" was hidden from the agent, so it could not type the title of a card on a board. A password input, an autocomplete of a credential or a payment detail, a value in the shape of a key or token, and labels that say so in plain words (password, API key, card number, CVV, IBAN, ...) are hidden; \"Card title\" is not.",
+      ] },
+      { heading: "The panel", paragraphs: [
+        "It sits beside the page: the page gets narrower by the panel's width while the panel is open, so the header and right-hand columns stay in view.",
+        "It renders the agent's answer as Markdown (headings, lists, code, bold, italic, links), safely: the answer is parsed to a tree and built with createElement and textContent, so markup, scripts and javascript: links stay text.",
+        "It says it is working, with the time elapsed, while a run is going: a coding agent started headless prints nothing for minutes.",
+      ] },
+      { heading: "Upgrading", paragraphs: [
+        "npx acrylblends@latest upgrade brings the door, the panel and the extensions plugin. The agent template's src/app.ts and AGENTS.md are your own files; copy their production switch and the \"Drive the app\" paragraph from a fresh npm create acrylblends@latest my-app agent.",
+      ] },
+    ],
+  },
   "framework/release-notes-1-0-6": {
     intro: "The desktop app's windows and menu are door verbs: an agent that lives in the app can open a window, drive it, resize it and press a menu item, and cannot end its own session by accident.",
     body: [
