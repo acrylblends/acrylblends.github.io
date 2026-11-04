@@ -104,6 +104,17 @@
       "category": "productivity",
       "description": "A multi-user notes app (sign-up, log-in, search, SQLite with migrations) that opens in its own desktop window as well as in the browser.",
       "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.system-monitor",
+      "name": "System Monitor",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.system-monitor",
+      "license": "MIT",
+      "category": "system",
+      "description": "This machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program.",
+      "runtime": "acrylblends"
     }
   ]
 }
