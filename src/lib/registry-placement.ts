@@ -48,4 +48,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.blockchain-blockscope": { category: "Blockchain", subcategory: "Blockchain nodes" },
   "acrylblends.decentralized-federary": { category: "Decentralized", subcategory: "Federated systems" },
   "acrylblends.p2p-swarmdrop": { category: "Peer-to-Peer", subcategory: "File sharing" },
+  "acrylblends.system-monitor": { category: "System", subcategory: "System utilities" },
 };

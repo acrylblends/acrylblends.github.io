@@ -1,0 +1,5 @@
+{
+  "name": "System Monitor",
+  "description": "This machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program.",
+  "plugins": []
+}
