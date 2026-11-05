@@ -1,0 +1,55 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.productivity-hub
+  name: "Productivity Hub"
+  version: 0.1.0
+  category: application
+  description: "A calm personal workbench: quick capture and an inbox to triage, one daily focus, next actions, notes with linked tasks and a week calendar that warns before two events overlap."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The hub's domain: spaces, tasks, notes, events and the inbox, saved as JSON in the app's data home. Every page below injects it.
+    - id: productivity-hub
+      name: productivity-hub
+    # The page shell every page shares: the sidebar (pages register their entry), quick capture, and the paper look.
+    - id: hub-shell
+      name: hub-shell
+    # The day's page (route /) and the inbox (route /inbox): each a plugin folder of its own, mounted between the shell and the extensions row.
+    - id: my-day
+      name: my-day
+    - id: inbox
+      name: inbox
+    # Tasks: the /tasks page, and the Next actions part on My Day.
+    - id: tasks
+      name: tasks
+    # Notes: the /notes list and the /notes/:id editor, and the Recent notes cards on My Day.
+    - id: notes
+      name: notes
+    # The week calendar (/calendar) with overlap warnings, and This week in My Day's right rail.
+    - id: calendar
+      name: calendar
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

@@ -104,6 +104,17 @@
       "category": "productivity",
       "description": "A multi-user notes app (sign-up, log-in, search, SQLite with migrations) that opens in its own desktop window as well as in the browser.",
       "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.productivity-hub",
+      "name": "Productivity Hub",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.productivity-hub",
+      "license": "MIT",
+      "category": "application",
+      "description": "A calm personal workbench: quick capture and an inbox to triage, one daily focus, next actions, notes with linked tasks and a week calendar that warns before two events overlap.",
+      "runtime": "acrylblends"
     }
   ]
 }
