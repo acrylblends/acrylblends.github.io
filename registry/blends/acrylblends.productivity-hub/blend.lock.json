@@ -142,7 +142,7 @@
     {
       "name": "my-day",
       "origin": "local",
-      "digest": "sha256:99a51cb14d80f3f90a409d03e6ae5069c4731e070f6e9231f875a1f7c6a99bef",
+      "digest": "sha256:b99a0888fb24befafb48e47d4c45362d451b53ade87ec2b1f29d2bbdabdac30d",
       "source": "plugins/my-day"
     },
     {

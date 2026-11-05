@@ -51,12 +51,12 @@ Light and dark follow your system.
 | --- | --- | --- |
 | `plugins/productivity-hub/` | `productivity-hub` | The domain as `ctx.hub`: the data, the seed, overlap detection and validation, saved through the `HubStore` port (a JSON file; tests use memory). |
 | `plugins/hub-shell/` | `hub-shell` | The page shell as `ctx.hubShell`: sidebar, quick capture, the paper look in light and dark. |
-| `plugins/my-day/` | `my-day` | `/`, composed from the other pages' parts (`ctx.home` widgets). |
+| `plugins/my-day/` | `my-day` | `/`: the focus, next actions, done today and recent notes from `ctx.hub`; the calendar's `ctx.home` widget in the rail. |
 | `plugins/inbox/` | `inbox` | `/inbox`: capture and triage. |
-| `plugins/tasks/` | `tasks` | `/tasks`, and Next actions on My Day. |
-| `plugins/notes/` | `notes` | `/notes`, `/notes/:id`, and Recent notes on My Day. |
-| `plugins/calendar/` | `calendar` | `/calendar`, and This week on My Day. |
+| `plugins/tasks/` | `tasks` | `/tasks`: every task, grouped and filtered; add, edit, complete. |
+| `plugins/notes/` | `notes` | `/notes`, `/notes/:id`: the cards and the editor. |
+| `plugins/calendar/` | `calendar` | `/calendar`, and This week in My Day's rail. |
 
-`blend.yaml` lists the rows; `disabled: true` on a page's row (Settings > Plugins in the ACRYL frame) takes the page, its sidebar entry and
-its part of My Day away together. The tests (`node:test`) cover the domain and every route with a fake clock and a memory store.
+`blend.yaml` lists the rows; `disabled: true` on a page's row (Settings > Plugins in the ACRYL frame) takes the page and its sidebar entry away
+together; My Day keeps its sections and drops its links to that page (without the calendar, its rail is a plain agenda). The tests (`node:test`) cover the domain and every route with a fake clock and a memory store.
 `AGENTS.md` describes the layout for an agent. The design this was built from is in `design/`.

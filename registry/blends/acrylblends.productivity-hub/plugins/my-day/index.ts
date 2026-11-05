@@ -1,6 +1,7 @@
 /**
- * My Day (`/`): the day's one focus, its next actions and recent notes, with the other plugins' home widgets around them (the calendar in the rail,
- * the rest under the notes). Every change is a form that posts here and lands back on the page with a notice; the hub does the writing.
+ * My Day (`/`): the day's one focus, its next actions, what was done today and two recent notes, read from the hub; the calendar's week in the
+ * rail (its own agenda when the calendar is off), and any other plugin's home widget under the notes. Links to Tasks, Notes and Calendar show only
+ * while those plugins are on. Every change is a form that posts here and lands back on the page with a notice; the hub does the writing.
  */
 import type { Context } from '@deepseek-ai/cordis'
 import { Acryl } from '../acryl-router/src/index.ts'
