@@ -23,4 +23,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.chat": { category: "AI", subcategory: "AI assistants" },
   "acrylblends.agent": { category: "AI", subcategory: "AI agents" },
   "acrylblends.productivity-hub": { category: "Application", subcategory: "Productivity" },
+  "acrylblends.small-crm": { category: "Business", subcategory: "CRM" },
 };

@@ -1,0 +1,5 @@
+{
+  "name": "Small CRM",
+  "description": "A relationship-first CRM for a small sales team: a deals pipeline with an inspector, contacts, company profiles, a follow-up queue and a pipeline report, composed from Cordis plugins.",
+  "plugins": []
+}

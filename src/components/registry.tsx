@@ -12,6 +12,13 @@ interface RegistryEntry { id: string; name: string; kind: "Blueprint" | "Blend";
 export type { RegistryEntry };
 export const entries = (index as { entries: RegistryEntry[] }).entries;
 
+/** An entry's docs/screenshot.png, served from the registry like its blend.yaml; an entry without one shows nothing (the image hides itself when it does not load). */
+export function Screenshot({ entry, className = "" }: { entry: RegistryEntry; className?: string }) {
+  const [shown, setShown] = useState(true);
+  if (!shown) return null;
+  return <img src={`/registry/${entry.path}/docs/screenshot.png`} alt={`${entry.name}, the first page`} loading="lazy" onError={() => setShown(false)} className={`block w-full border border-border bg-surface object-cover object-top ${className}`}/>;
+}
+
 export function runtimeOf(entry: RegistryEntry): Runtime { return entry.runtime === "acrylblends" ? "acrylblends" : "acryl"; }
 
 /** The command that starts a project from an entry: for acrylblends, create-acrylblends (npm needs the `--`); an ACRYL starter opens in the ACRYL app, and its CLI form is shown as it is. */

@@ -1,0 +1,189 @@
+{
+  "formatVersion": 3,
+  "generator": {
+    "name": "@webboxes/blends-core",
+    "version": "0.4.0"
+  },
+  "origin": {
+    "id": "acrylblends.small-crm",
+    "kind": "Blueprint",
+    "version": "0.1.0",
+    "digest": "5406dcf3ff9a36d8d11e6e31f92787a9fae9915082b5ac706d9c85d9c9cdae12"
+  },
+  "parameters": {
+    "hostname": "127.0.0.1"
+  },
+  "rows": [
+    {
+      "id": "router",
+      "name": "acryl-router"
+    },
+    {
+      "id": "home",
+      "name": "home"
+    },
+    {
+      "id": "crm",
+      "name": "crm"
+    },
+    {
+      "id": "crm-shell",
+      "name": "crm-shell"
+    },
+    {
+      "id": "pipeline",
+      "name": "pipeline"
+    },
+    {
+      "id": "deals",
+      "name": "deals"
+    },
+    {
+      "id": "contacts",
+      "name": "contacts"
+    },
+    {
+      "id": "companies",
+      "name": "companies"
+    },
+    {
+      "id": "activities",
+      "name": "activities"
+    },
+    {
+      "id": "reports",
+      "name": "reports"
+    },
+    {
+      "id": "extensions",
+      "name": "extensions"
+    },
+    {
+      "id": "server",
+      "name": "acryl-node-server",
+      "config": {
+        "hostname": "127.0.0.1"
+      }
+    },
+    {
+      "id": "acryl-door",
+      "name": "acryl-door"
+    }
+  ],
+  "modules": [
+    {
+      "name": "acryl-door",
+      "origin": "local",
+      "digest": "sha256:33468e9fe92b1fd9b74b2ff2634ecc92536bb254edf8f23449734792c48c8085",
+      "source": "plugins/acryl-door"
+    },
+    {
+      "name": "acryl-node-server",
+      "origin": "local",
+      "digest": "sha256:a6a0ca8b7117cfc07e6cc5f8338c79491d37574e3c2e106f8d7bc60f32c24108",
+      "source": "plugins/acryl-node-server"
+    },
+    {
+      "name": "acryl-page",
+      "origin": "local",
+      "digest": "sha256:d6c2395b7adbed77f5897bf7b3192e6a007a2ac9d584c452ac4991770134faf7",
+      "source": "plugins/acryl-page"
+    },
+    {
+      "name": "acryl-router",
+      "origin": "local",
+      "digest": "sha256:ab4da3de0c211b9f176b3b42ec28eb7a405b263e01e103d42d09a8c9c1ec577d",
+      "source": "plugins/acryl-router"
+    },
+    {
+      "name": "acryl-web-server",
+      "origin": "local",
+      "digest": "sha256:d779f808eccf489a1edd21125176a430c5a6fd1fd1837161fe10f5af64965137",
+      "source": "plugins/acryl-web-server"
+    },
+    {
+      "name": "activities",
+      "origin": "local",
+      "digest": "sha256:c001a1a4cf9c29ea94f5146710a7a13c39757ec0adf2fc2234014e1f23df5e30",
+      "source": "plugins/activities"
+    },
+    {
+      "name": "companies",
+      "origin": "local",
+      "digest": "sha256:241a0a204f7ef789e1745731d4b57ed32823856de17c33c599a126195d3a13a0",
+      "source": "plugins/companies"
+    },
+    {
+      "name": "contacts",
+      "origin": "local",
+      "digest": "sha256:31cb80f7dc011a122a51a75e9ef5e8392f29d39ca11d20836e9659aa2e94417e",
+      "source": "plugins/contacts"
+    },
+    {
+      "name": "crm",
+      "origin": "local",
+      "digest": "sha256:a49047c0123af0bff5fbb29dc0e78eac54918017d48f64b6cc5a8a8584ff2f2c",
+      "source": "plugins/crm"
+    },
+    {
+      "name": "crm-shell",
+      "origin": "local",
+      "digest": "sha256:7662c0ffdfe7064bb1cbc0b22e76ec290364fe74604985ada6f7f8f1b69c619f",
+      "source": "plugins/crm-shell"
+    },
+    {
+      "name": "deals",
+      "origin": "local",
+      "digest": "sha256:4ce0b3d2a23262f462f0eee924e3b7e326e247539b0661739e993371d864f814",
+      "source": "plugins/deals"
+    },
+    {
+      "name": "extensions",
+      "origin": "local",
+      "digest": "sha256:e35694f246e55fea31ef260ce518eeb415634a51eaac3d501efee5b8d1f59cc1",
+      "source": "plugins/extensions"
+    },
+    {
+      "name": "home",
+      "origin": "local",
+      "digest": "sha256:1e337729803099600244f291ce0e57d9ab6a33df7e1e7d7b851af50841be4643",
+      "source": "plugins/home"
+    },
+    {
+      "name": "instance",
+      "origin": "local",
+      "digest": "sha256:558187902bbad28cc7afaf92604b843b60aafcae204ae574c07dd5fcad4534e4",
+      "source": "plugins/instance"
+    },
+    {
+      "name": "manifest",
+      "origin": "local",
+      "digest": "sha256:8a8af57a7f97b6fe495eaaba37d2557284143d091a042d75c228dbfea246756a",
+      "source": "plugins/manifest"
+    },
+    {
+      "name": "pipeline",
+      "origin": "local",
+      "digest": "sha256:29ff8507c423441a7f39d6a234d9b994355d08af241b958c93d9d25d83be00f9",
+      "source": "plugins/pipeline"
+    },
+    {
+      "name": "reports",
+      "origin": "local",
+      "digest": "sha256:22ec9253f092afeb9afa67dfb8bfb50dbd32cbe261cd37d2d4d37dfcc64d34da",
+      "source": "plugins/reports"
+    },
+    {
+      "name": "sandbox",
+      "origin": "local",
+      "digest": "sha256:e632be6cb4271ea2549db334a1b999fb03fd76c23b96986030f97f29b518999e",
+      "source": "plugins/sandbox"
+    },
+    {
+      "name": "save",
+      "origin": "local",
+      "digest": "sha256:55e86e2d26d5722921ec1fd8e99e5f5a6333b79c7aa2bbb11eee12d9f50f3aa9",
+      "source": "plugins/save"
+    }
+  ]
+}
