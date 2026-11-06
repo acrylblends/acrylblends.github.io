@@ -1,0 +1,15 @@
+{
+  "name": "notes",
+  "description": "Notes: the notes list, the note editor and the Recent notes cards on My Day.",
+  "requires": [],
+  "inject": [
+    "router",
+    "hub",
+    "hubShell"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: notes` / `name: notes` after the tasks row; it registers its sidebar entry in ctx.effect"
+}

@@ -1,0 +1,15 @@
+{
+  "name": "inbox",
+  "description": "The inbox to triage: capture, process and file items.",
+  "requires": [],
+  "inject": [
+    "hub",
+    "hubShell",
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: inbox` / `name: inbox` after the my-day row; it registers its sidebar entry in ctx.effect"
+}

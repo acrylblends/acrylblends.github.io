@@ -1,0 +1,16 @@
+{
+  "name": "hub-shell",
+  "description": "The hub's page shell: the sidebar, quick capture, the home page and the paper look every page shares.",
+  "requires": [],
+  "inject": [
+    "hub",
+    "router"
+  ],
+  "provides": [
+    "hubShell"
+  ],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: hub-shell` / `name: hub-shell` after the domain row; a page injects `hubShell`"
+}

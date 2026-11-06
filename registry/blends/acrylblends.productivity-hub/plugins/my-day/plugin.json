@@ -1,0 +1,16 @@
+{
+  "name": "my-day",
+  "description": "My Day: today's tasks, meetings and inbox items on one page, with widgets on the home page.",
+  "requires": [],
+  "inject": [
+    "hub",
+    "hubShell",
+    "home",
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: my-day` / `name: my-day` after the shell row; it registers its sidebar entry in ctx.effect"
+}
