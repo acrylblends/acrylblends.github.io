@@ -194,6 +194,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.uptime",
+      "name": "Uptime Checker",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.uptime",
+      "license": "MIT",
+      "category": "networking",
+      "description": "A lightweight availability monitor: hosts and URLs checked on a schedule, with status history, response times and incidents.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.web-analytics",
       "name": "Web Analytics",
       "kind": "Blueprint",

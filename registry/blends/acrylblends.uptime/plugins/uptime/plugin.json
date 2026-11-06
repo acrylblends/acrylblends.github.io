@@ -1,0 +1,18 @@
+{
+  "name": "uptime",
+  "description": "The uptime monitor's domain: monitors, checks, incidents and groups, kept as JSON in the app's data home; every check runs through a Checker port, so tests need no network.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["uptime"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: uptime` / `name: uptime` before the page rows in blend.yaml; a page injects the `uptime` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default uptime.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests",
+    "checker": "a Checker port; the server builds the real HTTP/TCP one, tests pass a fake"
+  }
+}
