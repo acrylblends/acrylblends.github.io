@@ -1,0 +1,189 @@
+{
+  "formatVersion": 3,
+  "generator": {
+    "name": "@webboxes/blends-core",
+    "version": "0.4.0"
+  },
+  "origin": {
+    "id": "acrylblends.photo-gallery",
+    "kind": "Blueprint",
+    "version": "0.1.0",
+    "digest": "a0acfbc2948d9332e0a316773cf1bbccea793eb2f378c39369d244adb9b17951"
+  },
+  "parameters": {
+    "hostname": "127.0.0.1"
+  },
+  "rows": [
+    {
+      "id": "router",
+      "name": "acryl-router"
+    },
+    {
+      "id": "home",
+      "name": "home"
+    },
+    {
+      "id": "gallery",
+      "name": "gallery"
+    },
+    {
+      "id": "gallery-shell",
+      "name": "gallery-shell"
+    },
+    {
+      "id": "library",
+      "name": "library"
+    },
+    {
+      "id": "albums",
+      "name": "albums"
+    },
+    {
+      "id": "collections",
+      "name": "collections"
+    },
+    {
+      "id": "shared",
+      "name": "shared"
+    },
+    {
+      "id": "lightbox",
+      "name": "lightbox"
+    },
+    {
+      "id": "upload",
+      "name": "upload"
+    },
+    {
+      "id": "extensions",
+      "name": "extensions"
+    },
+    {
+      "id": "server",
+      "name": "acryl-node-server",
+      "config": {
+        "hostname": "127.0.0.1"
+      }
+    },
+    {
+      "id": "acryl-door",
+      "name": "acryl-door"
+    }
+  ],
+  "modules": [
+    {
+      "name": "acryl-door",
+      "origin": "local",
+      "digest": "sha256:33468e9fe92b1fd9b74b2ff2634ecc92536bb254edf8f23449734792c48c8085",
+      "source": "plugins/acryl-door"
+    },
+    {
+      "name": "acryl-node-server",
+      "origin": "local",
+      "digest": "sha256:a6a0ca8b7117cfc07e6cc5f8338c79491d37574e3c2e106f8d7bc60f32c24108",
+      "source": "plugins/acryl-node-server"
+    },
+    {
+      "name": "acryl-page",
+      "origin": "local",
+      "digest": "sha256:d6c2395b7adbed77f5897bf7b3192e6a007a2ac9d584c452ac4991770134faf7",
+      "source": "plugins/acryl-page"
+    },
+    {
+      "name": "acryl-router",
+      "origin": "local",
+      "digest": "sha256:ab4da3de0c211b9f176b3b42ec28eb7a405b263e01e103d42d09a8c9c1ec577d",
+      "source": "plugins/acryl-router"
+    },
+    {
+      "name": "acryl-web-server",
+      "origin": "local",
+      "digest": "sha256:d779f808eccf489a1edd21125176a430c5a6fd1fd1837161fe10f5af64965137",
+      "source": "plugins/acryl-web-server"
+    },
+    {
+      "name": "albums",
+      "origin": "local",
+      "digest": "sha256:45af8bef8ecf3044be2050c83b7913ca3a455c3eb1bc7e22fdab9eb2294cf94e",
+      "source": "plugins/albums"
+    },
+    {
+      "name": "collections",
+      "origin": "local",
+      "digest": "sha256:134d18046c5702a8a699e5b462994fd2ae5b912014f45ca6f9cfd9674505dfea",
+      "source": "plugins/collections"
+    },
+    {
+      "name": "extensions",
+      "origin": "local",
+      "digest": "sha256:e35694f246e55fea31ef260ce518eeb415634a51eaac3d501efee5b8d1f59cc1",
+      "source": "plugins/extensions"
+    },
+    {
+      "name": "gallery",
+      "origin": "local",
+      "digest": "sha256:eadaa67bd4e7c3fc79dd585b75363e28c1d45c0c7c9661f82ad40cf0ef53abb2",
+      "source": "plugins/gallery"
+    },
+    {
+      "name": "gallery-shell",
+      "origin": "local",
+      "digest": "sha256:534321324c700f4068c153745a2764852ff9ec09e2845b0894cda2a9ef4f4803",
+      "source": "plugins/gallery-shell"
+    },
+    {
+      "name": "home",
+      "origin": "local",
+      "digest": "sha256:1e337729803099600244f291ce0e57d9ab6a33df7e1e7d7b851af50841be4643",
+      "source": "plugins/home"
+    },
+    {
+      "name": "instance",
+      "origin": "local",
+      "digest": "sha256:558187902bbad28cc7afaf92604b843b60aafcae204ae574c07dd5fcad4534e4",
+      "source": "plugins/instance"
+    },
+    {
+      "name": "library",
+      "origin": "local",
+      "digest": "sha256:95e22a66d1403cd4417ea7a2dbb8c677cd36193e6cc172f06208dc1c45630eb6",
+      "source": "plugins/library"
+    },
+    {
+      "name": "lightbox",
+      "origin": "local",
+      "digest": "sha256:cbfa45379d70b79470c2cbea3dc1d571f4502cf9fa35d302f6208260767c30bc",
+      "source": "plugins/lightbox"
+    },
+    {
+      "name": "manifest",
+      "origin": "local",
+      "digest": "sha256:8a8af57a7f97b6fe495eaaba37d2557284143d091a042d75c228dbfea246756a",
+      "source": "plugins/manifest"
+    },
+    {
+      "name": "sandbox",
+      "origin": "local",
+      "digest": "sha256:e632be6cb4271ea2549db334a1b999fb03fd76c23b96986030f97f29b518999e",
+      "source": "plugins/sandbox"
+    },
+    {
+      "name": "save",
+      "origin": "local",
+      "digest": "sha256:55e86e2d26d5722921ec1fd8e99e5f5a6333b79c7aa2bbb11eee12d9f50f3aa9",
+      "source": "plugins/save"
+    },
+    {
+      "name": "shared",
+      "origin": "local",
+      "digest": "sha256:56b06e6ea19f15a054d4cef75d9a14ca1b473032db0ed0f15c4cabf705b90a8e",
+      "source": "plugins/shared"
+    },
+    {
+      "name": "upload",
+      "origin": "local",
+      "digest": "sha256:a766f7c0732d2b17fcbc51fc5f1c5a2790bd57f4746e7d10253e12d5b34c614a",
+      "source": "plugins/upload"
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+{
+  "formatVersion": 3,
+  "generator": {
+    "name": "@webboxes/blends-core",
+    "version": "0.4.0"
+  },
+  "origin": {
+    "id": "acrylblends.moodboard",
+    "kind": "Blueprint",
+    "version": "0.1.0",
+    "digest": "37db03bf573b6abccc7e1edd06c3ab26c4e566c129733507edbc78e300dbc19b"
+  },
+  "parameters": {
+    "hostname": "127.0.0.1"
+  },
+  "rows": [
+    {
+      "id": "router",
+      "name": "acryl-router"
+    },
+    {
+      "id": "home",
+      "name": "home"
+    },
+    {
+      "id": "boards",
+      "name": "boards"
+    },
+    {
+      "id": "board-shell",
+      "name": "board-shell"
+    },
+    {
+      "id": "canvas",
+      "name": "canvas"
+    },
+    {
+      "id": "objects",
+      "name": "objects"
+    },
+    {
+      "id": "assets",
+      "name": "assets"
+    },
+    {
+      "id": "settings",
+      "name": "settings"
+    },
+    {
+      "id": "extensions",
+      "name": "extensions"
+    },
+    {
+      "id": "server",
+      "name": "acryl-node-server",
+      "config": {
+        "hostname": "127.0.0.1"
+      }
+    },
+    {
+      "id": "acryl-door",
+      "name": "acryl-door"
+    }
+  ],
+  "modules": [
+    {
+      "name": "acryl-door",
+      "origin": "local",
+      "digest": "sha256:33468e9fe92b1fd9b74b2ff2634ecc92536bb254edf8f23449734792c48c8085",
+      "source": "plugins/acryl-door"
+    },
+    {
+      "name": "acryl-node-server",
+      "origin": "local",
+      "digest": "sha256:a6a0ca8b7117cfc07e6cc5f8338c79491d37574e3c2e106f8d7bc60f32c24108",
+      "source": "plugins/acryl-node-server"
+    },
+    {
+      "name": "acryl-page",
+      "origin": "local",
+      "digest": "sha256:d6c2395b7adbed77f5897bf7b3192e6a007a2ac9d584c452ac4991770134faf7",
+      "source": "plugins/acryl-page"
+    },
+    {
+      "name": "acryl-router",
+      "origin": "local",
+      "digest": "sha256:ab4da3de0c211b9f176b3b42ec28eb7a405b263e01e103d42d09a8c9c1ec577d",
+      "source": "plugins/acryl-router"
+    },
+    {
+      "name": "acryl-web-server",
+      "origin": "local",
+      "digest": "sha256:d779f808eccf489a1edd21125176a430c5a6fd1fd1837161fe10f5af64965137",
+      "source": "plugins/acryl-web-server"
+    },
+    {
+      "name": "assets",
+      "origin": "local",
+      "digest": "sha256:f91005c049de158a4fbde6a39511e06afc4436703fa75ee3d84b61c18d14f772",
+      "source": "plugins/assets"
+    },
+    {
+      "name": "board-shell",
+      "origin": "local",
+      "digest": "sha256:081ddaf168fc3e34a446a728ef7ac72fc8978015d2b633937dbcc4191cdb2662",
+      "source": "plugins/board-shell"
+    },
+    {
+      "name": "boards",
+      "origin": "local",
+      "digest": "sha256:1e629d89fc827e042013ac183f84408963bb79e540c4a14f5298968ebba884c1",
+      "source": "plugins/boards"
+    },
+    {
+      "name": "canvas",
+      "origin": "local",
+      "digest": "sha256:e8ba1bf05ac4ee86375f542c7ed7a23130b6f6a70143e879e267e7153299af45",
+      "source": "plugins/canvas"
+    },
+    {
+      "name": "extensions",
+      "origin": "local",
+      "digest": "sha256:e35694f246e55fea31ef260ce518eeb415634a51eaac3d501efee5b8d1f59cc1",
+      "source": "plugins/extensions"
+    },
+    {
+      "name": "home",
+      "origin": "local",
+      "digest": "sha256:1e337729803099600244f291ce0e57d9ab6a33df7e1e7d7b851af50841be4643",
+      "source": "plugins/home"
+    },
+    {
+      "name": "instance",
+      "origin": "local",
+      "digest": "sha256:558187902bbad28cc7afaf92604b843b60aafcae204ae574c07dd5fcad4534e4",
+      "source": "plugins/instance"
+    },
+    {
+      "name": "manifest",
+      "origin": "local",
+      "digest": "sha256:8a8af57a7f97b6fe495eaaba37d2557284143d091a042d75c228dbfea246756a",
+      "source": "plugins/manifest"
+    },
+    {
+      "name": "objects",
+      "origin": "local",
+      "digest": "sha256:26f3c55e6e3df3d381db2b9a83c77002192154b151be39c37af3c1b7bcf405b2",
+      "source": "plugins/objects"
+    },
+    {
+      "name": "sandbox",
+      "origin": "local",
+      "digest": "sha256:e632be6cb4271ea2549db334a1b999fb03fd76c23b96986030f97f29b518999e",
+      "source": "plugins/sandbox"
+    },
+    {
+      "name": "save",
+      "origin": "local",
+      "digest": "sha256:55e86e2d26d5722921ec1fd8e99e5f5a6333b79c7aa2bbb11eee12d9f50f3aa9",
+      "source": "plugins/save"
+    },
+    {
+      "name": "settings",
+      "origin": "local",
+      "digest": "sha256:6f50c36ead802ffef8d48e1cee2672c11649c2c3b85300c587980538605269fa",
+      "source": "plugins/settings"
+    }
+  ]
+}
