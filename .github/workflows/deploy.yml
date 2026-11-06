@@ -32,6 +32,12 @@ jobs:
       - run: bun scripts/registry-index.ts registry --check
       - run: bun install --frozen-lockfile
       - run: bun run build
+      # Each entry as its own archive, named with its integrity in the deployed index, so create-acrylblends downloads one starter and not this repository. Only on the copy
+      # being deployed: the repository stays source only. Node, always, so a redeploy of the same files publishes the same bytes.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: node scripts/registry-archives.mjs dist/registry
       - name: SPA fallback for client-side routes (GitHub Pages has no server-side rewrite)
         run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
