@@ -1,0 +1,11 @@
+{
+  "name": "budgets",
+  "description": "Budgets, alerts and allocation rules: the budget list with spend and forecast, the alert log and the rules that attribute services to teams.",
+  "requires": [],
+  "inject": ["finops", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: budgets` / `name: budgets` after the explorer row in blend.yaml; it registers the Budgets & alerts and Allocation rules entries in ctx.effect"
+}

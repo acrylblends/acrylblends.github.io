@@ -95,6 +95,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.cloud-costs",
+      "name": "Cloud Costs",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.cloud-costs",
+      "license": "MIT",
+      "category": "cloud",
+      "description": "A FinOps cost explorer: monthly spend per provider and service from CSV exports, with forecasts, budgets and alerts.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.csv-explorer",
       "name": "CSV Explorer",
       "kind": "Blueprint",

@@ -29,4 +29,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.prompt-lab": { category: "AI", subcategory: "AI assistants" },
   "acrylblends.csv-explorer": { category: "Data", subcategory: "Data platforms" },
   "acrylblends.web-analytics": { category: "Analytics", subcategory: "Web analytics" },
+  "acrylblends.cloud-costs": { category: "Cloud", subcategory: "Cloud management" },
 };

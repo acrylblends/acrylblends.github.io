@@ -1,0 +1,11 @@
+{
+  "name": "finops-shell",
+  "description": "The Cloud Costs workspace's page shell: the dark top bar with the billing period and the import action, and the white sidebar with the page links and the connected providers.",
+  "requires": [],
+  "inject": ["finops", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: finops-shell` / `name: finops-shell` after the finops row and before the page rows in blend.yaml; a page injects `shell`"
+}

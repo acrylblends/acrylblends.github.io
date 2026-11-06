@@ -1,0 +1,17 @@
+{
+  "name": "finops",
+  "description": "The FinOps workspace: providers, billing imports, cost lines, budgets, alerts and allocation rules, kept as JSON in the app's data home. Every page injects this one.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["finops"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: finops` / `name: finops` before the page rows in blend.yaml; a page injects the `finops` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default cloud-costs.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}
