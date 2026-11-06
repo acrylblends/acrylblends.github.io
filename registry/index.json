@@ -117,6 +117,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.prompt-lab",
+      "name": "Prompt Lab",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.prompt-lab",
+      "license": "MIT",
+      "category": "ai",
+      "description": "A prompt engineering workbench: a reusable prompt library with variables, side-by-side model runs and quick evaluations, on the model you configure.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.small-crm",
       "name": "Small CRM",
       "kind": "Blueprint",

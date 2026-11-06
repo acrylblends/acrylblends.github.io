@@ -26,4 +26,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.small-crm": { category: "Business", subcategory: "CRM" },
   "acrylblends.system-monitor": { category: "System", subcategory: "System utilities" },
   "acrylblends.snippets": { category: "Developer", subcategory: "Code editors" },
+  "acrylblends.prompt-lab": { category: "AI", subcategory: "AI assistants" },
 };
