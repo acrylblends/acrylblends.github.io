@@ -1,0 +1,15 @@
+{
+  "name": "companies",
+  "description": "Company list and profiles with linked contacts and deals.",
+  "requires": [],
+  "inject": [
+    "crm",
+    "shell",
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: companies` / `name: companies` after the contacts row; it registers its sidebar entry in ctx.effect"
+}

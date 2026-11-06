@@ -1,0 +1,17 @@
+{
+  "name": "snippets",
+  "description": "The snippet library: snippets, tags, variables and collections, saved as JSON in the app's data home. Every page plugin injects this one.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["snippets"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: snippets` / `name: snippets` before the page rows in blend.yaml; a page injects the `snippets` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default snippets.json)",
+    "store": "a Store port for tests (default: one JSON file under the app's home)",
+    "clock": "what time it is, for tests (default: the system clock)",
+    "newId": "how ids are made, for tests (default: a random UUID suffix)"
+  }
+}

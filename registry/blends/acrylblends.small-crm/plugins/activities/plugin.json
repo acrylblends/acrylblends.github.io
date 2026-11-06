@@ -1,0 +1,15 @@
+{
+  "name": "activities",
+  "description": "The follow-up queue and the activity timeline.",
+  "requires": [],
+  "inject": [
+    "crm",
+    "shell",
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: activities` / `name: activities` after the companies row; it registers its sidebar entry in ctx.effect"
+}

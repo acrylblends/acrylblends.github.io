@@ -1,0 +1,11 @@
+{
+  "name": "release-shell",
+  "description": "The Deploy Board's page shell: the dark release top bar, the control-room sidebar with the incident count, the main column and the incident rail a page may put after it.",
+  "requires": [],
+  "inject": ["release", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: release-shell` / `name: release-shell` after the release row and before the page rows in blend.yaml; a page injects `shell`"
+}

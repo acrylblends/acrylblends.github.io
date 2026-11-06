@@ -1,0 +1,16 @@
+{
+  "name": "calendar",
+  "description": "The week calendar with overlap warnings, and This week in the My Day right rail.",
+  "requires": [],
+  "inject": [
+    "hub",
+    "hubShell",
+    "router",
+    "home"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: calendar` / `name: calendar` after the notes row; it registers its sidebar entry in ctx.effect"
+}

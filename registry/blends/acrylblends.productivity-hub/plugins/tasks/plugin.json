@@ -1,0 +1,15 @@
+{
+  "name": "tasks",
+  "description": "Tasks: the list, its filters and the task page, and the Next actions part on My Day.",
+  "requires": [],
+  "inject": [
+    "router",
+    "hub",
+    "hubShell"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: tasks` / `name: tasks` after the inbox row; it registers its sidebar entry in ctx.effect"
+}

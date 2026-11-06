@@ -1,0 +1,50 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.deploy-board
+  name: "Deploy Board"
+  version: 0.1.0
+  category: devops
+  description: "A release operations console: deployments per service and environment, a chronological event feed and an incident board with a timeline."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The release board's domain: services, environments, deployments, incidents and events, saved as JSON in the app's data home.
+    - id: release
+      name: release
+    # The console shell: the dark release top bar, the control-room sidebar and the incident rail.
+    - id: release-shell
+      name: release-shell
+    # The deployment board: environment columns, the day's numbers, the event timeline and the incident rail (also answers /).
+    - id: board
+      name: board
+    # Incidents: the queue, one incident in full with its timeline, and the acknowledge/resolve actions.
+    - id: incidents
+      name: incidents
+    # Services, environments and the full event log.
+    - id: services
+      name: services
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one, which Settings > Plugins switches with `disabled: true`.
+    # This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with a row is never started twice.
+    # Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only.
+    - id: acryl-door
+      name: acryl-door

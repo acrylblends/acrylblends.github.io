@@ -1,0 +1,5 @@
+{
+  "name": "Uptime Checker",
+  "description": "A lightweight availability monitor: hosts and URLs checked on a schedule, with status history, response times and incidents.",
+  "plugins": []
+}

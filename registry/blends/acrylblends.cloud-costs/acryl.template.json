@@ -1,0 +1,5 @@
+{
+  "name": "Cloud Costs",
+  "description": "A FinOps cost explorer: monthly spend per provider and service from CSV exports, with forecasts, budgets and alerts.",
+  "plugins": []
+}

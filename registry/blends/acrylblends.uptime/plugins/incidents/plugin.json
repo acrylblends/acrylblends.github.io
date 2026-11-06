@@ -1,0 +1,11 @@
+{
+  "name": "incidents",
+  "description": "Incidents, groups and the public status page: the incident log, the groups with their monitors and the create form, and the page a customer reads.",
+  "requires": [],
+  "inject": ["uptime", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: incidents` / `name: incidents` after the monitors row in blend.yaml; it registers the Incidents, Groups and Status page entries in ctx.effect"
+}

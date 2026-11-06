@@ -1,0 +1,15 @@
+{
+  "name": "productivity-hub",
+  "description": "The hub's domain: spaces, tasks, notes, events and the inbox, saved as JSON in the app's data home. Every page plugin injects it.",
+  "requires": [],
+  "inject": [
+    "appInstance"
+  ],
+  "provides": [
+    "hub"
+  ],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: productivity-hub` / `name: productivity-hub` before the page rows in blend.yaml; a page injects the `hub` service"
+}

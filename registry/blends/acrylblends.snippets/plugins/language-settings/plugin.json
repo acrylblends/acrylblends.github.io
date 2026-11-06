@@ -1,0 +1,11 @@
+{
+  "name": "language-settings",
+  "description": "The languages settings page: the five languages the library knows, the extension each snippet gets and how much of the library each language holds.",
+  "requires": [],
+  "inject": ["snippets", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: language-settings` / `name: language-settings` after the page rows in blend.yaml; it registers its Settings entry in ctx.effect"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "collections",
+  "description": "Collections: named lists of snippets, with their pages, the create form, adding a snippet and the collection list in the shell's sidebar.",
+  "requires": [],
+  "inject": ["snippets", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: collections` / `name: collections` after the shell row in blend.yaml; it registers its All collections entry in ctx.effect"
+}

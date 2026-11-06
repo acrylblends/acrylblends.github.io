@@ -1,0 +1,11 @@
+{
+  "name": "uptime-shell",
+  "description": "The Uptime Checker's page shell: the dark status rail with the breadcrumb, the page links, the checks-running state and the add-monitor action, and the main column every page fills.",
+  "requires": [],
+  "inject": ["uptime", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: uptime-shell` / `name: uptime-shell` after the uptime row and before the page rows in blend.yaml; a page injects `shell`"
+}

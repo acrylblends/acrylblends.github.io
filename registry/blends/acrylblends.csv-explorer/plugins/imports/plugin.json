@@ -1,0 +1,11 @@
+{
+  "name": "imports",
+  "description": "The CSV import page: paste a file or pick one from the disk (the browser reads it, nothing is uploaded), with the column profile inferred on save.",
+  "requires": [],
+  "inject": ["tables", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: imports` / `name: imports` after the explorer row in blend.yaml; it registers the Import entry in ctx.effect"
+}

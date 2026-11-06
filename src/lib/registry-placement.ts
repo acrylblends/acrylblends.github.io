@@ -49,4 +49,11 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.decentralized-federary": { category: "Decentralized", subcategory: "Federated systems" },
   "acrylblends.p2p-swarmdrop": { category: "Peer-to-Peer", subcategory: "File sharing" },
   "acrylblends.system-monitor": { category: "System", subcategory: "System utilities" },
+  "acrylblends.snippets": { category: "Developer", subcategory: "Code editors" },
+  "acrylblends.prompt-lab": { category: "AI", subcategory: "AI assistants" },
+  "acrylblends.csv-explorer": { category: "Data", subcategory: "Data platforms" },
+  "acrylblends.web-analytics": { category: "Analytics", subcategory: "Web analytics" },
+  "acrylblends.cloud-costs": { category: "Cloud", subcategory: "Cloud management" },
+  "acrylblends.deploy-board": { category: "DevOps", subcategory: "CI/CD" },
+  "acrylblends.uptime": { category: "Networking", subcategory: "Network management" },
 };

@@ -1,0 +1,15 @@
+{
+  "name": "pipeline",
+  "description": "The deals board with its inspector and the form that adds a deal; the default work surface, also answering /.",
+  "requires": [],
+  "inject": [
+    "crm",
+    "shell",
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: pipeline` / `name: pipeline` after the shell row; it registers its sidebar entry in ctx.effect"
+}

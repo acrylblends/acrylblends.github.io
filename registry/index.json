@@ -139,6 +139,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.cloud-costs",
+      "name": "Cloud Costs",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.cloud-costs",
+      "license": "MIT",
+      "category": "cloud",
+      "description": "A FinOps cost explorer: monthly spend per provider and service from CSV exports, with forecasts, budgets and alerts.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.compliance-northstar-grc",
       "name": "Northstar GRC",
       "kind": "Blueprint",
@@ -150,6 +161,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.csv-explorer",
+      "name": "CSV Explorer",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.csv-explorer",
+      "license": "MIT",
+      "category": "data",
+      "description": "A local-first data workbench: import a CSV, read its column profile, filter and sort the rows, chart a column and save views.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.decentralized-federary",
       "name": "Federary Network",
       "kind": "Blueprint",
@@ -158,6 +180,17 @@
       "license": "MIT",
       "category": "decentralized",
       "description": "A federation administration console: a topology map of fictional instances with trust edges and health, an instance profile with policy, identity assertion and handshake, inbound and outbound federation requests, a moderation queue, trust rules that can stop an approval, and reversible recorded decisions.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.deploy-board",
+      "name": "Deploy Board",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.deploy-board",
+      "license": "MIT",
+      "category": "devops",
+      "description": "A release operations console: deployments per service and environment, a chronological event feed and an incident board with a timeline.",
       "runtime": "acrylblends"
     },
     {
@@ -293,6 +326,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.prompt-lab",
+      "name": "Prompt Lab",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.prompt-lab",
+      "license": "MIT",
+      "category": "ai",
+      "description": "A prompt engineering workbench: a reusable prompt library with variables, side-by-side model runs and quick evaluations, on the model you configure.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.remote-relay",
       "name": "Remote Relay",
       "kind": "Blueprint",
@@ -337,6 +381,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.snippets",
+      "name": "Snippet Manager",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.snippets",
+      "license": "MIT",
+      "category": "developer",
+      "description": "A developer's snippet vault: 128 reusable code snippets with tags, variables, syntax-coloured previews, search and collections.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.storage-vaultline",
       "name": "Vaultline",
       "kind": "Blueprint",
@@ -370,6 +425,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.uptime",
+      "name": "Uptime Checker",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.uptime",
+      "license": "MIT",
+      "category": "networking",
+      "description": "A lightweight availability monitor: hosts and URLs checked on a schedule, with status history, response times and incidents.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.virtualization-hyperplane",
       "name": "Hyperplane",
       "kind": "Blueprint",
@@ -378,6 +444,17 @@
       "license": "MIT",
       "category": "virtualization",
       "description": "A virtualization console: pick a host, search and filter the machine inventory, start, pause, stop and snapshot machines under a lifecycle state machine with capacity guards, and provision new ones.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.web-analytics",
+      "name": "Web Analytics",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.web-analytics",
+      "license": "MIT",
+      "category": "analytics",
+      "description": "A privacy-conscious website analytics console: a tracking snippet, page-view events in, and a daily dashboard of visitors, sources, pages and conversions.",
       "runtime": "acrylblends"
     },
     {
