@@ -1,0 +1,9 @@
+{
+  "name": "logbook-shell",
+  "description": "The Flight Logbook's page shell: the SKYLOG top bar with the pilot records crumb, the page links and the log-flight action.",
+  "requires": [],
+  "inject": ["logbook", "router"],
+  "provides": ["shell"],
+  "dependencies": { "@deepseek-ai/cordis": "4.0.4" },
+  "mount": "a row `- id: logbook-shell` / `name: logbook-shell` after the logbook row and before the flights row in blend.yaml; a page injects `shell`"
+}

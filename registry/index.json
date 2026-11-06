@@ -216,6 +216,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.flight-logbook",
+      "name": "Flight Logbook",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.flight-logbook",
+      "license": "MIT",
+      "category": "aerospace-aviation",
+      "description": "A pilot logbook: 486:35 total time, 72:20 this year across 43 flights, 318:10 PIC, 12:45 in the last 90 days, a flight table with aircraft and role filters, route detail, an experience summary and CSV export.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.hci-sensepath-lab",
       "name": "Sensepath Lab",
       "kind": "Blueprint",

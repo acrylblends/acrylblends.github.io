@@ -65,4 +65,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.robot-missions": { category: "Robotics", subcategory: "Motion planning" },
   "acrylblends.sensor-dashboard": { category: "Embedded / IoT", subcategory: "IoT platforms" },
   "acrylblends.vehicle-log": { category: "Automotive", subcategory: "Infotainment" },
+  "acrylblends.flight-logbook": { category: "Aerospace / Aviation", subcategory: "Navigation" },
 };

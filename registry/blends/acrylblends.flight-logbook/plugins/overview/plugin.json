@@ -1,0 +1,11 @@
+{
+  "name": "overview",
+  "description": "The logbook at /: the pilot summary, total/year/PIC/90-day totals, the next check, the recent flight table with aircraft and role filters, and the selected flight's route card.",
+  "requires": [],
+  "inject": ["logbook", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: overview` / `name: overview` after the shell row in blend.yaml; it registers Logbook"
+}

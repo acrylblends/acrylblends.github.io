@@ -1,0 +1,5 @@
+{
+  "name": "Flight Logbook",
+  "description": "A pilot logbook: 486:35 total time, 72:20 this year across 43 flights, 318:10 PIC, 12:45 in the last 90 days, a flight table with aircraft and role filters, route detail, an experience summary and CSV export.",
+  "plugins": []
+}

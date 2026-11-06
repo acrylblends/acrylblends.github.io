@@ -1,0 +1,11 @@
+{
+  "name": "experience",
+  "description": "Experience summary at /experience: hours by aircraft class, role, day/night and period, with the informational currency note.",
+  "requires": [],
+  "inject": ["logbook", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: experience` / `name: experience` after the flights row in blend.yaml; it registers Experience"
+}

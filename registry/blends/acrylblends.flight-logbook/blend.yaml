@@ -1,0 +1,42 @@
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.flight-logbook
+  name: "Flight Logbook"
+  version: 0.1.0
+  category: aerospace-aviation
+  description: "A pilot logbook: 486:35 total time, 72:20 this year across 43 flights, 318:10 PIC, 12:45 in the last 90 days, a flight table with aircraft and role filters, route detail, an experience summary and CSV export."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    - id: home
+      name: home
+    # The domain: the pilot, aircraft, flights, endorsements and totals, saved as JSON in the app's data home.
+    - id: logbook
+      name: logbook
+    # The SKYLOG top bar with the pilot records crumb and the log-flight action.
+    - id: logbook-shell
+      name: logbook-shell
+    # The logbook at /: pilot summary, hour totals, the flight table with aircraft and role filters and the selected route.
+    - id: overview
+      name: overview
+    # Flights: the detail at /flights/:id, the new form at /flights/new, the draft editor and the CSV export.
+    - id: flights
+      name: flights
+    # Experience summary at /experience: hours by aircraft class, role, day/night and period.
+    - id: experience
+      name: experience
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    - id: acryl-door
+      name: acryl-door

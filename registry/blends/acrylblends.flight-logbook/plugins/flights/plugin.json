@@ -1,0 +1,11 @@
+{
+  "name": "flights",
+  "description": "Flights: the detail at /flights/:id with route, aircraft, times, role, landings and remarks; the new form at /flights/new; the draft editor; and the CSV export.",
+  "requires": [],
+  "inject": ["logbook", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: flights` / `name: flights` after the overview row in blend.yaml"
+}
