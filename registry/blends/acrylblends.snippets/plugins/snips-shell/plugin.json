@@ -1,0 +1,11 @@
+{
+  "name": "snips-shell",
+  "description": "The Snippet Manager's page shell: the dark top bar, the library sidebar with its language and collection lists, links under the mount prefix and the page wrapper every page plugin uses.",
+  "requires": [],
+  "inject": ["snippets", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: snips-shell` / `name: snips-shell` after the snippets row and before the page rows in blend.yaml; a page injects `shell` and calls ctx.shell.nav(...) inside ctx.effect"
+}

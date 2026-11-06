@@ -1,0 +1,11 @@
+{
+  "name": "editor",
+  "description": "The snippet editor: a form that creates a snippet or changes one, with validation, an unsaved-changes warning and the New snippet button in the top bar.",
+  "requires": [],
+  "inject": ["snippets", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: editor` / `name: editor` after the shell row in blend.yaml; it registers the top-bar New snippet button in ctx.effect"
+}

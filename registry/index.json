@@ -128,6 +128,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.snippets",
+      "name": "Snippet Manager",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.snippets",
+      "license": "MIT",
+      "category": "developer",
+      "description": "A developer's snippet vault: 128 reusable code snippets with tags, variables, syntax-coloured previews, search and collections.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.system-monitor",
       "name": "System Monitor",
       "kind": "Blueprint",
