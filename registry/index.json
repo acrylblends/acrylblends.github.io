@@ -282,6 +282,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.maintenance-log",
+      "name": "Maintenance Log",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.maintenance-log",
+      "license": "MIT",
+      "category": "industrial",
+      "description": "An industrial maintenance control room: 18 machines, 12 open work orders (4 awaiting parts, 3 overdue), 6.4 hours of downtime this month, asset profiles, and work orders closed only with a dated note and downtime.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.messaging-pulsebus",
       "name": "Pulsebus",
       "kind": "Blueprint",

@@ -1,0 +1,11 @@
+{
+  "name": "control",
+  "description": "The maintenance control room at /: open work orders, overdue PM, downtime and availability, the equipment register with a status filter, upcoming work and the selected asset panel.",
+  "requires": [],
+  "inject": ["plant", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: control` / `name: control` after the shell row in blend.yaml"
+}

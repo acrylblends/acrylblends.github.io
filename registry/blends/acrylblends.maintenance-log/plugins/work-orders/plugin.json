@@ -1,0 +1,11 @@
+{
+  "name": "work-orders",
+  "description": "Work orders: the create form at /work-orders/new and the detail at /work-orders/:id with assign, reschedule, start and a dated close-out with downtime and parts.",
+  "requires": [],
+  "inject": ["plant", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: work-orders` / `name: work-orders` after the machines row in blend.yaml"
+}

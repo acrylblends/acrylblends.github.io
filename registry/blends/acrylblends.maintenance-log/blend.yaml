@@ -1,0 +1,42 @@
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.maintenance-log
+  name: "Maintenance Log"
+  version: 0.1.0
+  category: industrial
+  description: "An industrial maintenance control room: 18 machines, 12 open work orders (4 awaiting parts, 3 overdue), 6.4 hours of downtime this month, asset profiles, and work orders closed only with a dated note and downtime."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    - id: home
+      name: home
+    # The domain: machines, work orders and service history, saved as JSON in the app's data home.
+    - id: plant
+      name: plant
+    # The PLANT/OPS top bar with the site and online count.
+    - id: plant-shell
+      name: plant-shell
+    # The control room at /: metrics, the equipment register with a status filter, upcoming work and the selected asset.
+    - id: control
+      name: control
+    # Asset profiles at /machines/:id: operating hours, health, open tasks and the service history.
+    - id: machines
+      name: machines
+    # Work orders: create at /work-orders/new, detail at /work-orders/:id, assign, schedule, start and close-out.
+    - id: work-orders
+      name: work-orders
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    - id: acryl-door
+      name: acryl-door

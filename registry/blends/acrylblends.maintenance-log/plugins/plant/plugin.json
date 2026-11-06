@@ -1,0 +1,17 @@
+{
+  "name": "plant",
+  "description": "The Maintenance Log's domain: 18 machines, work orders with parts and checklists, the service history and the control-room counts, saved as JSON in the app's data home.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["plant"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: plant` / `name: plant` before the page rows in blend.yaml; a page injects the `plant` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default maintenance-log.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "name": "Maintenance Log",
+  "description": "An industrial maintenance control room: 18 machines, 12 open work orders (4 awaiting parts, 3 overdue), 6.4 hours of downtime this month, asset profiles, and work orders closed only with a dated note and downtime.",
+  "plugins": []
+}

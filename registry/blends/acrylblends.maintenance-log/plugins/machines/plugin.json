@@ -1,0 +1,11 @@
+{
+  "name": "machines",
+  "description": "Asset profiles at /machines/:id: operating hours, health index, next service, open tasks and the service history with costs and parts.",
+  "requires": [],
+  "inject": ["plant", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: machines` / `name: machines` after the control row in blend.yaml"
+}

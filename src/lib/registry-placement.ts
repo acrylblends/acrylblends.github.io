@@ -61,4 +61,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.lab-notebook": { category: "Scientific & Engineering", subcategory: "Science" },
   "acrylblends.vuln-tracker": { category: "Cybersecurity", subcategory: "Security operations" },
   "acrylblends.link-shortener": { category: "Internet", subcategory: "Internet publishing" },
+  "acrylblends.maintenance-log": { category: "Industrial", subcategory: "Manufacturing" },
 };

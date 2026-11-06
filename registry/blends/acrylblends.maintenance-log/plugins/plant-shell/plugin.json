@@ -1,0 +1,14 @@
+{
+  "name": "plant-shell",
+  "description": "The Maintenance Log's page shell: the PLANT/OPS top bar with the facility, the online machine count and the plant selector.",
+  "requires": [],
+  "inject": ["plant", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: plant-shell` / `name: plant-shell` after the plant row and before the page rows in blend.yaml",
+  "config": {
+    "prefix": "the mount prefix the frame host chose; set by createApp, not by hand"
+  }
+}
