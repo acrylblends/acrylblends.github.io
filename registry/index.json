@@ -513,6 +513,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.vehicle-log",
+      "name": "Vehicle Log",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.vehicle-log",
+      "license": "MIT",
+      "category": "automotive",
+      "description": "An owner-oriented garage logbook: a Volvo XC60 with 86,420 km, four service records, ten fuel entries, insurance, tax and inspection costs, reminders, a EUR 2,184 year and a EUR 0.31 lifetime cost per km.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.virtualization-hyperplane",
       "name": "Hyperplane",
       "kind": "Blueprint",

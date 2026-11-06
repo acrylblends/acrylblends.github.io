@@ -1,0 +1,45 @@
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.vehicle-log
+  name: "Vehicle Log"
+  version: 0.1.0
+  category: automotive
+  description: "An owner-oriented garage logbook: a Volvo XC60 with 86,420 km, four service records, ten fuel entries, insurance, tax and inspection costs, reminders, a EUR 2,184 year and a EUR 0.31 lifetime cost per km."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    - id: home
+      name: home
+    # The domain: the vehicle, service records, fuel entries and reminders, saved as JSON in the app's data home.
+    - id: garage
+      name: garage
+    # The MOTORLOG top bar with the garage links.
+    - id: garage-shell
+      name: garage-shell
+    # The vehicle profile at /: the hero, running-cost metrics, service history, cost trend, fuel entry, odometer and reminders.
+    - id: profile
+      name: profile
+    # Service history at /services with a type filter, and the add form at /services/new.
+    - id: services
+      name: services
+    # Expenses at /expenses: service, fuel and other cost breakdown, the lists and the add form.
+    - id: expenses
+      name: expenses
+    # Documents at /documents: registration and the masked VIN.
+    - id: documents
+      name: documents
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    - id: acryl-door
+      name: acryl-door

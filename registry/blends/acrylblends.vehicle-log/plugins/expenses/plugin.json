@@ -1,0 +1,11 @@
+{
+  "name": "expenses",
+  "description": "Expenses at /expenses: the service, fuel and other cost breakdown, the dated list of all costs, the cost per km and the add-expense form.",
+  "requires": [],
+  "inject": ["garage", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: expenses` / `name: expenses` after the services row in blend.yaml; it registers Expenses"
+}

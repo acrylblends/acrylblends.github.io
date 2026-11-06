@@ -1,0 +1,11 @@
+{
+  "name": "services",
+  "description": "Service history at /services with a type filter, and the add form at /services/new with date, odometer, provider, description, cost and parts validation.",
+  "requires": [],
+  "inject": ["garage", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: services` / `name: services` after the profile row in blend.yaml; it registers Maintenance"
+}

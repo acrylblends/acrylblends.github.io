@@ -1,0 +1,9 @@
+{
+  "name": "garage",
+  "description": "The Vehicle Log's domain: a vehicle, service records, fuel entries and reminders, saved as JSON in the app's data home. The page plugin injects it.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["garage"],
+  "dependencies": { "@deepseek-ai/cordis": "4.0.4" },
+  "mount": "a row `- id: garage` / `name: garage` before the page rows in blend.yaml; a page injects the `garage` service"
+}

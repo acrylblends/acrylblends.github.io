@@ -1,0 +1,11 @@
+{
+  "name": "profile",
+  "description": "The vehicle profile at /: the Volvo hero, running-cost metrics, the latest service history, the monthly cost trend, the fuel entry, the odometer update and the reminders.",
+  "requires": [],
+  "inject": ["garage", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: profile` / `name: profile` after the shell row in blend.yaml; it registers My vehicles"
+}

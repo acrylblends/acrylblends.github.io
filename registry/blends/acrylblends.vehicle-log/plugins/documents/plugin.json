@@ -1,0 +1,11 @@
+{
+  "name": "documents",
+  "description": "Documents at /documents: the registration, the masked VIN and the vehicle identity, with the privacy note.",
+  "requires": [],
+  "inject": ["garage", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: documents` / `name: documents` after the expenses row in blend.yaml; it registers Documents"
+}

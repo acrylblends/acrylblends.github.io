@@ -1,0 +1,9 @@
+{
+  "name": "garage-shell",
+  "description": "The Vehicle Log's page shell: the MOTORLOG top bar with the garage links and the vehicle count.",
+  "requires": [],
+  "inject": ["garage", "router"],
+  "provides": ["shell"],
+  "dependencies": { "@deepseek-ai/cordis": "4.0.4" },
+  "mount": "a row `- id: garage-shell` / `name: garage-shell` after the garage row and before the vehicle row in blend.yaml; a page injects `shell`"
+}
