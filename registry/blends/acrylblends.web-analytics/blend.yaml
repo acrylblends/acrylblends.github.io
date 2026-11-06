@@ -1,0 +1,50 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.web-analytics
+  name: "Web Analytics"
+  version: 0.1.0
+  category: analytics
+  description: "A privacy-conscious website analytics console: a tracking snippet, page-view events in, and a daily dashboard of visitors, sources, pages and conversions."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The analytics workspace: properties, daily metrics, pages, sources, events and conversions, saved as JSON in the app's data home.
+    - id: analytics
+      name: analytics
+    # The console shell: the white sidebar with the property, the report links and the tracking state.
+    - id: analytics-shell
+      name: analytics-shell
+    # The overview: KPI cards with sparklines, the visitors chart, top pages and traffic sources (also answers /).
+    - id: overview
+      name: overview
+    # The reports: acquisition, pages and screens, the event explorer and conversions with a funnel.
+    - id: reports
+      name: reports
+    # Tracking: the collect endpoint the snippet posts to, and the setup page with the snippet and the install state.
+    - id: tracking
+      name: tracking
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one, which Settings > Plugins switches with `disabled: true`.
+    # This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with a row is never started twice.
+    # Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only.
+    - id: acryl-door
+      name: acryl-door

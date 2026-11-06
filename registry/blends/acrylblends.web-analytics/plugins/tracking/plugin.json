@@ -1,0 +1,11 @@
+{
+  "name": "tracking",
+  "description": "The tracking endpoint (POST /collect, CORS) the site's snippet posts page views to, and the setup page with the snippet, the property and its install state.",
+  "requires": [],
+  "inject": ["analytics", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: tracking` / `name: tracking` after the report rows in blend.yaml; it registers the Configure entries in ctx.effect"
+}

@@ -28,4 +28,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.snippets": { category: "Developer", subcategory: "Code editors" },
   "acrylblends.prompt-lab": { category: "AI", subcategory: "AI assistants" },
   "acrylblends.csv-explorer": { category: "Data", subcategory: "Data platforms" },
+  "acrylblends.web-analytics": { category: "Analytics", subcategory: "Web analytics" },
 };

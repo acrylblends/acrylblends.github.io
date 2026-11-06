@@ -1,0 +1,17 @@
+{
+  "name": "analytics",
+  "description": "The Web Analytics workspace: properties, daily metrics, pages, sources, events and conversions, kept as JSON in the app's data home; the tracking endpoint writes page views through the same service.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["analytics"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: analytics` / `name: analytics` before the report rows in blend.yaml; a page injects the `analytics` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default web-analytics.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}

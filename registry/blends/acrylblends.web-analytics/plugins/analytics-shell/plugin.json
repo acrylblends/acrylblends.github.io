@@ -1,0 +1,11 @@
+{
+  "name": "analytics-shell",
+  "description": "The Web Analytics console's page shell: the white sidebar with the property, the report links and the tracking state, and the main column every report fills.",
+  "requires": [],
+  "inject": ["analytics", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: analytics-shell` / `name: analytics-shell` after the analytics row and before the report rows in blend.yaml; a page injects `shell`"
+}

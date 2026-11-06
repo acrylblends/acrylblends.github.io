@@ -170,6 +170,17 @@
       "category": "system",
       "description": "This machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program.",
       "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.web-analytics",
+      "name": "Web Analytics",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.web-analytics",
+      "license": "MIT",
+      "category": "analytics",
+      "description": "A privacy-conscious website analytics console: a tracking snippet, page-view events in, and a daily dashboard of visitors, sources, pages and conversions.",
+      "runtime": "acrylblends"
     }
   ]
 }
