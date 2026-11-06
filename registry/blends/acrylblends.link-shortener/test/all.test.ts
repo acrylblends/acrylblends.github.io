@@ -177,3 +177,55 @@ test('health, 404, manifest and the prefix work; assets off leaves the app runni
     await rm(home, { recursive: true, force: true })
   }
 })
+
+test('the status filters split active, expired and disabled links, and an unmatched search is empty', () =>
+  withApp(async (app) => {
+    const active = await app.page('/links?state=active')
+    assert.match(active.html, /go\.acme\.to\/autumn/)
+    assert.doesNotMatch(active.html, /spring-sale/)
+    const expired = await app.page('/links?state=expired')
+    assert.match(expired.html, /spring-sale/)
+    assert.doesNotMatch(expired.html, /go\.acme\.to\/autumn/)
+    const disabled = await app.page('/links?state=disabled')
+    assert.match(disabled.html, /newsletter/)
+    const empty = await app.page('/links?q=nothing-matches-anything')
+    assert.match(empty.html, /No links match/)
+  }))
+
+test('a link detail shows the referrer and country breakdowns and the short URL', () =>
+  withApp(async (app) => {
+    const link = app.root.shortly.links().find((item) => item.slug === 'autumn')
+    assert.ok(link !== undefined)
+    const page = await app.page(`/links/${link.id}`)
+    assert.equal(page.status, 200)
+    assert.match(page.html, /Referrers/)
+    assert.match(page.html, /Countries/)
+    assert.match(page.html, /instagram\.com/)
+    assert.match(page.html, /Short link|go\.acme\.to\/autumn/)
+    assert.match(page.html, /Disable/)
+  }))
+
+test('campaigns list the tags with their links and clicks', () =>
+  withApp(async (app) => {
+    const page = await app.page('/campaigns')
+    assert.equal(page.status, 200)
+    assert.match(page.html, /Campaigns/)
+    assert.match(page.html, /campaign/)
+    assert.match(page.html, /resources/)
+    assert.match(page.html, /Open in Links/)
+  }))
+
+test('switching campaigns off removes only that page', async () => {
+  const manifest = readManifest()
+  const without = { ...manifest, plugins: manifest.plugins.map((row) => (row.id === 'campaigns' ? { ...row, disabled: true } : row)) }
+  const home = await mkdtemp(join(scratch, 'app-test-off-campaigns-'))
+  let ids = 0
+  const app = await createApp(pinnedInstance(home, { root: projectRoot }), { listen: false, manifest: without, overrides: { shortly: { clock: () => NOW, newId: (kind: string) => `${kind}-${++ids}` } } })
+  try {
+    assert.equal((await app.root.router.request('/campaigns')).status, 404)
+    assert.equal((await app.root.router.request('/', { headers: { accept: 'text/html' } })).status, 200)
+  } finally {
+    await app.stop()
+    await rm(home, { recursive: true, force: true })
+  }
+})
