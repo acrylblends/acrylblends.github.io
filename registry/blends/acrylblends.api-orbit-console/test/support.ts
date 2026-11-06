@@ -17,6 +17,8 @@ const scratch = join(projectRoot, '.acrylblends', 'test')
 mkdirSync(scratch, { recursive: true })
 
 /** The tests' "now": Thursday 5 November 2026, 11:00 local time. */
+// The seed and the clock are the person's local time while the assertions write UTC literals: pin the zone so the suite passes on any machine.
+process.env.TZ = 'UTC'
 export const NOW = new Date(2026, 10, 5, 11, 0)
 
 export interface TestApp extends App {
