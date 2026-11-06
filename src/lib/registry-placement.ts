@@ -58,4 +58,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.uptime": { category: "Networking", subcategory: "Network management" },
   "acrylblends.photo-gallery": { category: "Media", subcategory: "Graphics" },
   "acrylblends.moodboard": { category: "3D / CAD / Design", subcategory: "3D" },
+  "acrylblends.lab-notebook": { category: "Scientific & Engineering", subcategory: "Science" },
 };

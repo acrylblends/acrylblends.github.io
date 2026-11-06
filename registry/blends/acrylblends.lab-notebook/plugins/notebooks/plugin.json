@@ -1,0 +1,11 @@
+{
+  "name": "notebooks",
+  "description": "Notebooks: the list at /notebooks and the create form at /notebooks/new, with the code, title and project validated.",
+  "requires": [],
+  "inject": ["lab", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: notebooks` / `name: notebooks` after the record row in blend.yaml"
+}

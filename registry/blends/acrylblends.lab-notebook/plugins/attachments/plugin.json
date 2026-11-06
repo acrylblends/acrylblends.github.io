@@ -1,0 +1,11 @@
+{
+  "name": "attachments",
+  "description": "Attachments: the files kept with an experiment at /experiments/:id/attachments, the add form and its type and size validation.",
+  "requires": [],
+  "inject": ["lab", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: attachments` / `name: attachments` after the data row in blend.yaml"
+}

@@ -238,6 +238,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.lab-notebook",
+      "name": "Lab Notebook",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.lab-notebook",
+      "license": "MIT",
+      "category": "scientific-engineering",
+      "description": "A research notebook: three notebooks and 23 experiments, an append-only record with measurements, a chart, observations, attachments, audit history, an exact unit converter and a CSV data table.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.libraries-foundry",
       "name": "The Foundry",
       "kind": "Blueprint",

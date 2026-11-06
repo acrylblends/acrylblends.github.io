@@ -1,0 +1,17 @@
+{
+  "name": "lab",
+  "description": "The notebook's domain: notebooks, experiments, append-only measurements and observations, attachments, the audit trail and exact unit conversion, saved as JSON in the app's data home.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["lab"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: lab` / `name: lab` before the page rows in blend.yaml; a page injects the `lab` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default lab-notebook.json)",
+    "store": "a Store port for tests (default: one JSON file under the app's home)",
+    "clock": "what time it is, for tests (default: the system clock)",
+    "newId": "how ids are made, for tests (default: a random UUID suffix)"
+  }
+}

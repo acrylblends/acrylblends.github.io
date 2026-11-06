@@ -1,0 +1,11 @@
+{
+  "name": "record",
+  "description": "The experiment record at / and /experiments/:id: the paper with objective, method, measurement cards, chart, observations, audit trail, the unit converter and the metadata aside.",
+  "requires": [],
+  "inject": ["lab", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: record` / `name: record` after the shell row in blend.yaml"
+}

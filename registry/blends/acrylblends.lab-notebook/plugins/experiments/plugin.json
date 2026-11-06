@@ -1,0 +1,11 @@
+{
+  "name": "experiments",
+  "description": "Experiments: the create form at /experiments/new, the audit history at /experiments/:id/history and the record export at /experiments/:id/export.json.",
+  "requires": [],
+  "inject": ["lab", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: experiments` / `name: experiments` after the notebooks row in blend.yaml"
+}

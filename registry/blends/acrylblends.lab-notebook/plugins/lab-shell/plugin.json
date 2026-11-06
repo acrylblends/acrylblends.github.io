@@ -1,0 +1,14 @@
+{
+  "name": "lab-shell",
+  "description": "The Lab Notebook's page shell: the FIELD / LAB sidebar with the three notebooks, the new-notebook action, the active experiment list and the project footer.",
+  "requires": [],
+  "inject": ["lab", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: lab-shell` / `name: lab-shell` after the lab row and before the page rows in blend.yaml",
+  "config": {
+    "prefix": "the mount prefix the frame host chose; set by createApp, not by hand"
+  }
+}
