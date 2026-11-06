@@ -1,0 +1,11 @@
+{
+  "name": "vuln-shell",
+  "description": "The Vulnerability Tracker's page shell: the dark security rail with the page links and the workspace, the page wrapper and the toast/copy client script.",
+  "requires": [],
+  "inject": ["vulns", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: vuln-shell` / `name: vuln-shell` after the vulns row and before the page rows in blend.yaml; a page injects `shell`"
+}

@@ -1,0 +1,17 @@
+{
+  "name": "vulns",
+  "description": "The Vulnerability Tracker's domain: assets, findings and the remediation audit trail, saved as JSON in the app's data home. Every page plugin injects it.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["vulns"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: vulns` / `name: vulns` before the page rows in blend.yaml; a page injects the `vulns` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default vulnerability-tracker.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}

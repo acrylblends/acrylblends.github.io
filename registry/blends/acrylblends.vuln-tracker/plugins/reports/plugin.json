@@ -1,0 +1,11 @@
+{
+  "name": "reports",
+  "description": "Reports: open findings by severity and status, the assets at risk, and the JSON and CSV exports of the console at /reports, /export.json and /export.csv.",
+  "requires": [],
+  "inject": ["vulns", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: reports` / `name: reports` after the remediation row in blend.yaml; it registers Reports in ctx.effect"
+}

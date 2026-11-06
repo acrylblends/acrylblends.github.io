@@ -1,0 +1,11 @@
+{
+  "name": "overview",
+  "description": "The vulnerability overview: metrics, the prioritized table with severity and status filters, the finding inspector with affected/fixed versions, the remediation checklist and verification record, and the evidence-gated remediation actions.",
+  "requires": [],
+  "inject": ["vulns", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: overview` / `name: overview` after the shell row in blend.yaml; it registers Overview and Vulnerabilities in ctx.effect"
+}

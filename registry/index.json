@@ -480,6 +480,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.vuln-tracker",
+      "name": "Vulnerability Tracker",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.vuln-tracker",
+      "license": "MIT",
+      "category": "cybersecurity",
+      "description": "A security-operations console: 24 assets and 128 open findings with severity and status filters, a finding inspector, an evidence-gated remediation trail, reports, policies and JSON/CSV exports.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.web-analytics",
       "name": "Web Analytics",
       "kind": "Blueprint",

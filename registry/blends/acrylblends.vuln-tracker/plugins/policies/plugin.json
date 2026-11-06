@@ -1,0 +1,11 @@
+{
+  "name": "policies",
+  "description": "Policies: the remediation SLA by severity and the evidence rule the console enforces, at /policies.",
+  "requires": [],
+  "inject": ["vulns", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: policies` / `name: policies` after the reports row in blend.yaml; it registers Policies in ctx.effect"
+}

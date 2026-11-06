@@ -59,4 +59,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.photo-gallery": { category: "Media", subcategory: "Graphics" },
   "acrylblends.moodboard": { category: "3D / CAD / Design", subcategory: "3D" },
   "acrylblends.lab-notebook": { category: "Scientific & Engineering", subcategory: "Science" },
+  "acrylblends.vuln-tracker": { category: "Cybersecurity", subcategory: "Security operations" },
 };

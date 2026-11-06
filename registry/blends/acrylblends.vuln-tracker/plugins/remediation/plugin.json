@@ -1,0 +1,11 @@
+{
+  "name": "remediation",
+  "description": "Remediation: the console-wide append-only audit trail at /remediation, newest first, with an action filter and the finding each event belongs to.",
+  "requires": [],
+  "inject": ["vulns", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: remediation` / `name: remediation` after the assets row in blend.yaml; it registers Remediation in ctx.effect"
+}

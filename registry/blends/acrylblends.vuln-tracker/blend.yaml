@@ -1,0 +1,49 @@
+# The app as data, in ACRYL's Blend format: which plugins it mounts, in what order, with what config.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.vuln-tracker
+  name: "Vulnerability Tracker"
+  version: 0.1.0
+  category: cybersecurity
+  description: "A security-operations console: 24 assets and 128 open findings with severity and status filters, a finding inspector, an evidence-gated remediation trail, reports, policies and JSON/CSV exports."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    - id: home
+      name: home
+    # The domain: assets, findings and the remediation audit trail, saved as JSON in the app's data home.
+    - id: vulns
+      name: vulns
+    # The security console shell: the dark rail, the page links and the workspace.
+    - id: vuln-shell
+      name: vuln-shell
+    # The overview: metrics, the prioritized table and the finding inspector with the remediation actions (also answers /).
+    - id: overview
+      name: overview
+    # The asset inventory: environment, platform, owner, criticality and open findings.
+    - id: assets
+      name: assets
+    # Remediation: the console-wide audit trail at /remediation, newest first.
+    - id: remediation
+      name: remediation
+    # Reports: severity and status distributions at /reports, with /export.json and /export.csv.
+    - id: reports
+      name: reports
+    # Policies: the SLA table and the evidence rule at /policies.
+    - id: policies
+      name: policies
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    - id: acryl-door
+      name: acryl-door

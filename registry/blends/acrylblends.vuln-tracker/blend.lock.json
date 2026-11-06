@@ -1,0 +1,179 @@
+{
+  "formatVersion": 3,
+  "generator": {
+    "name": "@webboxes/blends-core",
+    "version": "0.4.0"
+  },
+  "origin": {
+    "id": "acrylblends.vuln-tracker",
+    "kind": "Blueprint",
+    "version": "0.1.0",
+    "digest": "e1708b87a0f245a92404e8970f66d1df2e13c2de028cf489707646b64172be10"
+  },
+  "parameters": {
+    "hostname": "127.0.0.1"
+  },
+  "rows": [
+    {
+      "id": "router",
+      "name": "acryl-router"
+    },
+    {
+      "id": "home",
+      "name": "home"
+    },
+    {
+      "id": "vulns",
+      "name": "vulns"
+    },
+    {
+      "id": "vuln-shell",
+      "name": "vuln-shell"
+    },
+    {
+      "id": "overview",
+      "name": "overview"
+    },
+    {
+      "id": "assets",
+      "name": "assets"
+    },
+    {
+      "id": "remediation",
+      "name": "remediation"
+    },
+    {
+      "id": "reports",
+      "name": "reports"
+    },
+    {
+      "id": "policies",
+      "name": "policies"
+    },
+    {
+      "id": "extensions",
+      "name": "extensions"
+    },
+    {
+      "id": "server",
+      "name": "acryl-node-server",
+      "config": {
+        "hostname": "127.0.0.1"
+      }
+    },
+    {
+      "id": "acryl-door",
+      "name": "acryl-door"
+    }
+  ],
+  "modules": [
+    {
+      "name": "acryl-door",
+      "origin": "local",
+      "digest": "sha256:33468e9fe92b1fd9b74b2ff2634ecc92536bb254edf8f23449734792c48c8085",
+      "source": "plugins/acryl-door"
+    },
+    {
+      "name": "acryl-node-server",
+      "origin": "local",
+      "digest": "sha256:a6a0ca8b7117cfc07e6cc5f8338c79491d37574e3c2e106f8d7bc60f32c24108",
+      "source": "plugins/acryl-node-server"
+    },
+    {
+      "name": "acryl-page",
+      "origin": "local",
+      "digest": "sha256:d6c2395b7adbed77f5897bf7b3192e6a007a2ac9d584c452ac4991770134faf7",
+      "source": "plugins/acryl-page"
+    },
+    {
+      "name": "acryl-router",
+      "origin": "local",
+      "digest": "sha256:ab4da3de0c211b9f176b3b42ec28eb7a405b263e01e103d42d09a8c9c1ec577d",
+      "source": "plugins/acryl-router"
+    },
+    {
+      "name": "acryl-web-server",
+      "origin": "local",
+      "digest": "sha256:d779f808eccf489a1edd21125176a430c5a6fd1fd1837161fe10f5af64965137",
+      "source": "plugins/acryl-web-server"
+    },
+    {
+      "name": "assets",
+      "origin": "local",
+      "digest": "sha256:805db04023d5220fc690028920d9009e74d215bae5bf0f934d50c15dfeee7a98",
+      "source": "plugins/assets"
+    },
+    {
+      "name": "extensions",
+      "origin": "local",
+      "digest": "sha256:e35694f246e55fea31ef260ce518eeb415634a51eaac3d501efee5b8d1f59cc1",
+      "source": "plugins/extensions"
+    },
+    {
+      "name": "home",
+      "origin": "local",
+      "digest": "sha256:1e337729803099600244f291ce0e57d9ab6a33df7e1e7d7b851af50841be4643",
+      "source": "plugins/home"
+    },
+    {
+      "name": "instance",
+      "origin": "local",
+      "digest": "sha256:558187902bbad28cc7afaf92604b843b60aafcae204ae574c07dd5fcad4534e4",
+      "source": "plugins/instance"
+    },
+    {
+      "name": "manifest",
+      "origin": "local",
+      "digest": "sha256:8a8af57a7f97b6fe495eaaba37d2557284143d091a042d75c228dbfea246756a",
+      "source": "plugins/manifest"
+    },
+    {
+      "name": "overview",
+      "origin": "local",
+      "digest": "sha256:7d640cdfd6076762a9dfce30a936b577706742d7f69481c32978bc2ab74c5f91",
+      "source": "plugins/overview"
+    },
+    {
+      "name": "policies",
+      "origin": "local",
+      "digest": "sha256:6118cdc6df17947e65ff16667e77408ad61a54c0030f7ca1703fcfdc83f0a27a",
+      "source": "plugins/policies"
+    },
+    {
+      "name": "remediation",
+      "origin": "local",
+      "digest": "sha256:50ee5df05a16582698189c7cf66cc234c5c581ddce777289b21023adb457836a",
+      "source": "plugins/remediation"
+    },
+    {
+      "name": "reports",
+      "origin": "local",
+      "digest": "sha256:3b020bb88a26484e2ede021954c99aed06ae7b11c6332b0f6dc677e71b55f870",
+      "source": "plugins/reports"
+    },
+    {
+      "name": "sandbox",
+      "origin": "local",
+      "digest": "sha256:e632be6cb4271ea2549db334a1b999fb03fd76c23b96986030f97f29b518999e",
+      "source": "plugins/sandbox"
+    },
+    {
+      "name": "save",
+      "origin": "local",
+      "digest": "sha256:55e86e2d26d5722921ec1fd8e99e5f5a6333b79c7aa2bbb11eee12d9f50f3aa9",
+      "source": "plugins/save"
+    },
+    {
+      "name": "vuln-shell",
+      "origin": "local",
+      "digest": "sha256:32acb9487805455096d29b03781c4e6b35f940241bdd2f2a25ee92713803a0f1",
+      "source": "plugins/vuln-shell"
+    },
+    {
+      "name": "vulns",
+      "origin": "local",
+      "digest": "sha256:9214cf05bdd03331fb2565253d90eecf3ecd889ca963f538465a2fb781399a98",
+      "source": "plugins/vulns"
+    }
+  ]
+}

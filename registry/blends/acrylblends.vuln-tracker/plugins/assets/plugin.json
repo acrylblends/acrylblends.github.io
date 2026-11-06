@@ -1,0 +1,11 @@
+{
+  "name": "assets",
+  "description": "The asset inventory: environment, platform, owner, criticality and the open findings on each of the 24 registered assets.",
+  "requires": [],
+  "inject": ["vulns", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: assets` / `name: assets` after the overview row in blend.yaml; it registers Assets in ctx.effect"
+}
