@@ -38,6 +38,8 @@ jobs:
         with:
           node-version: 24
       - run: node scripts/registry-archives.mjs dist/registry
+      # Serve of each entry only its blend.yaml, its screenshot and its archive: the source is in the archive and in the repository, and Pages timed out syncing twelve thousand files.
+      - run: node scripts/registry-served-files.mjs dist/registry
       - name: SPA fallback for client-side routes (GitHub Pages has no server-side rewrite)
         run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
