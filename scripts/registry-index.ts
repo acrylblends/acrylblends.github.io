@@ -16,6 +16,13 @@ const { buildRegistryIndex } = (await import(join(core, "registry.ts"))) as {
   buildRegistryIndex(sources: { path: string; manifestText: string }[]): { index: { formatVersion: number; entries: Record<string, unknown>[] }; problems: { path: string; message: string }[] };
 };
 
+const { pluginFiles } = (await import(join(core, "plugin-identity", "folder-digest.ts"))) as {
+  pluginFiles(dir: string): unknown[];
+};
+const { portabilityIssues } = (await import(join(core, "plugin-identity", "plugin-portability.ts"))) as {
+  portabilityIssues(files: unknown[]): { path: string; reason: string }[];
+};
+
 const MARKER = "acryl.template.json";
 const LIMITS = { files: 5000, bytes: 20 * 1024 * 1024 };
 const LIFECYCLE = ["preinstall", "install", "postinstall", "prepublish", "preprepare", "prepare", "postprepare"];
@@ -76,6 +83,15 @@ function checkApp(dir: string): string[] {
   return problems;
 }
 
+/** Why an entry would not work the same on every OS: the format's own rules, for an app or a starter alike. */
+function checkPortable(dir: string): string[] {
+  try {
+    return portabilityIssues(pluginFiles(dir)).map(({ path, reason }) => `${path}: ${reason}`);
+  } catch (cause) {
+    return [`could not be read: ${cause instanceof Error ? cause.message : String(cause)}`];
+  }
+}
+
 export function indexText(root: string): { text: string; problems: string[] } {
   const blends = join(root, "blends");
   const folders = existsSync(blends) ? readdirSync(blends, { withFileTypes: true }).filter(e => e.isDirectory() && existsSync(join(blends, e.name, "blend.yaml"))) : [];
@@ -83,6 +99,7 @@ export function indexText(root: string): { text: string; problems: string[] } {
   const out = problems.map(p => `${p.path}: ${p.message}`);
   const entries = index.entries.map(entry => {
     const dir = join(root, String(entry.path));
+    out.push(...checkPortable(dir).map((message) => `${String(entry.path)}: ${message}`));
     if (!existsSync(join(dir, MARKER))) return { ...entry, runtime: "acryl" };
     const apps = checkApp(dir);
     out.push(...apps.map(message => `${String(entry.path)}: ${message}`));
