@@ -1,0 +1,9 @@
+{
+  "name": "fleet",
+  "description": "The Robot Missions' domain: robots, missions, waypoints, the facility map and simulation events, saved as JSON in the app's data home. The page plugin injects it.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["fleet"],
+  "dependencies": { "@deepseek-ai/cordis": "4.0.4" },
+  "mount": "a row `- id: fleet` / `name: fleet` before the page rows in blend.yaml; a page injects the `fleet` service"
+}

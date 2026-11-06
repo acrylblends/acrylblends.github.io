@@ -1,0 +1,5 @@
+{
+  "name": "Robot Missions",
+  "description": "A map-first robot mission planner: five robots, five missions with ordered waypoints, run/pause/reset simulation, telemetry history and an event log. Simulation only.",
+  "plugins": []
+}

@@ -1,0 +1,11 @@
+{
+  "name": "robots",
+  "description": "Robot detail at /robots/:id: battery, pose, mode, telemetry samples and the missions assigned to the unit.",
+  "requires": [],
+  "inject": ["fleet", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: robots` / `name: robots` after the planner row in blend.yaml"
+}

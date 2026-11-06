@@ -1,0 +1,11 @@
+{
+  "name": "history",
+  "description": "Mission history at /missions: every mission with its status, robot and waypoint count, plus the simulation event log across the fleet.",
+  "requires": [],
+  "inject": ["fleet", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: history` / `name: history` after the shell row in blend.yaml"
+}

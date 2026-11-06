@@ -1,0 +1,11 @@
+{
+  "name": "missions",
+  "description": "The mission planner: the fleet rail, the facility map with route and waypoints, the waypoint editor with add/remove/reorder, save draft, and the run/pause/reset simulation controls with telemetry.",
+  "requires": [],
+  "inject": ["fleet", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: missions` / `name: missions` after the history row in blend.yaml"
+}

@@ -62,4 +62,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.vuln-tracker": { category: "Cybersecurity", subcategory: "Security operations" },
   "acrylblends.link-shortener": { category: "Internet", subcategory: "Internet publishing" },
   "acrylblends.maintenance-log": { category: "Industrial", subcategory: "Manufacturing" },
+  "acrylblends.robot-missions": { category: "Robotics", subcategory: "Motion planning" },
 };

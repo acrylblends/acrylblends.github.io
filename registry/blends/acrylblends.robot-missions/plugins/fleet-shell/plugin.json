@@ -1,0 +1,9 @@
+{
+  "name": "fleet-shell",
+  "description": "The Robot Missions' page shell: the MOTION/OPS top bar with the fleet crumb and the simulation state.",
+  "requires": [],
+  "inject": ["fleet", "router"],
+  "provides": ["shell"],
+  "dependencies": { "@deepseek-ai/cordis": "4.0.4" },
+  "mount": "a row `- id: fleet-shell` / `name: fleet-shell` after the fleet row and before the missions row in blend.yaml; a page injects `shell`"
+}
