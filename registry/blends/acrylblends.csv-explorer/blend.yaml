@@ -1,0 +1,50 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.csv-explorer
+  name: "CSV Explorer"
+  version: 0.1.0
+  category: data
+  description: "A local-first data workbench: import a CSV, read its column profile, filter and sort the rows, chart a column and save views."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The datasets and saved views: CSV rows, column profiles, filtering, sorting and grouping, saved as JSON in the app's data home.
+    - id: tables
+      name: tables
+    # The page shell: the white data-tool top bar, the page links and the look every page shares.
+    - id: table-shell
+      name: table-shell
+    # The dataset workbench: field list, health summary, chart and data preview with search, filters, sort and paging (also answers /).
+    - id: explorer
+      name: explorer
+    # The import page: paste a CSV or pick a file, with the column profile inferred on save.
+    - id: imports
+      name: imports
+    # A saved view: the view's filter, sort and chart applied in a compact report.
+    - id: views
+      name: views
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one, which Settings > Plugins switches with `disabled: true`.
+    # This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with a row is never started twice.
+    # Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only.
+    - id: acryl-door
+      name: acryl-door

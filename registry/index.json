@@ -95,6 +95,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.csv-explorer",
+      "name": "CSV Explorer",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.csv-explorer",
+      "license": "MIT",
+      "category": "data",
+      "description": "A local-first data workbench: import a CSV, read its column profile, filter and sort the rows, chart a column and save views.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.notes-desktop",
       "name": "Notes, in a window",
       "kind": "Blueprint",

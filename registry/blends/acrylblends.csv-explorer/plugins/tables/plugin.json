@@ -1,0 +1,17 @@
+{
+  "name": "tables",
+  "description": "The CSV Explorer's domain: datasets imported from CSV text, their column profiles, filtering, sorting and grouping, and saved views, kept as JSON in the app's data home. Every page plugin injects this one.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["tables"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: tables` / `name: tables` before the page rows in blend.yaml; a page injects the `tables` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default csv-explorer.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}

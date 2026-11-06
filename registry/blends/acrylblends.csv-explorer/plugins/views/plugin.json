@@ -1,0 +1,11 @@
+{
+  "name": "views",
+  "description": "A saved view of a dataset: the view's filter, sort and chart applied in a compact report.",
+  "requires": [],
+  "inject": ["tables", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: views` / `name: views` after the explorer row in blend.yaml"
+}

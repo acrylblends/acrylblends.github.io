@@ -1,0 +1,11 @@
+{
+  "name": "table-shell",
+  "description": "The CSV Explorer's page shell: the white data-tool top bar with the dataset file and the import action, links under the mount prefix and the page wrapper every page plugin uses.",
+  "requires": [],
+  "inject": ["tables", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: table-shell` / `name: table-shell` after the tables row and before the page rows in blend.yaml; a page injects `shell`"
+}
