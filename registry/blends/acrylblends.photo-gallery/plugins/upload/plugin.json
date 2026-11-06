@@ -1,0 +1,11 @@
+{
+  "name": "upload",
+  "description": "Upload: GET /upload is the add form, POST /upload validates (file name, title, description, duplicate, album) and files a photograph with generated offline artwork.",
+  "requires": [],
+  "inject": ["gallery", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: upload` / `name: upload` after the lightbox row in blend.yaml"
+}

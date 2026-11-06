@@ -56,4 +56,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.cloud-costs": { category: "Cloud", subcategory: "Cloud management" },
   "acrylblends.deploy-board": { category: "DevOps", subcategory: "CI/CD" },
   "acrylblends.uptime": { category: "Networking", subcategory: "Network management" },
+  "acrylblends.photo-gallery": { category: "Media", subcategory: "Graphics" },
 };

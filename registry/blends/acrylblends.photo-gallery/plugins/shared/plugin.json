@@ -1,0 +1,11 @@
+{
+  "name": "shared",
+  "description": "Shared: the frames the studio marked shareable, at /shared. A local flag, no external service. Registers the Shared top-bar entry.",
+  "requires": [],
+  "inject": ["gallery", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: shared` / `name: shared` after the collections row in blend.yaml; it registers its entry in ctx.effect"
+}

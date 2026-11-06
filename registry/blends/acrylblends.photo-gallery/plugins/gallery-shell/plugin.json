@@ -1,0 +1,14 @@
+{
+  "name": "gallery-shell",
+  "description": "The Photo Gallery's page shell: the still-frame top bar, the album rail with counts and storage, the shared page pieces (head, tabs, masonry grid, pager) and the lightbox keys.",
+  "requires": [],
+  "inject": ["gallery", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: gallery-shell` / `name: gallery-shell` after the gallery row and before the page rows in blend.yaml; a page injects `shell`",
+  "config": {
+    "prefix": "the mount prefix the frame host chose; set by createApp, not by hand"
+  }
+}

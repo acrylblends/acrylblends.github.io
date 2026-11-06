@@ -1,0 +1,11 @@
+{
+  "name": "lightbox",
+  "description": "The lightbox: /photos/:id at full size with filename, date, dimensions, tags, previous/next, favourite and share actions.",
+  "requires": [],
+  "inject": ["gallery", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: lightbox` / `name: lightbox` after the shared row in blend.yaml"
+}

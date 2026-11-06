@@ -1,0 +1,59 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.photo-gallery
+  name: "Photo Gallery"
+  version: 0.1.0
+  category: media
+  description: "A charcoal editorial photo archive: 4,281 seeded photographs in four albums, a masonry library with search and paging, favourites, sharing, an offline lightbox and a validated upload form."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The domain: albums, photographs, favourites, sharing and the smart-collection windows, saved as JSON in the app's data home. Every page injects it.
+    - id: gallery
+      name: gallery
+    # The page shell: the still-frame top bar, the album rail with counts and storage, the masonry look and the lightbox's keys.
+    - id: gallery-shell
+      name: gallery-shell
+    # The library at /: the album tabs, the archive search, the masonry grid and the pager. Registers Library and All photographs.
+    - id: library
+      name: library
+    # Albums: /albums lists the covers, /albums/:id is one album with its metadata and grid. Registers Albums and one rail row per album.
+    - id: albums
+      name: albums
+    # Smart collections: Favourites, Recently edited, Uploads and the top bar's Recently added, all filtered views over the same archive.
+    - id: collections
+      name: collections
+    # Shared: the frames marked shareable, at /shared. Sharing is a local flag; no external service.
+    - id: shared
+      name: shared
+    # The lightbox: /photos/:id at full size with filename, date, dimensions, tags, previous/next, favourite and share.
+    - id: lightbox
+      name: lightbox
+    # Upload: GET /upload is the add form, POST /upload validates and files a photograph with generated offline artwork.
+    - id: upload
+      name: upload
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one, which Settings > Plugins switches with `disabled: true`.
+    # This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with a row is never started twice.
+    # Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only.
+    - id: acryl-door
+      name: acryl-door

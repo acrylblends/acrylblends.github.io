@@ -1,0 +1,17 @@
+{
+  "name": "gallery",
+  "description": "The Photo Gallery's domain: albums, photographs, favourites, sharing and smart-collection windows, saved as JSON in the app's data home. Every page plugin injects it.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["gallery"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: gallery` / `name: gallery` before the page rows in blend.yaml; a page injects the `gallery` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default photo-gallery.json)",
+    "store": "a Store port for tests (default: one JSON file under the app's home)",
+    "clock": "what time it is, for tests (default: the system clock)",
+    "newId": "how ids are made, for tests (default: a random UUID suffix)"
+  }
+}

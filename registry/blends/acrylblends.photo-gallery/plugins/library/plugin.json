@@ -1,0 +1,11 @@
+{
+  "name": "library",
+  "description": "The library at /: the album tabs, the archive search, the masonry grid and the pager. Registers the Library top-bar entry and the All photographs rail row.",
+  "requires": [],
+  "inject": ["gallery", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: library` / `name: library` after the shell row in blend.yaml; it registers its entries in ctx.effect"
+}

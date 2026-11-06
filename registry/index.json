@@ -315,6 +315,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.photo-gallery",
+      "name": "Photo Gallery",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.photo-gallery",
+      "license": "MIT",
+      "category": "media",
+      "description": "A charcoal editorial photo archive: 4,281 seeded photographs in four albums, a masonry library with search and paging, favourites, sharing, an offline lightbox and a validated upload form.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.productivity-hub",
       "name": "Productivity Hub",
       "kind": "Blueprint",

@@ -1,0 +1,11 @@
+{
+  "name": "collections",
+  "description": "Smart collections: Favourites, Recently edited, Uploads and the top bar's Recently added, four filtered views over the same archive with their rail entries.",
+  "requires": [],
+  "inject": ["gallery", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: collections` / `name: collections` after the albums row in blend.yaml; it registers its entries in ctx.effect"
+}

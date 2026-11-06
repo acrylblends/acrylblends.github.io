@@ -1,0 +1,11 @@
+{
+  "name": "albums",
+  "description": "Albums: /albums lists the four covers, /albums/:id is one album with its metadata, grid and pager. Registers Albums and one rail row per album.",
+  "requires": [],
+  "inject": ["gallery", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: albums` / `name: albums` after the library row in blend.yaml; it registers its entries in ctx.effect"
+}
