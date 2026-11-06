@@ -1,0 +1,53 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.localization-lingodesk
+  name: "LingoDesk"
+  version: 0.1.0
+  category: localization
+  description: "A translation-management and CAT workbench: target locales, source and target segments with draft, review and approved states, a glossary and translation-memory suggestions, and local QA checks for placeholders, missing translations, terminology and length. No translation service is contacted."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The domain: message keys, segments, glossary, translation memory and QA, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: lingodesk
+      name: lingodesk
+    # The workbench shell every region shares: the top bar, the rail, the editor and the right column.
+    - id: desk-shell
+      name: desk-shell
+    # Target locales and content types (rail).
+    - id: locales
+      name: locales
+    # The editor, the first page (/): the segment table and its routes.
+    - id: editor
+      name: editor
+    # Terminology and translation-memory suggestions (right column).
+    - id: glossary
+      name: glossary
+    # Run QA and Approve locale (top bar) and the QA checks (right column).
+    - id: qa
+      name: qa
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

@@ -1,0 +1,53 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.desktop-canvasmith
+  name: "Canvasmith Desktop"
+  version: 0.1.0
+  category: desktop
+  description: "A desktop-style design workspace: a project of files, an artboard drawn from layers at a chosen zoom, an inspector with checked property edits, layer ordering, tools that add layers, and simulated exports with an activity log."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The project's domain: files and layers, property checks, z-order, zoom, simulated exports and the activity log, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: canvasmith
+      name: canvasmith
+    # The window shell every region shares: the title bar, menu bar, toolbar, status bar and the three regions.
+    - id: window-shell
+      name: window-shell
+    # Project sidebar (left): files and the layer list.
+    - id: files
+      name: files
+    # The canvas, the first page (/): the artboard, the asset strip and the toolbar's tools and zoom.
+    - id: canvas
+      name: canvas
+    # Inspector (right): layer properties, arrange and delete.
+    - id: inspector
+      name: inspector
+    # Export and activity (right, below the inspector).
+    - id: exports
+      name: exports
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

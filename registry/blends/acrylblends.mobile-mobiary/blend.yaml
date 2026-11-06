@@ -1,0 +1,56 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.mobile-mobiary
+  name: "Mobiary"
+  version: 0.1.0
+  category: mobile
+  description: "A mobile journal companion: a phone preview with Home, Capture, Activity and Profile screens, quick capture of notes, voice-memo and photo placeholders, home-screen modules you can switch, a daily focus with small goals, and compact and quiet preferences."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The journal's domain: entries, the daily focus and goals, widgets and preferences, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: mobiary
+      name: mobiary
+    # The device shell every screen shares: the phone, its tab bar and the companion panel.
+    - id: phone-shell
+      name: phone-shell
+    # Today, the first screen (/): greeting, focus, quick capture and recent moments.
+    - id: today
+      name: today
+    # Capture (/capture): a note, voice-memo or photo placeholder.
+    - id: capture
+      name: capture
+    # Activity (/activity): the saved moments, filtered and deletable.
+    - id: activity
+      name: activity
+    # Profile (/profile): the person, quiet hours and preferences.
+    - id: profile
+      name: profile
+    # The companion panel: home-screen module switches, preferences, focus and goals, quick note.
+    - id: widgets
+      name: widgets
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

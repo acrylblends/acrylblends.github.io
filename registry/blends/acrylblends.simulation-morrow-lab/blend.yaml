@@ -1,0 +1,59 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.simulation-morrow-lab
+  name: "Morrow Lab"
+  version: 0.1.0
+  category: simulation
+  description: "A simulation workbench: tune a thermal chamber's boundary conditions, run a deterministic local model, compare response traces and keep named parameter snapshots."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The lab's domain: models, parameter sets, the deterministic thermal model, runs and snapshots, saved as JSON in the app's data home. Every page below injects it.
+    - id: morrow-lab
+      name: morrow-lab
+    # The workbench shell every page shares: the top bar with Run simulation, the three columns, the experiment heading and the tabs.
+    - id: lab-shell
+      name: lab-shell
+    # The model library (left column): pick or create a model, and the recent experiments.
+    - id: library
+      name: library
+    # The run inspector (right column): solver settings, last runtime, experiment notes and Save experiment snapshot.
+    - id: inspector
+      name: inspector
+    # Experiment setup, the first page (/): the boundary-condition sliders, the chamber cross-section, Run and Reset baseline.
+    - id: setup
+      name: setup
+    # Thermal field (/field): the chamber's end temperature on the solver grid as a heat map.
+    - id: field
+      name: field
+    # Response traces (/traces): probe A over time, a second run overlaid to compare, and CSV export.
+    - id: traces
+      name: traces
+    # Run archive (/archive): saved runs, and snapshots to load back into the setup or delete.
+    - id: archive
+      name: archive
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

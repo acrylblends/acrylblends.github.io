@@ -1,0 +1,5 @@
+{
+  "name": "Restorepoint",
+  "description": "A backup operations and recovery-planning console: protected workloads, a recovery timeline with integrity status, backup schedules, retention policies, a restore plan with preflight checks and a simulated restore run. Nothing real is read or restored.",
+  "plugins": []
+}

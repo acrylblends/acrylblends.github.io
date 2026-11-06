@@ -1,0 +1,5 @@
+{
+  "name": "Pulsebus",
+  "description": "An event-bus explorer: browse topics and consumer groups, read a message stream with delivery and retry state, inspect JSON payloads, publish schema-validated synthetic events, replay and manage the dead-letter queue.",
+  "plugins": []
+}

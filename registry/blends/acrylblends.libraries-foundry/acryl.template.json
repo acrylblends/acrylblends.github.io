@@ -1,0 +1,5 @@
+{
+  "name": "The Foundry",
+  "description": "A curated package atlas: search and filter libraries and frameworks, read their metadata and version history, copy an install command, and assemble a local stack with warnings and a manifest preview.",
+  "plugins": []
+}

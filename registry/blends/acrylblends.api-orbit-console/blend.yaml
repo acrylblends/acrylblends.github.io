@@ -1,0 +1,56 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.api-orbit-console
+  name: "Orbit API Console"
+  version: 0.1.0
+  category: api-sdk
+  description: "An API console: browse endpoints, fill in parameters or a request body, send a request to a local fixture API that validates and creates like the real one, read the response, and copy JavaScript, Python or Go snippets."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The console's domain: the endpoints, the fixture API and its request simulation, remembered inputs and the last response, and the SDK snippet generator, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: orbit
+      name: orbit
+    # The console shell every page shares: the header, the endpoint's title and the three columns.
+    - id: orbit-shell
+      name: orbit-shell
+    # API reference (left column): the endpoints.
+    - id: reference
+      name: reference
+    # Try it, the first page (/): parameters, body and Send test request.
+    - id: try-it
+      name: try-it
+    # Schema (/schema): the resource and request-body schemas.
+    - id: schema
+      name: schema
+    # Examples (/examples): SDK snippets in three languages.
+    - id: examples
+      name: examples
+    # Response inspector (right column): status, timing, JSON and headers.
+    - id: response
+      name: response
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door
