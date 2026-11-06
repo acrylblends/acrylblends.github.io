@@ -1,0 +1,5 @@
+{
+  "name": "Orbit API Console",
+  "description": "An API console: browse endpoints, fill in parameters or a request body, send a request to a local fixture API that validates and creates like the real one, read the response, and copy JavaScript, Python or Go snippets.",
+  "plugins": []
+}

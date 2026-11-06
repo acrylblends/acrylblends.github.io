@@ -1,0 +1,5 @@
+{
+  "name": "Morrow Lab",
+  "description": "A simulation workbench: tune a thermal chamber's boundary conditions, run a deterministic local model, compare response traces and keep named parameter snapshots.",
+  "plugins": []
+}

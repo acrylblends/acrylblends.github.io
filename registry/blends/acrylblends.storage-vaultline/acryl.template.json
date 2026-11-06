@@ -1,0 +1,5 @@
+{
+  "name": "Vaultline",
+  "description": "A storage console: pool capacity and health, volumes created against free capacity, object buckets with browsable metadata, and a snapshot ledger with retention.",
+  "plugins": []
+}

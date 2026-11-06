@@ -1,0 +1,56 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.backup-restorepoint
+  name: "Restorepoint"
+  version: 0.1.0
+  category: backup
+  description: "A backup operations and recovery-planning console: protected workloads, a recovery timeline with integrity status, backup schedules, retention policies, a restore plan with preflight checks and a simulated restore run. Nothing real is read or restored."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The domain: workloads, recovery points, jobs, retention, restore previews and logs, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: restorepoint
+      name: restorepoint
+    # The console shell every page shares: the rail, the readiness note and the page area.
+    - id: ops-shell
+      name: ops-shell
+    # Protected workloads and the readiness note (rail).
+    - id: workloads
+      name: workloads
+    # The recovery page (/): timeline, restore plan and the verify and restore routes.
+    - id: recovery
+      name: recovery
+    # Backup schedules page.
+    - id: schedules
+      name: schedules
+    # Retention policies page.
+    - id: retention
+      name: retention
+    # Recovery plans page: the restore preview history.
+    - id: plans
+      name: plans
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

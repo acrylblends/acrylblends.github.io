@@ -1,0 +1,62 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.blockchain-blockscope
+  name: "Blockscope Explorer"
+  version: 0.1.0
+  category: blockchain
+  description: "A read-only blockchain explorer over a synthetic testnet: a block ledger with finality, search by height, hash or label, transaction pages with decoded event logs, address pages, contract events filtered by name and time range, and a saved watchlist. Everything is demo data."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The domain: a synthetic chain generated from the height, its head and the watchlist, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: blockscope
+      name: blockscope
+    # The explorer shell every page shares: the header, the tabs, the network strip and the inspector column.
+    - id: scope-shell
+      name: scope-shell
+    # Network metrics, events and validators.
+    - id: network
+      name: network
+    # The block ledger, the first page (/), and the block inspector.
+    - id: blocks
+      name: blocks
+    # Search results.
+    - id: search
+      name: search
+    # Transaction pages (/tx/:hash).
+    - id: transactions
+      name: transactions
+    # Address pages (/address/:address).
+    - id: addresses
+      name: addresses
+    # Contract events page (/events).
+    - id: contract-events
+      name: contract-events
+    # Watchlist and the watch route.
+    - id: watchlist
+      name: watchlist
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

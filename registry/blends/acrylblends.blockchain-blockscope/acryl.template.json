@@ -1,0 +1,5 @@
+{
+  "name": "Blockscope Explorer",
+  "description": "A read-only blockchain explorer over a synthetic testnet: a block ledger with finality, search by height, hash or label, transaction pages with decoded event logs, address pages, contract events filtered by name and time range, and a saved watchlist. Everything is demo data.",
+  "plugins": []
+}

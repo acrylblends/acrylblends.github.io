@@ -1,0 +1,179 @@
+{
+  "formatVersion": 3,
+  "generator": {
+    "name": "@webboxes/blends-core",
+    "version": "0.4.0"
+  },
+  "origin": {
+    "id": "acrylblends.mobile-mobiary",
+    "kind": "Blueprint",
+    "version": "0.1.0",
+    "digest": "88fdae27150bd3bd3652d2e8fc8fe28870ff189703017fc427a3d8a5e85daf0d"
+  },
+  "parameters": {
+    "hostname": "127.0.0.1"
+  },
+  "rows": [
+    {
+      "id": "router",
+      "name": "acryl-router"
+    },
+    {
+      "id": "home",
+      "name": "home"
+    },
+    {
+      "id": "mobiary",
+      "name": "mobiary"
+    },
+    {
+      "id": "phone-shell",
+      "name": "phone-shell"
+    },
+    {
+      "id": "today",
+      "name": "today"
+    },
+    {
+      "id": "capture",
+      "name": "capture"
+    },
+    {
+      "id": "activity",
+      "name": "activity"
+    },
+    {
+      "id": "profile",
+      "name": "profile"
+    },
+    {
+      "id": "widgets",
+      "name": "widgets"
+    },
+    {
+      "id": "extensions",
+      "name": "extensions"
+    },
+    {
+      "id": "server",
+      "name": "acryl-node-server",
+      "config": {
+        "hostname": "127.0.0.1"
+      }
+    },
+    {
+      "id": "acryl-door",
+      "name": "acryl-door"
+    }
+  ],
+  "modules": [
+    {
+      "name": "acryl-door",
+      "origin": "local",
+      "digest": "sha256:33468e9fe92b1fd9b74b2ff2634ecc92536bb254edf8f23449734792c48c8085",
+      "source": "plugins/acryl-door"
+    },
+    {
+      "name": "acryl-node-server",
+      "origin": "local",
+      "digest": "sha256:a6a0ca8b7117cfc07e6cc5f8338c79491d37574e3c2e106f8d7bc60f32c24108",
+      "source": "plugins/acryl-node-server"
+    },
+    {
+      "name": "acryl-page",
+      "origin": "local",
+      "digest": "sha256:d6c2395b7adbed77f5897bf7b3192e6a007a2ac9d584c452ac4991770134faf7",
+      "source": "plugins/acryl-page"
+    },
+    {
+      "name": "acryl-router",
+      "origin": "local",
+      "digest": "sha256:ab4da3de0c211b9f176b3b42ec28eb7a405b263e01e103d42d09a8c9c1ec577d",
+      "source": "plugins/acryl-router"
+    },
+    {
+      "name": "acryl-web-server",
+      "origin": "local",
+      "digest": "sha256:d779f808eccf489a1edd21125176a430c5a6fd1fd1837161fe10f5af64965137",
+      "source": "plugins/acryl-web-server"
+    },
+    {
+      "name": "activity",
+      "origin": "local",
+      "digest": "sha256:06c865c432924834d07bc648bdbdaf8333ec5e010e305ce2e840227b5c1f66d8",
+      "source": "plugins/activity"
+    },
+    {
+      "name": "capture",
+      "origin": "local",
+      "digest": "sha256:4a7b2cd2a6ac3cdb8f398542c28d3ff38d3519270c6bbf73e152df2ec51b6f6e",
+      "source": "plugins/capture"
+    },
+    {
+      "name": "extensions",
+      "origin": "local",
+      "digest": "sha256:e35694f246e55fea31ef260ce518eeb415634a51eaac3d501efee5b8d1f59cc1",
+      "source": "plugins/extensions"
+    },
+    {
+      "name": "home",
+      "origin": "local",
+      "digest": "sha256:1e337729803099600244f291ce0e57d9ab6a33df7e1e7d7b851af50841be4643",
+      "source": "plugins/home"
+    },
+    {
+      "name": "instance",
+      "origin": "local",
+      "digest": "sha256:558187902bbad28cc7afaf92604b843b60aafcae204ae574c07dd5fcad4534e4",
+      "source": "plugins/instance"
+    },
+    {
+      "name": "manifest",
+      "origin": "local",
+      "digest": "sha256:8a8af57a7f97b6fe495eaaba37d2557284143d091a042d75c228dbfea246756a",
+      "source": "plugins/manifest"
+    },
+    {
+      "name": "mobiary",
+      "origin": "local",
+      "digest": "sha256:8bb26ce29cc77fa6c1e9bae95c1fc2ae2419a18bab9c08974fc1be9821558202",
+      "source": "plugins/mobiary"
+    },
+    {
+      "name": "phone-shell",
+      "origin": "local",
+      "digest": "sha256:0c9ecc1f9e46a4bdc6034e21ec35d5e6eaf3f98415d5873a9c72ba23ddb77503",
+      "source": "plugins/phone-shell"
+    },
+    {
+      "name": "profile",
+      "origin": "local",
+      "digest": "sha256:62f2ddd3fda8c2bf2f5927ed34fc0ca777c8c9500c44b09c54af70cb0e73a657",
+      "source": "plugins/profile"
+    },
+    {
+      "name": "sandbox",
+      "origin": "local",
+      "digest": "sha256:e632be6cb4271ea2549db334a1b999fb03fd76c23b96986030f97f29b518999e",
+      "source": "plugins/sandbox"
+    },
+    {
+      "name": "save",
+      "origin": "local",
+      "digest": "sha256:55e86e2d26d5722921ec1fd8e99e5f5a6333b79c7aa2bbb11eee12d9f50f3aa9",
+      "source": "plugins/save"
+    },
+    {
+      "name": "today",
+      "origin": "local",
+      "digest": "sha256:fbd8aea8e9b5d2986a616801a9f7ff1c1bf51ea9313384ef21aa8e9c88d57639",
+      "source": "plugins/today"
+    },
+    {
+      "name": "widgets",
+      "origin": "local",
+      "digest": "sha256:994dcc3d4371489aae953c310cd88d7087261550dbd75ba46f72b9c08598be2a",
+      "source": "plugins/widgets"
+    }
+  ]
+}

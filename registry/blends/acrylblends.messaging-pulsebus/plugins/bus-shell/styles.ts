@@ -1,0 +1,22 @@
+/** The event-bus explorer look, from design/mockup.html: a light three-column workbench with blue for actions and green for delivery; a dark scheme for people whose system asks for one. */
+export const BUS_STYLES = `
+:root{--bg:#f5f7fa;--ink:#1d2736;--muted:#788497;--line:#e3e8ef;--blue:#4169e1;--green:#1b9a74;--orange:#cb7440;--panel:#fff;--hover:#f0f4ff;--row:#f0f2f6;--rowhover:#fafbfe;--tag:#eef2ff;--tagink:#4962c0;--pre:#f6f8fb;--preink:#44516a;--on-blue:#fff;--danger:#c0352b;--dead:#fde9e6;--deadink:#b3261e;--retry:#fff1e2;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0f141c;--ink:#e4e9f2;--muted:#8d9ab0;--line:#262f3d;--blue:#7b98f5;--green:#43c9a1;--orange:#e89a63;--panel:#161d28;--hover:#1c2740;--row:#212b39;--rowhover:#1a2230;--tag:#1e2a45;--tagink:#9fb4ff;--pre:#111823;--preink:#b6c2d8;--on-blue:#0f141c;--danger:#ff8f86;--dead:#3a1f1c;--deadink:#ff8f86;--retry:#3a2a18;color-scheme:dark}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px Inter,ui-sans-serif,system-ui}a{color:inherit;text-decoration:none}
+header.top{min-height:70px;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;gap:12px;flex-wrap:wrap}.brand{font-weight:800;font-size:19px;letter-spacing:-.6px}.brand b{color:var(--blue)}.env{color:var(--muted);font-size:12px;text-transform:uppercase}
+main.wrap{max-width:1420px;margin:26px auto;padding:0 24px}.head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:20px;gap:12px;flex-wrap:wrap}h1{font-size:26px;margin:0 0 5px;letter-spacing:-1px}.muted{color:var(--muted)}
+button,input,select,textarea{font:inherit}button,.btn{border:1px solid var(--line);background:var(--panel);padding:9px 13px;border-radius:8px;cursor:pointer;color:var(--ink);display:inline-block}.primary{background:var(--blue);color:var(--on-blue);border-color:var(--blue)}.danger{color:var(--danger)}
+.grid{display:grid;grid-template-columns:250px minmax(420px,1fr) 340px;gap:16px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:13px;overflow:hidden}.ph{padding:15px 17px;border-bottom:1px solid var(--line);font-weight:700;display:flex;justify-content:space-between;gap:8px}
+.topic{display:block;padding:14px 16px;border-bottom:1px solid var(--row)}.topic:hover,.topic.active{background:var(--hover)}.topic strong{display:block;font-size:13px}.topic small{color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:7px}
+.listitem{padding:15px 17px;border-bottom:1px solid var(--row);display:grid;grid-template-columns:70px 1fr 72px;gap:10px;align-items:center}.listitem:hover{background:var(--rowhover)}.listitem.sel{background:var(--hover)}.listitem strong{display:block}
+.tag{font-size:11px;padding:4px 7px;border-radius:6px;background:var(--tag);color:var(--tagink);text-align:center}.tag.retry{background:var(--retry);color:var(--orange)}.tag.dead{background:var(--dead);color:var(--deadink)}
+.detail{padding:18px}.detail h2{margin:0 0 5px;font-size:18px}.detail pre{white-space:pre-wrap;background:var(--pre);border:1px solid var(--line);padding:12px;border-radius:8px;font-size:12px;color:var(--preink);overflow:auto}.detail label{display:block;font-size:12px;font-weight:700;margin:13px 0 5px}.detail textarea,.detail input{width:100%;border:1px solid var(--line);border-radius:7px;padding:10px;background:var(--panel);color:var(--ink)}
+.metrics{display:flex;gap:22px;padding:14px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}.metric b{font-size:19px;display:block}.metric small{color:var(--muted)}
+.actions{padding:14px 17px;display:flex;gap:8px;flex-wrap:wrap}.actions form{display:inline}
+.alert{margin:0 0 16px;padding:10px 14px;border-radius:9px;border:1px solid var(--line);background:var(--panel);font-size:13px}.alert.ok{border-color:var(--green);color:var(--green)}.alert.error{border-color:var(--danger);color:var(--danger)}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+dl.meta{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0;font-size:12px}dl.meta dt{color:var(--muted)}dl.meta dd{margin:0;word-break:break-word}
+a:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:950px){.grid{grid-template-columns:1fr}}
+`

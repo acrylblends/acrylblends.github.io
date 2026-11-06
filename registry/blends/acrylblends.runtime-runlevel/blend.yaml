@@ -1,0 +1,53 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.runtime-runlevel
+  name: "Runlevel"
+  version: 0.1.0
+  category: runtime
+  description: "A runtime operations desk: hosts and their managed processes with a simulated restart, a runtime compatibility matrix, and rollout drafts checked against it with history and roll-back."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The desk's domain: hosts, processes and their restart states, compatibility rules, rollouts and the lifecycle log, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: runlevel
+      name: runlevel
+    # The desk shell every page shares: the header, the title, the host's heading and statistics, and the tabs.
+    - id: run-shell
+      name: run-shell
+    # Runtime hosts and families (left column).
+    - id: hosts
+      name: hosts
+    # Processes, the first tab (/): the managed processes and restarts.
+    - id: processes
+      name: processes
+    # Compatibility (/compat): the runtime compatibility matrix.
+    - id: compat
+      name: compat
+    # Rollout history (/rollouts): prepare, run, discard and roll back rollouts.
+    - id: rollouts
+      name: rollouts
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

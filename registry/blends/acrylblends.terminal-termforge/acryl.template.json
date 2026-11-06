@@ -1,0 +1,5 @@
+{
+  "name": "Termforge",
+  "description": "A terminal workspace simulator: workspaces with tabs, a strict command allowlist answered from fixtures, a command deck and task launcher, saved snippets, command history and recall, and a session status panel. It never runs a host process.",
+  "plugins": []
+}

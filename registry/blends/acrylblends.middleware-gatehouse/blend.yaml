@@ -1,0 +1,53 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.middleware-gatehouse
+  name: "Gatehouse"
+  version: 0.1.0
+  category: middleware
+  description: "An API-gateway control plane: a route registry, an ordered middleware pipeline per route, upstream services, request traces from a policy simulation, and a route-policy draft that is applied to the pipeline on purpose."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The gateway's domain: routes and policies with a draft, upstreams, the pipeline and the request simulation, saved as JSON in the app's data home. Every plugin below injects it.
+    - id: gatehouse
+      name: gatehouse
+    # The control-plane shell every page shares: the header, the title and the three columns.
+    - id: gate-shell
+      name: gate-shell
+    # Route registry (left column): the routes and Add route.
+    - id: routes
+      name: routes
+    # Upstream services (left column): address, latency, and a down switch.
+    - id: upstreams
+      name: upstreams
+    # The request pipeline, the first page (/): the middleware, traces and Run test request.
+    - id: pipeline
+      name: pipeline
+    # Route policy (right column): the draft editor, Save, Apply and Discard.
+    - id: policy
+      name: policy
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door
