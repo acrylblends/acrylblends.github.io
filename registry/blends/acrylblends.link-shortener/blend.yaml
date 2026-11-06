@@ -1,0 +1,42 @@
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.link-shortener
+  name: "Link Shortener"
+  version: 0.1.0
+  category: internet
+  description: "A branded short-link workspace: 39 links on three domains, a create composer with unique slugs, 28,491 sample clicks, a 30-day trend, referrer and country breakdowns, and a working redirect."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    - id: home
+      name: home
+    # The domain: links, domains, referrer totals and click events, saved as JSON in the app's data home.
+    - id: shortly
+      name: shortly
+    # The compact green top bar with the workspace links.
+    - id: shortly-shell
+      name: shortly-shell
+    # The workspace: create composer, KPI strip, recent links, chart and referrers, one link's detail and the redirect.
+    - id: links
+      name: links
+    # Campaigns: the tags the workspace uses, with each tag's links, active links and clicks.
+    - id: campaigns
+      name: campaigns
+    # The short domains and their verification state.
+    - id: domains
+      name: domains
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    - id: acryl-door
+      name: acryl-door

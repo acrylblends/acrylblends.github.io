@@ -1,0 +1,17 @@
+{
+  "name": "shortly",
+  "description": "The Link Shortener's domain: links, domains, referrer totals and click events, saved as JSON in the app's data home. Every page plugin injects it.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["shortly"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: shortly` / `name: shortly` before the page rows in blend.yaml; a page injects the `shortly` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default link-shortener.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}

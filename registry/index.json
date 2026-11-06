@@ -260,6 +260,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.link-shortener",
+      "name": "Link Shortener",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.link-shortener",
+      "license": "MIT",
+      "category": "internet",
+      "description": "A branded short-link workspace: 39 links on three domains, a create composer with unique slugs, 28,491 sample clicks, a 30-day trend, referrer and country breakdowns, and a working redirect.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.localization-lingodesk",
       "name": "LingoDesk",
       "kind": "Blueprint",

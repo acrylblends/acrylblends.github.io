@@ -1,0 +1,11 @@
+{
+  "name": "links",
+  "description": "The link workspace: the create composer with URL and alias validation, the KPI strip, the recent links with search and state filters, the 30-day chart, the referrer breakdown, one link's detail, and the /s/:slug redirect that records a click.",
+  "requires": [],
+  "inject": ["shortly", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: links` / `name: links` after the shell row in blend.yaml; it registers Overview and Links in ctx.effect"
+}

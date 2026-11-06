@@ -1,0 +1,11 @@
+{
+  "name": "campaigns",
+  "description": "Campaigns: the tags the workspace uses, at /campaigns, with each tag's links, active links and click totals.",
+  "requires": [],
+  "inject": ["shortly", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: campaigns` / `name: campaigns` after the links row in blend.yaml; it registers Campaigns in ctx.effect"
+}

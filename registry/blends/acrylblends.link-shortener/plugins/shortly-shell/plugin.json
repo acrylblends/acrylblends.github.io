@@ -1,0 +1,11 @@
+{
+  "name": "shortly-shell",
+  "description": "The Link Shortener's page shell: the compact green top bar with the workspace links and the person, and the page column.",
+  "requires": [],
+  "inject": ["shortly", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: shortly-shell` / `name: shortly-shell` after the shortly row and before the page rows in blend.yaml; a page injects `shell`"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "domains",
+  "description": "Domains: the three configured short domains, their verification state and which one new links use, at /domains.",
+  "requires": [],
+  "inject": ["shortly", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: domains` / `name: domains` after the campaigns row in blend.yaml; it registers Domains in ctx.effect"
+}
