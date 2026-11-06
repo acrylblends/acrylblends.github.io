@@ -1,0 +1,15 @@
+{
+  "name": "deals",
+  "description": "One deal in full: details, next action, activity log and the won/lost confirmation.",
+  "requires": [],
+  "inject": [
+    "crm",
+    "shell",
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: deals` / `name: deals` after the pipeline row; it registers its sidebar entry in ctx.effect"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "crm-shell",
+  "description": "The CRM's page shell: the sidebar, the cool white look and the view parts every page shares.",
+  "requires": [],
+  "inject": [
+    "crm",
+    "router"
+  ],
+  "provides": [
+    "shell"
+  ],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: crm-shell` / `name: crm-shell` after the crm row; a page injects `shell`"
+}
