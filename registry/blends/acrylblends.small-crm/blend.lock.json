@@ -2,13 +2,13 @@
   "formatVersion": 3,
   "generator": {
     "name": "@webboxes/blends-core",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "origin": {
     "id": "acrylblends.small-crm",
     "kind": "Blueprint",
     "version": "0.1.0",
-    "digest": "5406dcf3ff9a36d8d11e6e31f92787a9fae9915082b5ac706d9c85d9c9cdae12"
+    "digest": "726a2681ecb4b2487f8d6d2b5c9ada432042b8b737d6df0dce403ffee2637b2f"
   },
   "parameters": {
     "hostname": "127.0.0.1"
@@ -104,37 +104,37 @@
     {
       "name": "activities",
       "origin": "local",
-      "digest": "sha256:c001a1a4cf9c29ea94f5146710a7a13c39757ec0adf2fc2234014e1f23df5e30",
+      "digest": "sha256:5fc72b5e6b91a77075f3834ae0a4542da1e260d9b546a8192972d7b7410589f0",
       "source": "plugins/activities"
     },
     {
       "name": "companies",
       "origin": "local",
-      "digest": "sha256:241a0a204f7ef789e1745731d4b57ed32823856de17c33c599a126195d3a13a0",
+      "digest": "sha256:773f5bd93db8cb9c3d9a5dbd4473a0c7046c0a69722fdc59754c36798c32ad4c",
       "source": "plugins/companies"
     },
     {
       "name": "contacts",
       "origin": "local",
-      "digest": "sha256:31cb80f7dc011a122a51a75e9ef5e8392f29d39ca11d20836e9659aa2e94417e",
+      "digest": "sha256:8482952d63ef20d3b776facc6b57ece6d928949bb8fc0dd15139ff7e81ac01a1",
       "source": "plugins/contacts"
     },
     {
       "name": "crm",
       "origin": "local",
-      "digest": "sha256:a49047c0123af0bff5fbb29dc0e78eac54918017d48f64b6cc5a8a8584ff2f2c",
+      "digest": "sha256:eea0b4a101f6f212f6b58fe81d235971b8fe7ab20c954885da25df52a92e3665",
       "source": "plugins/crm"
     },
     {
       "name": "crm-shell",
       "origin": "local",
-      "digest": "sha256:7662c0ffdfe7064bb1cbc0b22e76ec290364fe74604985ada6f7f8f1b69c619f",
+      "digest": "sha256:1cf3f0708e2479cb3ad2f0292d2f4e90bc21a3adca7a12a998ff7ef88d0f34b1",
       "source": "plugins/crm-shell"
     },
     {
       "name": "deals",
       "origin": "local",
-      "digest": "sha256:4ce0b3d2a23262f462f0eee924e3b7e326e247539b0661739e993371d864f814",
+      "digest": "sha256:58a44dc7a431865a67f08543461081438b197e7ad259b1af17a47a3f92311586",
       "source": "plugins/deals"
     },
     {
@@ -164,13 +164,13 @@
     {
       "name": "pipeline",
       "origin": "local",
-      "digest": "sha256:29ff8507c423441a7f39d6a234d9b994355d08af241b958c93d9d25d83be00f9",
+      "digest": "sha256:85761e1e9043a9445a78f3fe3a99757b649f54da569c82d460eb47dbb569242f",
       "source": "plugins/pipeline"
     },
     {
       "name": "reports",
       "origin": "local",
-      "digest": "sha256:22ec9253f092afeb9afa67dfb8bfb50dbd32cbe261cd37d2d4d37dfcc64d34da",
+      "digest": "sha256:d558b4aa7bc25bc2159787184a6d7fe332dd2c602a4cc943a6133653bc8e61b5",
       "source": "plugins/reports"
     },
     {

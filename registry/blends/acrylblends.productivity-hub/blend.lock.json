@@ -2,13 +2,13 @@
   "formatVersion": 3,
   "generator": {
     "name": "@webboxes/blends-core",
-    "version": "0.4.0"
+    "version": "0.5.0"
   },
   "origin": {
     "id": "acrylblends.productivity-hub",
     "kind": "Blueprint",
     "version": "0.1.0",
-    "digest": "72532f8e4cb51e629c3568f299248f02011e4f37c26366bcc8779a585079be69"
+    "digest": "6df511e78b7b519119750e0a1922817eea20738c23186d3702a2e63839d0560b"
   },
   "parameters": {
     "hostname": "127.0.0.1"
@@ -100,7 +100,7 @@
     {
       "name": "calendar",
       "origin": "local",
-      "digest": "sha256:bf4a41594d3312767e9187af46d874e3d0a58d12622585c6bc5182399df39038",
+      "digest": "sha256:6a8eb6dac5d9c13f7bdc8724ad58c8b61364f079e668718be827bfb9f0857076",
       "source": "plugins/calendar"
     },
     {
@@ -118,13 +118,13 @@
     {
       "name": "hub-shell",
       "origin": "local",
-      "digest": "sha256:883182e8d3aa24b74ed8ca40eca217ef9a238a5ad32b39e37d64522684d6565d",
+      "digest": "sha256:de51c6b989cefd574b3d448a38319b4b08499be7d39c114b3ba1c18b2fce06cc",
       "source": "plugins/hub-shell"
     },
     {
       "name": "inbox",
       "origin": "local",
-      "digest": "sha256:fcf369a8ed59f9e4d34b22e7ff4aa2cc422126e7c607ea546aadb3801cb062ef",
+      "digest": "sha256:0263ff473e0ed845929f2460c545b1a16753949f2536320ee8951d837bcdbf30",
       "source": "plugins/inbox"
     },
     {
@@ -142,19 +142,19 @@
     {
       "name": "my-day",
       "origin": "local",
-      "digest": "sha256:b99a0888fb24befafb48e47d4c45362d451b53ade87ec2b1f29d2bbdabdac30d",
+      "digest": "sha256:b029741dea889e0583de7aef8d67c50d5a6c19f13fc5096150f9e8bf5a186b82",
       "source": "plugins/my-day"
     },
     {
       "name": "notes",
       "origin": "local",
-      "digest": "sha256:e2913d7e893b9251306c3232d16697aca0560d2072293d51284047ea7199accf",
+      "digest": "sha256:8539a30f844035420144869f87347e828a1d08d51fe93b8cccac454dc03e4fbe",
       "source": "plugins/notes"
     },
     {
       "name": "productivity-hub",
       "origin": "local",
-      "digest": "sha256:37b29eca7c9e4bfc63e2f7debb2cd02d0246120e94663746d50f05c39ce76476",
+      "digest": "sha256:b4e11611fca4c8a79d076d0aa4b89cedf654de29eee801eefb57feb5785e24f2",
       "source": "plugins/productivity-hub"
     },
     {
@@ -172,7 +172,7 @@
     {
       "name": "tasks",
       "origin": "local",
-      "digest": "sha256:88c618c02808119f87ba0ff87a7687cf8acaad689ff925850b07e05f47900085",
+      "digest": "sha256:02b94326a9c6c029493e999cf86af05259339d849e192b8ded0d68234a876097",
       "source": "plugins/tasks"
     }
   ]
