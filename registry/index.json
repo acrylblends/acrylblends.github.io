@@ -425,6 +425,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.sensor-dashboard",
+      "name": "Sensor Dashboard",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.sensor-dashboard",
+      "license": "MIT",
+      "category": "embedded-iot",
+      "description": "An IoT operations dashboard: 12 devices with 11 online, 4,320 readings an hour, one critical and one warning alert, live sensor cards, a 24h/7d history, device details, threshold editing, an alert log and a validated HTTP ingest contract.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.simulation-morrow-lab",
       "name": "Morrow Lab",
       "kind": "Blueprint",

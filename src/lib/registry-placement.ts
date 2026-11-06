@@ -63,4 +63,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.link-shortener": { category: "Internet", subcategory: "Internet publishing" },
   "acrylblends.maintenance-log": { category: "Industrial", subcategory: "Manufacturing" },
   "acrylblends.robot-missions": { category: "Robotics", subcategory: "Motion planning" },
+  "acrylblends.sensor-dashboard": { category: "Embedded / IoT", subcategory: "IoT platforms" },
 };
