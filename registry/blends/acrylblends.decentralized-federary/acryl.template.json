@@ -1,5 +1,0 @@
-{
-  "name": "Federary Network",
-  "description": "A federation administration console: a topology map of fictional instances with trust edges and health, an instance profile with policy, identity assertion and handshake, inbound and outbound federation requests, a moderation queue, trust rules that can stop an approval, and reversible recorded decisions.",
-  "plugins": []
-}

@@ -1,5 +1,0 @@
-{
-  "name": "Gatehouse",
-  "description": "An API-gateway control plane: a route registry, an ordered middleware pipeline per route, upstream services, request traces from a policy simulation, and a route-policy draft that is applied to the pipeline on purpose.",
-  "plugins": []
-}

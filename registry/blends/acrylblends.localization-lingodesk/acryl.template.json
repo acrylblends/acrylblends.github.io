@@ -1,5 +1,0 @@
-{
-  "name": "LingoDesk",
-  "description": "A translation-management and CAT workbench: target locales, source and target segments with draft, review and approved states, a glossary and translation-memory suggestions, and local QA checks for placeholders, missing translations, terminology and length. No translation service is contacted.",
-  "plugins": []
-}

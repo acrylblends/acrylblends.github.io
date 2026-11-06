@@ -1,5 +1,0 @@
-{
-  "name": "Luma Space",
-  "description": "An XR scene composer: a stylised 3D viewport with AR, VR and MR preview modes, an object hierarchy with parent-child transforms in metres, a transform inspector, spatial anchors, a simulated interaction preview and scene validation. Nothing is an XR session.",
-  "plugins": []
-}

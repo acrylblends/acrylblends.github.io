@@ -73,17 +73,6 @@
       "runtime": "acryl"
     },
     {
-      "id": "acrylblends.accessibility-clearpath-audit",
-      "name": "Clearpath Audit",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.accessibility-clearpath-audit",
-      "license": "MIT",
-      "category": "accessibility",
-      "description": "An accessibility audit and assistive-preview console: sample findings filtered by priority, a live sample page with the affected component outlined, high-contrast, larger-text and focus-outline previews, remediation that is applied to the preview, and a re-run score. A triage concept, not a conformance check.",
-      "runtime": "acrylblends"
-    },
-    {
       "id": "acrylblends.agent",
       "name": "An app that builds itself",
       "kind": "Blueprint",
@@ -92,39 +81,6 @@
       "license": "MIT",
       "category": "starter",
       "description": "A small app with an offline agent and live plugin install: ask for a feature and the agent writes it into the running app, through the door. Development only: production leaves the agent out.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.api-orbit-console",
-      "name": "Orbit API Console",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.api-orbit-console",
-      "license": "MIT",
-      "category": "api-sdk",
-      "description": "An API console: browse endpoints, fill in parameters or a request body, send a request to a local fixture API that validates and creates like the real one, read the response, and copy JavaScript, Python or Go snippets.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.backup-restorepoint",
-      "name": "Restorepoint",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.backup-restorepoint",
-      "license": "MIT",
-      "category": "backup",
-      "description": "A backup operations and recovery-planning console: protected workloads, a recovery timeline with integrity status, backup schedules, retention policies, a restore plan with preflight checks and a simulated restore run. Nothing real is read or restored.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.blockchain-blockscope",
-      "name": "Blockscope Explorer",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.blockchain-blockscope",
-      "license": "MIT",
-      "category": "blockchain",
-      "description": "A read-only blockchain explorer over a synthetic testnet: a block ledger with finality, search by height, hash or label, transaction pages with decoded event logs, address pages, contract events filtered by name and time range, and a saved watchlist. Everything is demo data.",
       "runtime": "acrylblends"
     },
     {
@@ -139,127 +95,6 @@
       "runtime": "acrylblends"
     },
     {
-      "id": "acrylblends.compliance-northstar-grc",
-      "name": "Northstar GRC",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.compliance-northstar-grc",
-      "license": "MIT",
-      "category": "compliance",
-      "description": "A governance workbench: a control register over three frameworks with evidence freshness, an evidence review (accept, request a refresh, mark an exception), a risk watchlist with treatments and a recalculating posture strip, audit actions and an exportable review. Illustrative data; no certification claimed.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.decentralized-federary",
-      "name": "Federary Network",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.decentralized-federary",
-      "license": "MIT",
-      "category": "decentralized",
-      "description": "A federation administration console: a topology map of fictional instances with trust edges and health, an instance profile with policy, identity assertion and handshake, inbound and outbound federation requests, a moderation queue, trust rules that can stop an approval, and reversible recorded decisions.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.desktop-canvasmith",
-      "name": "Canvasmith Desktop",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.desktop-canvasmith",
-      "license": "MIT",
-      "category": "desktop",
-      "description": "A desktop-style design workspace: a project of files, an artboard drawn from layers at a chosen zoom, an inspector with checked property edits, layer ordering, tools that add layers, and simulated exports with an activity log.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.distributed-meshwatch",
-      "name": "Meshwatch",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.distributed-meshwatch",
-      "license": "MIT",
-      "category": "distributed-systems",
-      "description": "A distributed-systems console: a Raft cluster's topology map, node health, quorum, the append-only commit log, replica lag and failover drills that move the leader.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.hci-sensepath-lab",
-      "name": "Sensepath Lab",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.hci-sensepath-lab",
-      "license": "MIT",
-      "category": "hci",
-      "description": "An interaction research workbench: six simulated input modalities (speech, gesture, eye tracking, alternative input, haptics, a BCI concept), a scenario with a calibration, a deterministic task simulation with synthetic timing events, and saved observations to compare. No sensor is accessed.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.integration-relaycraft",
-      "name": "Relaycraft",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.integration-relaycraft",
-      "license": "MIT",
-      "category": "integration",
-      "description": "An integration studio: connectors and connections, a pipeline canvas of source, transform and destination, field mappings with sample-record preview, and a deterministic sync simulation with run history.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.libraries-foundry",
-      "name": "The Foundry",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.libraries-foundry",
-      "license": "MIT",
-      "category": "libraries-frameworks",
-      "description": "A curated package atlas: search and filter libraries and frameworks, read their metadata and version history, copy an install command, and assemble a local stack with warnings and a manifest preview.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.localization-lingodesk",
-      "name": "LingoDesk",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.localization-lingodesk",
-      "license": "MIT",
-      "category": "localization",
-      "description": "A translation-management and CAT workbench: target locales, source and target segments with draft, review and approved states, a glossary and translation-memory suggestions, and local QA checks for placeholders, missing translations, terminology and length. No translation service is contacted.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.messaging-pulsebus",
-      "name": "Pulsebus",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.messaging-pulsebus",
-      "license": "MIT",
-      "category": "messaging-infrastructure",
-      "description": "An event-bus explorer: browse topics and consumer groups, read a message stream with delivery and retry state, inspect JSON payloads, publish schema-validated synthetic events, replay and manage the dead-letter queue.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.middleware-gatehouse",
-      "name": "Gatehouse",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.middleware-gatehouse",
-      "license": "MIT",
-      "category": "middleware",
-      "description": "An API-gateway control plane: a route registry, an ordered middleware pipeline per route, upstream services, request traces from a policy simulation, and a route-policy draft that is applied to the pipeline on purpose.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.mobile-mobiary",
-      "name": "Mobiary",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.mobile-mobiary",
-      "license": "MIT",
-      "category": "mobile",
-      "description": "A mobile journal companion: a phone preview with Home, Capture, Activity and Profile screens, quick capture of notes, voice-memo and photo placeholders, home-screen modules you can switch, a daily focus with small goals, and compact and quiet preferences.",
-      "runtime": "acrylblends"
-    },
-    {
       "id": "acrylblends.notes-desktop",
       "name": "Notes, in a window",
       "kind": "Blueprint",
@@ -268,17 +103,6 @@
       "license": "MIT",
       "category": "productivity",
       "description": "A multi-user notes app (sign-up, log-in, search, SQLite with migrations) that opens in its own desktop window as well as in the browser.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.p2p-swarmdrop",
-      "name": "Swarmdrop",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.p2p-swarmdrop",
-      "license": "MIT",
-      "category": "p2p",
-      "description": "A peer-to-peer transfer room: a chunk availability map with rarest-first requests, synthetic peers with rate and latency, a pausable simulation with a corrupt-copy retry, integrity verification and a completion receipt, and rooms you can create or join by code. Nothing is transferred.",
       "runtime": "acrylblends"
     },
     {
@@ -293,39 +117,6 @@
       "runtime": "acrylblends"
     },
     {
-      "id": "acrylblends.remote-relay",
-      "name": "Remote Relay",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.remote-relay",
-      "license": "MIT",
-      "category": "remote-computing",
-      "description": "A remote-computing workspace: saved SSH-style connections, simulated terminal sessions with allowlisted demo commands, a transfer queue with file metadata and a session audit log.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.runtime-runlevel",
-      "name": "Runlevel",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.runtime-runlevel",
-      "license": "MIT",
-      "category": "runtime",
-      "description": "A runtime operations desk: hosts and their managed processes with a simulated restart, a runtime compatibility matrix, and rollout drafts checked against it with history and roll-back.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.simulation-morrow-lab",
-      "name": "Morrow Lab",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.simulation-morrow-lab",
-      "license": "MIT",
-      "category": "simulation",
-      "description": "A simulation workbench: tune a thermal chamber's boundary conditions, run a deterministic local model, compare response traces and keep named parameter snapshots.",
-      "runtime": "acrylblends"
-    },
-    {
       "id": "acrylblends.small-crm",
       "name": "Small CRM",
       "kind": "Blueprint",
@@ -337,17 +128,6 @@
       "runtime": "acrylblends"
     },
     {
-      "id": "acrylblends.storage-vaultline",
-      "name": "Vaultline",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.storage-vaultline",
-      "license": "MIT",
-      "category": "storage",
-      "description": "A storage console: pool capacity and health, volumes created against free capacity, object buckets with browsable metadata, and a snapshot ledger with retention.",
-      "runtime": "acrylblends"
-    },
-    {
       "id": "acrylblends.system-monitor",
       "name": "System Monitor",
       "kind": "Blueprint",
@@ -356,50 +136,6 @@
       "license": "MIT",
       "category": "system",
       "description": "This machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.terminal-termforge",
-      "name": "Termforge",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.terminal-termforge",
-      "license": "MIT",
-      "category": "terminal",
-      "description": "A terminal workspace simulator: workspaces with tabs, a strict command allowlist answered from fixtures, a command deck and task launcher, saved snippets, command history and recall, and a session status panel. It never runs a host process.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.virtualization-hyperplane",
-      "name": "Hyperplane",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.virtualization-hyperplane",
-      "license": "MIT",
-      "category": "virtualization",
-      "description": "A virtualization console: pick a host, search and filter the machine inventory, start, pause, stop and snapshot machines under a lifecycle state machine with capacity guards, and provision new ones.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.web-pagefoundry",
-      "name": "Pagefoundry",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.web-pagefoundry",
-      "license": "MIT",
-      "category": "web",
-      "description": "A website builder: a site of pages built from blocks, a live browser-framed preview with selectable sections, an inspector for headline, background, width and visibility with a contrast check, preview mode for desktop and mobile, and simulated publishes with warnings.",
-      "runtime": "acrylblends"
-    },
-    {
-      "id": "acrylblends.xr-luma-space",
-      "name": "Luma Space",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acrylblends.xr-luma-space",
-      "license": "MIT",
-      "category": "xr",
-      "description": "An XR scene composer: a stylised 3D viewport with AR, VR and MR preview modes, an object hierarchy with parent-child transforms in metres, a transform inspector, spatial anchors, a simulated interaction preview and scene validation. Nothing is an XR session.",
       "runtime": "acrylblends"
     }
   ]

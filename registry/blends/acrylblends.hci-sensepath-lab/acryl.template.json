@@ -1,5 +1,0 @@
-{
-  "name": "Sensepath Lab",
-  "description": "An interaction research workbench: six simulated input modalities (speech, gesture, eye tracking, alternative input, haptics, a BCI concept), a scenario with a calibration, a deterministic task simulation with synthetic timing events, and saved observations to compare. No sensor is accessed.",
-  "plugins": []
-}

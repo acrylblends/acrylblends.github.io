@@ -1,5 +1,0 @@
-{
-  "name": "Remote Relay",
-  "description": "A remote-computing workspace: saved SSH-style connections, simulated terminal sessions with allowlisted demo commands, a transfer queue with file metadata and a session audit log.",
-  "plugins": []
-}

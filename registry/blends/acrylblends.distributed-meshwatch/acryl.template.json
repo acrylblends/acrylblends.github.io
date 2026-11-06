@@ -1,5 +1,0 @@
-{
-  "name": "Meshwatch",
-  "description": "A distributed-systems console: a Raft cluster's topology map, node health, quorum, the append-only commit log, replica lag and failover drills that move the leader.",
-  "plugins": []
-}
