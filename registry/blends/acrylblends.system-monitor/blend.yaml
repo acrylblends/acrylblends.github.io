@@ -18,6 +18,7 @@ spec:
   rows:
     - id: router
       name: acryl-router
+    # The monitor: this machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program.
     - id: monitor
       name: monitor
       config:

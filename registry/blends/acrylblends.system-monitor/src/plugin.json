@@ -1,0 +1,13 @@
+{
+  "name": "monitor",
+  "description": "This machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program.",
+  "requires": [],
+  "inject": [
+    "router"
+  ],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: monitor` / `name: monitor` in blend.yaml; the plugin is src/monitor.ts and its domain code is src/monitor/"
+}
