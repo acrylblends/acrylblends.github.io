@@ -92,7 +92,7 @@
     {
       "name": "control",
       "origin": "local",
-      "digest": "sha256:4c8d680cb9d363d8cbfb3167ea4d0f8ddba1b556151394e83a581809f8fe4575",
+      "digest": "sha256:7b6bf4646507d2817843ad2cb5f131fcef3d44c19f8df201942a0e0733a060f5",
       "source": "plugins/control"
     },
     {
@@ -134,7 +134,7 @@
     {
       "name": "plant-shell",
       "origin": "local",
-      "digest": "sha256:64d1a1d423cda28bb8c9accb76d2d01fceee3cc9746c48a8d5223170011ec4bc",
+      "digest": "sha256:97f32ea4b3e38a3e5b337addd218c0ab4de15c5f0c2597850cd70862f808a633",
       "source": "plugins/plant-shell"
     },
     {

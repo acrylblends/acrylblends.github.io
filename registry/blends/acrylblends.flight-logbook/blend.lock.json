@@ -128,7 +128,7 @@
     {
       "name": "logbook-shell",
       "origin": "local",
-      "digest": "sha256:7950bbde197109d8d91c611f47c5bbeb2514893f237cd4c5976ced119ebbd0ca",
+      "digest": "sha256:14440f396590d3f414a69088737e082ebfbf56dbf8c51f5a4da0ac2a4c50cb33",
       "source": "plugins/logbook-shell"
     },
     {
@@ -140,7 +140,7 @@
     {
       "name": "overview",
       "origin": "local",
-      "digest": "sha256:f5246124e3ace94758ba897f30657cb353afc8a9d0ee9a3f78776cfcf3a246c5",
+      "digest": "sha256:7347b3bce7a918ba868ed8e421ef6d22dbca8cf563be26fff8fa5164933ee550",
       "source": "plugins/overview"
     },
     {

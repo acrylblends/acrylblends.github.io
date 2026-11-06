@@ -120,7 +120,7 @@
     {
       "name": "garage-shell",
       "origin": "local",
-      "digest": "sha256:c2c3e1cb5bea5a4726fd58ae8f9f53eaadec5aea785214d52cc5c077ff67cd7c",
+      "digest": "sha256:987e23af84a68d32002792fd41e3b852aab690a3aa7eabf30c373be95dd92b2d",
       "source": "plugins/garage-shell"
     },
     {
