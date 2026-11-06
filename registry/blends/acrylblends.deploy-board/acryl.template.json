@@ -1,0 +1,5 @@
+{
+  "name": "Deploy Board",
+  "description": "A release operations console: deployments per service and environment, a chronological event feed and an incident board with a timeline.",
+  "plugins": []
+}

@@ -1,0 +1,17 @@
+{
+  "name": "release",
+  "description": "The release board's domain: services, environments, deployments, incidents and the event log, kept as JSON in the app's data home; promotions, rollbacks and incident changes run through it.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["release"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: release` / `name: release` before the page rows in blend.yaml; a page injects the `release` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default deploy-board.json)",
+    "store": "a Store port for tests",
+    "clock": "what time it is, for tests",
+    "newId": "how ids are made, for tests"
+  }
+}

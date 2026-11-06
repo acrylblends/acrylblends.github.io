@@ -30,4 +30,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.csv-explorer": { category: "Data", subcategory: "Data platforms" },
   "acrylblends.web-analytics": { category: "Analytics", subcategory: "Web analytics" },
   "acrylblends.cloud-costs": { category: "Cloud", subcategory: "Cloud management" },
+  "acrylblends.deploy-board": { category: "DevOps", subcategory: "CI/CD" },
 };

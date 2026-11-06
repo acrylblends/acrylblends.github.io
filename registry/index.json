@@ -117,6 +117,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.deploy-board",
+      "name": "Deploy Board",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.deploy-board",
+      "license": "MIT",
+      "category": "devops",
+      "description": "A release operations console: deployments per service and environment, a chronological event feed and an incident board with a timeline.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.notes-desktop",
       "name": "Notes, in a window",
       "kind": "Blueprint",
