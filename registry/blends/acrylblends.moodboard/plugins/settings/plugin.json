@@ -1,0 +1,11 @@
+{
+  "name": "settings",
+  "description": "Board settings: title, project, dimensions, collaborators, the last save time and the JSON export at /export.json.",
+  "requires": [],
+  "inject": ["boards", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: settings` / `name: settings` after the assets row in blend.yaml"
+}

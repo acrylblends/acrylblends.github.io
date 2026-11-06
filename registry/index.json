@@ -293,6 +293,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.moodboard",
+      "name": "Moodboard",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.moodboard",
+      "license": "MIT",
+      "category": "3d-cad-design",
+      "description": "A spatial direction board: six draggable objects, three reference images, a palette rail, layers, an asset library, board settings and a JSON export.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.notes-desktop",
       "name": "Notes, in a window",
       "kind": "Blueprint",

@@ -1,0 +1,11 @@
+{
+  "name": "canvas",
+  "description": "The board canvas at /: the tools rail, the palette, the layers list, the dotted board and the six seeded objects, with drag-and-drop autosave.",
+  "requires": [],
+  "inject": ["boards", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: canvas` / `name: canvas` after the shell row in blend.yaml"
+}

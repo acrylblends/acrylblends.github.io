@@ -1,0 +1,11 @@
+{
+  "name": "objects",
+  "description": "Objects: the add form (/objects/new), the editor (/objects/:id/edit) with duplicate, layer and delete, and the move endpoint a drag posts to.",
+  "requires": [],
+  "inject": ["boards", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: objects` / `name: objects` after the canvas row in blend.yaml"
+}

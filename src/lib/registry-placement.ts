@@ -57,4 +57,5 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.deploy-board": { category: "DevOps", subcategory: "CI/CD" },
   "acrylblends.uptime": { category: "Networking", subcategory: "Network management" },
   "acrylblends.photo-gallery": { category: "Media", subcategory: "Graphics" },
+  "acrylblends.moodboard": { category: "3D / CAD / Design", subcategory: "3D" },
 };

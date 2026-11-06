@@ -1,0 +1,53 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.moodboard
+  name: "Moodboard"
+  version: 0.1.0
+  category: 3d-cad-design
+  description: "A spatial direction board: six draggable objects, three reference images, a palette rail, layers, an asset library, board settings and a JSON export."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The domain: one board, its typed objects with explicit positions and layers, and the asset library, saved as JSON in the app's data home.
+    - id: boards
+      name: boards
+    # The page shell: the field-notes top bar with the project crumb, the history/share actions, the save form and the canvas script.
+    - id: board-shell
+      name: board-shell
+    # The canvas at /: the tools rail, the palette, the layers, the dotted board and its objects. Drag or use the arrow keys; both autosave.
+    - id: canvas
+      name: canvas
+    # Objects: the add form, the editor with duplicate, layer and delete, and the move endpoint a drag posts to.
+    - id: objects
+      name: objects
+    # Assets: the reference image and colour library, with an add form and Use on board for every asset.
+    - id: assets
+      name: assets
+    # Board settings: title, project, dimensions, collaborators, the last save and the JSON export.
+    - id: settings
+      name: settings
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one, which Settings > Plugins switches with `disabled: true`.
+    # This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with a row is never started twice.
+    # Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only.
+    - id: acryl-door
+      name: acryl-door

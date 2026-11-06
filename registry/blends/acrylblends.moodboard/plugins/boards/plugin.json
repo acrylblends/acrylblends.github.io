@@ -1,0 +1,17 @@
+{
+  "name": "boards",
+  "description": "The Moodboard's domain: one spatial board, its typed objects with explicit positions and layers, and the image and colour asset library, saved as JSON in the app's data home.",
+  "requires": [],
+  "inject": ["appInstance"],
+  "provides": ["boards"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: boards` / `name: boards` before the page rows in blend.yaml; a page injects the `boards` service",
+  "config": {
+    "file": "the JSON file, relative to the app's home (default moodboard.json)",
+    "store": "a Store port for tests (default: one JSON file under the app's home)",
+    "clock": "what time it is, for tests (default: the system clock)",
+    "newId": "how ids are made, for tests (default: a random UUID suffix)"
+  }
+}

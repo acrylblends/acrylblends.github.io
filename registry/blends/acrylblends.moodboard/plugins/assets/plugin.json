@@ -1,0 +1,11 @@
+{
+  "name": "assets",
+  "description": "Assets: the reference image and colour library at /assets, the add form and Use on board for every asset.",
+  "requires": [],
+  "inject": ["boards", "shell", "router"],
+  "provides": [],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: assets` / `name: assets` after the objects row in blend.yaml"
+}

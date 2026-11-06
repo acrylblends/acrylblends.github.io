@@ -1,0 +1,14 @@
+{
+  "name": "board-shell",
+  "description": "The Moodboard's page shell: the field-notes top bar with the project crumb, the history and share toasts, the save form and the shared canvas script.",
+  "requires": [],
+  "inject": ["boards", "router"],
+  "provides": ["shell"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: board-shell` / `name: board-shell` after the boards row and before the page rows in blend.yaml",
+  "config": {
+    "prefix": "the mount prefix the frame host chose; set by createApp, not by hand"
+  }
+}
