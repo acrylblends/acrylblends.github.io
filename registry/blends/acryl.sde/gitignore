@@ -1,0 +1,7 @@
+node_modules/
+.acrylblends/
+.acryl/
+package-lock.json
+.env
+.env.*
+node_modules

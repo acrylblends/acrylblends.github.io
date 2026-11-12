@@ -1,0 +1,11 @@
+{
+  "name": "sde",
+  "description": "ACRYL SDE, the Synthetic Data Engine: scan a codebase, detect secrets, personal data, private infrastructure and project words, anonymize, extract the architecture, re-check, package a Training Unit that a person reviews, and export an approved one to a local folder. No network.",
+  "requires": [],
+  "inject": ["appInstance", "router"],
+  "provides": ["sde"],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.5"
+  },
+  "mount": "a row `- id: sde` / `name: sde` after the router row in blend.yaml; the pages answer at /sde (/app/sde in the workbench)"
+}

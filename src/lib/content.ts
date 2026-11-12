@@ -4,12 +4,59 @@ export const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]
 // around (docs/acrylbelnds_100ctgs/acrylbelnds_100ctgs.md in the acryl repo).
 // A category with zero Blends is still a real, addressable node — not hidden —
 // per the design doc's own "no Blends here yet" empty state.
+/** A subcategory with its own page content: a short address (`/blends/ai/ade`), what it is, and screenshots of the Blends in it. */
+export interface SubcategoryDetail {
+  readonly name: string;
+  readonly slug: string;
+  readonly summary: string;
+  readonly paragraphs: readonly string[];
+  readonly gallery: readonly { readonly src: string; readonly caption: string }[];
+}
+
+export interface Subcategory {
+  readonly name: string;
+  readonly slug: string;
+  readonly detail?: SubcategoryDetail;
+}
+
+const ADE: SubcategoryDetail = {
+  name: "Agent Development Environment (ADE)",
+  slug: "ade",
+  summary: "Where people and coding agents build software together: projects and git worktrees, the agent's chat, terminals with Claude Code, Codex or any other agent, and the files and changes they work on.",
+  paragraphs: [
+    "An ADE is an IDE built around agents rather than around an editor. ACRYL ADE is the ACRYL IDE (github.com/acryldev/acryl) as a Blend: the same workbench, unchanged, in an app you create with one command and grow with plugins like any other Blend.",
+    "On the left, your projects with their branches and worktrees, and the chats and terminals open on each. In the middle, tabs: the agent's chat, terminals, a browser, files, diffs, a board and docs. From the + menu you open Claude, Codex, Grok, GitHub Copilot, OpenCode, Pi and more, each in its own terminal tab beside the chat.",
+  ],
+  gallery: [
+    { src: "/img/blends/ai/ade-workbench.jpg", caption: "ACRYL ADE: projects and branches on the left, the agent's chat in the middle." },
+    { src: "/img/blends/ai/ade-agents.jpg", caption: "The + menu: terminals, browser, files, diffs, boards, docs, and the coding agents." },
+  ],
+};
+
+const SDE: SubcategoryDetail = {
+  name: "Synthetic Data Engine (SDE)",
+  slug: "sde",
+  summary: "Turn real codebases into reviewed, anonymized training data for coding models: secrets, personal data and the project's names removed, the engineering kept, nothing sent anywhere without your approval.",
+  paragraphs: [
+    "AI labs need real engineering, not toy code, to train coding agents. Companies have it, but cannot hand over their source. A Synthetic Data Engine sits in between: it reads a codebase on the owner's machine, keeps the architecture and the know-how, and removes what identifies the company, its people and its systems.",
+    "ACRYL SDE is a fork of ACRYL ADE with the engine inside. It scans a project folder without running it, finds secrets, personal data, private hosts and the project's own words, rewrites them, extracts modules, layers and engineering patterns, checks the output again, and packages a Training Unit with privacy, security, similarity and quality reports. The owner reviews every unit and signs it; only an approved unit is exported, to a local folder. Next: re-implementing the extracted architecture as new synthetic code, and delivery into prepared dataset infrastructure behind the same approval.",
+  ],
+  gallery: [
+    { src: "/img/blends/ai/sde-workbench.jpg", caption: "A run inside the IDE: 339 files read, 219 private items found, none left in the output." },
+    { src: "/img/blends/ai/sde-code.jpg", caption: "Reading what will be packaged: emails and names replaced, the code unchanged." },
+    { src: "/img/blends/ai/sde-home.jpg", caption: "A new run: the project folder, the words to remove, and what the engine guarantees." },
+  ],
+};
+
+/** The subcategories that have a page of their own, by the name the taxonomy lists them under. */
+const DETAILS: readonly SubcategoryDetail[] = [ADE, SDE];
+
 const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "System", subs: ["Operating systems", "Kernels", "Device drivers", "Firmware", "Boot software", "System utilities"] },
   { name: "Application", subs: ["Productivity", "Personal information management", "Communication", "Collaboration"] },
   { name: "Business", subs: ["ERP", "CRM", "Finance", "Payments", "HR", "Project management", "Procurement", "Operations"] },
   { name: "Developer", subs: ["Code editors", "IDEs", "Version control", "Build tools", "Language tooling", "Dependency management", "Testing", "API development", "Developer collaboration"] },
-  { name: "AI", subs: ["AI assistants", "AI agents", "Agent infrastructure", "Machine learning software", "Generative AI", "AI infrastructure", "AI safety"] },
+  { name: "AI", subs: [ADE.name, SDE.name, "AI assistants", "AI agents", "Agent infrastructure", "Machine learning software", "Generative AI", "AI infrastructure", "AI safety"] },
   { name: "Data", subs: ["Databases", "Data engineering", "Data platforms", "Data governance"] },
   { name: "Analytics", subs: ["Business intelligence", "Data science", "Product analytics", "Web analytics", "Observability analytics"] },
   { name: "Cloud", subs: ["Cloud infrastructure", "Cloud management", "Container infrastructure", "Cloud platforms"] },
@@ -107,7 +154,12 @@ const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "Meta-software", subs: ["Compilers", "AI coding agents", "Software factories", "DSLs"] },
 ];
 
-export const categories = categoriesRaw.map((c) => ({ slug: slugify(c.name), name: c.name, subs: c.subs }));
+function subcategoryOf(name: string): Subcategory {
+  const detail = DETAILS.find((d) => d.name === name);
+  return detail ? { name, slug: detail.slug, detail } : { name, slug: slugify(name) };
+}
+
+export const categories = categoriesRaw.map((c) => ({ slug: slugify(c.name), name: c.name, subs: c.subs.map(subcategoryOf) }));
 
 export const docGroups = [
   { slug: "getting-started", title: "Getting Started", items: ["What is ACRYL Blends", "Install", "Create your first app", "Let the agent build a plugin", "Add plugins", "Lock, save and ship"] },

@@ -13,6 +13,8 @@ export function placeEntries<T extends { id: string }>(entries: readonly T[]): A
 }
 
 export const registryPlacement: Record<string, Placement> = {
+  "acryl.ade": { category: "AI", subcategory: "Agent Development Environment (ADE)" },
+  "acryl.sde": { category: "AI", subcategory: "Synthetic Data Engine (SDE)" },
   "acryl.blank": { category: "Software Factories", subcategory: "AI software factories" },
   "acryl.accounting": { category: "Business", subcategory: "Finance" },
   "acryl.gtd": { category: "Application", subcategory: "Productivity" },

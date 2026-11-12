@@ -65,7 +65,7 @@ function Categories() {
         {categories.map((c, i) => <Link key={c.slug} to={`/blends/${c.slug}`} className="group border-b border-r border-border bg-background p-5 hover:bg-muted">
           <span className="font-mono text-[10px] text-muted-foreground">{String(i + 1).padStart(2, "0")}</span>
           <h3 className="mt-5 text-base font-semibold">{c.name}</h3>
-          <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-muted-foreground">{c.subs.slice(0, 3).join(" · ")}</p>
+          <p className="mt-1.5 line-clamp-2 text-xs leading-5 text-muted-foreground">{c.subs.slice(0, 3).map(s => s.name).join(" · ")}</p>
           <ArrowRight size={14} className="mt-4 transition-transform group-hover:translate-x-1"/>
         </Link>)}
       </div>

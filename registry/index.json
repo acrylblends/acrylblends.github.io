@@ -14,6 +14,17 @@
       "runtime": "acryl"
     },
     {
+      "id": "acryl.ade",
+      "name": "ACRYL ADE",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.ade",
+      "license": "MIT",
+      "category": "ai",
+      "description": "ACRYL ADE, the Agent Development Environment: the ACRYL IDE as a Blend. Projects and git worktrees on the left, chats, terminals and coding agents as tabs, the changed files, review and files on the right.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acryl.blank",
       "name": "Blank",
       "kind": "Blueprint",
@@ -71,6 +82,17 @@
       "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
       "parent": "acryl.blank",
       "runtime": "acryl"
+    },
+    {
+      "id": "acryl.sde",
+      "name": "ACRYL SDE",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.sde",
+      "license": "MIT",
+      "category": "ai",
+      "description": "ACRYL SDE, the Synthetic Data Engine: point it at a codebase and get a reviewed, anonymized Training Unit for coding-model training - secrets, personal data and project names removed, architecture extracted, nothing leaves the machine without your approval. A fork of ACRYL ADE.",
+      "runtime": "acrylblends"
     },
     {
       "id": "acrylblends.accessibility-clearpath-audit",

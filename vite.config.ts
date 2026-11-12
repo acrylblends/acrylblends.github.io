@@ -47,7 +47,7 @@ export default defineConfig({
         for (const post of posts) add(`/blog/${post.slug}`, post.title, post.excerpt);
         for (const category of categories) {
           add(`/blends/${category.slug}`, category.name, `Blends in the ${category.name} category.`);
-          for (const sub of category.subs) add(`/blends/${category.slug}/${slugify(sub)}`, sub, `Blends for ${sub}.`);
+          for (const sub of category.subs) add(`/blends/${category.slug}/${sub.slug}`, sub.name, sub.detail?.summary ?? `Blends for ${sub.name}.`);
         }
         // One page per Blend: the registry's entries are the only Blends that exist, so registry/index.json is the list.
         const registry = JSON.parse(readFileSync(resolve(__dirname, "registry/index.json"), "utf8")) as { entries: { id: string; name: string; description: string }[] };
