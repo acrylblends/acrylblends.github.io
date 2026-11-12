@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import index from "../../registry/index.json";
 import { CodeBlock, Status } from "./ui";
+import { blendPath } from "../lib/registry-placement";
 
 /** One entry of registry/index.json (written by blends-registry-index from @acryl/blends-core; CI refuses a stale index). */
 /** `runtime` says what the entry is for: an app for the acrylblends framework, or a starter for the ACRYL app (the index of a registry written before the field existed has none: those are ACRYL's). */
@@ -53,7 +54,7 @@ export function RegistryStarters() {
     <div className="mt-6 grid gap-4 lg:grid-cols-2">
       {shown.map(entry => <article key={entry.id} className="border border-border bg-background p-6">
         <div className="flex flex-wrap gap-2"><Status tone={runtimeOf(entry) === "acrylblends" ? "success" : "default"}>{runtimeOf(entry) === "acrylblends" ? "acrylblends app" : "ACRYL app starter"}</Status><Status tone="success">{level(entry)}</Status>{entry.category && <Status>{entry.category}</Status>}<Status>v{entry.version}</Status><Status>{entry.license}</Status></div>
-        <h3 className="mt-5 text-2xl font-semibold"><Link to={`/blends/b/${entry.id}`} className="hover:text-accent-foreground">{entry.name}</Link></h3>
+        <h3 className="mt-5 text-2xl font-semibold"><Link to={blendPath(entry.id)} className="hover:text-accent-foreground">{entry.name}</Link></h3>
         {entry.description && <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">{entry.description}</p>}
         {entry.parent && <p className="mt-3 flex items-center gap-2 font-mono text-[11px] text-muted-foreground">grew from {entry.parent} <ArrowRight size={12}/> {entry.id}</p>}
         <div className="mt-5"><CodeBlock label={runtimeOf(entry) === "acrylblends" ? "Start a project" : "Start a project in the ACRYL app"} code={startCommand(entry)}/>{runtimeOf(entry) === "acryl" && <p className="mt-2 text-xs leading-5 text-muted-foreground">Runs only inside the ACRYL app. <code>create-acrylblends</code> makes acrylblends apps and refuses this one.</p>}</div>

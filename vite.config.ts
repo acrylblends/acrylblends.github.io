@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { copyFileSync, cpSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { categories, docGroups, slugify } from "./src/lib/content";
+import { blendPath } from "./src/lib/registry-placement";
 import { posts } from "./src/lib/blog";
 import { cordisGroups } from "./src/lib/cordis-tutorial";
 
@@ -51,7 +52,11 @@ export default defineConfig({
         }
         // One page per Blend: the registry's entries are the only Blends that exist, so registry/index.json is the list.
         const registry = JSON.parse(readFileSync(resolve(__dirname, "registry/index.json"), "utf8")) as { entries: { id: string; name: string; description: string }[] };
-        for (const entry of registry.entries) add(`/blends/b/${entry.id}`, entry.name, entry.description);
+        // Each at its address under its subcategory; the old flat /blends/b/<id> stays a real page too (links to it are out there) and forwards.
+        for (const entry of registry.entries) {
+          add(blendPath(entry.id), entry.name, entry.description);
+          add(`/blends/b/${entry.id}`, entry.name, entry.description);
+        }
         add("/docs/blends", "Blends guide", "Practical guides for pulling a Blend, authoring Cordis plugins in place, and publishing stable compositions.");
         for (const group of docGroups) {
           add(`/docs/blends/${group.slug}`, group.title, `ACRYL Blends documentation: ${group.title}.`);

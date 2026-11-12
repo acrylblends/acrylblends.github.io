@@ -22,6 +22,7 @@ export default function App() {
       <Route path="/" element={<Home/>}/>
       <Route path="/blends" element={<BlendsIndex/>}/>
       <Route path="/blends/b/:slug" element={<BlendDetail/>}/>
+      <Route path="/blends/:category/:subcategory/:slug" element={<BlendDetail/>}/>
       <Route path="/blends/:category/:subcategory" element={<BlendsSubcategory/>}/>
       <Route path="/blends/:category" element={<BlendsCategory/>}/>
       <Route path="/ui" element={<UiRegistry/>}/>

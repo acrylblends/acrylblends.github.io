@@ -1,5 +1,7 @@
 // Where each published starter sits in the site's 100-category taxonomy. The registry's own index.json carries the publisher's short category
 // (starter, finance, productivity, ...), which is not the taxonomy; this map is the site's presentation of it and is written by hand when an entry lands.
+import { categories } from "./content";
+
 export interface Placement {
   category: string;
   subcategory: string;
@@ -10,6 +12,17 @@ export function placeEntries<T extends { id: string }>(entries: readonly T[]): A
   return entries
     .map((entry) => ({ entry, placement: registryPlacement[entry.id] }))
     .filter((item): item is { entry: T; placement: Placement } => item.placement !== undefined);
+}
+
+/**
+ * A Blend's address: under its category and subcategory, `/blends/ai/ade/acryl.ade`, so the URL says where it sits. An entry without a
+ * placement keeps the flat `/blends/b/<id>`, the address every Blend had before (that route still answers and forwards here).
+ */
+export function blendPath(id: string): string {
+  const placement = registryPlacement[id];
+  const category = placement && categories.find((c) => c.name === placement.category);
+  const sub = category?.subs.find((s) => s.name === placement?.subcategory);
+  return category && sub ? `/blends/${category.slug}/${sub.slug}/${id}` : `/blends/b/${id}`;
 }
 
 export const registryPlacement: Record<string, Placement> = {
