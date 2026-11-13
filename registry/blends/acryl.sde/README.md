@@ -1,6 +1,6 @@
 # ACRYL SDE
 
-**ACRYL SDE**, the Synthetic Data Engine. Registry id `acryl.sde`. A fork of [ACRYL ADE](https://acrylblends.github.io/blends/ai/ade)
+**ACRYL SDE**, the Synthetic Data Engine. Registry id `acryl.sde`. Source: <https://github.com/acrylblends/05-acryl-sde>. Page: <https://acrylblends.github.io/blends/ai/sde/acryl.sde>. A fork of [ACRYL ADE](https://acrylblends.github.io/blends/ai/ade/acryl.ade), source <https://github.com/acrylblends/05-acryl-ade>
 (`acryl.ade`, the ACRYL IDE as a Blend) with one plugin added: `plugins/sde`.
 
 Point it at a codebase and it makes a **Training Unit**: the code with everything that identifies the project, its people and its secrets
@@ -44,6 +44,13 @@ npm start                         # the engine's pages alone, at /sde
 npm run sde -- suggest /path/to/project
 npm run sde -- scan /path/to/project --term Acme --term Contoso
 npm run sde -- list
+```
+
+Or run it straight from this repository, <https://github.com/acrylblends/05-acryl-sde>:
+
+```bash
+git clone https://github.com/acrylblends/05-acryl-sde.git
+cd 05-acryl-sde && npm install && npm run dev
 ```
 
 Approving and exporting are only on the page, by a person.
