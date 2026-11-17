@@ -28,6 +28,8 @@
       name: '@acrylblends/versions'
     - id: acryl-workspace
       name: '@acrylblends/workspace'
+      config:
+        openFolder: !!js process.env.ACRYL_OPEN_FOLDER
     - id: acryl-plugin-admin
       name: '@acrylblends/plugin-admin'
     - id: acryl-system-prompt
@@ -43,7 +45,7 @@
 - id: connection
   inject: []
   config:
-    trustedHosts: ['127.0.0.1']
+    trustedHosts: !!js "['127.0.0.1', ...(process.env.ACRYL_PUBLIC_ORIGIN ? [new URL(process.env.ACRYL_PUBLIC_ORIGIN).host] : [])]"
 - id: workspace-controller
   config:
     documentsDirectory: !!js process.env.DSH_HOME
