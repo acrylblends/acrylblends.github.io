@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { CLIENT_FORMAT } from '../src/monitor/client.ts'
-import { formatBytes, formatDuration } from '../src/monitor/format.ts'
-import { heaviest, killProcess, protectedReason, type KillDeps, type Signal } from '../src/monitor/kill-list.ts'
-import { defaultDiskPaths, diskOf, memoryOf, parseMeminfo, parsePs, parseTasklist, parseVmStat, readSnapshot, type ProcessInfo, type Sources } from '../src/monitor/system.ts'
+import { CLIENT_FORMAT } from '../plugins/monitor/client.ts'
+import { formatBytes, formatDuration } from '../plugins/monitor/format.ts'
+import { heaviest, killProcess, protectedReason, type KillDeps, type Signal } from '../plugins/monitor/kill-list.ts'
+import { defaultDiskPaths, diskOf, memoryOf, parseMeminfo, parsePs, parseTasklist, parseVmStat, readSnapshot, type ProcessInfo, type Sources } from '../plugins/monitor/system.ts'
 
 const PS = `    1  0.0   9120 root     /sbin/launchd
   412  1.5 204800 alex     /Applications/Google Chrome.app/Contents/MacOS/Google Chrome

@@ -3,6 +3,7 @@ import { defineWebSocketHelper } from '../../../acryl-router/src/helpers/index.t
 import type { IncomingMessage } from 'node:http'
 import { STATUS_CODES } from 'node:http'
 import type { Duplex } from 'node:stream'
+import { RAW_UPGRADE_HANDLED, type RawUpgradeRequest } from './raw.ts'
 import type { FetchCallback } from './types.ts'
 import type { WebSocketData, WebSocketLike, WebSocketServerLike } from './websocket-types.ts'
 
@@ -144,6 +145,8 @@ const appendResponseHeaders = (headers: string[], responseHeaders?: Headers) => 
 }
 
 const rejectUpgradeRequest = (socket: Duplex, status: number, responseHeaders?: Headers) => {
+  // The socket already has its answer (a provider transition can route one upgrade to two handlers for a moment): never write a second one.
+  if (socket.destroyed || socket.writableEnded) return
   const responseLines = ['Connection: close', 'Content-Length: 0']
   appendResponseHeaders(responseLines, responseHeaders)
 
@@ -181,8 +184,13 @@ export const setupWebSocket = (options: {
   server: UpgradeSource
   fetchCallback: FetchCallback
   wss: WebSocketServerLike
+  /**
+   * Leave a request alone when a raw upgrade handler claimed it. Set by a transport that shares its upgrade source with raw claims (the node
+   * server's HTTP server); a hub fed by its own emitter (the Web adapter) must still answer its own upgrades, which arrive through a raw claim.
+   */
+  skipWhenRawUpgrade?: boolean
 }): void => {
-  const { server, fetchCallback, wss } = options
+  const { server, fetchCallback, wss, skipWhenRawUpgrade = false } = options
 
   const waiterMap = new Map<
     IncomingMessage,
@@ -216,9 +224,11 @@ export const setupWebSocket = (options: {
   }
 
   server.on('upgrade', async (request, socket: Duplex, head) => {
+    // A raw upgrade handler claimed this path before the WebSocket setup ran: the socket is (or will be) its own.
+    if (skipWhenRawUpgrade && (request as RawUpgradeRequest)[RAW_UPGRADE_HANDLED] === true) return
     if (request.headers.upgrade?.toLowerCase() !== 'websocket') {
-      // Nobody else listens: an upgrade to another protocol is answered, not left hanging.
-      if (server.listenerCount('upgrade') === 1) rejectUpgradeRequest(socket, 400)
+      // An upgrade to another protocol is answered, not left hanging (the transport's raw listener flags the ones it already answered).
+      rejectUpgradeRequest(socket, 400)
       return
     }
 
@@ -241,9 +251,7 @@ export const setupWebSocket = (options: {
         responseHeaders = response.headers
       }
     } catch {
-      if (server.listenerCount('upgrade') === 1) {
-        rejectUpgradeRequest(socket, 500)
-      }
+      rejectUpgradeRequest(socket, 500)
       return
     }
 
@@ -251,9 +259,7 @@ export const setupWebSocket = (options: {
 
     if (!waiter || waiter.connectionSymbol !== env[CONNECTION_SYMBOL_KEY]) {
       rejectWaiter(request)
-      if (server.listenerCount('upgrade') === 1) {
-        rejectUpgradeRequest(socket, status, responseHeaders)
-      }
+      rejectUpgradeRequest(socket, status, responseHeaders)
       return
     }
 

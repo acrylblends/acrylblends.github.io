@@ -1,8 +1,48 @@
 {
   "version": 1,
   "plugins": {
+    "acryl-door": {
+      "from": "1.5.10",
+      "files": {
+        "LICENSE": "b84342464fb19baab24f",
+        "src/cli/acryl.ts": "5fd10a53c3f00728625f",
+        "src/host/api.ts": "0626ef27ad2065b3b379",
+        "src/host/audit.ts": "fb718ee832bdcbaf13e4",
+        "src/host/channel.ts": "1152afb1155be64f4707",
+        "src/host/chat-tools.ts": "6bd12694b28b34b92b12",
+        "src/host/door-file.ts": "bd02e76eba5e1f14bffe",
+        "src/host/door.ts": "7379a74db8c78ccee3a7",
+        "src/host/http.ts": "e894092402938071b346",
+        "src/host/mcp-routes.ts": "d139b336307d391d0696",
+        "src/host/operator-routes.ts": "474e20dc429e546b852f",
+        "src/host/page-routes.ts": "3c2beea4c15d8fb31a6a",
+        "src/host/page-socket.ts": "1c0b8276c256d8a8c937",
+        "src/host/shell.ts": "c1d49a1ce31b900a53f2",
+        "src/host/shim.ts": "5d262506a024163e1f61",
+        "src/host/verbs.ts": "7a4037b23640feb08a1e",
+        "src/index.ts": "a3b5985a71bce353971a",
+        "src/page/api.ts": "5644cb5607452893bc11",
+        "src/page/base.ts": "6604aa244a127f938bca",
+        "src/page/channel.ts": "8a4ee9fbc63340c8da56",
+        "src/page/driver/accessibility.ts": "f79e2c5a2c80b569d9d7",
+        "src/page/driver/actions.ts": "7e649965ccf69b0c2a22",
+        "src/page/driver/driver.ts": "05facbe2d7704091fd8e",
+        "src/page/driver/ref-table.ts": "ee4372af68a383ffe91a",
+        "src/page/driver/sensitivity.ts": "699111c1e667ce4a5645",
+        "src/page/driver/snapshot.ts": "3c2c474de180a61e6465",
+        "src/page/index.ts": "bb2ea5d4d989939f6faf",
+        "src/page/indicator.ts": "81f0712ba9aa78624fc9",
+        "src/page/main.ts": "114a9fbe1a3f278bcb2a",
+        "src/page/outline.ts": "73d02cfcb2114b28ffa3",
+        "src/page/protocol.ts": "b1f21e79453cd75953fc",
+        "src/page/snapshot-text.ts": "a26473a5e2aed0373d54",
+        "src/page/socket-source.ts": "e5cf8719685db8a61fae",
+        "src/page/user-input.ts": "edf3e28136a947b16ba1",
+        "src/shell/protocol.ts": "b34db25a8bc53beb00c3"
+      }
+    },
     "acryl-node-server": {
-      "from": "1.1.0",
+      "from": "1.5.10",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "10eaa407ab6767842ec0",
@@ -10,7 +50,8 @@
         "src/adapter/error.ts": "e205d90b3d02f42eeecb",
         "src/adapter/headers.ts": "6cb4777ef5343c38be37",
         "src/adapter/index.ts": "09ca4a9e68e4475f542f",
-        "src/adapter/listener.ts": "585ac76c33ff561f7340",
+        "src/adapter/listener.ts": "d9db69e8411829dd61c9",
+        "src/adapter/raw.ts": "8d05dbfa888077c083e5",
         "src/adapter/request.ts": "1768785e688eb892b9fc",
         "src/adapter/response.ts": "24d52364b21773acee18",
         "src/adapter/serve-static.ts": "84b6909a4503255c3ab3",
@@ -22,17 +63,24 @@
         "src/adapter/utils/stream.ts": "106a155dc353fc70808d",
         "src/adapter/utils.ts": "9b86a115a971464c59c5",
         "src/adapter/websocket-types.ts": "9dbe10d817290c0ce9e6",
-        "src/adapter/websocket.ts": "3b81af41e36d046ca389",
-        "src/client-modules.ts": "80e5b1c8c29be915e4ea",
-        "src/index.ts": "d7b806b1e1eef48a63b3",
-        "src/register.ts": "9347924b80c3c209dab9",
+        "src/adapter/websocket.ts": "2facb3ec849915d0f54f",
+        "src/client-modules.ts": "7eac7365a589762cbf7e",
+        "src/index.ts": "fd5721ade0aa3eb6615c",
+        "src/register.ts": "a1728e110962650d4a01",
         "src/test-websocket.ts": "a91e1e4b4b37e7b77bf2",
-        "src/transpile.ts": "5e7afa4390fbcbc564a0",
-        "src/upgrade-hub.ts": "a18b5cece2d2c571463e"
+        "src/transpile.ts": "be4cb4e0297b5b1997f1",
+        "src/upgrade-hub.ts": "ded65323cabec111aac4"
+      }
+    },
+    "acryl-page": {
+      "from": "1.5.10",
+      "files": {
+        "src/favicon.ts": "e5b35a649cf2822b4f8e",
+        "src/index.ts": "de414dae653ad5edee0b"
       }
     },
     "acryl-router": {
-      "from": "1.1.0",
+      "from": "1.5.10",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -227,31 +275,103 @@
         "src/helpers/read-sse.ts": "40c1ed42b0163aad3993",
         "src/helpers/schema-validator.ts": "a0935ddbb76781744d27",
         "src/index.ts": "f079aca13fa8b336d69f",
-        "src/middleware/index.ts": "a914ea698fd8c80aed1f",
-        "src/middleware/loopback-only.ts": "41b210e51d004ba94cff",
-        "src/service.ts": "35cfc4bdc38f364783fb"
+        "src/middleware/index.ts": "fc9ed60f26bee126cc77",
+        "src/middleware/loopback-only.ts": "ba84d824664c4829d548",
+        "src/service.ts": "35f2c927a7c3d3ec1103"
+      }
+    },
+    "acryl-web-server": {
+      "from": "1.5.10",
+      "files": {
+        "src/index.ts": "25e9ad47a238ebdebeb0"
+      }
+    },
+    "desktop": {
+      "from": "1.5.10",
+      "files": {
+        "app-page.ts": "d2cdc61a92d89138ea8a",
+        "assets/acrylblends-logo.png": "c86abd74d8fbeedf8cc9",
+        "attach.ts": "ddd0e3e4e8a3914c9699",
+        "brand.ts": "8b87e63e669273f76704",
+        "door-shell.ts": "3e535eff746a41525dbb",
+        "frame.ts": "0b856f73720a4b6bb2bf",
+        "git.ts": "94d70b10792693ce54db",
+        "host-supervisor.ts": "e69994399fa32dbb1cfc",
+        "launch.ts": "3beb11b0ac097e270835",
+        "main.ts": "229423928fa2c7fbfa58",
+        "menu.ts": "9b88cda709178fffc66d",
+        "preload.cjs": "c7de936c2213786f2b00",
+        "product.ts": "822b291f9c3d3766637a",
+        "shutdown.ts": "a4d94f8a92081af96251",
+        "user-data.ts": "9a79f5f8b0593085cd6f",
+        "window.ts": "6946f304e1df9831d953"
+      }
+    },
+    "extensions": {
+      "from": "1.5.10",
+      "files": {
+        "index.ts": "3684f4523eadc364e3fa",
+        "ledger.ts": "2af8407a66e314b9bbbb",
+        "plugin-store.ts": "0d27e449b793694662c6",
+        "resolve.ts": "2c63681eff98555f4a81",
+        "routes.ts": "9c065d0356c13870c1fc",
+        "stage.ts": "036dc2a0d2cedc123b99"
+      }
+    },
+    "home": {
+      "from": "1.5.10",
+      "files": {
+        "index.ts": "f2c8045bf3be2f5fe95e"
       }
     },
     "instance": {
-      "from": "1.1.0",
+      "from": "1.5.10",
       "files": {
-        "index.ts": "242f5406000fa6336105"
+        "archive.ts": "10dd2970bd9f90978bec",
+        "bundle-overlay.ts": "1665d1f8e52fa300b9cc",
+        "bundle.ts": "be682206c3787bfd523a",
+        "home.ts": "cf12de35b3e765b76d40",
+        "index.ts": "15891f705ad2372c6327",
+        "storage.ts": "03eb84e623d08bb64022"
       }
     },
     "manifest": {
-      "from": "1.1.0",
+      "from": "1.5.10",
       "files": {
-        "index.ts": "eab7e185ab13029aff8f",
+        "app-plugins.ts": "9066deec796c90af1a4f",
+        "index.ts": "d8ab43c9964c46454e05",
         "lock.ts": "03f8033bbdffad3f9431",
+        "snapshot.ts": "047c2a1a545bdc7e8880",
         "upgrade-cli.ts": "636628cfbaffe019472f",
         "upgrade.ts": "1e0b1851f1542741d083"
       }
     },
+    "plugin-share": {
+      "from": "1.5.10",
+      "files": {
+        "README.md": "be16e30e23bd5ba031d3",
+        "index.ts": "b112847a68f6d3acffe5",
+        "package.ts": "4659bc3aafdce32d031c",
+        "publish.ts": "26aed5dfdd2be96e8cae",
+        "pull-check.ts": "5516b2908b4c35c49720",
+        "pull-list.ts": "1701ddea0bf9cae260d5",
+        "pulled-records.ts": "9a9aa2a26014da112735"
+      }
+    },
+    "sandbox": {
+      "from": "1.5.10",
+      "files": {
+        "index.ts": "c1c60f42d30c0417a6fc",
+        "runner.mjs": "6437184989f4848075ba"
+      }
+    },
     "save": {
-      "from": "1.1.0",
+      "from": "1.5.10",
       "files": {
         "cli.ts": "fccad83af5a41bde542b",
-        "index.ts": "48f96cde6c73e781e3e6"
+        "index.ts": "48f96cde6c73e781e3e6",
+        "share-cli.ts": "2201fe37cbbc5d167e17",
+        "share.ts": "458a795e3298eb69eb82"
       }
     }
   }

@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'node:url'
 import { selectInstance } from '../plugins/instance/index.ts'
 import { createApp } from './app.ts'
-import { APP_NAME } from './monitor.ts'
+import { APP_NAME } from './routes.ts'
 
 // The composition root: the one place that reads the environment (through selectInstance) and chooses where the app lives.
 const chosen = selectInstance({

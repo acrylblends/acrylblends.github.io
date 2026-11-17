@@ -4,12 +4,12 @@
  */
 import { userInfo } from 'node:os'
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../plugins/acryl-router/src/index.ts'
-import { loopbackOnly } from '../plugins/acryl-router/src/middleware/index.ts'
-import { validator } from '../plugins/acryl-router/src/helpers/index.ts'
-import { heaviest, killProcess, protectedReason, SIGNALS, type KillDeps, type Own, type Signal, type SortBy } from './monitor/kill-list.ts'
-import { monitorPage, type View } from './monitor/page.tsx'
-import { defaultDiskPaths, machine, parseProcesses, readSnapshot, type Sources } from './monitor/system.ts'
+import { Acryl } from 'acrylblends'
+import { loopbackOnly } from 'acrylblends/loopback-only'
+import { validator } from 'acrylblends/validator'
+import { heaviest, killProcess, protectedReason, SIGNALS, type KillDeps, type Own, type Signal, type SortBy } from './kill-list.ts'
+import { monitorPage, type View } from './page.tsx'
+import { defaultDiskPaths, machine, parseProcesses, readSnapshot, type Sources } from './system.ts'
 
 export const APP_NAME = 'system-monitor'
 export const name = 'monitor'

@@ -32,4 +32,4 @@ Set `ACRYLBLENDS_PORT` to choose the first port tried. It reads this machine onl
 
 ## How it is built
 
-`src/monitor.ts` is the plugin (routes), `src/monitor/system.ts` reads the machine behind one `Sources` object, `src/monitor/kill-list.ts` holds the rules for what may be ended, and `src/monitor/page.tsx` renders the page. The tests use a fake machine, so they never end a real process. `AGENTS.md` describes the layout for an agent.
+`plugins/monitor/` is the plugin (its row in `blend.yaml` starts it): `index.ts` holds the routes, `system.ts` reads the machine behind one `Sources` object, `kill-list.ts` holds the rules for what may be ended, and `page.tsx` renders the page. The tests (`test/monitor.test.ts`, `test/domain.test.ts`) use a fake machine, so they never end a real process. `AGENTS.md` describes the layout for an agent.

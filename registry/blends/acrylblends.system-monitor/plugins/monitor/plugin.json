@@ -9,5 +9,5 @@
   "dependencies": {
     "@deepseek-ai/cordis": "4.0.4"
   },
-  "mount": "a row `- id: monitor` / `name: monitor` in blend.yaml; the plugin is src/monitor.ts and its domain code is src/monitor/"
+  "mount": "a row `- id: monitor` / `name: monitor` in blend.yaml; the plugin is plugins/monitor/"
 }
