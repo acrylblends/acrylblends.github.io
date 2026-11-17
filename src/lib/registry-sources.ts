@@ -33,6 +33,7 @@ function releaseFiles(name: string, product: string): readonly Download[] {
 
 export const registrySources: Record<string, Source> = {
   "acryl.ade": repo("05-acryl-ade", releaseFiles("05-acryl-ade", "ACRYL-ADE")),
+  "acryl.control-center": repo("63-acryl-control-center", releaseFiles("63-acryl-control-center", "ACRYL-Control-Center")),
   "acryl.sde": repo("05-acryl-sde"),
 };
 
