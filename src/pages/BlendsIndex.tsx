@@ -4,7 +4,7 @@ import { PageIntro, SiteLayout, usePageMeta } from "../components/layouts";
 import { SectionTitle, Status } from "../components/ui";
 import { categories } from "../lib/content";
 import { frameworkParts } from "../lib/framework-parts";
-import { entries, RegistryStarters } from "../components/registry";
+import { CoreBlend, entries, RegistryStarters } from "../components/registry";
 
 export default function BlendsIndex() {
   usePageMeta("Browse Blends", "Every ACRYL Blend is Cordis plugins composed into one running app: the starting points in the registry, and the parts the framework is made of today.");
@@ -18,6 +18,7 @@ export default function BlendsIndex() {
         <span className="self-center font-mono text-xs text-muted-foreground">{entries.length} starters in the registry · {categories.length} categories</span>
       </>}
     />
+    <CoreBlend/>
     <RegistryStarters/>
     <FrameworkMap/>
     <Categories/>
