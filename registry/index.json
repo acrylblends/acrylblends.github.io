@@ -25,17 +25,6 @@
       "runtime": "acrylblends"
     },
     {
-      "id": "acryl.launcher",
-      "name": "ACRYL",
-      "kind": "Blueprint",
-      "version": "0.1.0",
-      "path": "blends/acryl.launcher",
-      "license": "MIT",
-      "category": "desktop",
-      "description": "The ACRYL launcher: your apps, new apps from a starter or a Blend, plugins to pull and share, in a window or the browser, with the Blends agents on the right.",
-      "runtime": "acrylblends"
-    },
-    {
       "id": "acryl.blank",
       "name": "Blank",
       "kind": "Blueprint",
@@ -57,6 +46,17 @@
       "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
       "parent": "acryl.blank",
       "runtime": "acryl"
+    },
+    {
+      "id": "acryl.launcher",
+      "name": "ACRYL",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.launcher",
+      "license": "MIT",
+      "category": "desktop",
+      "description": "The ACRYL launcher: your apps, new apps from a starter or a Blend, plugins to pull and share, in a window or the browser, with the Blends agents on the right.",
+      "runtime": "acrylblends"
     },
     {
       "id": "acryl.music",
