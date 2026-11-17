@@ -28,7 +28,7 @@ export function blendPath(id: string): string {
 export const registryPlacement: Record<string, Placement> = {
   "acryl.ade": { category: "AI", subcategory: "Agent Development Environment (ADE)" },
   "acryl.sde": { category: "AI", subcategory: "Synthetic Data Engine (SDE)" },
-  "acryl.control-center": { category: "Desktop", subcategory: "Electron apps" },
+  "acryl.control-center": { category: "Software Marketplaces", subcategory: "Agentic Applications Marketplace" },
   "acryl.blank": { category: "Software Factories", subcategory: "AI software factories" },
   "acryl.accounting": { category: "Business", subcategory: "Finance" },
   "acryl.gtd": { category: "Application", subcategory: "Productivity" },

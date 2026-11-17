@@ -48,8 +48,19 @@ const SDE: SubcategoryDetail = {
   ],
 };
 
+const AGENTIC_APPS: SubcategoryDetail = {
+  name: "Agentic Applications Marketplace",
+  slug: "agentic-app-marketplaces",
+  summary: "Where agentic apps are found, made, started and shared: a list of your apps, new ones from a starter or a published Blend, and the plugins that move between them.",
+  paragraphs: [
+    "An agentic application is an app with agents inside it: they read it, change it and grow it with you while it runs. A marketplace for them is not a download page; it is the place where you pick a starting point, create your own copy, pull plugins into it and share the ones that work.",
+    "ACRYL Control Center is that place for ACRYL: every app you have, with its surface (web or desktop), started and stopped from one list; a new app from a starter or from any Blend of this registry; plugins to pull and to share; and the Blends agents (chat, Claude Code, Codex, Pi) on the right.",
+  ],
+  gallery: [],
+};
+
 /** The subcategories that have a page of their own, by the name the taxonomy lists them under. */
-const DETAILS: readonly SubcategoryDetail[] = [ADE, SDE];
+const DETAILS: readonly SubcategoryDetail[] = [ADE, SDE, AGENTIC_APPS];
 
 const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "System", subs: ["Operating systems", "Kernels", "Device drivers", "Firmware", "Boot software", "System utilities"] },
@@ -146,7 +157,7 @@ const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "Emulation", subs: ["Console emulators", "CPU emulators", "OS emulators", "Compatibility layers"] },
   { name: "Compatibility", subs: ["Wine-like compatibility layers", "Translation layers", "Binary translation", "Legacy runtime compatibility"] },
   { name: "Licensing / Distribution", subs: ["App stores", "Package repositories", "License servers", "Update systems"] },
-  { name: "Software Marketplaces", subs: ["App stores", "Plugin stores", "Extension marketplaces", "Agent marketplaces"] },
+  { name: "Software Marketplaces", subs: [AGENTIC_APPS.name, "App stores", "Plugin stores", "Extension marketplaces", "Agent marketplaces"] },
   { name: "Plugin / Extension Ecosystems", subs: ["Browser extensions", "IDE extensions", "AI skills", "MCP servers"] },
   { name: "Software Factories", subs: ["Code generation systems", "AI software factories", "Specification-driven development", "Multi-agent development systems"] },
   { name: "Self-modifying / Adaptive", subs: ["Self-updating applications", "Plugin-generating systems", "Generative UI", "Self-healing software"] },
