@@ -35,6 +35,13 @@ export const registrySources: Record<string, Source> = {
   "acryl.ade": repo("05-acryl-ade", releaseFiles("05-acryl-ade", "ACRYL-ADE")),
   "acryl.control-center": repo("63-acryl-control-center", releaseFiles("63-acryl-control-center", "ACRYL-Control-Center")),
   "acryl.sde": repo("05-acryl-sde"),
+  "acrylblends.action-rpg": repo("41-action-rpg"),
+  "acrylblends.airspace": repo("41-airspace"),
+  "acrylblends.corridor": repo("41-corridor"),
+  "acrylblends.open-city": repo("41-open-city"),
+  "acrylblends.tennis": repo("41-tennis"),
+  "acrylblends.tower-defense": repo("41-tower-defense"),
+  "acrylblends.valley": repo("41-valley"),
 };
 
 /** The commands that run a Blend straight from its repository. */
