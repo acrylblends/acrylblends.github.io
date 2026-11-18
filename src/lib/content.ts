@@ -125,7 +125,7 @@ const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "API / SDK", subs: ["SDKs", "API clients", "Platform SDKs", "AI SDKs"] },
   { name: "Integration", subs: ["iPaaS", "ETL", "API integration", "Connectors"] },
   { name: "Mobile", subs: ["Native apps", "Hybrid apps", "Progressive web apps", "Mobile games"] },
-  { name: "Desktop", subs: ["Native desktop apps", "Electron apps", "Tauri apps", "Qt apps"] },
+  { name: "Desktop", subs: ["Native desktop apps", "Electron apps", "Electrobun apps", "Tauri apps", "Qt apps"] },
   { name: "Web", subs: ["Websites", "Web apps", "SaaS apps", "Browser extensions"] },
   { name: "Terminal", subs: ["Shells", "Terminal emulators", "CLI tools", "TUIs"] },
   { name: "Extended Reality", subs: ["Virtual reality", "Augmented reality", "Mixed reality", "XR engines"] },

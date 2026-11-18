@@ -7,6 +7,17 @@ export interface Source {
   readonly folder: string;
   /** The installable app of each OS and CPU, from the repository's latest GitHub release (its Release workflow builds them). */
   readonly downloads?: readonly Download[];
+  /** Measured sizes the page shows, for a Blend whose point is its size (the Electrobun one). */
+  readonly sizes?: SizeTable;
+}
+
+export interface SizeTable {
+  /** When and where it was measured. */
+  readonly caption: string;
+  /** The first column names the part; the others are what is compared. */
+  readonly columns: readonly string[];
+  readonly rows: readonly (readonly string[])[];
+  readonly notes: readonly string[];
 }
 
 export interface Download {
@@ -38,6 +49,27 @@ export const registrySources: Record<string, Source> = {
   "acrylblends.action-rpg": repo("41-action-rpg"),
   "acrylblends.airspace": repo("41-airspace"),
   "acrylblends.corridor": repo("41-corridor"),
+  "acrylblends.electrobun-blank": {
+    ...repo("63-electrobun-blank"),
+    sizes: {
+      caption: "Measured on macOS arm64, 2026-11-18. MB = 1,000,000 bytes.",
+      columns: ["Part", "Electron 44.9.3", "Electrobun 2.0.6"],
+      rows: [
+        ["Shell, installed", "309.4 MB", "95.7 MB (ships as 33.5 MB, unpacks on first launch)"],
+        ["Shell, DMG", "141.1 MB", "33.1 MB"],
+        ["Node to run the frame host", "none: Electron runs it as Node", "121.3 MB (Node 24.19.0)"],
+        ["The frame's packages (node_modules without dev packages)", "451.6 MB", "451.6 MB"],
+        ["Total, installed", "761.0 MB", "668.6 MB (-12%)"],
+      ],
+      notes: [
+        "The shell alone is 69% smaller installed and 77% smaller as a DMG.",
+        "The whole app is only 12% smaller: Electron doubles as the Node that runs the frame host, Electrobun ships Node beside Bun, and the frame's packages are the same either way. The totals are added up from the measured parts, not from a packed app.",
+        "If the frame host could run on Electrobun's Bun (it cannot until Bun has node:module registerHooks), Node would drop out: 547.3 MB, 28% smaller.",
+        "Earlier ACRYL measurements (spec 042): a Deno-packed ACRYL was 53% smaller installed than the pruned Electron one (210.3 MB vs 447.1 MB); a bun --compile executable is 61 MB on macOS against Node's 121 MB.",
+        "Limits: tried on macOS arm64 only; Electrobun has no Intel Mac build and does not cross-compile. Electron stays the default; Electrobun is an option to try. Start time and memory are not measured yet.",
+      ],
+    },
+  },
   "acrylblends.open-city": repo("41-open-city"),
   "acrylblends.tennis": repo("41-tennis"),
   "acrylblends.tower-defense": repo("41-tower-defense"),

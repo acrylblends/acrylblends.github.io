@@ -282,6 +282,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.electrobun-blank",
+      "name": "Electrobun Blank",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.electrobun-blank",
+      "license": "MIT",
+      "category": "desktop",
+      "description": "The blank ACRYL Blend in an Electrobun window instead of Electron: the same Blends frame with chat and agents, in a native window with the system webview. Electrobun 2.0.6 on macOS arm64; the page lists the measured size wins.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.flight-logbook",
       "name": "Flight Logbook",
       "kind": "Blueprint",

@@ -53,6 +53,7 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.integration-relaycraft": { category: "Integration", subcategory: "iPaaS" },
   "acrylblends.mobile-mobiary": { category: "Mobile", subcategory: "Progressive web apps" },
   "acrylblends.desktop-canvasmith": { category: "Desktop", subcategory: "Native desktop apps" },
+  "acrylblends.electrobun-blank": { category: "Desktop", subcategory: "Electrobun apps" },
   "acrylblends.web-pagefoundry": { category: "Web", subcategory: "Websites" },
   "acrylblends.terminal-termforge": { category: "Terminal", subcategory: "Terminal emulators" },
   "acrylblends.xr-luma-space": { category: "Extended Reality", subcategory: "XR engines" },
