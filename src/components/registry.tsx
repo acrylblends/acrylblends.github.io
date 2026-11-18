@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Download } from "lucide-react";
 import index from "../../registry/index.json";
+import discovered from "../../registry/discovered.json";
 import { CodeBlock, Status } from "./ui";
 import { blendPath } from "../lib/registry-placement";
 import { registrySources } from "../lib/registry-sources";
@@ -9,23 +10,58 @@ import { registrySources } from "../lib/registry-sources";
 /** One entry of registry/index.json (written by blends-registry-index from @acryl/blends-core; CI refuses a stale index). */
 /** `runtime` says what the entry is for: an app for the acrylblends framework, or a starter for the ACRYL app (the index of a registry written before the field existed has none: those are ACRYL's). */
 export type Runtime = "acrylblends" | "acryl";
-interface RegistryEntry { id: string; name: string; kind: "Blueprint" | "Blend"; version: string; path: string; license: string; runtime?: Runtime; category?: string; description?: string; parent?: string }
+/** Official or community: decided by the sync from the repository owner's numeric GitHub id (official-owners.json), never by anything the author writes. */
+export type Origin = "official" | "community";
+interface RegistryEntry {
+  id: string; name: string; kind: "Blueprint" | "Blend"; version: string; path: string; license: string; runtime?: Runtime; category?: string; description?: string; parent?: string;
+  origin: Origin;
+  /** A Blend found in its own repository (registry/discovered.json, written by scripts/sync-blends.ts): its owner, its page, the tag it is listed at and the create source. */
+  publisher?: string; repository?: string; ref?: string; source?: string;
+}
 
 export type { RegistryEntry };
-export const entries = (index as { entries: RegistryEntry[] }).entries;
+type Discovered = Omit<RegistryEntry, "kind"> & { kind: string };
+/** The entries in registry/blends/ (ours, reviewed) and the Blends found in their own repositories; an id in registry/blends/ is never discovered twice. */
+export const entries: RegistryEntry[] = [
+  ...(index as { entries: Omit<RegistryEntry, "origin">[] }).entries.map((entry) => ({ ...entry, origin: "official" as const })),
+  ...(discovered.entries as Discovered[]).map((entry) => entry as RegistryEntry),
+];
+
+/** Where an entry's file is served: from this site for an entry in registry/blends/, from its own repository at its tag for a discovered one. */
+export function fileUrl(entry: RegistryEntry, file: string): string {
+  if (entry.repository && entry.ref) return `${entry.repository.replace("https://github.com/", "https://raw.githubusercontent.com/")}/${encodeURIComponent(entry.ref)}/${file}`;
+  return `/registry/${entry.path}/${file}`;
+}
+
+export function OriginBadge({ entry }: { entry: RegistryEntry }) {
+  return <Status tone={entry.origin === "official" ? "success" : "default"}>{entry.origin === "official" ? "Official" : "Community"}</Status>;
+}
+
+export type OriginFilter = Origin | "all";
+const ORIGINS: { value: OriginFilter; label: string }[] = [{ value: "all", label: "All" }, { value: "official", label: "Official" }, { value: "community", label: "Community" }];
+
+/** All (the default), Official or Community; the counts are of the list it filters. */
+export function OriginChips({ value, onChange, list }: { value: OriginFilter; onChange: (value: OriginFilter) => void; list: readonly { origin: Origin }[] }) {
+  return <div role="group" aria-label="Who made it" className="flex flex-wrap gap-2">{ORIGINS.map(o => <button key={o.value} type="button" aria-pressed={value === o.value} onClick={() => onChange(o.value)} className={`border px-3 py-1.5 font-mono text-xs ${value === o.value ? "border-foreground bg-foreground text-background" : "border-input text-muted-foreground hover:text-foreground"}`}>{o.label} · {o.value === "all" ? list.length : list.filter(e => e.origin === o.value).length}</button>)}</div>;
+}
+
+/** The entries the filter keeps, official first; the order within each stays as it was. */
+export function byOrigin<T extends { origin: Origin }>(list: readonly T[], filter: OriginFilter): T[] {
+  return list.filter(e => filter === "all" || e.origin === filter).sort((a, b) => Number(b.origin === "official") - Number(a.origin === "official"));
+}
 
 /** An entry's docs/screenshot.png, served from the registry like its blend.yaml; an entry without one shows nothing (the image hides itself when it does not load). */
 export function Screenshot({ entry, className = "" }: { entry: RegistryEntry; className?: string }) {
   const [shown, setShown] = useState(true);
   if (!shown) return null;
-  return <img src={`/registry/${entry.path}/docs/screenshot.png`} alt={`${entry.name}, the first page`} loading="lazy" onError={() => setShown(false)} className={`block w-full border border-border bg-surface object-cover object-top ${className}`}/>;
+  return <img src={fileUrl(entry, "docs/screenshot.png")} alt={`${entry.name}, the first page`} loading="lazy" onError={() => setShown(false)} className={`block w-full border border-border bg-surface object-cover object-top ${className}`}/>;
 }
 
 export function runtimeOf(entry: RegistryEntry): Runtime { return entry.runtime === "acrylblends" ? "acrylblends" : "acryl"; }
 
 /** The command that starts a project from an entry: for acrylblends, create-acrylblends (npm needs the `--`); an ACRYL starter opens in the ACRYL app, and its CLI form is shown as it is. */
 export function startCommand(entry: RegistryEntry): string {
-  if (runtimeOf(entry) === "acrylblends") return `npm create acrylblends@latest my-app -- --from ${entry.id}`;
+  if (runtimeOf(entry) === "acrylblends") return `npm create acrylblends@latest my-app -- --from ${entry.source ?? entry.id}`;
   return entry.parent === undefined ? `acryl new my-app` : `acryl new my-app --from ${entry.id}`;
 }
 
@@ -67,7 +103,8 @@ export function CoreBlend() {
 
 export function RegistryStarters() {
   const [filter, setFilter] = useState<"all" | Runtime>("all");
-  const shown = entries.filter(entry => entry.id !== CORE_ID && (filter === "all" || runtimeOf(entry) === filter));
+  const [origin, setOrigin] = useState<OriginFilter>("all");
+  const shown = byOrigin(entries.filter(entry => entry.id !== CORE_ID && (filter === "all" || runtimeOf(entry) === filter)), origin);
   return <section className="mx-auto max-w-[1440px] px-5 pt-12 md:px-8">
     <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
       <div><h2 className="text-2xl font-semibold">Start here: in the registry now</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Real starting points you can create a project from today. The project is yours: private and proprietary until you decide otherwise.</p></div>
@@ -76,11 +113,13 @@ export function RegistryStarters() {
     <div role="group" aria-label="Filter by runtime" className="mt-6 flex flex-wrap gap-2">
       {FILTERS.map(f => <button key={f.value} type="button" aria-pressed={filter === f.value} onClick={() => setFilter(f.value)} className={`border px-3 py-1.5 font-mono text-xs ${filter === f.value ? "border-foreground bg-foreground text-background" : "border-input text-muted-foreground hover:text-foreground"}`}>{f.label} · {f.value === "all" ? entries.length : entries.filter(entry => runtimeOf(entry) === f.value).length}</button>)}
     </div>
+    <div className="mt-3"><OriginChips value={origin} onChange={setOrigin} list={entries}/></div>
     <div className="mt-6 grid gap-4 lg:grid-cols-2">
       {shown.map(entry => <article key={entry.id} className="min-w-0 border border-border bg-background p-6">
-        <div className="flex flex-wrap gap-2"><Status tone={runtimeOf(entry) === "acrylblends" ? "success" : "default"}>{runtimeOf(entry) === "acrylblends" ? "acrylblends app" : "ACRYL app starter"}</Status><Status tone="success">{level(entry)}</Status>{entry.category && <Status>{entry.category}</Status>}<Status>v{entry.version}</Status><Status>{entry.license}</Status></div>
+        <div className="flex flex-wrap gap-2"><OriginBadge entry={entry}/><Status tone={runtimeOf(entry) === "acrylblends" ? "success" : "default"}>{runtimeOf(entry) === "acrylblends" ? "acrylblends app" : "ACRYL app starter"}</Status><Status tone="success">{level(entry)}</Status>{entry.category && <Status>{entry.category}</Status>}<Status>v{entry.version}</Status><Status>{entry.license}</Status></div>
         <h3 className="mt-5 text-2xl font-semibold"><Link to={blendPath(entry.id)} className="hover:text-accent-foreground">{entry.name}</Link></h3>
         {entry.description && <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">{entry.description}</p>}
+        {entry.origin === "community" && <p className="mt-2 font-mono text-[11px] text-muted-foreground">by @{entry.publisher}</p>}
         {entry.parent && <p className="mt-3 flex items-center gap-2 font-mono text-[11px] text-muted-foreground">grew from {entry.parent} <ArrowRight size={12}/> {entry.id}</p>}
         <div className="mt-5"><CodeBlock label={runtimeOf(entry) === "acrylblends" ? "Start a project" : "Start a project in the ACRYL app"} code={startCommand(entry)}/>{runtimeOf(entry) === "acryl" && <p className="mt-2 text-xs leading-5 text-muted-foreground">Runs only inside the ACRYL app. <code>create-acrylblends</code> makes acrylblends apps and refuses this one.</p>}</div>
       </article>)}

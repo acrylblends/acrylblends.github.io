@@ -50,10 +50,10 @@ export default defineConfig({
           add(`/blends/${category.slug}`, category.name, `Blends in the ${category.name} category.`);
           for (const sub of category.subs) add(`/blends/${category.slug}/${sub.slug}`, sub.name, sub.detail?.summary ?? `Blends for ${sub.name}.`);
         }
-        // One page per Blend: the registry's entries are the only Blends that exist, so registry/index.json is the list.
-        const registry = JSON.parse(readFileSync(resolve(__dirname, "registry/index.json"), "utf8")) as { entries: { id: string; name: string; description: string }[] };
+        // One page per Blend: the registry's entries (registry/index.json) and the Blends found in their own repositories (registry/discovered.json).
+        const listOf = (file: string) => (JSON.parse(readFileSync(resolve(__dirname, file), "utf8")) as { entries: { id: string; name: string; description: string }[] }).entries;
         // Each at its address under its subcategory; the old flat /blends/b/<id> stays a real page too (links to it are out there) and forwards.
-        for (const entry of registry.entries) {
+        for (const entry of [...listOf("registry/index.json"), ...listOf("registry/discovered.json")]) {
           add(blendPath(entry.id), entry.name, entry.description);
           add(`/blends/b/${entry.id}`, entry.name, entry.description);
         }

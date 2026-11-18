@@ -1,0 +1,8 @@
+{
+  "owners": [
+    { "login": "acrylblends", "id": 329572928 },
+    { "login": "acryldev", "id": 321071188 },
+    { "login": "cordisplugins", "id": 328784535 }
+  ],
+  "reservedIdPrefixes": ["acryl.", "acrylblends.", "acryldev.", "cordisplugins."]
+}

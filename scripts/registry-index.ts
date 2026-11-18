@@ -9,6 +9,7 @@
 import { existsSync, lstatSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { MARKER, packageProblems, templateProblems } from "./lib/entry-checks.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const core = process.env.BLENDS_CORE ?? join(here, "..", ".acryl", "runtime", "blends-core", "src");
@@ -23,10 +24,8 @@ const { portabilityIssues } = (await import(join(core, "plugin-identity", "plugi
   portabilityIssues(files: unknown[]): { path: string; reason: string }[];
 };
 
-const MARKER = "acryl.template.json";
 // 64 MB: a whole game (its models, textures and sounds) is a starter too; the largest, the action RPG, is 54 MB.
 const LIMITS = { files: 5000, bytes: 64 * 1024 * 1024 };
-const LIFECYCLE = ["preinstall", "install", "postinstall", "prepublish", "preprepare", "prepare", "postprepare"];
 const SECRETS: [RegExp, string][] = [
   [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, "a private key"],
   [/\bsk-[A-Za-z0-9_-]{24,}/, "an API key (sk-...)"],
@@ -62,24 +61,9 @@ function checkApp(dir: string): string[] {
   walk(dir);
   if (files > LIMITS.files) problems.push(`has ${files} files; the limit is ${LIMITS.files}`);
   if (bytes > LIMITS.bytes) problems.push(`is ${Math.round(bytes / 1024 / 1024)} MB; the limit is ${LIMITS.bytes / 1024 / 1024} MB`);
-  try {
-    const manifest = JSON.parse(readFileSync(join(dir, MARKER), "utf8")) as Record<string, unknown>;
-    if (typeof manifest.name !== "string" || manifest.name.trim() === "") problems.push(`${MARKER} needs a "name"`);
-    if (typeof manifest.description !== "string") problems.push(`${MARKER} needs a "description"`);
-    const plugins = manifest.plugins ?? [];
-    if (!Array.isArray(plugins) || plugins.some(p => typeof p !== "string" || !/^[a-z][a-z0-9-]*$/.test(p))) problems.push(`"plugins" in ${MARKER} is a list of plugin names`);
-  } catch {
-    problems.push(`${MARKER} is not valid JSON`);
-  }
+  problems.push(...templateProblems(readFileSync(join(dir, MARKER), "utf8")));
   if (!existsSync(join(dir, "package.json"))) problems.push("has no package.json");
-  else {
-    try {
-      const pkg = JSON.parse(readFileSync(join(dir, "package.json"), "utf8")) as { scripts?: Record<string, string> };
-      for (const script of LIFECYCLE) if (typeof pkg.scripts?.[script] === "string") problems.push(`package.json defines the install script "${script}"; a registry entry may not`);
-    } catch {
-      problems.push("package.json is not valid JSON");
-    }
-  }
+  else problems.push(...packageProblems(readFileSync(join(dir, "package.json"), "utf8")));
   if (!existsSync(join(dir, "src"))) problems.push("has no src/ folder");
   return problems;
 }

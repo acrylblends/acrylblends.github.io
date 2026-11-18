@@ -1,16 +1,22 @@
 // Where each published starter sits in the site's 100-category taxonomy. The registry's own index.json carries the publisher's short category
 // (starter, finance, productivity, ...), which is not the taxonomy; this map is the site's presentation of it and is written by hand when an entry lands.
 import { categories } from "./content";
+import discovered from "../../registry/discovered.json";
 
 export interface Placement {
   category: string;
-  subcategory: string;
+  /** A Blend discovered in its own repository may sit in a category only, when none of its topics names a subcategory. */
+  subcategory?: string;
 }
+
+/** A discovered Blend's placement comes from its own blend.yaml and topics (scripts/sync-blends.ts); the hand-written one wins for an entry in registry/blends/. */
+const discoveredPlacement: Record<string, Placement> = Object.fromEntries((discovered.entries as { id: string; placement: Placement }[]).map((e) => [e.id, e.placement]));
+export const placementFor = (id: string): Placement | undefined => registryPlacement[id] ?? discoveredPlacement[id];
 
 /** The entries that have a taxonomy placement, with it; an entry without one is not shown in the browser until someone places it. */
 export function placeEntries<T extends { id: string }>(entries: readonly T[]): Array<{ entry: T; placement: Placement }> {
   return entries
-    .map((entry) => ({ entry, placement: registryPlacement[entry.id] }))
+    .map((entry) => ({ entry, placement: placementFor(entry.id) }))
     .filter((item): item is { entry: T; placement: Placement } => item.placement !== undefined);
 }
 
@@ -19,7 +25,7 @@ export function placeEntries<T extends { id: string }>(entries: readonly T[]): A
  * placement keeps the flat `/blends/b/<id>`, the address every Blend had before (that route still answers and forwards here).
  */
 export function blendPath(id: string): string {
-  const placement = registryPlacement[id];
+  const placement = placementFor(id);
   const category = placement && categories.find((c) => c.name === placement.category);
   const sub = category?.subs.find((s) => s.name === placement?.subcategory);
   return category && sub ? `/blends/${category.slug}/${sub.slug}/${id}` : `/blends/b/${id}`;

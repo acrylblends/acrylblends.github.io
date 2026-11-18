@@ -26,6 +26,16 @@ Open a pull request that adds `blends/<id>/`, where `<id>` is a dotted id you ow
 
 CI refuses an entry that: is private or has no licence; lives in another folder than its id; repeats an id; has an `acryl.template.json` that is not valid or an app without `package.json` or `src/`; defines an install script (`preinstall`, `install`, `postinstall`, `prepare`, ...); holds a link, a `node_modules/` or `.git/`; is over 20 MB or 5000 files; or holds what looks like a key. It also makes the app with `create-acrylblends` (nothing is installed or run) and fails when `index.json` is not what `scripts/registry-index.ts` writes: run `bun scripts/registry-index.ts registry` after adding your folder.
 
+## Publish from your own repository (community)
+
+No pull request needed: keep the Blend in your own public GitHub repository and it is listed on <https://acrylblends.github.io/blends> within the hour.
+
+- The repository has the topic `acrylblends-blend`, and optionally the address of a subcategory as a second topic (`productivity`, `games`).
+- At its latest release (else its newest tag), it holds the same files as an app entry above: a `blend.yaml` with `visibility: public`, a `license`, a `description` and a `category` that is one of the categories on /blends by its address (`application`, `gaming`), an `acryl.template.json`, and a `package.json` without install scripts.
+- People start from it with `npm create acrylblends@latest my-app -- --from github:you/repo#<tag>`.
+
+The listing reads these files and never runs them. It is labelled **Community**, names you as the author, and says that we have not reviewed the code; only repositories owned by the project's organisations (`official-owners.json`) are **Official**, and a community Blend's id may not start with one of their prefixes (`acryl.`, `acrylblends.`, ...). A repository that does not pass is left out with its reason in the Pages workflow's log. `blocklist.json` removes an owner or a repository at the next sync. The list is `registry/discovered.json`, written by `scripts/sync-blends.ts` on each deploy and every hour.
+
 ## Publish a starter for the ACRYL app
 
 `blends/<id>/` with `blend.yaml` (`kind: Blueprint`, `spec.extends` naming the Blueprint it grew from, usually `acryl.blank`), `plugins/` (the plugins it adds, source, no `node_modules`) and `README.md`. No `acryl.template.json`: that is what makes the entry `runtime: acryl`. People start from it in the ACRYL app.

@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-11-18T16:56:35.670Z",
+  "topic": "acrylblends-blend",
+  "searched": 1,
+  "entries": [
+    {
+      "id": "inboxxobni.team-notes",
+      "name": "Team Notes",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/inboxxobni.team-notes",
+      "license": "MIT",
+      "category": "application",
+      "description": "A community test Blend: a multi-user notes app (sign-up, log-in, search, SQLite) in a desktop window or the browser. Made to rehearse community listing on acrylblends.github.io.",
+      "runtime": "acrylblends",
+      "origin": "community",
+      "publisher": "inboxxobni",
+      "repository": "https://github.com/inboxxobni/team-notes",
+      "ref": "v0.1.0",
+      "source": "github:inboxxobni/team-notes#v0.1.0",
+      "placement": {
+        "category": "Application",
+        "subcategory": "Productivity"
+      },
+      "published": "2026-11-18"
+    }
+  ]
+}

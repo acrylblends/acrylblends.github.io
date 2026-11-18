@@ -1,9 +1,13 @@
 name: Deploy to GitHub Pages
 
+# On each push, by hand, and every hour. The hour is how a Blend published in its own repository (topic acrylblends-blend, a tag or release)
+# appears on /blends without anyone pushing here: scripts/sync-blends.ts finds it and writes registry/discovered.json before the build.
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '41 * * * *'
 
 permissions:
   contents: read
@@ -31,6 +35,11 @@ jobs:
         working-directory: .acryl/runtime/blends-core
       - run: bun scripts/registry-index.ts registry --check
       - run: bun install --frozen-lockfile
+      - run: bun test scripts
+      - name: Find the Blends that live in their own repositories
+        run: bun scripts/sync-blends.ts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - run: bun run build
       # Each entry as its own archive, named with its integrity in the deployed index, so create-acrylblends downloads one starter and not this repository. Only on the copy
       # being deployed: the repository stays source only. Node, always, so a redeploy of the same files publishes the same bytes.
