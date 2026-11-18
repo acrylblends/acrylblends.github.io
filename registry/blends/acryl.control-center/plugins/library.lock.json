@@ -325,14 +325,14 @@
       }
     },
     "instance": {
-      "from": "1.5.6",
+      "from": "1.5.11",
       "files": {
         "archive.ts": "10dd2970bd9f90978bec",
         "bundle-overlay.ts": "1665d1f8e52fa300b9cc",
-        "bundle.ts": "f4ed0655897b2f04b6b9",
+        "bundle.ts": "f1f1ceb121009de08225",
         "home.ts": "cf12de35b3e765b76d40",
         "index.ts": "15891f705ad2372c6327",
-        "storage.ts": "4e624086533815b07c2b"
+        "storage.ts": "03eb84e623d08bb64022"
       }
     },
     "manifest": {
