@@ -1,0 +1,5 @@
+Open City, a Blend for acrylblends.
+
+The game in `plugins/game/public/` comes from the Argon games collection by Ammaar Reshi (<https://github.com/ammaarreshi/argon-games>), published here with the author's permission. It is adapted: the names in the game, its files and its code are generic, the Python dev server is replaced by the `game` plugin.
+
+The app around it (the plugins other than `game`) comes from create-acrylblends (MIT).

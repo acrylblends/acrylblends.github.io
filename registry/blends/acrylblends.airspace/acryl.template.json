@@ -1,0 +1,5 @@
+{
+  "name": "Airspace",
+  "description": "An air traffic control game in a 1950s style: draw an approach path from each aircraft to its runway or helipad across three airfields, with proximity alerts, wind gusts and fast-forward.",
+  "plugins": []
+}

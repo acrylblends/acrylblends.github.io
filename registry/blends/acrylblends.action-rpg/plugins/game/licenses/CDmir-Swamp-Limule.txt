@@ -1,0 +1,12 @@
+Swamp Limule by CDmir, with TinyWorlds
+https://opengameart.org/content/swamp-limule
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Made for the world of Kelgar and released on OpenGameArt under CC0. Credit is not required; we credit CDmir anyway.
+
+Files in this repository: public/models/creatures/crawler.glb (the body, without its clips) and the clips in
+public/models/animations/crawler/, one clip per file, built from limule-final.blend by exporting it to GLB in
+Blender and then running tools/build-creature.ts with --flat. The textures packed in the .blend are not shipped:
+the body is one flat colour.

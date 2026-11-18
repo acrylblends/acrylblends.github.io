@@ -1,0 +1,8 @@
+Staff - Low Poly Medieval, CC0 by Avramania
+https://sketchfab.com/3d-models/staff-low-poly-medieval-cc0-3b71fc881aaf4602ad53605474baf0ff
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+The author dedicated this model to the public domain under CC0 1.0 Universal.
+It is used in this project as public/models/weapons/crystal_staff.glb.

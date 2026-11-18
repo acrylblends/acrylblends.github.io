@@ -1,0 +1,5 @@
+{
+  "name": "Tower Defense",
+  "description": "A 2.5D tower defense game on an open field: every tower you place changes the enemies' path, with four upgradeable turrets against ground and air units over 100 rounds.",
+  "plugins": []
+}

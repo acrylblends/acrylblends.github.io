@@ -1,0 +1,14 @@
+Easy Enemy Pack by Quaternius
+https://quaternius.com/packs/easyenemy.html
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Free to use in personal, educational and commercial projects. Credit is not required; we credit Quaternius anyway.
+
+Files in this repository: public/models/creatures/rat.glb (the Rat body, without its clips) and the Rat's clips
+in public/models/animations/rat/, one clip per file, built from FBX/Rat.fbx by converting it to GLB in Blender
+and then running tools/build-creature.ts.
+
+The Spider is from the same pack: public/models/creatures/spider.glb and its clips in
+public/models/animations/spider/, built from FBX/Spider.fbx the same way.

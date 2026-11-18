@@ -1,0 +1,5 @@
+Action RPG, a Blend for acrylblends.
+
+The game in `plugins/game/public/` is the portal build (`vite build --mode portal`) of The Lost Storm (<https://github.com/marginsystems/the-lost-storm>, MIT, Copyright (c) 2026 The Lost Storm contributors), without its landing page, its own site's links and its name. Its licence is in `plugins/game/LICENSE`. The models, textures and fonts carry their own licences, listed with their authors in `plugins/game/ASSETS.md` (texts in `plugins/game/licenses/`); the CC BY 4.0 ones need that credit kept.
+
+The app around it (the plugins other than `game`) comes from create-acrylblends (MIT).

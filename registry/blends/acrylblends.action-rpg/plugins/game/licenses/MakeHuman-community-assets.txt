@@ -1,0 +1,36 @@
+MakeHuman community garments and MakeHuman system assets
+http://www.makehumancommunity.org/clothes.html
+Asset packs: http://files2.makehumancommunity.org/asset_packs/ (suits02_cc0.zip, makehuman_system_assets_cc0.zip)
+
+License: Creative Commons Zero (CC0 1.0)
+https://creativecommons.org/publicdomain/zero/1.0/
+
+MakeHuman assets have no pack-wide licence file. Each garment states its own licence in the header of
+its .mhclo file, and only garments whose header says CC0 are used here. The header lines are quoted
+below as they appear in the files.
+
+Files in this repository: public/models/world/still_figure.glb and public/models/world/still_figure_bowed.glb,
+each a MakeHuman body in a robe and hood, joined, decimated and with the textures dropped.
+
+The robe and hood
+  suits02_cc0.zip, clothes/donitz_monk_robe/donitz_monk_robe.mhclo ("Monks Robe")
+    # author: Donitz
+    # license: CC0
+  suits02_cc0.zip, clothes/donitz_monk_robe_hood/donitz_monk_robe_hood.mhclo ("Monks Hood")
+    # author: Donitz
+    # license: CC0
+
+The body
+  The MakeHuman base mesh (makehuman/data/3dobjs/base.obj) shaped with the macro shape targets
+  (makehuman/data/targets/macrodetails/caucasian-*.target and universal-*.target), skinned through the
+  default rig (makehuman/data/rigs/default.mhskel, default_weights.mhw). The header of each of those
+  files reads:
+    # This asset was explicitly released as CC0 in september 2020. The license
+    # text for CC0 can be found in the root of this repository.
+    # Copyright (C) 2020 Data Collection AB, https://www.datacollection.se
+    # Copyright (C) 2020 Joel Palmius
+    # Copyright (C) 2020 Jonas Hauquier
+  and LICENSE.md in https://github.com/makehumancommunity/makehuman, section C, says of the bundled
+  assets: "These assets have been released under CC0 1.0 Universal."
+
+Credit is not required; we credit the authors anyway.

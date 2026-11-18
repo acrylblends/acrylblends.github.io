@@ -117,6 +117,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.action-rpg",
+      "name": "Action RPG",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.action-rpg",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "An isometric action RPG: fight under a night storm, find loot, level up and shape your character on a skill tree of 125 places.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.agent",
       "name": "An app that builds itself",
       "kind": "Blueprint",
@@ -125,6 +136,17 @@
       "license": "MIT",
       "category": "starter",
       "description": "A small app with an offline agent and live plugin install: ask for a feature and the agent writes it into the running app, through the door. Development only: production leaves the agent out.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.airspace",
+      "name": "Airspace",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.airspace",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "An air traffic control game in a 1950s style: draw an approach path from each aircraft to its runway or helipad across three airfields, with proximity alerts, wind gusts and fast-forward.",
       "runtime": "acrylblends"
     },
     {
@@ -191,6 +213,17 @@
       "license": "MIT",
       "category": "compliance",
       "description": "A governance workbench: a control register over three frameworks with evidence freshness, an evidence review (accept, request a refresh, mark an exception), a risk watchlist with treatments and a recalculating posture strip, audit actions and an exportable review. Illustrative data; no certification claimed.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.corridor",
+      "name": "Corridor",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.corridor",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "A first-person psychological horror game: a looping corridor that changes over five loops, a flashlight, and six photo fragments to find while something follows you.",
       "runtime": "acrylblends"
     },
     {
@@ -392,6 +425,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.open-city",
+      "name": "Open City",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.open-city",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "A cel-shaded 3D open-world action game in a 1986 city: drive cars, take speedboats, fly helicopters and seaplanes, through day and night, with a six-star police chase.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.p2p-swarmdrop",
       "name": "Swarmdrop",
       "kind": "Blueprint",
@@ -535,6 +579,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.tennis",
+      "name": "Tennis",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.tennis",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "A 3D arcade tennis game in the browser: singles and doubles, topspin, slice and lob, slow-motion power serves and an instant replay, with your phone as a motion racket and a 1v1 match mode.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.terminal-termforge",
       "name": "Termforge",
       "kind": "Blueprint",
@@ -546,6 +601,17 @@
       "runtime": "acrylblends"
     },
     {
+      "id": "acrylblends.tower-defense",
+      "name": "Tower Defense",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.tower-defense",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "A 2.5D tower defense game on an open field: every tower you place changes the enemies' path, with four upgradeable turrets against ground and air units over 100 rounds.",
+      "runtime": "acrylblends"
+    },
+    {
       "id": "acrylblends.uptime",
       "name": "Uptime Checker",
       "kind": "Blueprint",
@@ -554,6 +620,17 @@
       "license": "MIT",
       "category": "networking",
       "description": "A lightweight availability monitor: hosts and URLs checked on a schedule, with status history, response times and incidents.",
+      "runtime": "acrylblends"
+    },
+    {
+      "id": "acrylblends.valley",
+      "name": "Valley",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.valley",
+      "license": "MIT",
+      "category": "gaming",
+      "description": "A cozy 3D valley life sim on a rolling world: fish, net butterflies, dig, shake fruit trees, craft furniture and trade gifts with the villagers.",
       "runtime": "acrylblends"
     },
     {

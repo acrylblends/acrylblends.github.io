@@ -24,7 +24,8 @@ const { portabilityIssues } = (await import(join(core, "plugin-identity", "plugi
 };
 
 const MARKER = "acryl.template.json";
-const LIMITS = { files: 5000, bytes: 20 * 1024 * 1024 };
+// 64 MB: a whole game (its models, textures and sounds) is a starter too; the largest, the action RPG, is 54 MB.
+const LIMITS = { files: 5000, bytes: 64 * 1024 * 1024 };
 const LIFECYCLE = ["preinstall", "install", "postinstall", "prepublish", "preprepare", "prepare", "postprepare"];
 const SECRETS: [RegExp, string][] = [
   [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, "a private key"],
