@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { mkdirSync } from 'node:fs'
+import { mkdirSync, readFileSync } from 'node:fs'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
@@ -18,6 +18,9 @@ test('the first page is the seeded dataset: the file, the health summary, the ch
     assert.match(page.html, /Explore data/)
     assert.match(page.html, /24,680/)
     assert.match(page.html, /99\.8% valid rows/)
+    // The mark names the release this app is (blend.yaml), so a person sees which one they run after an update.
+    const release = /^  version: (\S+)$/mu.exec(readFileSync(join(projectRoot, 'blend.yaml'), 'utf8'))?.[1]
+    assert.match(page.html, new RegExp(`class="d-version"[^>]*>v${release?.replaceAll('.', '\\.')}<`))
     assert.match(page.html, /Alpine Systems/)
     assert.match(page.html, /€18,420/)
     assert.match(page.html, /Revenue by region|Sum of revenue by region/)

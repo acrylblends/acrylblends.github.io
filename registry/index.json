@@ -197,7 +197,7 @@
       "id": "acrylblends.csv-explorer",
       "name": "CSV Explorer",
       "kind": "Blueprint",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "path": "blends/acrylblends.csv-explorer",
       "license": "MIT",
       "category": "data",
