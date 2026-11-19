@@ -36,6 +36,14 @@ jobs:
       - run: bun scripts/registry-index.ts registry --check
       - run: bun install --frozen-lockfile
       - run: bun test scripts
+      # The Blends released from acryldev/acryl cannot be discovered by topic (one repository, several products, blend.yaml not at its
+      # root): their entries are generated here from the newest ade-v* / control-center-v* tag, and stay byte-identical until one exists.
+      - name: Generate the product entries from their tags
+        run: bun scripts/sync-products.ts
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      # Never deploy a registry that does not validate, including the entries the step above just generated.
+      - run: bun scripts/registry-index.ts registry --check
       - name: Find the Blends that live in their own repositories
         run: bun scripts/sync-blends.ts
         env:

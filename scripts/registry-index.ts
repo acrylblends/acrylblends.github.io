@@ -93,23 +93,26 @@ export function indexText(root: string): { text: string; problems: string[] } {
   return { text: `${JSON.stringify({ ...index, entries }, null, 2)}\n`, problems: out };
 }
 
-const argv = process.argv.slice(2);
-const positional = argv.filter(arg => !arg.startsWith("--"));
-if (positional.length !== 1) {
-  console.log("usage: bun scripts/registry-index.ts <registry folder> [--check]");
-  process.exit(2);
-}
-const root = resolve(positional[0] as string);
-const { text, problems } = indexText(root);
-for (const problem of problems) console.log(`refused ${problem}`);
-const file = join(root, "index.json");
-if (argv.includes("--check")) {
-  if ((existsSync(file) ? readFileSync(file, "utf8") : "") !== text) {
-    console.log(`${file} is stale: run bun scripts/registry-index.ts ${positional[0]}`);
-    process.exit(1);
+// indexText is also the products step's writer (scripts/sync-products.ts); the CLI runs only when this file is the program.
+if (import.meta.main) {
+  const argv = process.argv.slice(2);
+  const positional = argv.filter(arg => !arg.startsWith("--"));
+  if (positional.length !== 1) {
+    console.log("usage: bun scripts/registry-index.ts <registry folder> [--check]");
+    process.exit(2);
   }
-} else {
-  writeFileSync(file, text);
-  console.log(`wrote ${file}`);
+  const root = resolve(positional[0] as string);
+  const { text, problems } = indexText(root);
+  for (const problem of problems) console.log(`refused ${problem}`);
+  const file = join(root, "index.json");
+  if (argv.includes("--check")) {
+    if ((existsSync(file) ? readFileSync(file, "utf8") : "") !== text) {
+      console.log(`${file} is stale: run bun scripts/registry-index.ts ${positional[0]}`);
+      process.exit(1);
+    }
+  } else {
+    writeFileSync(file, text);
+    console.log(`wrote ${file}`);
+  }
+  process.exit(problems.length > 0 ? 1 : 0);
 }
-process.exit(problems.length > 0 ? 1 : 0);
