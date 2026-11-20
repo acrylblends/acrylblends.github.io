@@ -1,6 +1,6 @@
 # ACRYL ADE
 
-**ACRYL ADE**, the Agent Development Environment: the ACRYL IDE (<https://github.com/acryldev/acryl>) as one Blend. Registry id `acryl.ade`. Source: <https://github.com/acrylblends/05-acryl-ade>. Page: <https://acrylblends.github.io/blends/ai/ade/acryl.ade>.
+**ACRYL ADE**, the Agent Development Environment: the ACRYL IDE (<https://github.com/acryldev/acryl>) as one Blend. Registry id `acryl.ade`. Source: <https://github.com/acryldev/acryl/tree/main/apps/acryl-ade> (the ACRYL monorepo). Page: <https://acrylblends.github.io/blends/ai/ade/acryl.ade>.
 
 It opens the IDE's workbench, ported into the Blends framework as `@acrylblends/workspace`:
 
@@ -17,30 +17,6 @@ npm create acrylblends@latest my-ade -- --from acryl.ade
 cd my-ade && npm run dev
 ```
 
-Or run it straight from this repository, <https://github.com/acrylblends/05-acryl-ade>:
+The app, ready to install, is on the release page, <https://github.com/acryldev/acryl/releases/tag/ade-v0.2.1>: `ACRYL-ADE-mac-arm64.dmg`, `ACRYL-ADE-mac-x64.dmg`, `ACRYL-ADE-win-x64.exe`, `ACRYL-ADE-win-arm64.exe`, `ACRYL-ADE-linux-x64.deb`, `ACRYL-ADE-linux-arm64.deb`.
 
-```bash
-git clone https://github.com/acrylblends/05-acryl-ade.git
-cd 05-acryl-ade && npm install && npm run dev
-```
-
-The first screen asks for a model key (Settings > Models). Add a project with the `+` next to Projects.
-
-## How it is made
-
-ACRYL ADE is an ordinary Blend: `blend.yaml`, `src/`, `plugins/`, tests. The one difference from the blank app is its frame layer,
-`cordis.patch.yml`: where every other Blend mounts the Blends frame (`@acrylblends/blends-frame`) at the page's root, ACRYL ADE mounts the
-IDE's workbench (`@acrylblends/workspace`). The app's own pages still answer under `/app` (`/app/about`), and the agent can grow the app with
-plugins like in every Blend.
-
-## Commands
-
-- `npm run dev`: the workbench, with the agent.
-- `npm test`, `npm run check`: the app's tests and type checks.
-
-## Forks
-
-[ACRYL SDE](https://acrylblends.github.io/blends/ai/sde) (`acryl.sde`), the Synthetic Data Engine, is ACRYL ADE plus a pipeline that turns a
-codebase into anonymized, reviewed training-data packages.
-
-MIT licence.
+Its source is `apps/acryl-ade` in <https://github.com/acryldev/acryl>.

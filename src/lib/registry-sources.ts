@@ -5,6 +5,10 @@ export interface Source {
   readonly url: string;
   /** The folder `git clone` makes. */
   readonly folder: string;
+  /** For a Blend whose source lives inside a monorepo: its folder there. Its page then offers no clone-and-run commands (the monorepo has its own setup). */
+  readonly directory?: string;
+  /** Where its releases are, when that is not `<url>/releases/latest`. */
+  readonly releasePage?: string;
   /** The installable app of each OS and CPU, from the repository's latest GitHub release (its Release workflow builds them). */
   readonly downloads?: readonly Download[];
   /** Measured sizes the page shows, for a Blend whose point is its size (the Electrobun one). */
@@ -28,23 +32,31 @@ export interface Download {
 
 const repo = (name: string, downloads?: readonly Download[]): Source => ({ url: `https://github.com/acrylblends/${name}`, folder: name, downloads });
 
-/** The six files a Blend's Release workflow publishes, named `<Product>-<mac|win|linux>-<arm64|x64>`. */
-function releaseFiles(name: string, product: string): readonly Download[] {
-  const file = (platform: string, arch: string, extension: string) =>
-    `https://github.com/acrylblends/${name}/releases/latest/download/${product}-${platform}-${arch}.${extension}`;
-  return [
-    { os: "macOS", cpu: "Apple Silicon", url: file("mac", "arm64", "dmg") },
-    { os: "macOS", cpu: "Intel", url: file("mac", "x64", "dmg") },
-    { os: "Windows", cpu: "x64", url: file("win", "x64", "exe") },
-    { os: "Windows", cpu: "ARM", url: file("win", "arm64", "exe") },
-    { os: "Linux", cpu: "x64", url: file("linux", "x64", "deb") },
-    { os: "Linux", cpu: "ARM", url: file("linux", "arm64", "deb") },
-  ];
+const MONOREPO = "https://github.com/acryldev/acryl";
+
+/** A Blend built in the ACRYL monorepo: its source is a folder there and its releases are tagged `<tag>-v<version>`. */
+function inMonorepo(directory: string, tag: string, version: string, product: string): Source {
+  const base = `${MONOREPO}/releases/download/${tag}-v${version}`;
+  const file = (platform: string, arch: string, extension: string) => `${base}/${product}-${platform}-${arch}.${extension}`;
+  return {
+    url: `${MONOREPO}/tree/main/${directory}`,
+    folder: "acryl",
+    directory,
+    releasePage: `${MONOREPO}/releases/tag/${tag}-v${version}`,
+    downloads: [
+      { os: "macOS", cpu: "Apple Silicon", url: file("mac", "arm64", "dmg") },
+      { os: "macOS", cpu: "Intel", url: file("mac", "x64", "dmg") },
+      { os: "Windows", cpu: "x64", url: file("win", "x64", "exe") },
+      { os: "Windows", cpu: "ARM", url: file("win", "arm64", "exe") },
+      { os: "Linux", cpu: "x64", url: file("linux", "x64", "deb") },
+      { os: "Linux", cpu: "ARM", url: file("linux", "arm64", "deb") },
+    ],
+  };
 }
 
 export const registrySources: Record<string, Source> = {
-  "acryl.ade": repo("05-acryl-ade", releaseFiles("05-acryl-ade", "ACRYL-ADE")),
-  "acryl.control-center": repo("63-acryl-control-center", releaseFiles("63-acryl-control-center", "ACRYL-Control-Center")),
+  "acryl.ade": inMonorepo("apps/acryl-ade", "ade", "0.2.1", "ACRYL-ADE"),
+  "acryl.control-center": inMonorepo("apps/acryl-control-center", "control-center", "0.2.2", "ACRYL-Control-Center"),
   "acryl.sde": repo("05-acryl-sde"),
   "acrylblends.action-rpg": repo("41-action-rpg"),
   "acrylblends.airspace": repo("41-airspace"),
@@ -77,6 +89,7 @@ export const registrySources: Record<string, Source> = {
 };
 
 /** The commands that run a Blend straight from its repository. */
-export function cloneCommand(source: Source): string {
+export function cloneCommand(source: Source): string | undefined {
+  if (source.directory !== undefined) return undefined;
   return `git clone ${source.url}.git\ncd ${source.folder} && npm install && npm run dev`;
 }
