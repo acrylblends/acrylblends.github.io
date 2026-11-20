@@ -9,45 +9,62 @@ Start at `docs/framework/README.md`; `api/summary.md` is the one-page summary. R
 `api/context.md` (`c`), `cordis/validation.md` and `guides/validation.md`, `guides/helpers.md` (`streamSSE`), `concepts/middleware.md`, `cordis/plugin-lifecycle.md` (what a plugin
 owns and when it is unloaded), `cordis/mounting.md` and `cordis/node-server.md`. Pages marked "not yet available" describe parts that are not in this app.
 
-The docs write `import { Acryl } from 'acrylblends'` and `from 'acrylblends/<subpath>'`. In this app the framework is the vendored plugin source in `plugins/acryl-router/src`
+The docs write `import { Acryl } from 'acrylblends'` and `from '@acryldev/blends/<subpath>'`. In this app the framework is the vendored plugin source in `plugins/router/src`
 (read it, do not edit it: a change belongs in ACRYL, upstream), so from a file in `src/` import:
 
-- `../plugins/acryl-router/src/index.ts` for `Acryl`, `Context`, `HTTPException`, `connectionOf`, `getConnInfo` and the types;
-- `../plugins/acryl-router/src/middleware/index.ts` for every middleware (`cors`, `bodyLimit`, `trimTrailingSlash`, `loopbackOnly`, ...);
-- `../plugins/acryl-router/src/helpers/index.ts` for the helpers and validators (`streamSSE`, `schemaValidator`, `validator`, cookies, `testClient`, ...).
-- `../plugins/acryl-router/src/core/jsx/index.ts` for `acrylblends/jsx` (`jsx`, `Fragment`, the types), and `.../core/jsx/streaming.ts` for `acrylblends/jsx/streaming`.
+- `../plugins/router/src/index.ts` for `Acryl`, `Context`, `HTTPException`, `connectionOf`, `getConnInfo` and the types;
+- `../plugins/router/src/middleware/index.ts` for every middleware (`cors`, `bodyLimit`, `trimTrailingSlash`, `loopbackOnly`, ...);
+- `../plugins/router/src/helpers/index.ts` for the helpers and validators (`streamSSE`, `schemaValidator`, `validator`, cookies, `testClient`, ...).
+- `../plugins/router/src/core/jsx/index.ts` for `acrylblends/jsx` (`jsx`, `Fragment`, the types), and `.../core/jsx/streaming.ts` for `acrylblends/jsx/streaming`.
 
-**JSX: write `.tsx`.** The scripts in `package.json` run Node.js with `--import ./plugins/acryl-node-server/src/register.ts`, which compiles `.tsx` files with this app's own `typescript`; `tsconfig.json` sets `jsx: react-jsx` and `jsxImportSource: #acryl-jsx`, which `package.json`'s `imports` maps to the vendored runtime in `plugins/acryl-router`. See `src/about.tsx` (blank template) for a page and `test/app.test.ts` for how it is tested. Render a component with `.toString()` and return it with `c.html(...)`; import `jsx`, `Fragment` and the types from `../plugins/acryl-router/src/core/jsx/index.ts` when you need them. A command that starts the app without those scripts (a bare `node src/main.ts`) cannot load a `.tsx` file. Without a build step you can write the call JSX compiles to instead: `jsx('h1', { class: 'title' }, 'Hello')`, children after the props.
+**JSX: write `.tsx`.** The scripts in `package.json` run Node.js with `--import ./plugins/node-server/src/register.ts`, which compiles `.tsx` files with this app's own `typescript`; `tsconfig.json` sets `jsx: react-jsx` and `jsxImportSource: #acryl-jsx`, which `package.json`'s `imports` maps to the vendored runtime in `plugins/router`. See `src/about.tsx` (blank template) for a page and `test/app.test.ts` for how it is tested. Render a component with `.toString()` and return it with `c.html(...)`; import `jsx`, `Fragment` and the types from `../plugins/router/src/core/jsx/index.ts` when you need them. A command that starts the app without those scripts (a bare `node src/main.ts`) cannot load a `.tsx` file. Without a build step you can write the call JSX compiles to instead: `jsx('h1', { class: 'title' }, 'Hello')`, children after the props.
 
-**A plugin you install into the running app** (`.acryl/bin/acryl plugin add plugins/<name>`) **imports the framework by its package name**: `import { Acryl } from 'acrylblends'` (and `acrylblends/<subpath>`, for example `acrylblends/helpers`). `acrylblends` and `acrylblends/<subpath>` resolve to the same files as the relative paths above, and the plugin is checked in a staging copy where a relative path like `../plugins/acryl-router/src/index.ts` may not resolve (a plugin that wrote it failed its first install). Plugins that `src/app.ts` imports at start-up keep using the relative paths. `App` is the
+**A plugin imports the framework by its package name**: `import { Acryl } from 'acrylblends'` (and `acrylblends/<subpath>`, for example
+`acrylblends/helpers`), which resolves to the same files as the relative paths above. Only files in `src/` use the relative paths. `App` is the
 deprecated name of `Acryl`.
 
-## How a feature is built
+## How a feature is built: a plugin of its own
 
-Routes are an ordinary `Acryl` app that a plugin mounts once with `ctx.router.route(prefix, app)`. The mount belongs to the plugin and goes away when it unloads.
+**Every feature is a Cordis plugin: a folder `plugins/<name>/` with an `index.ts`, plus its row in `blend.yaml`.** Never wire a feature into
+`src/app.ts`, `src/routes.ts` or `src/frame.ts`, and never import it there: the row is what starts it. Settings > Plugins lists it, switches it off
+and on (`disabled: true` on its row) and shares it, and every version of the app carries it.
+
+When your prompt names this app's builder docs (`acryl_plugin_docs`), read the doc for your task and its verified example before you write the
+plugin; they are this section in full.
 
 ```ts
+// plugins/notes/index.ts
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl, HTTPException } from '../plugins/acryl-router/src/index.ts'
-import { schemaValidator, type StandardSchema } from '../plugins/acryl-router/src/helpers/index.ts'
+import { Acryl } from 'acrylblends'
 
-export const name = 'notes'               // a plugin's name; blend.yaml refers to it
-export const inject = ['router']          // services it needs
+export const name = 'notes'               // the folder's name; blend.yaml's row names it
+export const inject = ['router']          // services it needs (a name nobody provides leaves it waiting, silently)
 export function apply(ctx: Context) {
   const app = new Acryl()
     .get('/', (c) => c.json({ ok: true }))
-    .get('/:id', (c) => c.json({ id: c.req.param('id') }))
-    .post('/', schemaValidator('json', NewNote), (c) => c.json(c.req.valid('json'), 201))   // NewNote is a Standard Schema
+    .post('/', async (c) => c.json(await c.req.json(), 201))
   ctx.router.route('/notes', app)         // build the whole app first: routes added after route() are not served
 }
 ```
 
-- A small route goes on the `App` in `src/routes.ts`. A new feature is a new plugin file: add it to `registry` in `src/app.ts`, add a row
-  (`- id: notes` / `name: notes`) to `blend.yaml` before the `acryl-node-server` row, and pass runtime values (a data file) as its config in `createApp`.
-- State, when `plugins/acryl-state` exists: `const cell = ctx.state.cell<T>('notes.list', initial)` (add `'state'` to `inject`), then
-  `cell.get()`, `cell.set(value)`, `cell.update(fn)` and `cell.subscribe(fn)` (returns the unsubscribe). Every cell is also served as JSON at `/api/state/<key>`
-  and streamed at `/api/state/<key>/events`.
-- Test a route without a socket: `await ctx.router.request('/notes')`, or boot the app as `test/app.test.ts` does and use `fetch`.
+```yaml
+# blend.yaml, before the `@acryldev/node-server` row
+    - id: notes
+      name: notes
+```
+
+- Routes are an ordinary `Acryl` app that the plugin mounts once with `ctx.router.route('/notes', app)`; the mount belongs to the plugin and goes
+  away when it unloads. The frame that hosts the app in development adds its canvas prefix to every route a plugin mounts: the same plugin
+  answers `/notes` under `npm start` and `/app/notes` in the canvas. Write the app's own path, and fetch it from a page by that path
+  (`fetch('/notes')`); never put the frame's prefix in a route or a URL.
+- A plugin's name is its folder's name. It imports only `@deepseek-ai/cordis` (types), `acrylblends`, `node:*`, its own files, and type-only
+  `import type {} from '../home/index.ts'` / `'@acryldev/instance'` for the services those give `ctx`. Never guess another path.
+- Something on the first screen (blank template): add `'home'` to `inject` and register a widget in an effect,
+  `ctx.effect(() => ctx.home.widget({ id: 'notes', title: 'Notes', render: () => '<ul>...</ul>' }))`; it leaves the page with the plugin.
+- Data that must survive a restart goes in a file in `ctx.appInstance.home` (add `'appInstance'` to `inject`), written whole through a temporary
+  file and a rename; a variable starts again at every reload. With `plugins/state`: `ctx.state.cell<T>('notes.list', initial)` (add
+  `'state'` to `inject`), served as JSON at `/api/state/<key>` and streamed at `/api/state/<key>/events`.
+- Test it in `test/<name>.test.ts` without a socket: boot the app as `test/app.test.ts` does and use `app.root.router.request('/notes')`.
 
 ## Things that surprise people
 
@@ -58,10 +75,13 @@ export function apply(ctx: Context) {
 - Handlers get the request as `c.req`: `c.req.param('id')`, `c.req.query('q')`, `await c.req.json()`, `c.req.raw` for the Web `Request`.
 - A server-sent stream is `streamSSE(c, async (stream) => { await stream.writeSSE({ data: JSON.stringify(x) }) ... })`; call `stream.onAbort(cleanup)`.
 - `npm run dev` restarts the app whenever a file changes.
+- **In ACRYL's chat, the running app is the process that runs you: never stop, kill or restart it.** A saved change in `blend.yaml`, `src/` or `plugins/` reloads the app by itself and the page beside you shows it; a new plugin starts with that reload once its folder and its row are there. If a change does not show, the reload failed: read the error line in the frame's bar or `look` again, don't restart. `.acryl/bin/acryl plugin ...` is not available there, and is not needed.
 
 ## Before you say you are done
 
-`npm test` and `npm run check` (type-check) both pass. Put tests in `test/`, written with `node:test` like `test/app.test.ts`.
+`npm test` and `npm run check` (type-check) both pass, and `.acryl/bin/acryl look` shows the feature on the page. Put tests in `test/`, written
+with `node:test` like `test/app.test.ts`. A failure names the file and the line: fix the cause in the plugin, never the test, and never move the
+feature into `src/` to get around it.
 
 ## Defaults you can swap
 
@@ -71,8 +91,8 @@ and swap it at the one place that mounts it.
 | Choice | Default | To swap it |
 | --- | --- | --- |
 | Records | the `db` port on SQLite (already mounted in the notes and chat templates; elsewhere `npx acrylblends add db`) | mount another provider of `db` in `src/app.ts`; plugins use `ctx.db` and do not change |
-| Small state | the `kv` port on one JSON file (`npx acrylblends add kv`) | mount `acryl-kv-db` (the same port over `db`) or a provider of your own |
-| Server | Node (`acryl-node-server`) | mount the adapter of another runtime in `src/app.ts` |
+| Small state | the `kv` port on one JSON file (`npx acrylblends add kv`) | mount `@acryldev/kv-db` (the same port over `db`) or a provider of your own |
+| Server | Node (`@acryldev/node-server`) | mount the adapter of another runtime in `src/app.ts` |
 | Window | the browser | `npx acrylblends add desktop` adds an Electron window on the same server |
 
 - **An outside tool** (a database server, a bundler, a router such as Vike) joins the app as a provider: a plugin in `plugins/<name>/` that implements a port and
@@ -116,9 +136,13 @@ The door is a command in this folder, `.acryl/bin/acryl`, that lets you look at 
 
 Besides `src/routes.ts`, the app runs an agent (`POST /ask`) that can write plugins into `plugins/` while the app runs and install them with
 rollback; `GET /extensions` and `GET /tasks` show what it did. A plugin there is a folder with an `index.ts` exporting `name`, `inject`, `apply(ctx)`
-and an optional `check(ctx)` that receives the plugin's own context (so `ctx.router` reads as in `apply`). It may import `acryl-router`.
+and an optional `check(ctx)` that receives the plugin's own context (so `ctx.router` reads as in `apply`). It may import `@acryldev/router`.
 
-**Write an extension, not a row.** A feature you build while the app runs is a folder `plugins/<name>/` installed with `.acryl/bin/acryl plugin add plugins/<name>` (the `extensions` plugin loads it again at every start). Add a row to `blend.yaml` and an entry to the `registry` of `src/app.ts` only when the person asks for a plugin that is part of the app itself. Both kinds may import the framework by name (`acrylblends`, `acrylblends/body-limit`, `acryl-router`); a row's relative imports of its sibling plugins also work.
+**A plugin's UI on the home page.** The home page shows the widget of every plugin that registers one (the `home` row): `inject: ['home']` and
+`ctx.effect(() => ctx.home.widget({ id: '<plugin name>', title, render: () => '<p>...</p>' }))`. The widget leaves with its plugin, and a second
+plugin with the same widget id is refused naming the first. A widget is the way a plugin someone else pulls into this app shows up on the first screen.
+
+**Write an extension, not a row.** A feature you build while the app runs is a folder `plugins/<name>/` installed with `.acryl/bin/acryl plugin add plugins/<name>` (the `extensions` plugin loads it again at every start). Add a row to `blend.yaml` (`- id: <name>` / `name: <name>`; `src/app.ts` finds the folder by that name) only when the person asks for a plugin that is part of the app itself. Both kinds may import the framework by name (`acrylblends`, `acrylblends/body-limit`, `@acryldev/router`); a row's relative imports of its sibling plugins also work.
 
 **Drive the app you build.** `.acryl/bin/acryl look` reads the open page as text with refs, and `acryl act click|type|press|scroll|wait --ref <ref>` presses its buttons, opens its sidebars and fills its forms (look again before each act: the refs change). `act navigate --path /settings` goes to another page of the app; a path the app does not serve answers `404 at /nope` and the window shows a 404 page, so navigate on from there. In the desktop app (`npm run desktop`) the app's windows and menu are verbs too: `acryl window list`, `acryl window open --path /settings`, `acryl look --window <id>` (and `act ... --window <id>`) to drive that window's page, `acryl window resize|focus|close --id <id>`, `acryl menu list` and `acryl menu click --path "File>New Note"`. Closing the last window and Quit end the desktop app, so they need `--force`: do not use it unless the person asks. The app has a `/settings` page already (the appearance: system, light or dark, kept in the browser) and the desktop app's menu has a Settings item that opens it; add a person's other settings to that page, not to a new one, so `acryl menu click --path "File>Settings..."` and `acryl window open --path /settings` keep opening them (on macOS the item is in the application menu). Without a desktop app these answer "no desktop window is attached; run npm run desktop".
 

@@ -5,7 +5,7 @@ import { createServer } from 'node:net'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type App, createApp } from '../src/app.ts'
 import { APP_NAME } from '../src/routes.ts'
 
@@ -44,11 +44,51 @@ test('answers health checks and 404 for unknown paths', () =>
     await missing.body?.cancel()
   }))
 
+test('a plugin puts its widget on the home page, and the widget leaves with the plugin', () =>
+  withApp(async (app) => {
+    const page = async () =>
+      (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()
+    const feature = app.root.plugin({
+      name: 'hello-widget',
+      inject: ['home'],
+      apply(ctx: typeof app.root) {
+        ctx.effect(() =>
+          ctx.home.widget({
+            id: 'hello-widget',
+            title: 'Hello',
+            render: () => '<p id="hello">hi</p>',
+          }),
+        )
+      },
+    })
+    await feature.await()
+    assert.match(
+      await page(),
+      /<section class="widget" data-widget="hello-widget">[\s\S]*<p id="hello">hi<\/p>/,
+    )
+    await feature.dispose()
+    assert.doesNotMatch(await page(), /data-widget="hello-widget"/)
+  }))
+
 /** A sandbox may forbid listening on a port (Codex's workspace-write does); the one test that starts the real server is skipped there, and says so. */
+/**
+ * Whether this environment forbids listening at all: only a sandbox's refusal (EPERM/EACCES) means the real-server test must skip. A loaded
+ * machine can fail a bind transiently, so that is retried briefly; any other outcome lets the real test run, where a host that truly cannot
+ * listen fails loudly instead of hiding behind a skip.
+ */
 const canListen = await new Promise<boolean>((done) => {
-  const probe = createServer()
-  probe.once('error', () => done(false))
-  probe.listen(0, '127.0.0.1', () => probe.close(() => done(true)))
+  let attempts = 0
+  const probeOnce = (): void => {
+    attempts += 1
+    const probe = createServer()
+    probe.once('error', (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EPERM' || error.code === 'EACCES') done(false)
+      else if (attempts < 3) setTimeout(probeOnce, 100)
+      else done(true)
+    })
+    probe.listen(0, '127.0.0.1', () => probe.close(() => done(true)))
+  }
+  probeOnce()
 })
 const skip = canListen ? false : 'this environment does not allow listening on a port'
 if (!canListen)
@@ -199,4 +239,32 @@ test('the app has a /settings page with the appearance setting, and the home pag
     assert.equal(dataset.theme, 'light')
     for (const listener of listeners) listener({ key: null })
     assert.equal(dataset.theme, undefined)
+  }))
+
+test('the frame row mounts the same routes under /app; the app on its own server keeps its old URLs', () =>
+  inEnvironment({ NODE_ENV: 'test', ACRYL_PRODUCTION_KEEP: undefined }, async (app) => {
+    // The frame row claims that prefix on the frame's web adapter only; the app's own rows mount the routes there (the generated app-plugins row),
+    // so the frame row does not ask for the host router (127 app URLs).
+    const frame = await import('../src/frame.ts')
+    assert.deepEqual([...frame.inject].sort(), ['routerHttp'])
+    const { FRAME_MOUNT_PREFIX, routes } = await import('../src/routes.ts')
+    routes.apply(app.root, { prefix: FRAME_MOUNT_PREFIX })
+    for (const path of ['', '/health', '/settings', '/appearance.js']) {
+      const response = await app.root.router.request(`${FRAME_MOUNT_PREFIX}${path}`, {
+        headers: { accept: 'text/html' },
+      })
+      assert.equal(response.status, 200, path)
+      await response.body?.cancel()
+    }
+    // The page under the prefix writes its own URLs from it.
+    const page = await (
+      await app.root.router.request(`${FRAME_MOUNT_PREFIX}/settings`, {
+        headers: { accept: 'text/html' },
+      })
+    ).text()
+    assert.match(page, new RegExp(`src="${FRAME_MOUNT_PREFIX}/appearance.js"`, 'u'))
+    assert.match(page, new RegExp(`href="${FRAME_MOUNT_PREFIX}/"`, 'u'))
+    const missing = await app.root.router.request(`${FRAME_MOUNT_PREFIX}/nope`)
+    assert.equal(missing.status, 404)
+    await missing.body?.cancel()
   }))

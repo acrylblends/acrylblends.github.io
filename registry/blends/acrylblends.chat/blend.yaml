@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.chat
   name: "Chat"
-  version: 0.1.0
+  version: 0.1.1
   category: ai
   description: "An AI chat app: the answer streams token by token from an OpenAI-compatible API (DeepSeek by default), history in SQLite, a Stop button. Closed in production until it has an access token."
   license: MIT
@@ -23,9 +23,13 @@ spec:
       name: acryl-db-sqlite
     - id: routes
       name: routes
-    # Plugins installed while the app runs (the door's `plugin add`): development only, src/app.ts leaves it out when NODE_ENV=production.
+    # Plugin folders without a row of their own (a live install with the door's `plugin add`); a folder with a row is the app's and starts by it.
+    # Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    # Sharing: `npm run acryl -- plugin pull github:<owner>/<repo>@<version>` installs a plugin someone released (development only).
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

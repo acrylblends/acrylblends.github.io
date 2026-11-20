@@ -1,13 +1,13 @@
-import type { Db } from '../plugins/acryl-db/src/index.ts'
+import type { Db } from '../plugins/db/src/index.ts'
 import {
   type StandardSchema,
   schemaValidator,
   streamSSE,
-} from '../plugins/acryl-router/src/helpers/index.ts'
-import { Acryl } from '../plugins/acryl-router/src/index.ts'
+} from '../plugins/router/src/helpers/index.ts'
+import { Acryl } from '../plugins/router/src/index.ts'
 import { type Access, accessGate } from './access.ts'
 import { chatStore } from './db.ts'
-import { type Llm, openAiCompatible } from './llm.ts'
+import { type Llm, MissingKey, openAiCompatible } from './llm.ts'
 import { chatPage } from './page.tsx'
 
 interface ChatInput {
@@ -33,8 +33,16 @@ const ChatSchema: StandardSchema<ChatInput> = {
   },
 }
 
-/** `access` is who may use the chat (default: anyone, as in development and in the tests); see `src/access.ts`. */
-export function createApp(db: Db, llm: Llm = openAiCompatible, access: Access = { kind: 'open' }) {
+/**
+ * `access` is who may use the chat (default: anyone, as in development and in the tests); see `src/access.ts`. `prefix` is the path the app is mounted at:
+ * '' on its own server, `/app` in the ACRYL frame. Every URL the page writes is derived from it.
+ */
+export function createApp(
+  db: Db,
+  llm: Llm = openAiCompatible,
+  access: Access = { kind: 'open' },
+  { prefix = '' }: { prefix?: string } = {},
+) {
   const store = chatStore(db)
   const app = new Acryl()
   const gate = accessGate(access)
@@ -50,6 +58,7 @@ export function createApp(db: Db, llm: Llm = openAiCompatible, access: Access = 
         await store.conversations(),
         current,
         current ? await store.messages(current.id) : [],
+        prefix,
       ),
     )
   })
@@ -90,10 +99,14 @@ export function createApp(db: Db, llm: Llm = openAiCompatible, access: Access = 
       } catch (error) {
         if (!signal.aborted) {
           console.error(error)
-          // The reason stays in the log; the page gets a plain message.
+          // The reason stays in the log; the page gets a plain message, or how to set the missing key.
           await stream.writeSSE({
             event: 'error',
-            data: JSON.stringify('The model could not answer. Try again.'),
+            data: JSON.stringify(
+              error instanceof MissingKey
+                ? error.message
+                : 'The model could not answer. Try again.',
+            ),
           })
         }
       } finally {

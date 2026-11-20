@@ -1,13 +1,69 @@
 // The panel in the page: a button at the corner opens a side panel (a shadow root, so the app's CSS cannot touch it and it cannot touch the app's). It asks the app's
-// agent through POST /api/agent-panel/ask, shows the answer as it arrives, and reloads the page after a run that installed or removed a plugin.
-import { describeTool } from './describe.ts'
+// agent through POST <prefix>/ask, shows the answer as it arrives, and reloads the page after a run that installed or removed a plugin. `panel.js` calls
+// `start` with the prefix the app is served under (the root of its own server, or `/app` when the ACRYL frame hosts it).
+import { describePageStep, describeTool } from './describe.ts'
+import { createPickGeneration } from './driver-pick.ts'
+import { FRAME_MODE_EVENT, frameViewOf, panelVariant, panelVisible } from './frame.ts'
 import { renderMarkdown } from './markdown.ts'
 
-const PREFIX = '/api/agent-panel'
+let PREFIX = '/api/agent-panel'
+/** Where the composer's draft is kept across a page reload or a remount. */
+const DRAFT_KEY = 'agent-panel-draft'
+/** Set when a visitor closed the Assistant, so it stays closed on the next page. */
+const ASSISTANT_CLOSED_KEY = 'agent-panel-assistant-closed'
+/** What the Assistant tells a visitor first: what it can do, and that it cannot change the app. */
+export const ASSISTANT_NOTE =
+  'The assistant can use the app for you: open pages, filter, fill in forms. It cannot change the app.'
+
+/**
+ * Why a submit does not send: nothing typed, or a run still going. The panel says it in its log instead of returning silently - a Send that does nothing and
+ * says nothing reads as a broken button, and one was observed doing exactly that in the frame gate (empty log, enabled Send, no run).
+ */
+export type SendRefusal = 'empty' | 'busy'
+export function sendRefusal(message: string, following: boolean): SendRefusal | undefined {
+  if (message.trim() === '') return 'empty'
+  if (following) return 'busy'
+  return undefined
+}
+
+/**
+ * Whether the page may be replaced to show a change a run made. Asked at the moment of reloading, not earlier: text in the composer or the focus in it
+ * belongs to the person, and a run still going must not lose its page either.
+ */
+export function reloadDecision(state: {
+  readonly value: string
+  readonly focused: boolean
+  readonly following: boolean
+}): boolean {
+  return state.value.trim() === '' && !state.focused && !state.following
+}
+
+/** Where the last panel-initiated reload is recorded, for the page after it and for a gate looking at a failure. */
+export const RELOAD_MARKER = 'agent-panel-reload'
+
+/** Replace the page, saying why first: a warning the page's own error report and the frame gate both see, and a marker the reloaded page keeps. */
+function reloadPage(reason: string): void {
+  try {
+    sessionStorage.setItem(RELOAD_MARKER, JSON.stringify({ reason, at: Date.now() }))
+  } catch {
+    // No storage: the warning below still names it.
+  }
+  console.warn(`agent-panel: reloading the page (${reason})`)
+  location.reload()
+}
 
 interface Session {
   token: string
-  drivers: Array<{ name: string; kind: 'chat' | 'terminal' }>
+  /** The production Assistant: the app's own agent drives the page for a visitor. */
+  assistant?: boolean
+  /** The app's production environment names the Assistant (ACRYL_ASSISTANT=on); the frame's Preview shows it even though the frame host runs in development. */
+  assistantInProduction?: boolean
+  drivers: Array<{
+    name: string
+    kind: 'chat' | 'terminal'
+    /** A terminal driver says where its view module is and which prefix its endpoints live under (the driver's own plugin serves both). */
+    view?: { module: string; prefix: string }
+  }>
 }
 interface PanelEvent {
   event: string
@@ -160,33 +216,86 @@ textarea { width: 100%; min-height: 64px; resize: vertical; padding: 8px; border
 .row button, header button { padding: 6px 12px; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; cursor: pointer }
 .row button.send { background: #1f2937; color: #fff; border-color: #1f2937 }
 .row button:disabled { opacity: 0.45; cursor: not-allowed }
+.notice, .steps, .tab { display: none }
+/* The Assistant (production): docked on the right in the app's dark surface, one tab, a note, the conversation and one line to ask. */
+:host([data-assistant]) section { width: min(330px, 100vw); background: #18181b; color: #e4e4e7; border-left: 1px solid #27272a; box-shadow: none }
+:host([data-assistant]) header { padding: 0 12px; border-bottom: 1px solid #27272a; min-height: 38px }
+:host([data-assistant]) header select, :host([data-assistant]) header strong { display: none }
+:host([data-assistant]) .tab { display: block; flex: 1; align-self: stretch }
+:host([data-assistant]) .tab span { display: inline-block; height: 100%; padding: 10px 6px 8px; font-size: 12.5px; font-weight: 600; color: #fafafa; border-bottom: 2px solid #5468ff }
+:host([data-assistant]) header button.close { border: 0; background: none; color: #a1a1aa; font-size: 18px; padding: 2px 6px }
+:host([data-assistant]) .notice { display: block; margin: 8px 10px 0; padding: 7px 9px; border-radius: 6px; background: #15291e; color: #a7f3c0; font-size: 12px; line-height: 1.5 }
+:host([data-assistant]) #log { padding: 10px; gap: 10px }
+:host([data-assistant]) .msg { background: #232326; color: #e4e4e7; border-radius: 8px; padding: 9px 11px; line-height: 1.45; max-width: 92% }
+:host([data-assistant]) .me { background: #23264f; color: #eef0ff; align-self: flex-end }
+:host([data-assistant]) .err { background: #3b1d1d; color: #fecaca }
+:host([data-assistant]) .tool, :host([data-assistant]) .working { background: none; color: #a1a1aa; padding: 0 2px }
+:host([data-assistant]) .steps { display: block; margin-top: 6px; font: 11.5px ui-monospace, monospace; color: #a1a1aa; white-space: normal }
+:host([data-assistant]) .steps:empty { display: none }
+:host([data-assistant]) .md code { background: #2e2e33; color: #e4e4e7 }
+:host([data-assistant]) form { border-top: 0; padding: 10px }
+:host([data-assistant]) textarea { min-height: 0; height: 38px; resize: none; background: #18181b; color: #e4e4e7; border: 1px solid #3f3f46; border-radius: 8px; padding: 9px 11px; font-size: 13px }
+:host([data-assistant]) textarea:focus { outline: none; border-color: #5468ff }
+:host([data-assistant]) .row { display: none }
+:host([data-assistant][data-following]) .row { display: flex; justify-content: flex-end }
+:host([data-assistant]) .row .send { display: none }
+:host([data-assistant]) .row button { background: none; color: #e4e4e7; border-color: #3f3f46 }
+:host([data-assistant]) button.open { background: #18181b; color: #fafafa; border: 1px solid #3f3f46 }
 `
 
-async function start(): Promise<void> {
+/** Start the panel against the app served at `prefix` (`/api/agent-panel` at the root, `/app/api/agent-panel` in the frame). */
+export async function start(prefix: string = '/api/agent-panel'): Promise<void> {
+  PREFIX = prefix
+  // A panel that is mounted again replaces the previous one: one live host, and the readiness mark then belongs to the instance being wired now. A
+  // duplicated or reused host once let a submit reach a form that no live instance was listening to (the frame gate's empty-log failure, 2026-11-02).
+  // The previous instance's run socket goes with it, so its watch ends instead of writing into a detached log.
+  activeSocket?.close()
+  activeSocket = undefined
+  document.getElementById('agent-panel')?.remove()
   const reply = await fetch(`${PREFIX}/session`)
   if (!reply.ok) return
   let session = (await reply.json()) as Session
 
+  // The frame's Build is the builder's screen, and its Preview shows the app as production would: the panel takes the Assistant's variant only where
+  // production has it, and it is hidden everywhere the canvas should be the app alone. A direct page (no frame) is unchanged.
+  const frame = frameViewOf()
+  const assistant = panelVariant(session, frame)
   const host = document.createElement('div')
   host.id = 'agent-panel'
+  if (assistant) host.dataset.assistant = ''
   const shadow = host.attachShadow({ mode: 'open' })
   shadow.innerHTML = `<style>${css}</style>
-    <button class="open" type="button">Ask the agent</button>
-    <section aria-label="Agent panel">
-      <header><strong>Agent</strong><select aria-label="Agent">${session.drivers
+    <button class="open" type="button">${assistant ? 'Assistant' : 'Ask the agent'}</button>
+    <section aria-label="${assistant ? 'Assistant' : 'Agent panel'}">
+      <header><strong>Agent</strong><div class="tab"><span>Assistant</span></div><select aria-label="Agent">${session.drivers
         .map((d) => `<option>${d.name}</option>`)
         .join(
           '',
         )}</select><button class="termstop" type="button" hidden>Stop terminal</button><button class="close" type="button" aria-label="Close">×</button></header>
+      <p class="notice">${ASSISTANT_NOTE}</p>
       <div id="log" role="log"></div>
       <div id="term" hidden></div>
-      <form><textarea aria-label="Message" placeholder="What should the app do?"></textarea>
+      <form><textarea aria-label="Message" placeholder="${assistant ? 'Ask the assistant…' : 'What should the app do?'}"${assistant ? ' rows="1"' : ''}></textarea>
         <div class="row"><button class="send" type="submit">Send</button><button class="stop" type="button" disabled>Stop</button></div></form>
     </section>`
   const $ = <T extends Element>(selector: string): T => shadow.querySelector<T>(selector)!
   const panel = $<HTMLElement>('section')
   const log = $<HTMLElement>('#log')
   const input = $<HTMLTextAreaElement>('textarea')
+  // The composer survives the page being replaced (a run that changes files reloads the page, and a mount replaces this panel): the draft is kept
+  // beside the page, restored into this textarea before the form is wired, and cleared when a submit sends it.
+  try {
+    input.value = sessionStorage.getItem(DRAFT_KEY) ?? ''
+  } catch {
+    // No storage: the draft lives as long as this document.
+  }
+  input.addEventListener('input', () => {
+    try {
+      sessionStorage.setItem(DRAFT_KEY, input.value)
+    } catch {
+      // No storage: the draft lives as long as this document.
+    }
+  })
   const send = $<HTMLButtonElement>('.send')
   const stop = $<HTMLButtonElement>('.stop')
   const driver = $<HTMLSelectElement>('select')
@@ -195,35 +304,52 @@ async function start(): Promise<void> {
   termStop.addEventListener('click', () => void terminal?.stop())
   const form = $<HTMLFormElement>('form')
   document.body.append(host)
+  const applyFrame = (): void => {
+    host.style.display = panelVisible(frame, assistant) ? '' : 'none'
+  }
+  window.addEventListener(FRAME_MODE_EVENT, applyFrame)
+  applyFrame()
   const kindOf = (name: string): 'chat' | 'terminal' =>
     session.drivers.find((d) => d.name === name)?.kind ?? 'chat'
   let terminal: { detach(): void; stop(): Promise<void> } | undefined
+  // A pick can land while an earlier pick's terminal is still loading (the page also restores a remembered terminal at
+  // start). Only the latest pick may apply its result; a stale terminal must never replace the form the person chose.
+  const picks = createPickGeneration()
   // A terminal driver swaps the chat for the driver's own terminal (loaded from the plugin that provides it, only when asked for).
   const choose = async (): Promise<void> => {
+    const generation = picks.begin()
+    const name = driver.value
     terminal?.detach()
     terminal = undefined
-    const isTerminal = kindOf(driver.value) === 'terminal'
+    const isTerminal = kindOf(name) === 'terminal'
     log.hidden = isTerminal
     form.hidden = isTerminal
     term.hidden = !isTerminal
     termStop.hidden = !isTerminal
     if (!isTerminal) return
+    const selected = session.drivers.find((entry) => entry.name === name)
+    if (selected?.view === undefined) {
+      line('This terminal driver does not provide its view.', 'err')
+      return
+    }
     try {
-      const url = '/api/driver-pty/client/terminal.ts'
+      const url = selected.view.module
       const { openTerminal } = (await import(url)) as {
         openTerminal(options: {
           container: HTMLElement
           token: string
           driver: string
+          prefix: string
           status(text: string): void
           onChange(change: { extension: string; action: string }): void
         }): Promise<{ detach(): void; stop(): Promise<void> }>
       }
       await refreshSession()
-      terminal = await openTerminal({
+      const opened = await openTerminal({
         container: term,
         token: session.token,
-        driver: driver.value,
+        driver: name,
+        prefix: selected.view.prefix,
         status: (text) => line(text, 'tool'),
         onChange: (change) => {
           line(`plugin ${change.extension}: ${change.action}`, 'tool')
@@ -231,7 +357,13 @@ async function start(): Promise<void> {
           setTimeout(() => location.reload(), 900)
         },
       })
+      if (!picks.isCurrent(generation)) {
+        opened.detach()
+        return
+      }
+      terminal = opened
     } catch (error) {
+      if (!picks.isCurrent(generation)) return
       line(
         `The terminal could not open: ${error instanceof Error ? error.message : String(error)}`,
         'err',
@@ -252,9 +384,10 @@ async function start(): Promise<void> {
           root.style.getPropertyValue(property),
           root.style.getPropertyPriority(property),
         ])
+      // The panel's own width (the Assistant's is narrower than the builder's), so the page meets its edge with no gap.
       root.style.setProperty(
         'margin-right',
-        `${String(Math.min(380, Math.floor(window.innerWidth * 0.9)))}px`,
+        `${String(Math.ceil(panel.getBoundingClientRect().width))}px`,
         'important',
       )
     } else {
@@ -266,14 +399,39 @@ async function start(): Promise<void> {
       saved.clear()
     }
   }
-  const show = (open: boolean): void => {
+  const show = (open: boolean, focus = true): void => {
     const was = panel.classList.contains('shown')
     panel.classList.toggle('shown', open)
+    $<HTMLButtonElement>('button.open').hidden = open && assistant
     if (open !== was) dock(open)
-    if (open) input.focus()
+    if (open && focus) input.focus()
+    // Other corner buttons of the page (the feedback button) stand clear of the panel.
+    window.dispatchEvent(new Event('agent-panel:layout'))
   }
-  $('button.open').addEventListener('click', () => show(true))
-  $('button.close').addEventListener('click', () => show(false))
+  const remember = (closed: boolean): void => {
+    try {
+      if (closed) sessionStorage.setItem(ASSISTANT_CLOSED_KEY, '1')
+      else sessionStorage.removeItem(ASSISTANT_CLOSED_KEY)
+    } catch {
+      // No storage: the Assistant opens again on the next page.
+    }
+  }
+  $('button.open').addEventListener('click', () => {
+    show(true)
+    if (assistant) remember(false)
+  })
+  $('button.close').addEventListener('click', () => {
+    show(false)
+    if (assistant) remember(true)
+  })
+  // Enter asks (Shift+Enter is a new line): the Assistant has one line to ask in and no Send button.
+  if (assistant)
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+        event.preventDefault()
+        form.requestSubmit()
+      }
+    })
   const line = (text: string, kind = ''): HTMLElement => {
     const el = document.createElement('div')
     el.className = `msg ${kind}`
@@ -367,8 +525,14 @@ async function start(): Promise<void> {
   const watch = async (source: RunSource, own: boolean): Promise<void> => {
     let live = true
     let changed = false
+    // Every run the server finishes ends with `done` or `error`; a stream that stops without either lost its server, and the run with it.
+    let finished = false
     let answer: HTMLElement | undefined
     let answered = ''
+    // The Assistant's steps on the page, shown under its answer in one line, as the person reads what it did.
+    const steps: string[] = []
+    const stepsLine = document.createElement('div')
+    stepsLine.className = 'steps'
     // A coding agent started headless says little until it is done, so the panel says it is working, and for how long (from when the run began, not from when this page loaded).
     let started = Date.now()
     let working: HTMLElement | undefined
@@ -384,6 +548,7 @@ async function start(): Promise<void> {
     const begin = (): void => {
       if (working !== undefined) return
       following = true
+      host.dataset.following = '1'
       send.disabled = true
       stop.disabled = false
       working = line('', 'working')
@@ -412,19 +577,35 @@ async function start(): Promise<void> {
           answer ??= line('', 'md')
           answered += String(data.text ?? '')
           answer.replaceChildren(renderMarkdown(answered, document))
+          if (assistant) {
+            stepsLine.textContent = steps.join(' · ')
+            answer.append(stepsLine)
+          }
           log.scrollTop = log.scrollHeight
         } else if (event === 'tool') {
+          if (assistant) {
+            const step = describePageStep(data)
+            if (step !== undefined) steps.push(step)
+            continue
+          }
           const described = describeTool(data)
           if (described !== undefined) line(described, 'tool')
         } else if (event === 'change') {
           changed = true
           line(`plugin ${String(data.extension)}: ${String(data.action)}`, 'tool')
         } else if (event === 'error') {
+          finished = true
           line(String(data.message ?? 'The run failed.'), 'err')
         } else if (event === 'done') {
+          finished = true
           changed = changed || data.changed === true
         }
       }
+      if (live && working !== undefined && !finished)
+        line(
+          'The app stopped while the agent was working, and the run ended with it (`npm run dev` restarts the app when a file it runs changes). Ask again to go on.',
+          'err',
+        )
     } catch (error) {
       line(`The request failed: ${error instanceof Error ? error.message : String(error)}`, 'err')
     } finally {
@@ -432,22 +613,49 @@ async function start(): Promise<void> {
       if (working !== undefined) {
         working.remove()
         following = false
+        delete host.dataset.following
         send.disabled = false
         stop.disabled = true
       }
     }
-    // A plugin was installed or removed while this page watched: the new feature is served by the running app, so the page only needs to be loaded again (unless something is being typed).
-    // A run that ended before this page loaded was already shown after its reload, and does not reload it again.
-    if (live && changed && input.value.trim() === '') {
+    // A plugin was installed or removed while this page watched: the new feature is served by the running app, so the page only needs to be loaded again.
+    // The panel lives inside the app's own page (it cannot refresh the frame's canvas from here), so the page reload is the app's refresh - but the decision
+    // to reload is made at the moment of reloading, never on a check made a second earlier: a person (or the frame gate) can start typing in between, and a
+    // reload then replaces the page under their text (the frame gate's empty-composer dump, 2026-11-02).
+    if (live && changed) {
       line('Reloading the page to show it.', 'tool')
-      setTimeout(() => location.reload(), 900)
+      setTimeout(() => {
+        if (
+          reloadDecision({
+            value: input.value,
+            focused: host.shadowRoot?.activeElement === input,
+            following,
+          })
+        )
+          reloadPage('a plugin changed')
+      }, 900)
     }
   }
   form.addEventListener('submit', async (submitted) => {
     submitted.preventDefault()
+    const refusal = sendRefusal(input.value, following)
+    if (refusal !== undefined) {
+      line(
+        refusal === 'empty' ? 'Type a message first.' : 'A run is already going; stop it first.',
+        'err',
+      )
+      return
+    }
     const message = input.value.trim()
-    if (message === '' || following) return
     input.value = ''
+    try {
+      sessionStorage.removeItem(DRAFT_KEY)
+    } catch {
+      // No storage.
+    }
+    // The message is sent: the composer is empty and the person is not typing, so it gives the focus back. A run that installs a plugin reloads the page
+    // afterwards, and that reload must not be refused for a focus nobody is using.
+    input.blur()
     line(message, 'me')
     try {
       const run = await openRun({ t: 'ask', message, driver: driver.value, ...doorPage() })
@@ -461,7 +669,22 @@ async function start(): Promise<void> {
       line(`The request failed: ${error instanceof Error ? error.message : String(error)}`, 'err')
     }
   })
-  // The latest run, if there is one: shown again after a reload (its question, its events), and followed if it is still going.
+  // The Assistant is open beside the page unless the visitor closed it.
+  if (assistant) {
+    let closed = false
+    try {
+      closed = sessionStorage.getItem(ASSISTANT_CLOSED_KEY) === '1'
+    } catch {
+      // No storage: open.
+    }
+    show(!closed, false)
+  }
+  // The form is wired: a script (the frame gate included) waits for this instead of guessing that the panel can be submitted, and a panel that never got
+  // this far says so by the mark's absence - together with the visible guards above, no submit can vanish without a trace.
+  host.dataset.ready = '1'
+  // The latest run, if there is one: shown again after a reload (its question, its events), and followed if it is still going. The server records a run
+  // before it answers the ask that started it (startRun sets the current run, then follow answers), so a page that asks after that answer always finds
+  // it - no client poll is needed. A run the app server itself restarted away (a file change the run made) no longer exists for that server to show.
   try {
     const latest = await openRun({ t: 'follow' })
     if (latest !== undefined && !('error' in latest)) void watch(latest, false)
@@ -482,5 +705,3 @@ async function start(): Promise<void> {
     // No storage: nothing to show again.
   }
 }
-
-void start()

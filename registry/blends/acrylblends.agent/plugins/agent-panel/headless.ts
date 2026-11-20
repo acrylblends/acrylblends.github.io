@@ -1,10 +1,10 @@
 /** The panel's own drivers, all `chat`: the app's agent, and the coding agents (`claude`, `codex`, `pi`) started headless in the app folder. */
 import { type ChildProcess, spawn, spawnSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
-import { homedir } from 'node:os'
 import { join } from 'node:path'
+import type { ChatDriver, ChatEvent } from '../drivers/index.ts'
+import { personHome } from '@acryldev/instance/storage'
 import type { Context } from '@deepseek-ai/cordis'
-import type { ChatDriver, ChatEvent } from './drivers.ts'
 import { resolveLaunch } from './launch.ts'
 
 export type HeadlessName = 'claude' | 'codex' | 'pi'
@@ -78,7 +78,7 @@ export function onPath(program: string): boolean {
 /** Whether pi can reach DeepSeek: the key in the environment, or the one pi stored for itself when its owner logged in (`~/.pi/agent/auth.json`, a `deepseek` entry). */
 export function piHasDeepseekKey(
   env: NodeJS.ProcessEnv = process.env,
-  home: string = homedir(),
+  home: string = personHome(env),
 ): boolean {
   if (env.DEEPSEEK_API_KEY) return true
   try {
@@ -112,8 +112,11 @@ export function agentDriver(ctx: Context): ChatDriver {
   return {
     kind: 'chat',
     name: 'agent',
-    async *start({ message, signal }) {
-      const result = await ctx.agent.run(message, { signal })
+    async *start({ message, signal, page }) {
+      const result = await ctx.agent.run(message, {
+        signal,
+        ...(page === undefined ? {} : { page }),
+      })
       for (const call of result.trace)
         yield {
           event: 'tool',

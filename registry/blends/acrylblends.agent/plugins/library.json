@@ -1,18 +1,22 @@
 {
   "plugins": [
-    "acryl-door",
-    "acryl-node-server",
-    "acryl-router",
-    "acryl-state",
     "agent",
     "agent-panel",
     "builder",
+    "door",
+    "drivers",
     "extensions",
-    "instance",
+    "home",
     "manifest",
+    "node-server",
     "openai",
+    "page",
+    "plugin-share",
+    "router",
     "sandbox",
     "save",
-    "tasks"
+    "state",
+    "tasks",
+    "web-server"
   ]
 }

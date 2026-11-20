@@ -4,3 +4,6 @@ node_modules/
 data/
 *.sqlite
 *.sqlite-*
+package-lock.json
+.env
+.env.*

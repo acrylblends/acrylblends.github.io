@@ -4,10 +4,10 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { after, test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import type {} from '../plugins/acryl-db/src/cordis.ts'
-import type { Db } from '../plugins/acryl-db/src/index.ts'
-import { testClient } from '../plugins/acryl-router/src/helpers/index.ts'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
+import type {} from '../plugins/db/src/cordis.ts'
+import type { Db } from '../plugins/db/src/index.ts'
+import { testClient } from '../plugins/router/src/helpers/index.ts'
 import { createApp as boot } from '../src/app.ts'
 import { createApi, createApp } from '../src/notes-app.ts'
 
@@ -23,11 +23,12 @@ const projectRoot = fileURLToPath(new URL('..', import.meta.url))
  */
 const stops: (() => Promise<void>)[] = []
 after(() => Promise.all(stops.map((stop) => stop())))
-async function booted() {
+async function booted(options: { prefix?: string } = {}) {
   const home = await mkdtemp(join(scratch, 'notes-test-'))
   const app = await boot(withPort(pinnedInstance(home, { root: projectRoot }), 0), {
     database: join(home, 'test.sqlite'),
     listen: false,
+    ...options,
   })
   stops.push(async () => {
     await app.stop()
@@ -275,6 +276,43 @@ test('the note form loads the character counter, a client component compiled for
   assert.equal(module.status, 200)
   assert.match(module.headers.get('content-type') ?? '', /javascript/)
   assert.doesNotMatch(await module.text(), /<Count/)
-  assert.equal((await running.root.router.request('/client/@acrylblends/jsx-dom.js')).status, 200)
+  assert.equal((await running.root.router.request('/client/@acryldev/jsx-dom.js')).status, 200)
   assert.equal((await running.root.router.request('/client/../src/db.ts')).status, 404)
+})
+
+test('the frame mounts the app at /app: the login page, its links and redirects follow the prefix, and the client module is served there', async () => {
+  const running = await booted({ prefix: '/app' })
+  const root = running.root
+  const home = await root.router.request('/app')
+  assert.equal(home.status, 302)
+  assert.equal(home.headers.get('location'), '/app/notes')
+  const notes = await root.router.request('/app/notes')
+  assert.equal(notes.status, 302)
+  assert.equal(notes.headers.get('location'), '/app/login')
+  const login = await root.router.request('/app/login')
+  assert.equal(login.status, 200)
+  const loginHtml = await login.text()
+  assert.match(loginHtml, /action="\/app\/login"/u)
+  assert.match(loginHtml, /href="\/app\/signup"/u)
+  assert.match(loginHtml, /src="\/app\/client\/counter\.tsx"/u)
+  // Signing up through the framed path lands on the framed notes page, and its links stay under the prefix.
+  const signup = await root.router.request(
+    '/app/signup',
+    form({ email: 'framed@example.com', password: 'correct horse' }),
+  )
+  assert.equal(signup.status, 303)
+  assert.equal(signup.headers.get('location'), '/app/notes')
+  const cookie = (signup.headers.get('set-cookie') ?? '').split(';')[0] ?? ''
+  const list = await root.router.request('/app/notes', { headers: { cookie } })
+  assert.equal(list.status, 200)
+  const listHtml = await list.text()
+  assert.match(listHtml, /href="\/app\/notes\/new"/u)
+  assert.match(listHtml, /action="\/app\/notes"/u)
+  // The client component is compiled and served below the app's prefix.
+  const module = await root.router.request('/app/client/counter.tsx')
+  assert.equal(module.status, 200)
+  assert.match(module.headers.get('content-type') ?? '', /javascript/u)
+  assert.equal((await root.router.request('/app/client/@acryldev/jsx-dom.js')).status, 200)
+  // The app's own URLs are not mounted in the frame; its own server keeps them (the tests above).
+  assert.equal((await root.router.request('/login')).status, 404)
 })

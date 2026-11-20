@@ -1,7 +1,7 @@
 /**
  * The extensions service (`ctx.extensions`): install, update, remove and reload Cordis plugins while the app runs.
  *
- * Extracted from ACRYL (`plugins/acryl-extension-context/lib/install.js`, `stage.js`, `reconcile.js`), where an agent-written plugin
+ * Extracted from ACRYL (`the old acryl-extension-context copy's lib/install.js`, `stage.js`, `reconcile.js`), where an agent-written plugin
  * installs, runs, updates and is removed live in the packaged app on macOS, Windows and Linux. ACRYL goes through pnpm and the Harness
  * Loader; here an extension is a folder with an `index.ts` (or `.js`) that exports a Cordis plugin, mounted as a child fiber of this
  * plugin. The rules carried over:
@@ -24,15 +24,23 @@ import {
   statSync,
   writeFileSync,
 } from 'node:fs'
-import { basename, isAbsolute, join, relative, resolve } from 'node:path'
+import { basename, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { pathToFileURL } from 'node:url'
 import { isDeepStrictEqual } from 'node:util'
-import { type Context, type Fiber, Service } from '@deepseek-ai/cordis'
-import type {} from '../instance/index.ts'
+import type {} from '@acryldev/instance'
 import type { Sandbox } from '../sandbox/index.ts'
+import { type Context, type Fiber, Service } from '@deepseek-ai/cordis'
+import { attachBrowserHalf } from './browser.ts'
 import { appendLedger, type LedgerEntry, readLedger } from './ledger.ts'
-import { resolveFromApp, routerAliases } from './resolve.ts'
-import { discard, hashFolder, prune, stage } from './stage.ts'
+import { type PluginStore, pluginVersion } from './plugin-store.ts'
+import {
+  addedRoutes,
+  type FiberRoutesView,
+  routeClash,
+  type ServedRoute,
+  servedRoutes,
+} from './routes.ts'
+import { folderPluginStore } from './stage.ts'
 
 /** A fiber's lifecycle state, by name (Cordis's own enum is a `const enum`, which does not exist at run time). */
 export type ExtensionState = 'pending' | 'loading' | 'active' | 'failed' | 'disposed' | 'unloading'
@@ -83,6 +91,18 @@ export interface ExtensionsConfig {
   readOnly?: boolean
   /** Where the read-only start says what it did (the console by default). */
   log?: (line: string) => void
+  /**
+   * Plugins of the sources that are switched off (Settings → Plugins writes this list into `blend.yaml`): they are not started, in development or
+   * production, until taken off the list. Their folders stay as they are.
+   */
+  off?: readonly string[]
+  /**
+   * Plugins of the sources that `blend.yaml` mounts as rows of their own (the app composes them in its row order, with their row's config): they
+   * are not extensions, so they are neither found nor started here, and installing one is refused with that reason.
+   */
+  rows?: readonly string[]
+  /** The path the app is mounted under (the frame's canvas, `/app`): a message names a route as the plugin wrote it, without it. */
+  routePrefix?: string
 }
 
 const READ_ONLY =
@@ -97,6 +117,8 @@ export interface ExtensionInfo {
   readonly missing: readonly string[]
   /** The source folder no longer exists; the last installed version still runs. */
   readonly stale: boolean
+  /** The routes its mount added, as the plugin wrote them (without the frame's prefix), so a surface can link to its pages. */
+  readonly routes: readonly { readonly method: string; readonly path: string }[]
 }
 
 export type InstallResult =
@@ -111,7 +133,7 @@ export type InstallResult =
   | {
       readonly ok: false
       /** check: before anything changed; import: loading the code; activate: starting it; verify: its own `check` failed. */
-      readonly stage: 'check' | 'import' | 'activate' | 'verify' | 'approval'
+      readonly stage: 'check' | 'import' | 'activate' | 'conflict' | 'verify' | 'approval'
       readonly name?: string
       readonly errors: readonly string[]
       /** Present for an update: whether the version that was running is running again. */
@@ -147,6 +169,8 @@ interface Installed {
   readonly dir: string
   readonly module: PluginModule
   fiber: Fiber
+  /** The routes its mount added, so a later plugin whose route is taken is told whose it is. */
+  readonly routes: readonly ServedRoute[]
 }
 
 interface Record_ {
@@ -193,6 +217,22 @@ const inside = (path: string, folder: string) => {
   return rel !== '' && !rel.startsWith('..') && !isAbsolute(rel)
 }
 
+/**
+ * A path as `extensions.json` stores it: relative to `base` (with `/`) when it is inside it, so the record survives a moved app folder (`base` the app's
+ * folder for a source, the app's data home for a staged copy); an absolute path stays absolute.
+ */
+export function storedPath(path: string, base: string): string {
+  const relativePath = relative(base, path)
+  return relativePath !== '' && !relativePath.startsWith('..') && !isAbsolute(relativePath)
+    ? relativePath.split(sep).join('/')
+    : path
+}
+
+/** The inverse of {@link storedPath}: a relative path is read from `base`. */
+export function restoredPath(stored: string, base: string): string {
+  return isAbsolute(stored) ? stored : resolve(base, stored)
+}
+
 function injected(module: PluginModule): string[] {
   const inject = module.inject
   if (Array.isArray(inject))
@@ -207,14 +247,13 @@ function injected(module: PluginModule): string[] {
 }
 
 /** The service. One instance serves one app home. */
-/** The slice of the state service this plugin uses, by name, so it imports nothing from acryl-state. */
+/** The slice of the state service this plugin uses, by name, so it imports nothing from @acryldev/state. */
 interface StateService {
   cell<T>(key: string, initial: T): { set(value: T): void }
 }
 
 export class Extensions extends Service {
   readonly sources: readonly ExtensionSource[]
-  readonly stageRoot: string
   readonly stateFile: string
   readonly ledgerFile: string
   /** Settles when the startup pass is done. */
@@ -227,39 +266,52 @@ export class Extensions extends Service {
   private tail: Promise<unknown> = Promise.resolve()
   private disposed = false
   private readonly readOnly: boolean
+  private readonly off: ReadonlySet<string>
+  private readonly rows: ReadonlySet<string>
   private readonly say: (line: string) => void
   /**
    * The context the service was constructed with. Inside a service method `this.ctx` is Cordis's shadow context, which resolves services as the
    * service's own fiber, so a plugin mounted from it would read `ctx.router` from the installer's fiber and fail. Extensions mount from this one.
    */
   private readonly owner: Context
+  private readonly store: PluginStore
+  private readonly routePrefix: string
+  /** The app's folder and its data home: what the record's relative paths are read from. */
+  private readonly appRoot: string
+  private readonly dataHome: string
 
-  constructor(ctx: Context, config: ExtensionsConfig = {}) {
+  constructor(ctx: Context, config: ExtensionsConfig, store: PluginStore) {
     super(ctx, 'extensions')
     this.owner = ctx
+    this.store = store
+    this.routePrefix = (config.routePrefix ?? '').replace(/\/+$/u, '')
     this.readOnly = config.readOnly === true
+    this.off = new Set(config.off ?? [])
+    this.rows = new Set(config.rows ?? [])
     this.say = config.log ?? ((line) => console.log(line))
     const { home, root } = ctx.appInstance
+    this.appRoot = root
+    this.dataHome = home
     this.sources = (config.sources ?? [{ dir: join(home, 'extensions'), trust: 'install' }]).map(
       (source) => ({
         dir: resolve(source.dir),
         trust: config.approval === true && source.trust === 'install' ? 'ask' : source.trust,
       }),
     )
-    this.stageRoot = join(home, 'extensions-staged')
     this.stateFile = join(home, 'extensions.json')
     this.ledgerFile = join(home, 'extensions-ledger.jsonl')
     // Effects run their disposers newest first: settle pending operations, then dispose every mounted extension, then drop the hook.
     // Staged copies live in the app's home, outside the app: their bare imports are resolved from the app. A read-only start imports the folders where they are (inside the app).
     if (!this.readOnly)
       ctx.effect(
-        () => resolveFromApp(this.stageRoot, root, routerAliases()),
+        () => this.store.resolveImportsFrom(root),
         'extensions: resolve staged imports from the app',
       )
     ctx.effect(
       () => async () => {
+        // A fiber already being disposed (an app reload) can return nothing here, not a promise.
         for (const entry of [...this.installed.values()].reverse())
-          await entry.fiber.dispose().catch(() => undefined)
+          await Promise.resolve(entry.fiber.dispose()).catch(() => undefined)
         this.installed.clear()
       },
       'extensions: dispose mounted extensions',
@@ -302,7 +354,7 @@ export class Extensions extends Service {
           this.stale.add(entry.name)
           continue
         }
-        if (hashFolder(entry.source) !== entry.version)
+        if (pluginVersion(entry.source) !== entry.version)
           results.push(await this.installNow(entry.source))
       }
       for (const found of this.discover()) {
@@ -325,6 +377,7 @@ export class Extensions extends Service {
           state,
           missing: state === 'pending' ? this.missing(entry.module) : [],
           stale: this.stale.has(entry.name),
+          routes: entry.routes.map(({ method, path }) => ({ method, path: this.written(path) })),
         }
       })
       .sort((a, b) => a.name.localeCompare(b.name))
@@ -350,7 +403,7 @@ export class Extensions extends Service {
         }
       }
       this.requests.delete(name)
-      if (!existsSync(request.dir) || hashFolder(request.dir) !== request.version) {
+      if (!existsSync(request.dir) || pluginVersion(request.dir) !== request.version) {
         return {
           ok: false,
           stage: 'approval',
@@ -417,6 +470,8 @@ export class Extensions extends Service {
           entry.isDirectory() &&
           NAME.test(entry.name) &&
           !library.has(entry.name) &&
+          !this.off.has(entry.name) &&
+          !this.rows.has(entry.name) &&
           ENTRIES.some((file) => existsSync(join(dir, file)))
         ) {
           if (!found.some((other) => other.name === entry.name))
@@ -441,6 +496,10 @@ export class Extensions extends Service {
     if (!NAME.test(name))
       errors.push(
         `the folder name "${name}" must be lowercase letters, digits and dashes; it is the extension's name`,
+      )
+    if (this.rows.has(name))
+      errors.push(
+        `"${name}" is a row of blend.yaml, so the app starts it, in its row order and with its row's config; it is not installed here. Change its folder and the running app loads it again (npm run dev); npm test checks it`,
       )
     if (!existsSync(dir) || !statSync(dir).isDirectory()) errors.push(`"${dir}" is not a folder`)
     else if (!ENTRIES.some((file) => existsSync(join(dir, file))))
@@ -567,9 +626,52 @@ export class Extensions extends Service {
   }
 
   /** Mount a module as a child fiber and wait until it settles. */
-  private async mount(module: PluginModule): Promise<{ fiber: Fiber; error?: unknown }> {
+  /** Every route the app serves now, read from the router's labels on every running fiber. */
+  private served(): ServedRoute[] {
+    const fibers = [...this.ctx.registry.values()].flatMap(
+      (runtime) => [...runtime.fibers] as unknown as FiberRoutesView[],
+    )
+    return servedRoutes(fibers)
+  }
+
+  /** A served path as the plugin wrote it: without the frame's canvas prefix. */
+  private written(path: string): string {
+    return this.routePrefix !== '' && path.startsWith(`${this.routePrefix}/`)
+      ? path.slice(this.routePrefix.length)
+      : path
+  }
+
+  /**
+   * A route the new plugin added that another plugin already serves: the router would answer with the other one, so the new route would never be
+   * reached. Refused before the plugin's own check, which the other plugin's answer would pass.
+   */
+  private conflict(
+    added: readonly ServedRoute[],
+    before: readonly ServedRoute[],
+  ): { stage: 'conflict'; error: string } | undefined {
+    const clash = routeClash(added, before)
+    if (clash === undefined) return undefined
+    const { route, taken } = clash
+    const owner =
+      [...this.installed.values()].find((entry) =>
+        entry.routes.some((own) => own.method === taken.method && own.path === taken.path),
+      )?.name ?? (taken.owner === '' ? 'the app' : taken.owner)
+    const same =
+      taken.path === route.path ? '' : ` (it serves ${taken.method} ${this.written(taken.path)})`
+    return {
+      stage: 'conflict',
+      error: `${route.method} ${this.written(route.path)} is already served by ${owner}${same}; rename this plugin's route, or remove ${owner} first`,
+    }
+  }
+
+  private async mount(
+    module: PluginModule,
+    dir: string,
+    version: string,
+  ): Promise<{ fiber: Fiber; error?: unknown }> {
     // An extension is a plugin module whose config, if any, comes from its own defaults.
     const fiber = this.owner.plugin(module as unknown as Parameters<Context['plugin']>[0])
+    attachBrowserHalf(fiber.ctx, this.dataHome, String(module.name ?? basename(dir)), version, dir)
     try {
       await fiber.await()
       return { fiber }
@@ -585,7 +687,11 @@ export class Extensions extends Service {
   private saveState(): void {
     const records: Record<string, Record_> = {}
     for (const entry of this.installed.values())
-      records[entry.name] = { source: entry.source, version: entry.version, dir: entry.dir }
+      records[entry.name] = {
+        source: storedPath(entry.source, this.appRoot),
+        version: entry.version,
+        dir: storedPath(entry.dir, this.dataHome),
+      }
     mkdirSync(join(this.stateFile, '..'), { recursive: true })
     const temporary = `${this.stateFile}.${String(process.pid)}.tmp`
     writeFileSync(temporary, `${JSON.stringify(records, null, 2)}\n`)
@@ -596,7 +702,7 @@ export class Extensions extends Service {
     const { name, dir, errors } = this.check(source)
     if (errors.length > 0) return { ok: false, stage: 'check', name, errors, next: NOTHING }
     const previous = this.installed.get(name)
-    const version = hashFolder(dir)
+    const version = pluginVersion(dir)
     const running =
       previous && previous.version === version && STATES[previous.fiber.state] !== 'failed'
     // A source that asks: this exact version must have been approved. Anything else waits, and the ledger says so.
@@ -627,12 +733,12 @@ export class Extensions extends Service {
     }
 
     // Import the new version while the old one keeps running: a syntax error or a missing export changes nothing.
-    const staged = stage(dir, this.stageRoot, name)
+    const staged = this.store.put(name, dir)
     let module: PluginModule
     try {
       module = await this.load(staged.dir, name)
     } catch (error) {
-      discard(staged.dir)
+      this.store.discard(staged)
       this.record({ kind: 'refused', name, version: staged.version, error: message(error) })
       return {
         ok: false,
@@ -645,8 +751,10 @@ export class Extensions extends Service {
     }
 
     if (previous) await previous.fiber.dispose()
-    const mounted = await this.mount(module)
+    const before = this.served()
+    const mounted = await this.mount(module, staged.dir, staged.version)
     const state = STATES[mounted.fiber.state] ?? 'failed'
+    const added = state === 'active' ? addedRoutes(before, this.served()) : []
     // Commit before "done": a plugin that started still has to pass its own check before the install counts.
     const failure =
       mounted.error !== undefined || state === 'failed'
@@ -655,16 +763,16 @@ export class Extensions extends Service {
             error: message(mounted.error ?? 'the plugin failed to start'),
           }
         : state === 'active'
-          ? await this.verify(module, mounted.fiber.ctx)
+          ? (this.conflict(added, before) ?? (await this.verify(module, mounted.fiber.ctx)))
           : undefined
     if (failure) {
       await mounted.fiber.dispose().catch(() => undefined)
-      discard(staged.dir)
+      this.store.discard(staged)
       const error = failure.error
       this.record({ kind: 'refused', name, version: staged.version, error })
       let restored = false
       if (previous) {
-        const again = await this.mount(previous.module)
+        const again = await this.mount(previous.module, previous.dir, previous.version)
         restored = again.error === undefined && STATES[again.fiber.state] !== 'failed'
         previous.fiber = again.fiber
         if (restored) {
@@ -693,10 +801,11 @@ export class Extensions extends Service {
       dir: staged.dir,
       module,
       fiber: mounted.fiber,
+      routes: added,
     })
     this.stale.delete(name)
     this.saveState()
-    prune(this.stageRoot, name, [staged.dir])
+    this.store.keepOnly(name, staged)
     this.record({ kind: action, name, version: staged.version })
     this.ctx.emit('extensions/changed', name, action)
     return {
@@ -716,7 +825,7 @@ export class Extensions extends Service {
     this.installed.delete(name)
     this.stale.delete(name)
     this.saveState()
-    prune(this.stageRoot, name, [])
+    this.store.keepOnly(name)
     this.record({ kind: 'removed', name, version: entry.version })
     this.ctx.emit('extensions/changed', name, 'removed')
     return { ok: true, name }
@@ -737,14 +846,16 @@ export class Extensions extends Service {
       }
       try {
         const module = await this.load(folder.dir, folder.name)
-        const mounted = await this.mount(module)
+        const before = this.served()
+        const mounted = await this.mount(module, folder.dir, pluginVersion(folder.dir))
         this.installed.set(folder.name, {
           name: folder.name,
           source: folder.dir,
-          version: hashFolder(folder.dir),
+          version: pluginVersion(folder.dir),
           dir: folder.dir,
           module,
           fiber: mounted.fiber,
+          routes: addedRoutes(before, this.served()),
         })
         if (mounted.error !== undefined)
           summary.failed.push({ name: folder.name, error: message(mounted.error) })
@@ -777,6 +888,21 @@ export class Extensions extends Service {
     return summary
   }
 
+  /**
+   * A record with its paths made absolute: relative ones are read from this app's folder and data home, so a moved app finds its plugins. A record an older
+   * version wrote with an absolute source that is gone (the app was moved) finds the folder of the same name in one of the sources.
+   */
+  private resolved(name: string, stored: Record_): Record_ {
+    let source = restoredPath(stored.source, this.appRoot)
+    if (!existsSync(source)) {
+      const moved = this.sources
+        .map((entry) => join(entry.dir, name))
+        .find((path) => existsSync(path))
+      if (moved !== undefined) source = moved
+    }
+    return { source, version: stored.version, dir: restoredPath(stored.dir, this.dataHome) }
+  }
+
   private async startup(): Promise<StartupSummary> {
     if (this.readOnly) return this.startupReadOnly()
     const summary: StartupSummary = { installed: [], pending: [], stale: [], failed: [] }
@@ -787,25 +913,35 @@ export class Extensions extends Service {
     } catch (error) {
       summary.failed.push({ name: 'extensions.json', error: message(error) })
     }
-    for (const [name, record] of Object.entries(records)) {
+    for (const [name, stored] of Object.entries(records)) {
+      // Switched off: not started, and dropped from the record; switched on again, its folder is found and installed as new.
+      if (this.off.has(name)) continue
+      // Now a row of blend.yaml: the app starts it, and the record of its install is dropped.
+      if (this.rows.has(name)) continue
+      const record = this.resolved(name, stored)
       try {
         // What was installed before was approved then: an unchanged source starts again without asking.
         this.approved.set(name, record.version)
         if (existsSync(record.source)) {
           const result = await this.installNow(record.source)
-          if (result.ok) summary.installed.push(name)
-          else summary.failed.push({ name, error: result.errors.join('; ') })
-          continue
+          if (result.ok) {
+            summary.installed.push(name)
+            continue
+          }
+          summary.failed.push({ name, error: result.errors.join('; ') })
+          // A source changed into one that does not start (a refused update leaves it on disk): the version that worked runs from its staged copy.
+          if (!existsSync(record.dir)) continue
         }
-        // The source is gone: the last installed version still runs, and is reported as stale.
+        // The source is gone or broken: the last installed version still runs, and is reported as stale.
         summary.stale.push(name)
         this.stale.add(name)
-        if (!existsSync(record.dir)) {
+        if (!this.store.holds(record)) {
           summary.failed.push({ name, error: 'neither the source nor the staged copy exists' })
           continue
         }
         const module = await this.load(record.dir, name)
-        const mounted = await this.mount(module)
+        const before = this.served()
+        const mounted = await this.mount(module, record.dir, record.version)
         if (mounted.error !== undefined)
           summary.failed.push({ name, error: message(mounted.error) })
         this.installed.set(name, {
@@ -815,6 +951,7 @@ export class Extensions extends Service {
           dir: record.dir,
           module,
           fiber: mounted.fiber,
+          routes: addedRoutes(before, this.served()),
         })
       } catch (error) {
         summary.failed.push({ name, error: message(error) })
@@ -844,7 +981,11 @@ export const extensions = {
   name: 'extensions',
   inject: ['appInstance'],
   async apply(ctx: Context, config: ExtensionsConfig) {
-    const service = new Extensions(ctx, config ?? {})
+    const service = new Extensions(
+      ctx,
+      config ?? {},
+      folderPluginStore(join(ctx.appInstance.home, 'extensions-staged')),
+    )
     await service.ready
   },
 }

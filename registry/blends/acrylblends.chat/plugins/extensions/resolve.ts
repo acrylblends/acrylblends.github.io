@@ -5,7 +5,7 @@
  * (ACRYL needed the same fallback on Deno); the returned function removes the hook.
  *
  * The framework plugins are not packages in an app (they are source under `plugins/`), so `aliases` names the files a framework specifier such as
- * `acryl-router` stands for (and the ports and providers beside it: `acryl-kv`, `acryl-kv-json`, `acryl-db`, ..., and each as `#acryl-kv` ... the name the app's `package.json` "imports" gives them). A staged plugin then imports the same module the app itself runs, so `App` is the very class the router mounts.
+ * `@acryldev/router` stands for (and the ports and providers beside it: `@acryldev/kv`, `@acryldev/kv-json`, `@acryldev/db`, ..., and each as `#acryl-kv` ... the name the app's `package.json` "imports" gives them). A staged plugin then imports the same module the app itself runs, so `App` is the very class the router mounts.
  */
 import { existsSync, mkdirSync, readdirSync, realpathSync } from 'node:fs'
 import { registerHooks } from 'node:module'
@@ -18,7 +18,7 @@ const isBare = (specifier: string) => !/^[./]/.test(specifier) && !specifier.inc
 
 /**
  * The framework's specifiers, as files of the vendored router plugin that sits beside this one. A plugin written while the app runs (by the agent, from the docs in the app)
- * imports `acrylblends` and `acrylblends/<subpath>` as the docs write them; the old `acryl-router` names keep working. Empty when the app has no router.
+ * imports `acrylblends` and `acrylblends/<subpath>` as the docs write them; the old `@acryldev/router` names keep working. Empty when the app has no router.
  */
 const MIDDLEWARE = [
   'basic-auth',
@@ -60,7 +60,7 @@ const HELPERS = [
   'ws',
 ]
 
-/** The `acrylblends/...` names a plugin installed live may import, with the file each resolves to under `acryl-router/src`. */
+/** The `acrylblends/...` names a plugin installed live may import, with the file each resolves to under `@acryldev/router/src`. */
 export function frameworkSpecifiers(): Record<string, string> {
   const map: Record<string, string> = {
     '': 'index.ts',
@@ -78,8 +78,27 @@ export function frameworkSpecifiers(): Record<string, string> {
   return map
 }
 
+/** The framework's plugin copies under an app's plugins/ (their folder is the package's short name, spec 051 T038). */
+const FRAMEWORK_PLUGIN_FOLDERS = new Set([
+  'db',
+  'db-pglite',
+  'db-postgres',
+  'db-sqlite',
+  'door',
+  'inspect',
+  'kv',
+  'kv-db',
+  'kv-json',
+  'node-server',
+  'page',
+  'router',
+  'router-http',
+  'state',
+  'web-server',
+])
+
 export function routerAliases(): Record<string, string> {
-  const src = new URL('../acryl-router/src/', import.meta.url)
+  const src = new URL('../router/src/', import.meta.url)
   const aliases: Record<string, string> = {}
   const add = (specifier: string, file: string) => {
     const path = fileURLToPath(new URL(file, src))
@@ -87,22 +106,39 @@ export function routerAliases(): Record<string, string> {
   }
   for (const [sub, file] of Object.entries(frameworkSpecifiers()))
     add(sub === '' ? PACKAGE : `${PACKAGE}/${sub}`, file)
-  add('acryl-router', 'index.ts')
-  add('acryl-router/middleware', 'middleware/index.ts')
-  add('acryl-router/helpers', 'helpers/index.ts')
-  // The ports and their providers sit beside the router as source too (`acrylblends add kv` copies `acryl-kv` and `acryl-kv-json`). A plugin installed live, a
+  add('@acryldev/router', 'index.ts')
+  add('@acryldev/router/middleware', 'middleware/index.ts')
+  add('@acryldev/router/helpers', 'helpers/index.ts')
+  // The ports and their providers sit beside the router as source too (`acrylblends add kv` copies `@acryldev/kv` and `@acryldev/kv-json`). A plugin installed live, a
   // provider of your own for example, imports them by name and gets the very modules the app runs.
   const plugins = new URL('../', import.meta.url)
   for (const folder of readdirSync(fileURLToPath(plugins), { withFileTypes: true })) {
-    if (!folder.isDirectory() || !folder.name.startsWith('acryl-')) continue
+    // The framework's plugin copies are the ones that carry the ports and providers a live-installed plugin imports by package
+    // name (spec 051 T038: the folder is the short name; the package is @acryldev/<short>, and an app's import key stays #acryl-<short>).
+    if (!folder.isDirectory() || !FRAMEWORK_PLUGIN_FOLDERS.has(folder.name)) continue
+    const pkg = `@acryldev/${folder.name}`
+    const key = `#acryl-${folder.name}`
     const entry = fileURLToPath(new URL(`${folder.name}/src/index.ts`, plugins))
     if (!existsSync(entry)) continue
-    // The bare name, and the app's own `#name` (a `package.json` "imports" entry that `acrylblends add` writes): a staged copy lives in the app's home, which may be
+    // The package name, and the app's own `#name` (a `package.json` "imports" entry that `acrylblends add` writes): a staged copy lives in the app's home, which may be
     // outside the app folder, where Node would not find that entry.
-    aliases[folder.name] ??= entry
-    aliases[`#${folder.name}`] = entry
+    aliases[pkg] ??= entry
+    aliases[key] = entry
+    // Its other top-level modules by subpath, as its package exports them (`@acryldev/node-server/client-modules`): the door imports one before any extension is installed.
+    for (const file of readdirSync(fileURLToPath(new URL(`${folder.name}/src/`, plugins)))) {
+      if (
+        !file.endsWith('.ts') ||
+        file === 'index.ts' ||
+        file.endsWith('.test.ts') ||
+        file.endsWith('.d.ts')
+      )
+        continue
+      aliases[`${pkg}/${file.slice(0, -3)}`] ??= fileURLToPath(
+        new URL(`${folder.name}/src/${file}`, plugins),
+      )
+    }
     const suite = fileURLToPath(new URL(`${folder.name}/src/conformance.ts`, plugins))
-    if (existsSync(suite)) aliases[`#${folder.name}/conformance`] = suite
+    if (existsSync(suite)) aliases[`${key}/conformance`] = suite
   }
   return aliases
 }

@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { createApp } from '../src/app.ts'
 
 /** Throwaway homes live inside the project (`.acrylblends/` is ignored by git): a sandboxed agent may not write to the system temp folder. */
@@ -13,7 +13,7 @@ mkdirSync(scratch, { recursive: true })
 
 /** A plugin no scripted command knows: the model writes it from scratch. */
 const COUNTER = `import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from 'acrylblends'
+import { Acryl } from '@acryldev/blends'
 
 export const name = 'counter'
 export const inject = ['router']
