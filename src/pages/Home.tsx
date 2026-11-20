@@ -8,7 +8,7 @@ import { blendPath } from "../lib/registry-placement";
 
 // Every card names the command or the page that proves it. A claim that has neither is not on this page.
 const features: { icon: typeof Braces; title: string; body: string; proof: string; to?: string }[] = [
-  { icon: Braces, title: "Six templates, one command", body: "A Cordis app with the framework docs, AGENTS.md and a test, created from a template that is in the registry today.", proof: "npm create acrylblends@latest my-app notes" },
+  { icon: Braces, title: "Six templates, one command", body: "A Cordis app with the framework docs, AGENTS.md and a test, created from a template that is in the registry today.", proof: "npm create @acryldev/blends@latest my-app notes" },
   { icon: Layers3, title: "One plugin folder", body: "The library plugins acrylblends add copies, and the ones you or an agent write, live in plugins/ and are yours to edit.", proof: "Add a plugin", to: "/docs/getting-started/add-plugins" },
   { icon: Command, title: "The app as one manifest", body: "blend.yaml names the plugins, their order and their config. Switch one off or change its config without touching code.", proof: "The app manifest", to: "/docs/blends/framework/the-app-manifest" },
   { icon: Boxes, title: "Data with a default and a way out", body: "SQL with numbered migrations on SQLite by default; PGlite or a hosted Postgres is one provider row away, and kv covers a tiny app.", proof: "Data and migrations", to: "/docs/guides/data" },
