@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url'
 import type { LabState } from '../plugins/promptlab/domain.ts'
 import { fakeModel, type ModelClient } from '../plugins/promptlab/model.ts'
 import { memoryStore } from '../plugins/promptlab/store.ts'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type App, type AppOptions, createApp } from '../src/app.ts'
 
 export const projectRoot = fileURLToPath(new URL('..', import.meta.url))

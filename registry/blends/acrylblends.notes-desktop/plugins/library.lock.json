@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "db": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cordis.ts": "19f09ce0a5b4d60fe655",
@@ -14,7 +14,7 @@
       }
     },
     "db-sqlite": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "ef3897302ab91dccedfc",
         "src/facade/node.ts": "e15b85f1ecd82fdf053a",
@@ -23,7 +23,7 @@
       }
     },
     "door": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cli/acryl.ts": "5fd10a53c3f00728625f",
@@ -63,9 +63,10 @@
       }
     },
     "extensions": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
+        "README.md": "c8936159cdf9413be38a",
         "browser.ts": "1098d5b0127ac0b03365",
         "index.ts": "0d419571531ab3b78b6c",
         "ledger.ts": "2af8407a66e314b9bbbb",
@@ -76,9 +77,10 @@
       }
     },
     "manifest": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
+        "README.md": "e5c0fb5a8d03a9f6c2d7",
         "app-plugins.ts": "9066deec796c90af1a4f",
         "index.ts": "d8ab43c9964c46454e05",
         "lock.ts": "edbdc09bdd1f4c176d19",
@@ -88,7 +90,7 @@
       }
     },
     "node-server": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "ecdf1ae9ccd7deee92e0",
@@ -119,14 +121,15 @@
       }
     },
     "page": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
+        "LICENSE": "0f98259ccb0f4cafebe9",
         "src/favicon.ts": "b62a0a6a93a5616e7876",
         "src/index.ts": "ea735037b64675ed98dd"
       }
     },
     "plugin-share": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "1cc6db66ee2e8cdd2e2c",
@@ -140,7 +143,7 @@
       }
     },
     "router": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -341,17 +344,19 @@
       }
     },
     "sandbox": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
+        "README.md": "59e8a27d1ddca4210ef1",
         "index.ts": "d4a51ddd3c9ebe48ef48",
         "runner.mjs": "962a5e0ac6d53e23011c"
       }
     },
     "save": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
+        "README.md": "3ca5c183f7ea0bdf6b95",
         "cli.ts": "fccad83af5a41bde542b",
         "index.ts": "87f0933285eb83af7ad0",
         "share-cli.ts": "97cdb3ceaf2c73327454",
@@ -359,7 +364,7 @@
       }
     },
     "web-server": {
-      "from": "1.7.3",
+      "from": "1.7.4",
       "files": {
         "src/index.ts": "71bebe57fa8ebabfce5a"
       }

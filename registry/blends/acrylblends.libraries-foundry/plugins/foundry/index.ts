@@ -5,7 +5,7 @@
  */
 import { isAbsolute, join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
-import type {} from '../instance/index.ts'
+import type {} from '@acryldev/instance'
 import { Atlas, type AtlasAdapters } from './atlas.ts'
 import { type AtlasStore, jsonFileStore } from './store.ts'
 

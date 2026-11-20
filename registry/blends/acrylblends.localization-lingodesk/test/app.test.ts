@@ -55,7 +55,7 @@ test('the shell escapes what people type and shows a notice from the redirect qu
 
 test('the manifest decides what is mounted', async () => {
   const { readManifest } = await import('../src/app.ts')
-  const library = ['router', 'home', 'lingodesk', 'desk-shell', 'locales', 'editor', 'glossary', 'qa', 'extensions', 'server', 'acryl-door']
+  const library = ['router', 'home', 'lingodesk', 'desk-shell', 'locales', 'editor', 'glossary', 'qa', 'extensions', 'plugin-share', 'server', 'acryl-door']
   assert.deepEqual(readManifest().plugins.map((r) => r.id).filter((id) => library.includes(id)), library)
   assert.throws(() => readManifest({ nothing: 1 }), /parameter-override-unknown/)
 })

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.tennis
   name: "Tennis"
-  version: 0.1.0
+  version: 0.1.1
   category: gaming
   description: "A 3D arcade tennis game in the browser: singles and doubles, topspin, slice and lob, slow-motion power serves and an instant replay, with your phone as a motion racket and a 1v1 match mode."
   license: MIT

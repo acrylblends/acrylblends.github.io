@@ -6,7 +6,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.agent
   name: "An app that builds itself"
-  version: 0.1.1
+  version: 0.1.2
   category: starter
   description: "A small app with an offline agent and live plugin install: ask for a feature and the agent writes it into the running app, through the door. Development only: production leaves the agent out."
   license: MIT

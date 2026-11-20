@@ -6,7 +6,8 @@ import * as nodeServer from '../plugins/acryl-node-server/src/index.ts'
 import * as router from '../plugins/acryl-router/src/index.ts'
 import { extensions } from '../plugins/extensions/index.ts'
 import * as home from '../plugins/home/index.ts'
-import { type AppInstance, instance } from '../plugins/instance/index.ts'
+import { type AppInstance, instance } from '@acryldev/instance'
+import { pluginShare } from '../plugins/plugin-share/index.ts'
 import {
   appPluginNames,
   blueprintsIn,
@@ -21,6 +22,7 @@ import { FRAME_MOUNT_PREFIX } from './routes.ts'
 
 /** The plugins this app's code provides. `blend.yaml` chooses, orders and configures them, and adds the app's own plugins from `plugins/` by name. */
 export const registry = {
+  'plugin-share': pluginShare,
   'acryl-router': router,
   'acryl-node-server': nodeServer,
   'acryl-door': door,

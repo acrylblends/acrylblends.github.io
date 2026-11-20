@@ -6,7 +6,7 @@ import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
 import type { GalleryState } from '../plugins/gallery/domain.ts'
 import { memoryStore } from '../plugins/gallery/store.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { noticeOf, NOW, projectRoot, withApp } from './support.ts'
 
 const photoCount = (html: string): number => (html.match(/class="photo"/g) ?? []).length

@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { createServer } from 'node:net'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { createApp } from '../src/app.ts'
 import { FRAME_MOUNT_PREFIX } from '../src/routes.ts'
 import { projectRoot, withApp } from './support.ts'
@@ -117,7 +117,7 @@ test('the manifest decides what is mounted: a parameter changes the server, an u
   const { readManifest } = await import('../src/app.ts')
   const manifest = readManifest()
   // The app's rows, in their order; a page's row (plugins/<name>/) sits between bus-shell and extensions.
-  const library = ['router', 'home', 'pulsebus', 'bus-shell', 'topics', 'stream', 'inspector', 'dead-letters', 'extensions', 'server', 'acryl-door']
+  const library = ['router', 'home', 'pulsebus', 'bus-shell', 'topics', 'stream', 'inspector', 'dead-letters', 'extensions', 'plugin-share', 'server', 'acryl-door']
   assert.deepEqual(
     manifest.plugins.map((row) => row.id).filter((id) => library.includes(id)),
     library,

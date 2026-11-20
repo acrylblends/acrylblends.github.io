@@ -5,7 +5,7 @@ import { createServer } from 'node:net'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { fakeChecker } from '../plugins/uptime/index.ts'
 import { createApp } from '../src/app.ts'
 import { FRAME_MOUNT_PREFIX } from '../src/routes.ts'
@@ -25,7 +25,7 @@ test('answers health checks and 404 for unknown paths', () =>
 test('the manifest decides what is mounted: an unknown parameter is refused', () =>
   withApp(async () => {
     const { readManifest } = await import('../src/app.ts')
-    assert.equal(readManifest().plugins.length, 9)
+    assert.equal(readManifest().plugins.length, 10)
     assert.throws(() => readManifest({ nothing: 1 }), /parameter-override-unknown/)
   }))
 

@@ -6,7 +6,7 @@ import { mkdirSync } from 'node:fs'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type AtlasState, memoryStore } from '../plugins/foundry/index.ts'
 import { type App, type AppOptions, createApp } from '../src/app.ts'
 

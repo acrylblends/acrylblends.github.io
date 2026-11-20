@@ -4,9 +4,9 @@
  */
 import { userInfo } from 'node:os'
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from 'acrylblends'
-import { loopbackOnly } from 'acrylblends/loopback-only'
-import { validator } from 'acrylblends/validator'
+import { Acryl } from '@acryldev/blends'
+import { loopbackOnly } from '@acryldev/blends/loopback-only'
+import { validator } from '@acryldev/blends/validator'
 import { heaviest, killProcess, protectedReason, SIGNALS, type KillDeps, type Own, type Signal, type SortBy } from './kill-list.ts'
 import { monitorPage, type View } from './page.tsx'
 import { defaultDiskPaths, machine, parseProcesses, readSnapshot, type Sources } from './system.ts'

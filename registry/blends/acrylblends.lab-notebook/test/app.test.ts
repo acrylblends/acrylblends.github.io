@@ -11,7 +11,7 @@ const FEATURES = ['attachments', 'data-table', 'experiments', 'lab', 'lab-shell'
 test('every feature is a row of the manifest, in order', () => {
   assert.deepEqual(
     readManifest().plugins.map((row) => row.id),
-    ['router', 'home', 'lab', 'lab-shell', 'experiments', 'record', 'notebooks', 'data-table', 'attachments', 'extensions', 'server', 'acryl-door'],
+    ['router', 'home', 'lab', 'lab-shell', 'experiments', 'record', 'notebooks', 'data-table', 'attachments', 'extensions', 'plugin-share', 'server', 'acryl-door'],
   )
 })
 

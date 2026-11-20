@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.moodboard
   name: "Moodboard"
-  version: 0.1.0
+  version: 0.1.1
   category: 3d-cad-design
   description: "A spatial direction board: six draggable objects, three reference images, a palette rail, layers, an asset library, board settings and a JSON export."
   license: MIT
@@ -44,6 +44,8 @@ spec:
     # Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

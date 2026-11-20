@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.middleware-gatehouse
   name: "Gatehouse"
-  version: 0.1.0
+  version: 0.1.1
   category: middleware
   description: "An API-gateway control plane: a route registry, an ordered middleware pipeline per route, upstream services, request traces from a policy simulation, and a route-policy draft that is applied to the pipeline on purpose."
   license: MIT
@@ -44,6 +44,8 @@ spec:
     # a row is never started twice. Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

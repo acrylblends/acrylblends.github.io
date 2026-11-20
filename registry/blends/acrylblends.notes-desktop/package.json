@@ -32,9 +32,9 @@
   },
   "dependencies": {
     "@acryldev/app-persistence": "0.1.3",
-    "@acryldev/blends": "^1.7.3",
+    "@acryldev/blends": "^1.7.4",
     "@acryldev/blends-core": "0.6.0",
-    "@acryldev/instance": "0.1.1",
+    "@acryldev/instance": "0.1.2",
     "@acryldev/plugin-hub-core": "0.2.2",
     "@deepseek-ai/cordis": "4.0.4",
     "@deepseek-ai/schemastery": "3.18.4",

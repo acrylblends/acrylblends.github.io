@@ -7,8 +7,8 @@
     "acryl-web-server",
     "extensions",
     "home",
-    "instance",
     "manifest",
+    "plugin-share",
     "sandbox",
     "save"
   ]

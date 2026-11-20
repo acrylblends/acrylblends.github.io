@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.prompt-lab
   name: "Prompt Lab"
-  version: 0.1.0
+  version: 0.1.1
   category: ai
   description: "A prompt engineering workbench: a reusable prompt library with variables, side-by-side model runs and quick evaluations, on the model you configure."
   license: MIT
@@ -41,6 +41,8 @@ spec:
     # Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

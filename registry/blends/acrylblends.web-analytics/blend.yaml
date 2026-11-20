@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.web-analytics
   name: "Web Analytics"
-  version: 0.1.0
+  version: 0.1.1
   category: analytics
   description: "A privacy-conscious website analytics console: a tracking snippet, page-view events in, and a daily dashboard of visitors, sources, pages and conversions."
   license: MIT
@@ -41,6 +41,8 @@ spec:
     # Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

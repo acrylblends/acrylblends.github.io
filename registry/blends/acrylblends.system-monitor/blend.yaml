@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.system-monitor
   name: "System Monitor"
-  version: 0.1.0
+  version: 0.1.1
   category: system
   description: "This machine's memory, disks and heaviest processes on one live page, with a kill-list that asks before it ends a program."
   license: MIT

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.csv-explorer
   name: "CSV Explorer"
-  version: 0.1.1
+  version: 0.1.2
   category: data
   description: "A local-first data workbench: import a CSV, read its column profile, filter and sort the rows, chart a column and save views."
   license: MIT
@@ -41,6 +41,8 @@ spec:
     # Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

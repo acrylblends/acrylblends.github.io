@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { cleanSlug, filterLinks, Shortly, ShortlyError, statsOf, validateUrl } from '../plugins/shortly/index.ts'
 import type { ShortlyState } from '../plugins/shortly/domain.ts'
 import { memoryStore } from '../plugins/shortly/store.ts'
@@ -154,7 +154,7 @@ test('health, 404, manifest and the prefix work; assets off leaves the app runni
   await withApp(async (app) => {
     assert.equal((await app.page('/health')).status, 200)
     assert.equal((await app.page('/nope')).status, 404)
-    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'shortly', 'shortly-shell', 'links', 'campaigns', 'domains', 'extensions', 'server', 'acryl-door'])
+    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'shortly', 'shortly-shell', 'links', 'campaigns', 'domains', 'extensions', 'plugin-share', 'server', 'acryl-door'])
   })
   await withApp(
     async (app) => {

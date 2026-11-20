@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url'
 import { fakeChecker, type Checker } from '../plugins/uptime/checker.ts'
 import type { UptimeState } from '../plugins/uptime/domain.ts'
 import { memoryStore } from '../plugins/uptime/store.ts'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type App, type AppOptions, createApp } from '../src/app.ts'
 
 export const projectRoot = fileURLToPath(new URL('..', import.meta.url))

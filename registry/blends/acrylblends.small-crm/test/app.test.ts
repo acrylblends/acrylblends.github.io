@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { createServer } from 'node:net'
 import { join } from 'node:path'
 import { test } from 'node:test'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { createApp } from '../src/app.ts'
 import { FRAME_MOUNT_PREFIX } from '../src/routes.ts'
 import { projectRoot, withApp } from './support.ts'
@@ -79,7 +79,7 @@ test('the manifest decides what is mounted: every feature is its own row, an unk
   const manifest = readManifest()
   assert.deepEqual(
     manifest.plugins.map((row) => row.id),
-    ['router', 'home', 'crm', 'crm-shell', 'pipeline', 'deals', 'contacts', 'companies', 'activities', 'reports', 'extensions', 'server', 'acryl-door'],
+    ['router', 'home', 'crm', 'crm-shell', 'pipeline', 'deals', 'contacts', 'companies', 'activities', 'reports', 'extensions', 'plugin-share', 'server', 'acryl-door'],
   )
   assert.throws(() => readManifest({ nothing: 1 }), /parameter-override-unknown/)
 })

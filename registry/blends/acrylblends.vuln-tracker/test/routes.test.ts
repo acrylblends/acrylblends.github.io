@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { noticeOf, projectRoot, withApp } from './support.ts'
 
 const scratch = join(projectRoot, '.acrylblends', 'test')
@@ -104,7 +104,7 @@ test('health answers, an unknown path is a 404, and every feature is a row of th
   withApp(async (app) => {
     assert.equal((await app.page('/health')).status, 200)
     assert.equal((await app.page('/nope')).status, 404)
-    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'vulns', 'vuln-shell', 'overview', 'assets', 'remediation', 'reports', 'policies', 'extensions', 'server', 'acryl-door'])
+    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'vulns', 'vuln-shell', 'overview', 'assets', 'remediation', 'reports', 'policies', 'extensions', 'plugin-share', 'server', 'acryl-door'])
   }))
 
 test('switching the assets plugin off leaves the app running without it', async () => {

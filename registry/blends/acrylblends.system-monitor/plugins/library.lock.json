@@ -286,27 +286,6 @@
         "src/index.ts": "25e9ad47a238ebdebeb0"
       }
     },
-    "desktop": {
-      "from": "1.5.10",
-      "files": {
-        "app-page.ts": "d2cdc61a92d89138ea8a",
-        "assets/acrylblends-logo.png": "c86abd74d8fbeedf8cc9",
-        "attach.ts": "ddd0e3e4e8a3914c9699",
-        "brand.ts": "8b87e63e669273f76704",
-        "door-shell.ts": "3e535eff746a41525dbb",
-        "frame.ts": "0b856f73720a4b6bb2bf",
-        "git.ts": "94d70b10792693ce54db",
-        "host-supervisor.ts": "e69994399fa32dbb1cfc",
-        "launch.ts": "3beb11b0ac097e270835",
-        "main.ts": "229423928fa2c7fbfa58",
-        "menu.ts": "9b88cda709178fffc66d",
-        "preload.cjs": "c7de936c2213786f2b00",
-        "product.ts": "822b291f9c3d3766637a",
-        "shutdown.ts": "a4d94f8a92081af96251",
-        "user-data.ts": "9a79f5f8b0593085cd6f",
-        "window.ts": "6946f304e1df9831d953"
-      }
-    },
     "extensions": {
       "from": "1.5.10",
       "files": {
@@ -324,17 +303,6 @@
         "index.ts": "f2c8045bf3be2f5fe95e"
       }
     },
-    "instance": {
-      "from": "1.5.10",
-      "files": {
-        "archive.ts": "10dd2970bd9f90978bec",
-        "bundle-overlay.ts": "1665d1f8e52fa300b9cc",
-        "bundle.ts": "be682206c3787bfd523a",
-        "home.ts": "cf12de35b3e765b76d40",
-        "index.ts": "15891f705ad2372c6327",
-        "storage.ts": "03eb84e623d08bb64022"
-      }
-    },
     "manifest": {
       "from": "1.5.10",
       "files": {
@@ -347,13 +315,15 @@
       }
     },
     "plugin-share": {
-      "from": "1.5.10",
+      "from": "1.7.4",
       "files": {
-        "README.md": "be16e30e23bd5ba031d3",
-        "index.ts": "b112847a68f6d3acffe5",
-        "package.ts": "4659bc3aafdce32d031c",
-        "publish.ts": "26aed5dfdd2be96e8cae",
-        "pull-check.ts": "5516b2908b4c35c49720",
+        "LICENSE": "0f98259ccb0f4cafebe9",
+        "README.md": "1cc6db66ee2e8cdd2e2c",
+        "index.ts": "e95325cb29a1758b5660",
+        "native.ts": "174e05294e88b0c2a54b",
+        "package.ts": "45abb650fed6093be1a4",
+        "publish.ts": "6aaabfd6c452b240095b",
+        "pull-check.ts": "80ec29321a6ef1a51f4d",
         "pull-list.ts": "1701ddea0bf9cae260d5",
         "pulled-records.ts": "9a9aa2a26014da112735"
       }

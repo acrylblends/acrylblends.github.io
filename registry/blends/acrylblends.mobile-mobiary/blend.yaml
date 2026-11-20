@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.mobile-mobiary
   name: "Mobiary"
-  version: 0.1.0
+  version: 0.1.1
   category: mobile
   description: "A mobile journal companion: a phone preview with Home, Capture, Activity and Profile screens, quick capture of notes, voice-memo and photo placeholders, home-screen modules you can switch, a daily focus with small goals, and compact and quiet preferences."
   license: MIT
@@ -47,6 +47,8 @@ spec:
     # a row is never started twice. Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.deploy-board
   name: "Deploy Board"
-  version: 0.1.0
+  version: 0.1.1
   category: devops
   description: "A release operations console: deployments per service and environment, a chronological event feed and an incident board with a timeline."
   license: MIT
@@ -41,6 +41,8 @@ spec:
     # Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

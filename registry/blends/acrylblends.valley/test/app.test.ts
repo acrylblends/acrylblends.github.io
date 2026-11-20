@@ -2,10 +2,10 @@ import assert from 'node:assert/strict'
 import { mkdirSync, readFileSync } from 'node:fs'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { createServer } from 'node:net'
-import { join } from 'node:path'
+import { basename, join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type App, type AppOptions, createApp } from '../src/app.ts'
 import { PUBLIC_DIR } from '../plugins/game/index.ts'
 import { renderWidgets } from '../plugins/home/index.ts'
@@ -36,7 +36,7 @@ test('serves the index route: the game to a browser, the JSON hello to an API cl
   withApp(async (app) => {
     const api = await app.root.router.request(`/`)
     assert.equal(api.status, 200)
-    assert.deepEqual(await api.json(), { app: APP_NAME, ok: true })
+    assert.deepEqual(await api.json(), { app: basename(projectRoot), ok: true })
     const page = await app.root.router.request(`/`, {
       headers: { accept: 'text/html,application/xhtml+xml,*/*;q=0.8' },
     })

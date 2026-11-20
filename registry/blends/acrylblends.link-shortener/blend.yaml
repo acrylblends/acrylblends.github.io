@@ -3,7 +3,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.link-shortener
   name: "Link Shortener"
-  version: 0.1.0
+  version: 0.1.1
   category: internet
   description: "A branded short-link workspace: 39 links on three domains, a create composer with unique slugs, 28,491 sample clicks, a 30-day trend, referrer and country breakdowns, and a working redirect."
   license: MIT
@@ -34,6 +34,8 @@ spec:
       name: domains
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

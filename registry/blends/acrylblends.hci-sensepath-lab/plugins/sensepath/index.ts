@@ -7,7 +7,7 @@
 import { randomUUID } from 'node:crypto'
 import { isAbsolute, join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
-import type {} from '../instance/index.ts'
+import type {} from '@acryldev/instance'
 import { Lab, type LabAdapters } from './lab.ts'
 import { type LabStore, jsonFileStore } from './store.ts'
 

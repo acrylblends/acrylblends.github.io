@@ -300,12 +300,6 @@
         "index.ts": "071a84f8d3a21efb4cb3"
       }
     },
-    "instance": {
-      "from": "1.1.0",
-      "files": {
-        "index.ts": "cdb5f8082e9848efe054"
-      }
-    },
     "manifest": {
       "from": "1.1.0",
       "files": {
@@ -315,6 +309,20 @@
         "snapshot.ts": "047c2a1a545bdc7e8880",
         "upgrade-cli.ts": "636628cfbaffe019472f",
         "upgrade.ts": "1e0b1851f1542741d083"
+      }
+    },
+    "plugin-share": {
+      "from": "1.7.4",
+      "files": {
+        "LICENSE": "0f98259ccb0f4cafebe9",
+        "README.md": "1cc6db66ee2e8cdd2e2c",
+        "index.ts": "e95325cb29a1758b5660",
+        "native.ts": "174e05294e88b0c2a54b",
+        "package.ts": "45abb650fed6093be1a4",
+        "publish.ts": "6aaabfd6c452b240095b",
+        "pull-check.ts": "80ec29321a6ef1a51f4d",
+        "pull-list.ts": "1701ddea0bf9cae260d5",
+        "pulled-records.ts": "9a9aa2a26014da112735"
       }
     },
     "sandbox": {

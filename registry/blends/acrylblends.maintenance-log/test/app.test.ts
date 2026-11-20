@@ -9,7 +9,7 @@ import { projectRoot, NOW } from './support.ts'
 const FEATURES = ['control', 'machines', 'plant', 'plant-shell', 'work-orders'] as const
 
 test('every feature is a row of the manifest, in order', () => {
-  assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'plant', 'plant-shell', 'control', 'machines', 'work-orders', 'extensions', 'server', 'acryl-door'])
+  assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'plant', 'plant-shell', 'control', 'machines', 'work-orders', 'extensions', 'plugin-share', 'server', 'acryl-door'])
 })
 
 test('every feature plugin declares its name, injects and mount point', () => {

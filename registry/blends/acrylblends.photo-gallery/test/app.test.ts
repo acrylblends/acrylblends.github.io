@@ -12,7 +12,7 @@ const FEATURES = ['albums', 'collections', 'gallery', 'gallery-shell', 'library'
 test('every feature is a row of the manifest, in order', () => {
   assert.deepEqual(
     readManifest().plugins.map((row) => row.id),
-    ['router', 'home', 'gallery', 'gallery-shell', 'library', 'albums', 'collections', 'shared', 'lightbox', 'upload', 'extensions', 'server', 'acryl-door'],
+    ['router', 'home', 'gallery', 'gallery-shell', 'library', 'albums', 'collections', 'shared', 'lightbox', 'upload', 'extensions', 'plugin-share', 'server', 'acryl-door'],
   )
 })
 

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.hci-sensepath-lab
   name: "Sensepath Lab"
-  version: 0.1.0
+  version: 0.1.1
   category: hci
   description: "An interaction research workbench: six simulated input modalities (speech, gesture, eye tracking, alternative input, haptics, a BCI concept), a scenario with a calibration, a deterministic task simulation with synthetic timing events, and saved observations to compare. No sensor is accessed."
   license: MIT
@@ -44,6 +44,8 @@ spec:
     # a row is never started twice. Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

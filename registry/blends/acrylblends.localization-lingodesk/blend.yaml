@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.localization-lingodesk
   name: "LingoDesk"
-  version: 0.1.0
+  version: 0.1.1
   category: localization
   description: "A translation-management and CAT workbench: target locales, source and target segments with draft, review and approved states, a glossary and translation-memory suggestions, and local QA checks for placeholders, missing translations, terminology and length. No translation service is contacted."
   license: MIT
@@ -44,6 +44,8 @@ spec:
     # a row is never started twice. Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

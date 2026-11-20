@@ -5,7 +5,7 @@ import { createServer } from 'node:net'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { createApp } from '../src/app.ts'
 import { FRAME_MOUNT_PREFIX } from '../src/routes.ts'
 import { NOW, projectRoot, withApp } from './support.ts'
@@ -26,7 +26,7 @@ test('the manifest decides what is mounted: an unknown parameter is refused', ()
   withApp(async (app) => {
     const { readManifest } = await import('../src/app.ts')
     const manifest = readManifest()
-    assert.equal(manifest.plugins.length, 11)
+    assert.equal(manifest.plugins.length, 12)
     assert.throws(() => readManifest({ nothing: 1 }), /parameter-override-unknown/)
   }))
 

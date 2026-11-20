@@ -8,7 +8,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { ReleaseState } from '../plugins/release/domain.ts'
 import { memoryStore } from '../plugins/release/store.ts'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type App, type AppOptions, createApp } from '../src/app.ts'
 
 export const projectRoot = fileURLToPath(new URL('..', import.meta.url))

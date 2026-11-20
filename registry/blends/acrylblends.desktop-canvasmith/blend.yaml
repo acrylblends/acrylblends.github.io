@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.desktop-canvasmith
   name: "Canvasmith Desktop"
-  version: 0.1.0
+  version: 0.1.1
   category: desktop
   description: "A desktop-style design workspace: a project of files, an artboard drawn from layers at a chosen zoom, an inspector with checked property edits, layer ordering, tools that add layers, and simulated exports with an activity log."
   license: MIT
@@ -44,6 +44,8 @@ spec:
     # a row is never started twice. Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

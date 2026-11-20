@@ -4,7 +4,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.vuln-tracker
   name: "Vulnerability Tracker"
-  version: 0.1.0
+  version: 0.1.1
   category: cybersecurity
   description: "A security-operations console: 24 assets and 128 open findings with severity and status filters, a finding inspector, an evidence-gated remediation trail, reports, policies and JSON/CSV exports."
   license: MIT
@@ -41,6 +41,8 @@ spec:
       name: policies
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

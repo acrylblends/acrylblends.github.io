@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { evaluate, Sensors, SensorsError, seriesOf, sparkPath } from '../plugins/sensors/index.ts'
 import type { SensorsState } from '../plugins/sensors/domain.ts'
 import { memoryStore } from '../plugins/sensors/store.ts'
@@ -111,7 +111,7 @@ test('health, 404, manifest, prefix and switch-off', async () => {
   await withApp(async (app) => {
     assert.equal((await app.page('/health')).status, 200)
     assert.equal((await app.page('/nope')).status, 404)
-    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'sensors', 'sensors-shell', 'dashboard', 'devices', 'alerts', 'ingest', 'extensions', 'server', 'acryl-door'])
+    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'sensors', 'sensors-shell', 'dashboard', 'devices', 'alerts', 'ingest', 'extensions', 'plugin-share', 'server', 'acryl-door'])
   })
   await withApp(async (app) => {
     const response = await app.root.router.request('/app', { headers: { accept: 'text/html' } })

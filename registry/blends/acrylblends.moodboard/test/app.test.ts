@@ -11,7 +11,7 @@ const FEATURES = ['assets', 'board-shell', 'boards', 'canvas', 'objects', 'setti
 test('every feature is a row of the manifest, in order', () => {
   assert.deepEqual(
     readManifest().plugins.map((row) => row.id),
-    ['router', 'home', 'boards', 'board-shell', 'canvas', 'objects', 'assets', 'settings', 'extensions', 'server', 'acryl-door'],
+    ['router', 'home', 'boards', 'board-shell', 'canvas', 'objects', 'assets', 'settings', 'extensions', 'plugin-share', 'server', 'acryl-door'],
   )
 })
 

@@ -6,7 +6,7 @@
  */
 import { isAbsolute, join } from 'node:path'
 import type { Context } from '@deepseek-ai/cordis'
-import type {} from '../instance/index.ts'
+import type {} from '@acryldev/instance'
 import { Chain, type ChainAdapters } from './chain.ts'
 import { type ChainStore, jsonFileStore } from './store.ts'
 

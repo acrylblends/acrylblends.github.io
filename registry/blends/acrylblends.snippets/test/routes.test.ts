@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { noticeOf, projectRoot, withApp } from './support.ts'
@@ -176,6 +176,7 @@ test('every feature is a row of the manifest, in order', () =>
       'collections',
       'language-settings',
       'extensions',
+      'plugin-share',
       'server',
       'acryl-door',
     ])

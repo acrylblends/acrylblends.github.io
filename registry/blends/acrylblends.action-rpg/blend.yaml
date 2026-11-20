@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.action-rpg
   name: "Action RPG"
-  version: 0.1.0
+  version: 0.1.1
   category: gaming
   description: "An isometric action RPG: fight under a night storm, find loot, level up and shape your character on a skill tree of 125 places."
   license: MIT

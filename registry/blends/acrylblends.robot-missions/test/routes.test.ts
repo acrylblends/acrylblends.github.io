@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
 import type { FleetState } from '../plugins/fleet/domain.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { noticeOf, NOW, projectRoot, withApp } from './support.ts'
 
 const scratch = join(projectRoot, '.acrylblends', 'test')
@@ -97,7 +97,7 @@ test('health, 404, prefix and the manifest work', async () => {
   await withApp(async (app) => {
     assert.equal((await app.page('/health')).status, 200)
     assert.equal((await app.page('/nope')).status, 404)
-    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'fleet', 'fleet-shell', 'history', 'missions', 'robots', 'extensions', 'server', 'acryl-door'])
+    assert.deepEqual(readManifest().plugins.map((row) => row.id), ['router', 'home', 'fleet', 'fleet-shell', 'history', 'missions', 'robots', 'extensions', 'plugin-share', 'server', 'acryl-door'])
   })
   await withApp(
     async (app) => {

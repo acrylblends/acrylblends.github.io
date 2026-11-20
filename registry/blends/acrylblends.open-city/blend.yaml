@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.open-city
   name: "Open City"
-  version: 0.1.0
+  version: 0.1.1
   category: gaming
   description: "A cel-shaded 3D open-world action game in a 1986 city: drive cars, take speedboats, fly helicopters and seaplanes, through day and night, with a six-star police chase."
   license: MIT

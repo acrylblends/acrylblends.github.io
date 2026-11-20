@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.api-orbit-console
   name: "Orbit API Console"
-  version: 0.1.0
+  version: 0.1.1
   category: api-sdk
   description: "An API console: browse endpoints, fill in parameters or a request body, send a request to a local fixture API that validates and creates like the real one, read the response, and copy JavaScript, Python or Go snippets."
   license: MIT
@@ -47,6 +47,8 @@ spec:
     # a row is never started twice. Read-only when NODE_ENV=production.
     - id: extensions
       name: extensions
+    - id: plugin-share
+      name: plugin-share
     - id: server
       name: acryl-node-server
       config:

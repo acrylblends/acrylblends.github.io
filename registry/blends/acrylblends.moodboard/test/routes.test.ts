@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { test } from 'node:test'
 import { createApp, readManifest } from '../src/app.ts'
 import type { BoardState } from '../plugins/boards/domain.ts'
-import { pinnedInstance } from '../plugins/instance/index.ts'
+import { pinnedInstance } from '@acryldev/instance'
 import { noticeOf, NOW, projectRoot, withApp } from './support.ts'
 
 const objectCount = (html: string): number => (html.match(/class="item /g) ?? []).length
