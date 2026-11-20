@@ -1,15 +1,41 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
-import { copyFileSync, cpSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, cpSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { categories, docGroups, slugify } from "./src/lib/content";
-import { blendPath } from "./src/lib/registry-placement";
+import { blendPath, placementFor } from "./src/lib/registry-placement";
 import { posts } from "./src/lib/blog";
 import { cordisGroups } from "./src/lib/cordis-tutorial";
 
 // GitHub Pages serves this repo at the domain root (a <user>.github.io "user
 // site" repo, not a project-pages subpath), so base stays "/".
+/**
+ * dist/registry/placement.json: for each listed Blend, where it sits in the category taxonomy, the address of its page and its screenshot, so a page
+ * elsewhere (the workshop panel on acryl.dev) can show categories, subcategories, screenshots and links without bundling this site's taxonomy.
+ * The page and its screenshot are absolute: an official entry's screenshot is served from here, a discovered one's from its repository at its tag.
+ */
+function writePlacement(): void {
+  const site = "https://acrylblends.github.io";
+  type Listed = { id: string; path: string; repository?: string; ref?: string };
+  const listOf = (file: string) => (JSON.parse(readFileSync(resolve(__dirname, file), "utf8")) as { entries: Listed[] }).entries;
+  const entries: Record<string, unknown> = {};
+  for (const entry of [...listOf("registry/index.json"), ...listOf("registry/discovered.json")]) {
+    const placement = placementFor(entry.id);
+    const category = placement && categories.find((c) => c.name === placement.category);
+    const sub = category?.subs.find((s) => s.name === placement?.subcategory);
+    const fromRepository = entry.repository !== undefined && entry.ref !== undefined;
+    const screenshot = fromRepository
+      ? `${entry.repository!.replace("https://github.com/", "https://raw.githubusercontent.com/")}/${encodeURIComponent(entry.ref!)}/docs/screenshot.png`
+      : existsSync(resolve(__dirname, "registry", entry.path, "docs/screenshot.png")) ? `${site}/registry/${entry.path}/docs/screenshot.png` : null;
+    entries[entry.id] = {
+      category: category?.name ?? null, categorySlug: category?.slug ?? null, subcategory: sub?.name ?? null, subcategorySlug: sub?.slug ?? null,
+      page: `${site}${blendPath(entry.id)}`, screenshot,
+    };
+  }
+  writeFileSync(resolve(__dirname, "dist/registry/placement.json"), `${JSON.stringify({ formatVersion: 1, entries }, null, 2)}\n`);
+}
+
 export default defineConfig({
   base: "/",
   plugins: [
@@ -97,6 +123,7 @@ export default defineConfig({
       name: "copy-registry",
       closeBundle() {
         cpSync(resolve(__dirname, "registry"), resolve(__dirname, "dist/registry"), { recursive: true });
+        writePlacement();
       },
     },
   ],
