@@ -33,7 +33,12 @@ function writePlacement(): void {
       page: `${site}${blendPath(entry.id)}`, screenshot,
     };
   }
-  writeFileSync(resolve(__dirname, "dist/registry/placement.json"), `${JSON.stringify({ formatVersion: 1, entries }, null, 2)}\n`);
+  // The whole taxonomy, in its own order, empty categories included: a category with no Blend yet still tells a person what could be built there.
+  const taxonomy = categories.map((c, index) => ({
+    number: index + 1, name: c.name, slug: c.slug, page: `${site}/blends/${c.slug}`,
+    subs: c.subs.map((s) => ({ name: s.name, slug: s.slug, page: `${site}/blends/${c.slug}/${s.slug}` })),
+  }));
+  writeFileSync(resolve(__dirname, "dist/registry/placement.json"), `${JSON.stringify({ formatVersion: 1, entries, taxonomy }, null, 2)}\n`);
 }
 
 export default defineConfig({
