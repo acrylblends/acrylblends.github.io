@@ -1,6 +1,6 @@
 # ACRYL ADE
 
-**ACRYL ADE**, the Agent Development Environment: the ACRYL IDE (<https://github.com/acryldev/acryl>) as one Blend. Registry id `acryl.ade`. Source: <https://github.com/acryldev/acryl/tree/main/apps/acryl-ade> (the ACRYL monorepo). Page: <https://acrylblends.github.io/blends/ai/ade/acryl.ade>.
+**ACRYL ADE**, the Agent Development Environment: the ACRYL IDE (<https://github.com/acryldev/acryl>) as one Blend. Registry id `acryl.ade`. Home: <https://github.com/acrylblends/05-acryl-ade> (releases). Source: <https://github.com/acryldev/acryl/tree/main/apps/acryl-ade> (the ACRYL monorepo). Page: <https://acrylblends.github.io/blends/ai/ade/acryl.ade>.
 
 It opens the IDE's workbench, ported into the Blends framework as `@acrylblends/workspace`:
 
@@ -17,6 +17,6 @@ npm create acrylblends@latest my-ade -- --from acryl.ade
 cd my-ade && npm run dev
 ```
 
-The app, ready to install, is on the release page, <https://github.com/acryldev/acryl/releases/tag/ade-v0.2.1>: `ACRYL-ADE-mac-arm64.dmg`, `ACRYL-ADE-mac-x64.dmg`, `ACRYL-ADE-win-x64.exe`, `ACRYL-ADE-win-arm64.exe`, `ACRYL-ADE-linux-x64.deb`, `ACRYL-ADE-linux-arm64.deb`.
+The app, ready to install, is on the release page, <https://github.com/acrylblends/05-acryl-ade/releases/latest>: `ACRYL-ADE-mac-arm64.dmg`, `ACRYL-ADE-mac-x64.dmg`, `ACRYL-ADE-win-x64.exe`, `ACRYL-ADE-win-arm64.exe`, `ACRYL-ADE-linux-x64.deb`, `ACRYL-ADE-linux-arm64.deb`.
 
 Its source is `apps/acryl-ade` in <https://github.com/acryldev/acryl>.

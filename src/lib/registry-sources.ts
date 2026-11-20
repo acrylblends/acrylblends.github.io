@@ -5,10 +5,10 @@ export interface Source {
   readonly url: string;
   /** The folder `git clone` makes. */
   readonly folder: string;
-  /** For a Blend whose source lives inside a monorepo: its folder there. Its page then offers no clone-and-run commands (the monorepo has its own setup). */
+  /** For a Blend whose source lives inside a monorepo: its folder there. Its page then offers no clone-and-run commands (the repository above holds only releases). */
   readonly directory?: string;
-  /** Where its releases are, when that is not `<url>/releases/latest`. */
-  readonly releasePage?: string;
+  /** The folder in the monorepo, shown as a second link beside the Blend's own repository. */
+  readonly monorepo?: string;
   /** The installable app of each OS and CPU, from the repository's latest GitHub release (its Release workflow builds them). */
   readonly downloads?: readonly Download[];
   /** Measured sizes the page shows, for a Blend whose point is its size (the Electrobun one). */
@@ -34,15 +34,18 @@ const repo = (name: string, downloads?: readonly Download[]): Source => ({ url: 
 
 const MONOREPO = "https://github.com/acryldev/acryl";
 
-/** A Blend built in the ACRYL monorepo: its source is a folder there and its releases are tagged `<tag>-v<version>`. */
-function inMonorepo(directory: string, tag: string, version: string, product: string): Source {
-  const base = `${MONOREPO}/releases/download/${tag}-v${version}`;
-  const file = (platform: string, arch: string, extension: string) => `${base}/${product}-${platform}-${arch}.${extension}`;
+/**
+ * A product built in the ACRYL monorepo and released from a release-only repository in the acrylblends organisation: that repository is the Blend's home in the
+ * catalogue (its README and its fixed `releases/latest/download/<file>` links), the monorepo folder is the source. No clone-and-run commands: the repository holds no code.
+ */
+function releaseRepo(name: string, directory: string, product: string): Source {
+  const file = (platform: string, arch: string, extension: string) =>
+    `https://github.com/acrylblends/${name}/releases/latest/download/${product}-${platform}-${arch}.${extension}`;
   return {
-    url: `${MONOREPO}/tree/main/${directory}`,
-    folder: "acryl",
+    url: `https://github.com/acrylblends/${name}`,
+    folder: name,
     directory,
-    releasePage: `${MONOREPO}/releases/tag/${tag}-v${version}`,
+    monorepo: `${MONOREPO}/tree/main/${directory}`,
     downloads: [
       { os: "macOS", cpu: "Apple Silicon", url: file("mac", "arm64", "dmg") },
       { os: "macOS", cpu: "Intel", url: file("mac", "x64", "dmg") },
@@ -55,8 +58,8 @@ function inMonorepo(directory: string, tag: string, version: string, product: st
 }
 
 export const registrySources: Record<string, Source> = {
-  "acryl.ade": inMonorepo("apps/acryl-ade", "ade", "0.2.1", "ACRYL-ADE"),
-  "acryl.control-center": inMonorepo("apps/acryl-control-center", "control-center", "0.2.2", "ACRYL-Control-Center"),
+  "acryl.ade": releaseRepo("05-acryl-ade", "apps/acryl-ade", "ACRYL-ADE"),
+  "acryl.control-center": releaseRepo("63-acryl-control-center", "apps/acryl-control-center", "ACRYL-Control-Center"),
   "acryl.sde": repo("05-acryl-sde"),
   "acrylblends.action-rpg": repo("41-action-rpg"),
   "acrylblends.airspace": repo("41-airspace"),
