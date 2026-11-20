@@ -1,7 +1,7 @@
 # Node server
 
-`acryl-node-server` serves the whole router over HTTP from a standalone Node.js process. Use it for an app that runs without the ACRYL
-Host. Inside the Host (Web and Desktop), the Host owns the web server and a plugin asks `acryl-router-http` to serve its prefix instead.
+`@acryldev/node-server` serves the whole router over HTTP from a standalone Node.js process. Use it for an app that runs without the ACRYL
+Host. Inside the Host (Web and Desktop), the Host owns the web server and a plugin asks `@acryldev/router-http` to serve its prefix instead.
 
 ## Serve the router
 
@@ -9,8 +9,8 @@ The server is a Cordis plugin that provides the `nodeServer` service:
 
 ```ts
 import { Context } from '@deepseek-ai/cordis'
-import * as router from 'acrylblends/cordis/router'
-import * as nodeServer from 'acrylblends/cordis/node-server'
+import * as router from '@acryldev/blends/cordis/router'
+import * as nodeServer from '@acryldev/blends/cordis/node-server'
 import * as todo from './todo.ts'
 
 const root = new Context()
@@ -49,7 +49,7 @@ The adapter passes the socket's peer address and local port to the router as con
 The Node `serveStatic` reads files from disk:
 
 ```ts
-import { serveStatic } from 'acrylblends/node-server'
+import { serveStatic } from '@acryldev/blends/node-server'
 
 const app = new Acryl()
   .use('/assets/*', serveStatic({ root: './public' }))

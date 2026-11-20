@@ -2,7 +2,7 @@
 
 An app that keeps records (users, notes, orders) keeps them in a SQL database, and reaches it through one small interface, `db`. Handlers and
 stores take a `Db` as an argument and never import a driver, so the file or server behind it can change without touching them. SQLite is the
-provider in `acrylblends`. Postgres (or Supabase, through `DATABASE_URL`) is an optional plugin, `acryl-db-postgres`, that serves the same
+provider in `acrylblends`. Postgres (or Supabase, through `DATABASE_URL`) is an optional plugin, `@acryldev/db-postgres`, that serves the same
 interface; it is not part of `acrylblends` or the templates, and an app adds it only when it must use Postgres.
 
 ## Choosing
@@ -10,8 +10,8 @@ interface; it is not part of `acrylblends` or the templates, and an app adds it 
 | The app | Use | State |
 | --- | --- | --- |
 | Normal web or desktop app, users, lists, orders | `db` with SQLite (the `notes` and `chat` templates) | available |
-| SQLite is not enough, but no server | `db` with the optional `acryl-db-pglite` plugin: Postgres in the app's process, one folder in the app home | optional, not in `acrylblends` |
-| Must use Postgres or Supabase | `db` with the optional `acryl-db-postgres` plugin | optional, not in `acrylblends` |
+| SQLite is not enough, but no server | `db` with the optional `@acryldev/db-pglite` plugin: Postgres in the app's process, one folder in the app home | optional, not in `acrylblends` |
+| Must use Postgres or Supabase | `db` with the optional `@acryldev/db-postgres` plugin | optional, not in `acrylblends` |
 | Tiny, one person, a few screens | [`kv`](#a-tiny-app-kv), named JSON documents with no SQL | available |
 
 Start with `db` when the data has users, lists or relations: SQL is what people and coding agents already know. Start with `kv` when the whole
@@ -22,7 +22,7 @@ data is a handful of settings or a small list that one process reads and writes.
 `kv` keeps named JSON documents in one file, with no SQL and no migrations. It suits a settings page, a demo, a one-person tool.
 
 ```ts
-import { openKv } from 'acrylblends/kv/json'
+import { openKv } from '@acryldev/blends/kv/json'
 
 const { kv, close } = await openKv({ path: 'data/kv.json' })
 
@@ -63,10 +63,10 @@ The same `kv` interface runs on SQL, so the code does not change, only the line 
 database from `openDb`, and `copyKv` moves what the file holds:
 
 ```ts
-import { copyKv } from 'acrylblends/kv'
-import { openKv } from 'acrylblends/kv/json'
-import { kvOnDb } from 'acrylblends/kv/db'
-import { openDb } from 'acrylblends/db/sqlite'
+import { copyKv } from '@acryldev/blends/kv'
+import { openKv } from '@acryldev/blends/kv/json'
+import { kvOnDb } from '@acryldev/blends/kv/db'
+import { openDb } from '@acryldev/blends/db/sqlite'
 
 const file = await openKv({ path: 'data/kv.json' })
 const sql = await openDb({ path: 'data/app.sqlite', migrations: 'migrations' })
@@ -85,7 +85,7 @@ The table is created on first use, beside the app's own tables; nothing else cha
 `openDb` from `acrylblends/db/sqlite` opens one SQLite file, applies your migrations, and returns the database next to the function that closes it:
 
 ```ts
-import { openDb } from 'acrylblends/db/sqlite'
+import { openDb } from '@acryldev/blends/db/sqlite'
 
 const { db, close } = await openDb({ path: 'data/app.sqlite', migrations: 'migrations' })
 ```
@@ -99,7 +99,7 @@ const { db, close } = await openDb({ path: 'data/app.sqlite', migrations: 'migra
 Pass `db` to the code that needs it. Nothing opens the database at import time, so importing a module never creates a file:
 
 ```ts
-import type { Db } from 'acrylblends/db'
+import type { Db } from '@acryldev/blends/db'
 
 export function notesStore(db: Db) {
   return {
@@ -146,7 +146,7 @@ CREATE TABLE tags (
 
 ```yaml
     - id: db
-      name: acryl-db-sqlite
+      name: '@acryldev/db-sqlite'
       config:
         path: data/app.sqlite
         migrations: migrations
@@ -203,7 +203,7 @@ await db.transaction(async (tx) => {
 
 ## Writing SQL that moves to Postgres
 
-The optional Postgres plugins (`acryl-db-pglite` embedded, `acryl-db-postgres` on a server) serve the same interface. SQL that stays inside this list runs on both:
+The optional Postgres plugins (`@acryldev/db-pglite` embedded, `@acryldev/db-postgres` on a server) serve the same interface. SQL that stays inside this list runs on both:
 
 - Placeholders are `?` on every provider.
 - Use `RETURNING` to get a new row, not a driver-specific "last id".
@@ -219,7 +219,7 @@ A test opens its own database in memory, with the same migrations as production,
 
 ```ts
 import { afterEach, beforeEach, expect, test } from 'vitest'
-import { openDb } from 'acrylblends/db/sqlite'
+import { openDb } from '@acryldev/blends/db/sqlite'
 import { notesStore } from './db.ts'
 
 let close: () => Promise<void>
@@ -242,8 +242,8 @@ test('a new store has no notes', async () => {
 Open the database once at start, serve, and close it when the process is told to stop, after the server has stopped taking requests:
 
 ```ts
-import { serve } from 'acrylblends/node-server'
-import { openDb } from 'acrylblends/db/sqlite'
+import { serve } from '@acryldev/blends/node-server'
+import { openDb } from '@acryldev/blends/db/sqlite'
 import { createApp } from './app.ts'
 
 const { db, close } = await openDb({ path: process.env.DATABASE_FILE ?? 'data/app.sqlite', migrations: 'migrations' })
@@ -283,25 +283,25 @@ The rule is checked, not hoped for. The app names its opener once, in `package.j
 ```
 
 `acrylblends check-deps` reads every `.ts`, `.tsx` and `.js` file in `src/`, `test/`, `tests/` and `plugins/`, and fails when a file other than
-the opener imports a database driver, an opener such as `acrylblends/db/sqlite` or `acryl-db-sqlite`, or (outside `plugins/desktop`) `electron`.
+the opener imports a database driver, an opener such as `acrylblends/db/sqlite` or `@acryldev/db-sqlite`, or (outside `plugins/desktop-shell`) `electron`.
 It names the file and the line:
 
 ```
-src/routes.ts:3: "node:sqlite" is a database driver; take a Db (import type { Db } from "acrylblends/db") as an argument and let src/db.ts open the database
+src/routes.ts:3: "node:sqlite" is a database driver; take a Db (import type { Db } from "@acryldev/blends/db") as an argument and let src/db.ts open the database
 ```
 
 The `notes` and `chat` templates run it in `npm test` and `npm run check`. List more than one opener as an array (`"opener": ["src/db.ts", "src/app.ts"]`).
 In a Blend app, `acrylblends add db` declares `src/app.ts`, where the provider is mounted, and a plugin that declares `inject: ['db']` must not import
-`acryl-db-sqlite`: it receives `ctx.db`.
+`@acryldev/db-sqlite`: it receives `ctx.db`.
 
 ## In a Cordis app
 
-An ACRYL app gets the same interface as a service. The `acryl-db-sqlite` plugin row opens the file (by default `data.sqlite` in the app home),
+An ACRYL app gets the same interface as a service. The `@acryldev/db-sqlite` plugin row opens the file (by default `data.sqlite` in the app home),
 applies the `migrations` folder, and provides `db`; a plugin declares `inject: ['db']` and imports the types only:
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
-import type {} from 'acrylblends/cordis/db'
+import type {} from '@acryldev/blends/cordis/db'
 
 export const name = 'notes'
 export const inject = ['db']

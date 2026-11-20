@@ -1,13 +1,13 @@
 # Agents
 
 A coding agent (Claude Code, Codex, OpenCode, Copilot and others) builds on Acryl best when the documentation is in the folder it works in. A project created with
-`npm create acrylblends@latest` (and one made with `npx acrylblends init`) therefore contains:
+`npm create @acryldev/blends@latest` (and one made with `npx acrylblends init`) therefore contains:
 
 - `docs/framework/`: these pages. Start at `README.md`; `api/summary.md` is the one-page summary of the API.
 - `AGENTS.md`: where the API is, how a feature is built (an `Acryl` app mounted with `ctx.router.route`, a plugin registered in `src/app.ts` and `blend.yaml`, a state cell),
   the defaults and how each is swapped, the things that surprise people, and what must pass before a task is done (`npm test` and `npm run check`).
 - `CLAUDE.md`: the same text as `AGENTS.md`, so tools that read either file read the same guide.
-- One skill, `app-guide`, in `.claude/skills/app-guide/SKILL.md` and `.agents/skills/app-guide/SKILL.md` (the same text): where to read first, the one plugin folder, the defaults, the door, and what "done" means.
+- Two skills, `acryl-app` and `cordis-plugin`, in `.claude/skills/<name>/SKILL.md` and `.agents/skills/<name>/SKILL.md` (the same text in both places): how the app is put together and how to change and check it through the door, and how to add a feature as a Cordis plugin.
 - `.gitignore` lists `.acryl/`, the folder the door keeps its secret and state in, so `git add -A` stages none of it.
 
 ## One plugin folder
@@ -19,7 +19,7 @@ plugins you or an agent write. There is no `src/plugins/` and no `extensions/`. 
 ## Defaults, and how to swap each
 
 The framework is not rigid: every choice is a plugin behind a port, and the default is only a fallback. A new app names each default in `AGENTS.md`: records on the `db` port
-with SQLite, small state on the `kv` port with one JSON file, the Node server, the browser as the window (`acrylblends add desktop` adds Electron), browser code through
+with SQLite, small state on the `kv` port with one JSON file, the Node server, the browser as the window (`acrylblends add desktop-shell` adds Electron), browser code through
 `clientModules`. A swap changes the one file that opens or mounts the choice (the opener, `src/db.ts`; or `src/app.ts` in a Blend app), because nothing else imports a provider
 (`acrylblends check-deps` checks it). An outside tool, such as a database server or a bundler, joins the app as a provider in `plugins/<name>/` that implements the port.
 
@@ -35,10 +35,10 @@ See [Acryl in a Cordis app](../cordis/acryl-in-a-cordis-app.md), [Plugin lifecyc
 
 ## The agent panel and the terminals
 
-The panel is a chat button on every page of the running app. **A new app from the `agent` template has it** (`npm create acrylblends@latest my-app agent`), and `driver-pty` adds real terminals to it. Both are **development only** (see [what runs in production](../guides/production.md)).
+The panel is a chat button on every page of the running app. **A new app from the `agent` template has it** (`npm create @acryldev/blends@latest my-app agent`), and `driver-pty` adds real terminals to it. Both are **development only** (see [what runs in production](../guides/production.md)).
 
 ```sh
-npm create acrylblends@latest my-app agent
+npm create @acryldev/blends@latest my-app agent
 cd my-app
 npm install
 npm run dev          # the panel is the button at the corner of the page

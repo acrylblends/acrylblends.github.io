@@ -59,9 +59,9 @@ export function Screenshot({ entry, className = "" }: { entry: RegistryEntry; cl
 
 export function runtimeOf(entry: RegistryEntry): Runtime { return entry.runtime === "acrylblends" ? "acrylblends" : "acryl"; }
 
-/** The command that starts a project from an entry: for acrylblends, create-acrylblends (npm needs the `--`); an ACRYL starter opens in the ACRYL app, and its CLI form is shown as it is. */
+/** The command that starts a project from an entry: for acrylblends, @acryldev/create-blends (npm needs the `--`); an ACRYL starter opens in the ACRYL app, and its CLI form is shown as it is. */
 export function startCommand(entry: RegistryEntry): string {
-  if (runtimeOf(entry) === "acrylblends") return `npm create acrylblends@latest my-app -- --from ${entry.source ?? entry.id}`;
+  if (runtimeOf(entry) === "acrylblends") return `npm create @acryldev/blends my-app -- --from ${entry.source ?? entry.id}`;
   return entry.parent === undefined ? `acryl new my-app` : `acryl new my-app --from ${entry.id}`;
 }
 
@@ -107,7 +107,7 @@ export function RegistryStarters() {
   const shown = byOrigin(entries.filter(entry => entry.id !== CORE_ID && (filter === "all" || runtimeOf(entry) === filter)), origin);
   return <section className="mx-auto max-w-[1440px] px-5 pt-12 md:px-8">
     <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-      <div><h2 className="text-2xl font-semibold">Start here: in the registry now</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Real starting points you can create a project from today. The project is yours: private and proprietary until you decide otherwise.</p></div>
+      <div><h2 className="text-2xl font-semibold">Start here: in the registry now</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">Real starting points you can create a project from today. The project is yours: private and proprietary until you decide otherwise. <code>npm create acrylblends</code> is the short alias of <code>npm create @acryldev/blends</code>.</p></div>
       <a href="/registry/index.json" className="font-mono text-xs text-muted-foreground hover:text-foreground">index.json · {entries.length} {entries.length === 1 ? "entry" : "entries"}</a>
     </div>
     <div role="group" aria-label="Filter by runtime" className="mt-6 flex flex-wrap gap-2">

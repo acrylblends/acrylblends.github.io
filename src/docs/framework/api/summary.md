@@ -1,16 +1,16 @@
 # API summary
 
-One page with the calls an ordinary app uses, each linked to the page that explains it. Imports are from `acrylblends` (and its subpaths such as `acrylblends/cookie`) unless noted. The first example is a Cordis plugin; a plain app (`npm create acrylblends@latest`) uses the `Acryl` class below with no plugin around it.
+One page with the calls an ordinary app uses, each linked to the page that explains it. Imports are from `acrylblends` (and its subpaths such as `acrylblends/cookie`) unless noted. The first example is a Cordis plugin; a plain app (`npm create @acryldev/blends@latest`) uses the `Acryl` class below with no plugin around it.
 
 ## A plugin that serves an app
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from 'acrylblends'
-import { trimTrailingSlash } from 'acrylblends/trailing-slash'
-import { schemaValidator, type StandardSchema } from 'acrylblends/schema-validator'
-import { streamSSE } from 'acrylblends/streaming'
-import type {} from 'acrylblends/cordis/state'
+import { Acryl } from '@acryldev/blends'
+import { trimTrailingSlash } from '@acryldev/blends/trailing-slash'
+import { schemaValidator, type StandardSchema } from '@acryldev/blends/schema-validator'
+import { streamSSE } from '@acryldev/blends/streaming'
+import type {} from '@acryldev/blends/cordis/state'
 
 export const name = 'orders'                 // the package name and the Loader row id
 export const inject = ['router', 'state']    // the plugin waits (PENDING) until both exist
@@ -95,8 +95,8 @@ paths: see [Trailing slashes](../api/routing.md#trailing-slashes).
 ## Validation ([Validation](../cordis/validation.md))
 
 ```ts
-import { schemaValidator } from 'acrylblends/schema-validator'
-import { validator } from 'acrylblends/validator'
+import { schemaValidator } from '@acryldev/blends/schema-validator'
+import { validator } from '@acryldev/blends/validator'
 app.post('/', schemaValidator('json', Schema), c => c.json(c.req.valid('json')))
 ```
 
@@ -124,14 +124,14 @@ Do not start timers inside a handler for keep-alives; let the plugin own one tim
 
 | Call | Service | Does |
 | --- | --- | --- |
-| `ctx.router.route(path, app)` | `router` (`acryl-router`) | serve `app` below `path` for as long as the calling plugin is loaded; returns a function that removes it sooner |
+| `ctx.router.route(path, app)` | `router` (`@acryldev/router`) | serve `app` below `path` for as long as the calling plugin is loaded; returns a function that removes it sooner |
 | `ctx.router.request(path, init?)`, `ctx.router.fetch(request)` | `router` | call the mounted routes in process (terminal UI, tests, other plugins) |
 | `ctx.router.onError(handler)`, `ctx.router.notFound(handler)` | `router` | router-wide error and not-found answers, owned by the caller |
-| `ctx.routerHttp.mount(prefix)` | `routerHttp` (`acryl-router-http`) | inside the ACRYL Host: serve a router prefix on the Host's web server (Web and Desktop). Use it through `ctx.inject(['routerHttp'], ...)` so the app also runs where there is no Host |
-| `ctx.nodeServer.url`, `ctx.nodeServer.port` | `nodeServer` (`acryl-node-server`) | without the Host: one Node server for the whole router; options `hostname` (`127.0.0.1`), `port` (`0`), `scan` (`20`). See [Node server](../cordis/node-server.md) |
-| `ctx.state.cell(key, initial)` | `state` (`acryl-state`) | a writable cell owned by the plugin: `get()`, `set(value)`, `update(fn)`, `subscribe(fn)` returning an unsubscribe |
+| `ctx.routerHttp.mount(prefix)` | `routerHttp` (`@acryldev/router-http`) | inside the ACRYL Host: serve a router prefix on the Host's web server (Web and Desktop). Use it through `ctx.inject(['routerHttp'], ...)` so the app also runs where there is no Host |
+| `ctx.nodeServer.url`, `ctx.nodeServer.port` | `nodeServer` (`@acryldev/node-server`) | without the Host: one Node server for the whole router; options `hostname` (`127.0.0.1`), `port` (`0`), `scan` (`20`). See [Node server](../cordis/node-server.md) |
+| `ctx.state.cell(key, initial)` | `state` (`@acryldev/state`) | a writable cell owned by the plugin: `get()`, `set(value)`, `update(fn)`, `subscribe(fn)` returning an unsubscribe |
 | `ctx.state.derive(key, [cells], fn)` | `state` | a read-only cell computed from others |
-| `GET /api/state/:key`, `GET /api/state/:key/events`, `GET /api/state/ws`, `GET /api/state/client.js` | `state` | each cell over the router, read-only; `watch(key, fn)` of `/api/state/client.js` follows keys in a page over one WebSocket (event streams as the fallback); `useCell(cell)` from `acryl-state/react` in a React page |
+| `GET /api/state/:key`, `GET /api/state/:key/events`, `GET /api/state/ws`, `GET /api/state/client.js` | `state` | each cell over the router, read-only; `watch(key, fn)` of `/api/state/client.js` follows keys in a page over one WebSocket (event streams as the fallback); `useCell(cell)` from `@acryldev/state/react` in a React page |
 
 Everything a plugin registers this way (mounts, cells, handlers) goes away when the plugin unloads, and comes back once when it reloads:
 see [Plugin lifecycle and disposal](../cordis/plugin-lifecycle.md).

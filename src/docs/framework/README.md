@@ -3,7 +3,7 @@
 Acryl is a small web framework built on Web Standards. You write handlers over the standard `Request` and `Response`, and the same application runs on Node.js (and, experimentally, Bun), and inside a Cordis app as a plugin that an agent can extend while it runs.
 
 ```ts twoslash
-import { Acryl } from 'acrylblends'
+import { Acryl } from '@acryldev/blends'
 const app = new Acryl()
 
 app.get('/', (c) => c.text('Acryl!'))
@@ -14,11 +14,11 @@ export default app
 ## Quick Start
 
 ```sh
-npm create acrylblends@latest my-app
+npm create @acryldev/blends@latest my-app
 ```
 
-Other package managers work the same way: `pnpm create acrylblends@latest`, `yarn create acrylblends`, `bun create acrylblends@latest`.
-Every template is a Cordis app (`blend.yaml`, plugins in `plugins/`). The starter asks which one you want, from the same list `acrylblends init --template` takes: `blank`, `nodejs`, `notes`, `chat`, `todo`, `agent` (`acryl-app` is the old name for `agent`), and `npm create acrylblends@latest my-app notes` names it directly. See [Getting started](getting-started/basic.md).
+Other package managers work the same way: `pnpm create @acryldev/blends@latest`, `yarn create @acryldev/blends`, `bun create @acryldev/blends`.
+Every template is a Cordis app (`blend.yaml`, plugins in `plugins/`). The starter asks which one you want, from the same list `acrylblends init --template` takes: `blank`, `nodejs`, `notes`, `chat`, `todo`, `agent` (`acryl-app` is the old name for `agent`), and `npm create @acryldev/blends@latest my-app notes` names it directly. See [Getting started](getting-started/basic.md).
 
 ## What is in the box
 
@@ -65,6 +65,6 @@ The license of these pages and of the framework source they describe is in [LICE
 
 ## TypeScript in a Cordis app
 
-An app's `tsconfig.json` can extend `acryl-router/tsconfig.app.json` (ES2024 with the DOM types, strict). The DOM types are optional: every
+An app's `tsconfig.json` can extend `@acryldev/router/tsconfig.app.json` (ES2024 with the DOM types, strict). The DOM types are optional: every
 entry point's types also stand with only `"lib": ["ES2024"]` and `"types": ["node"]`, the setting a Host-only plugin uses so browser globals
 do not typecheck in server code (the router's `tests/no-dom` fixture checks this on every typecheck).
