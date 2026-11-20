@@ -26,7 +26,23 @@ export function blockedReason(fullName: string, blocklist: Blocklist): string | 
 }
 
 /**
- * The category is blend.yaml's `metadata.category`, matched to one of /blends' categories by its address (`gaming`, `e-commerce`) or its name. The
+ * The place a Blend's package.json keywords name (`acrylblends-category-<address>`, optionally `acrylblends-subcategory-<address>` within it): what
+ * ACRYL's share writes (@acryldev/app-persistence placement.ts). Undefined when there is no category keyword; a string is why it cannot be placed.
+ */
+export function keywordPlacement(keywords: unknown): Placement | string | undefined {
+  const words = Array.isArray(keywords) ? keywords.filter((w): w is string => typeof w === "string") : [];
+  const category = words.find(w => w.startsWith("acrylblends-category-"))?.slice("acrylblends-category-".length);
+  if (category === undefined) return undefined;
+  const found = categories.find(c => c.slug === category);
+  if (found === undefined) return `its keyword acrylblends-category-${category} is not one of the categories on acrylblends.github.io/blends`;
+  const subSlug = words.find(w => w.startsWith("acrylblends-subcategory-"))?.slice("acrylblends-subcategory-".length);
+  if (subSlug === undefined) return { category: found.name };
+  const sub = found.subs.find(s => s.slug === subSlug);
+  return sub === undefined ? `its keyword acrylblends-subcategory-${subSlug} is not a subcategory of ${found.name}` : { category: found.name, subcategory: sub.name };
+}
+
+/**
+ * Without placement keywords: the category is blend.yaml's `metadata.category`, matched to one of /blends' categories by its address (`gaming`, `e-commerce`) or its name. The
  * subcategory is optional: a repository topic that is one of that category's subcategory addresses (`games`). A string is the reason it cannot be placed.
  */
 export function placementOf(category: string | undefined, topics: readonly string[]): Placement | string {

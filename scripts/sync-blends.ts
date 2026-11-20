@@ -11,7 +11,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse } from "yaml";
 import { MARKER, packageProblems, templateProblems } from "./lib/entry-checks.ts";
-import { blockedReason, originOf, placementOf, reservedIdReason, type Blocklist, type Official } from "./lib/discover-blends.ts";
+import { blockedReason, keywordPlacement, originOf, placementOf, reservedIdReason, type Blocklist, type Official } from "./lib/discover-blends.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
@@ -84,7 +84,9 @@ for (const repository of repositories) {
     const pkg = await raw("package.json");
     const appProblems = [...templateProblems(template), ...(pkg === null ? ["has no package.json"] : packageProblems(pkg))];
     if (appProblems.length > 0) { skip(repository, appProblems.join("; ")); continue; }
-    const placement = placementOf(typeof metadata.category === "string" ? metadata.category : undefined, repository.topics ?? []);
+    // The place ACRYL's share writes into package.json wins; blend.yaml's category with a subcategory topic is the older way, still read.
+    const placement = keywordPlacement((JSON.parse(pkg as string) as { keywords?: unknown }).keywords)
+      ?? placementOf(typeof metadata.category === "string" ? metadata.category : undefined, repository.topics ?? []);
     if (typeof placement === "string") { skip(repository, placement); continue; }
     entries.push({
       ...entry,

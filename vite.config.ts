@@ -39,6 +39,8 @@ function writePlacement(): void {
     subs: c.subs.map((s) => ({ name: s.name, slug: s.slug, page: `${site}/blends/${c.slug}/${s.slug}` })),
   }));
   writeFileSync(resolve(__dirname, "dist/registry/placement.json"), `${JSON.stringify({ formatVersion: 1, entries, taxonomy }, null, 2)}\n`);
+  // /categories.json: the one list ACRYL's share places a Blend or plugin by (package.json keywords acrylblends-category-<slug>, acrylblends-subcategory-<slug>).
+  writeFileSync(resolve(__dirname, "dist/categories.json"), `${JSON.stringify({ formatVersion: 1, categories: taxonomy })}\n`);
 }
 
 export default defineConfig({

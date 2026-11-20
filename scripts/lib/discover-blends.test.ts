@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import official from "../../official-owners.json";
-import { blockedReason, originOf, placementOf, reservedIdReason } from "./discover-blends.ts";
+import { blockedReason, keywordPlacement, originOf, placementOf, reservedIdReason } from "./discover-blends.ts";
 
 test("origin comes from the owner id, never the login", () => {
   expect(originOf(329572928, official)).toBe("official");
@@ -19,6 +19,15 @@ test("the blocklist matches an owner or one repository, any case", () => {
   expect(blockedReason("bad/x", blocklist)).toContain("owner bad");
   expect(blockedReason("Someone/evil-blend", blocklist)).toBe("it is on the blocklist");
   expect(blockedReason("someone/good", blocklist)).toBeUndefined();
+});
+
+test("placement from package.json keywords, checked against the taxonomy", () => {
+  expect(keywordPlacement(["acrylblends-blend", "acrylblends-category-gaming", "acrylblends-subcategory-games"])).toEqual({ category: "Gaming", subcategory: "Games" });
+  expect(keywordPlacement(["acrylblends-category-business"])).toEqual({ category: "Business" });
+  expect(keywordPlacement(["acrylblends-category-gaming", "acrylblends-subcategory-crm"])).toContain("not a subcategory of Gaming");
+  expect(keywordPlacement(["acrylblends-category-cooking"])).toContain("not one of the categories");
+  expect(keywordPlacement(["notes"])).toBeUndefined();
+  expect(keywordPlacement(undefined)).toBeUndefined();
 });
 
 test("placement: category by address or name, subcategory from a topic", () => {
