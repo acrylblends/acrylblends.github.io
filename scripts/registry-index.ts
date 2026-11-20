@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 // registry-index <registry folder> [--check]
 // What the registry's CI runs. It is @acryl/blends-core's index tool (validate every starter under blends/<id>/blend.yaml, refuse a private, unlicensed, misplaced or repeated one,
-// write index.json) plus one thing the format does not carry: the runtime an entry is for.
+// write index.json) plus two things the format does not carry: the runtime an entry is for, and its `origin` (always "official" here: the entry lives in the acrylblends organisation's registry).
 //   - An entry with an `acryl.template.json` is a whole app for acrylblends (`runtime: acrylblends`): `npm create acrylblends@latest my-app -- --from <id>` makes it. It is checked
 //     further: the template manifest, a package.json without install scripts, src/, no links, no node_modules or .git, size limits, and nothing that looks like a key.
 //   - Every other entry is a starter for the ACRYL app (`runtime: acryl`).
@@ -85,10 +85,12 @@ export function indexText(root: string): { text: string; problems: string[] } {
   const entries = index.entries.map(entry => {
     const dir = join(root, String(entry.path));
     out.push(...checkPortable(dir).map((message) => `${String(entry.path)}: ${message}`));
-    if (!existsSync(join(dir, MARKER))) return { ...entry, runtime: "acryl" };
+    // Every folder under registry/blends/ is in this repository, which belongs to the acrylblends organisation: official. A community Blend is never a folder here;
+    // it is found in its own repository (scripts/sync-blends.ts writes discovered.json with origin decided from the repository owner's id).
+    if (!existsSync(join(dir, MARKER))) return { ...entry, runtime: "acryl", origin: "official" };
     const apps = checkApp(dir);
     out.push(...apps.map(message => `${String(entry.path)}: ${message}`));
-    return { ...entry, runtime: "acrylblends" };
+    return { ...entry, runtime: "acrylblends", origin: "official" };
   });
   return { text: `${JSON.stringify({ ...index, entries }, null, 2)}\n`, problems: out };
 }
