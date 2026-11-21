@@ -1,6 +1,6 @@
 # ACRYL ADE
 
-**ACRYL ADE**, the Agent Development Environment: the ACRYL IDE (<https://github.com/acryldev/acryl>) as one Blend. Registry id `acryl.ade`. This repository is its source and builds its releases. Page: <https://acrylblends.github.io/blends/ai/ade/acryl.ade>.
+**ACRYL ADE**, the Agent Development Environment: ACRYL's development environment as one Blend (the workbench of the earlier ACRYL IDE, now an app on the platform). Registry id `acryl.ade`. This repository is its source and builds its releases. Page: <https://acrylblends.github.io/blends/ai/ade/acryl.ade>.
 
 It opens the IDE's workbench, ported into the Blends framework as `@acryldev/workspace`:
 
@@ -8,7 +8,7 @@ It opens the IDE's workbench, ported into the Blends framework as `@acryldev/wor
 - **centre:** tabs: the agent's chat (DeepSeek Harness), terminals, files, diffs;
 - **right:** what the agent changed, the review of a turn, and the project's files.
 
-The chat is the same agent ACRYL IDE runs, with its shell, file tools and jobs. Claude Code, Codex or any other terminal agent runs in a terminal tab beside it.
+The chat is ACRYL's own agent, with its shell, file tools and jobs. Claude Code, Codex or any other terminal agent runs in a terminal tab beside it.
 
 ## Download
 

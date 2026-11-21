@@ -22,7 +22,7 @@
       "path": "blends/acryl.ade",
       "license": "MIT",
       "category": "ai",
-      "description": "ACRYL ADE, the Agent Development Environment: the ACRYL IDE as a Blend. Projects and git worktrees on the left, chats, terminals and coding agents as tabs, the changed files, review and files on the right.",
+      "description": "ACRYL ADE, the Agent Development Environment: ACRYL's development environment as a Blend. Projects and git worktrees on the left, chats, terminals and coding agents as tabs, the changed files, review and files on the right.",
       "runtime": "acrylblends",
       "origin": "official"
     },

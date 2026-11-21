@@ -1,7 +1,7 @@
 # ACRYL SDE
 
 **ACRYL SDE**, the Synthetic Data Engine. Registry id `acryl.sde`. Source: <https://github.com/acrylblends/05-acryl-sde>. Page: <https://acrylblends.github.io/blends/ai/sde/acryl.sde>. A fork of [ACRYL ADE](https://acrylblends.github.io/blends/ai/ade/acryl.ade), source <https://github.com/acrylblends/05-acryl-ade>
-(`acryl.ade`, the ACRYL IDE as a Blend) with one plugin added: `plugins/sde`.
+(`acryl.ade`, ACRYL's development environment as a Blend) with one plugin added: `plugins/sde`.
 
 Point it at a codebase and it makes a **Training Unit**: the code with everything that identifies the project, its people and its secrets
 removed, the engineering kept, its architecture described, and reports a buyer can check. You review every unit. Only a unit you approved is
@@ -79,7 +79,7 @@ its updates here. To pack one for this machine: `npx @acryldev/blends@1.7.12 pac
 
 - Synthetic generation: re-implement the extracted architecture in another domain or language with a model, so the output is new code, not rewritten code; validate it builds and its tests pass in a sandbox.
 - Syntax-tree parsing (Tree-sitter) instead of import patterns; embedding similarity.
-- Coding-agent session traces as a second source (the ACRYL IDE records them).
+- Coding-agent session traces as a second source (ACRYL ADE records them).
 - Delivery to prepared infrastructure (a dataset store per buyer), always behind the same approval.
 
 MIT licence.

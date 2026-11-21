@@ -682,8 +682,8 @@ export interface Config {
         "A configuration edit hot-replaces the plugin: the framework unloads the old instance and loads a new one. Because registrations are effects and clean themselves up, replacement does not retain the old instance's registrations.",
       ] },
       { heading: "ACRYL's own Config, for real", paragraphs: [
-        "ACRYL's own plugins follow this exact pattern rather than a different one: apps/acryl-desktop/src/updates.ts's Config is a Schemastery object built with Schema.object({...}), imported as import z from '@deepseek-ai/schemastery' (the z alias is ergonomic naming, not the zod npm package — no ACRYL-owned plugin imports zod). Every field carries a real bound, matching the design principles above: initialDelayMs, intervalMs, and requestTimeoutMs are all z.number().step(1).min(...).max(...).default(...), never a hardcoded constant.",
-      ], code: [{ label: "apps/acryl-desktop/src/updates.ts (real)", code: `import z from '@deepseek-ai/schemastery'
+        "ACRYL's own plugins follow this exact pattern rather than a different one: the earlier ACRYL desktop's src/updates/updates.ts (github.com/acryldev/acryl-desktop) has a Config that is a Schemastery object built with Schema.object({...}), imported as import z from '@deepseek-ai/schemastery' (the z alias is ergonomic naming, not the zod npm package — no ACRYL-owned plugin imports zod). Every field carries a real bound, matching the design principles above: initialDelayMs, intervalMs, and requestTimeoutMs are all z.number().step(1).min(...).max(...).default(...), never a hardcoded constant.",
+      ], code: [{ label: "acryldev/acryl-desktop src/updates/updates.ts (real)", code: `import z from '@deepseek-ai/schemastery'
 
 export interface Config {
   enabled: boolean

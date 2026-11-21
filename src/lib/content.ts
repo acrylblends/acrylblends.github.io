@@ -24,7 +24,7 @@ const ADE: SubcategoryDetail = {
   slug: "ade",
   summary: "Where people and coding agents build software together: projects and git worktrees, the agent's chat, terminals with Claude Code, Codex or any other agent, and the files and changes they work on.",
   paragraphs: [
-    "An ADE is an IDE built around agents rather than around an editor. ACRYL ADE is the ACRYL IDE (github.com/acryldev/acryl) as a Blend: the same workbench, unchanged, in an app you create with one command and grow with plugins like any other Blend.",
+    "An ADE is an IDE built around agents rather than around an editor. ACRYL ADE is ACRYL's development environment as a Blend (the workbench of the earlier ACRYL IDE), in an app you create with one command and grow with plugins like any other Blend.",
     "On the left, your projects with their branches and worktrees, and the chats and terminals open on each. In the middle, tabs: the agent's chat, terminals, a browser, files, diffs, a board and docs. From the + menu you open Claude, Codex, Grok, GitHub Copilot, OpenCode, Pi and more, each in its own terminal tab beside the chat.",
   ],
   gallery: [

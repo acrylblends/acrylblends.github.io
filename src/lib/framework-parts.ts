@@ -73,7 +73,7 @@ export const frameworkParts: FrameworkPart[] = [
     service: "jsx, clientModules, acryl-ui",
     providers: ["acrylblends/jsx", "acrylblends/jsx/dom"],
     status: "stable",
-    note: "JSX on the server and the same JSX in the browser, and client components without a bundler. A richer React component library is used by the ACRYL IDE and not yet in templates.",
+    note: "JSX on the server and the same JSX in the browser, and client components without a bundler. A richer React component library is used by ACRYL ADE and not yet in templates.",
   },
   {
     layer: "Desktop",
