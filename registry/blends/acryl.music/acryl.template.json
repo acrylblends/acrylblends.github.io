@@ -1,0 +1,5 @@
+{
+  "name": "Music",
+  "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works.",
+  "plugins": []
+}

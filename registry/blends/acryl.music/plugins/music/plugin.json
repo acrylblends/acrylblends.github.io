@@ -1,0 +1,11 @@
+{
+  "name": "music",
+  "description": "A step sequencer / drum machine: four tracks, 8 or 16 steps, ready-made styles, saved patterns, played with WebAudio in the page. JSON routes the agent and the page call. Data in music.json in the app's home.",
+  "requires": [],
+  "inject": ["router", "home", "appInstance"],
+  "provides": [],
+  "mount": "a row `- id: music` / `name: music` before the server row in blend.yaml",
+  "config": {
+    "store": "a MusicStore for tests (default: music.json in the app's home)"
+  }
+}

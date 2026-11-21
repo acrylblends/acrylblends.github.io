@@ -1,13 +1,30 @@
 # Music
 
-A starter kit grown from Blank: a step sequencer and drum machine. Four tracks (kick, snare, clap, tom), 8 or 16 steps, a tempo, and patterns you save by name. The sounds
-are synthesized in the browser with WebAudio, so there is nothing to download. The pattern lives in your project (`.acryl/music.json`).
+A step sequencer / drum machine: four tracks, 8 or 16 steps, ready-made styles, saved patterns, played with WebAudio in the page (synthesized, no audio files). The sequencer is the widget on the first screen; the same operations are JSON routes under `/music` (`GET /state`, `/describe`, `POST /style`, `/tempo`, `/steps`, `/beats`, `/step`, `/track`, `/clear`, `/pattern`, `/save`, `/load`, `/delete`), which is how the agent inside the app plays it; the page picks up the agent's changes within a moment. The rules are in `plugins/music/lib/domain.js` (pure, tested), the data in `music.json` in the app's home. It grew from the earlier ACRYL-app starter of the same name: `domain.js` and `store.js` are that code, unchanged, and its own domain tests run with the app's (`test/music-domain.test.ts`); `plugins/music/index.ts` is the adapter.
 
-```bash
-acryl new my-beats --from acryl.music
-my-beats/bin/acryl web
+Below is what every app made by `acrylblends init` carries.
+
+A Cordis app on Node, scaffolded by `acrylblends init`. TypeScript, run by Node with no build step. Every part is a
+Cordis plugin.
+
+```sh
+npm install
+npm run dev        # prints its URL; data lives in ~/.acryl/apps/<id>/data/
+npm test
+npm run check      # type-check
 ```
 
-The app opens on the drum machine, with the agent beside it. Press Play (or the space bar) and talk to it: "make a 128 bpm techno beat", "add a snare on 2 and 4",
-"slow it down to 90", "save this as warehouse". The grid changes as the agent works, and the pattern keeps playing. Then ask the builder inside to extend it: a hi-hat track, swing, a bass line. The project
-is yours: private and proprietary until you decide otherwise. This starter's code is MIT licensed.
+- `src/main.ts` chooses where the app lives (the `@acryldev/instance` package) and starts it.
+- `blend.yaml` is the app as data: which plugins it mounts, in what order, with what config and parameters. Switch
+  one off with `disabled: true`. `npm run lock` writes `blend.lock.json`: the manifest's digest and a digest of
+  every plugin folder, so a diff of the lock shows what changed.
+- `src/app.ts` holds the registry of plugins the code provides, and mounts the manifest's rows.
+- `src/routes.ts` is your own plugin: it builds an `App` (`import { App } from './plugins/router/src/index.ts'`) and mounts it with `ctx.router.route(prefix, app)`. Routes added to the app after it is mounted are not served. A page mounted at `/x` answers `/x`, not `/x/` (trailing slashes are strict). The router API is documented at https://acrylblends.github.io/docs/framework/the-acryl-framework and in `docs/framework` of the acrylblends repository.
+- `plugins/` holds the plugins copied from the ACRYLBLENDS library. They are yours now; edit them freely.
+  Add more with `acrylblends add <plugin>`.
+
+`npm run save -- "message"` commits the app with git (and pushes when it has a remote). It refuses a file that looks like
+it holds a secret, and refuses to push a private app (anything but `visibility: public` in `blend.yaml`) to a public
+remote.
+
+Set `ACRYLBLENDS_HOME` to keep data elsewhere, and `ACRYLBLENDS_PORT` to choose the first port tried.

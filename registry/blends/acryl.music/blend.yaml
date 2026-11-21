@@ -1,27 +1,43 @@
-# Music: Blank plus a step sequencer / drum machine as the app itself - the drum machine is the window, the agent sits beside it and plays it with tools.
-# Start a project from it:  acryl new my-beats --from acryl.music
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
 apiVersion: blends.acryl.dev/v1alpha1
 kind: Blueprint
 metadata:
   id: acryl.music
-  name: Music
-  version: 0.1.0
+  name: "Music"
+  version: 0.2.0
   category: creative
-  description: A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works.
+  description: "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works."
   license: MIT
   visibility: public
 spec:
   runtime: cordis
-  extends: acryl.blank
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
   rows:
-    - id: brand
-      name: acryl-brand
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # Music: a step sequencer / drum machine (plugins/music/). Its widget is on the first screen; its routes are under /music.
+    - id: music
+      name: music
+    - id: routes
+      name: routes
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    # Sharing: `npm run acryl -- plugin pull github:<owner>/<repo>@<version>` installs a plugin someone released (development only).
+    - id: plugin-share
+      name: plugin-share
+    - id: server
+      name: acryl-node-server
       config:
-        name: Music
-        tagline: Say the beat, hear the beat.
-        accent: "#7048e8"
-        accentDark: "#b197fc"
-    - id: acryl-app-shell
-      name: acryl-app-shell
-    - id: acryl-music
-      name: acryl-music
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door
