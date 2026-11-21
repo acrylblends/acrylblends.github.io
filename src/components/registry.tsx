@@ -17,6 +17,8 @@ interface RegistryEntry {
   origin: Origin;
   /** A Blend found in its own repository (registry/discovered.json, written by scripts/sync-blends.ts): its owner, its page, the tag it is listed at and the create source. */
   publisher?: string; repository?: string; ref?: string; source?: string;
+  /** `converting`: a starter for the earlier ACRYL app that is being rebuilt as an acrylblends app; no listing offers a way to start from it until it is. */
+  status?: "converting";
 }
 
 export type { RegistryEntry };
@@ -121,7 +123,9 @@ export function RegistryStarters() {
         {entry.description && <p className="mt-3 max-w-xl text-sm leading-6 text-muted-foreground">{entry.description}</p>}
         {entry.origin === "community" && <p className="mt-2 font-mono text-[11px] text-muted-foreground">by @{entry.publisher}</p>}
         {entry.parent && <p className="mt-3 flex items-center gap-2 font-mono text-[11px] text-muted-foreground">grew from {entry.parent} <ArrowRight size={12}/> {entry.id}</p>}
-        <div className="mt-5"><CodeBlock label={runtimeOf(entry) === "acrylblends" ? "Start a project" : "Start a project in the ACRYL app"} code={startCommand(entry)}/>{runtimeOf(entry) === "acryl" && <p className="mt-2 text-xs leading-5 text-muted-foreground">Runs only inside the ACRYL app. <code>create-acrylblends</code> makes acrylblends apps and refuses this one.</p>}</div>
+        <div className="mt-5">{entry.status === "converting"
+          ? <p className="border border-border bg-muted px-4 py-3 text-sm leading-6 text-muted-foreground" data-test="converting"><strong className="text-foreground">Being converted to an acrylblends app.</strong> It starts from nothing yet: <code>create-acrylblends</code>, Control Center and Deploy to WebBoxes.ai will offer it as soon as it is.</p>
+          : <><CodeBlock label={runtimeOf(entry) === "acrylblends" ? "Start a project" : "Start a project in the ACRYL app"} code={startCommand(entry)}/>{runtimeOf(entry) === "acryl" && <p className="mt-2 text-xs leading-5 text-muted-foreground">Runs only inside the ACRYL app. <code>create-acrylblends</code> makes acrylblends apps and refuses this one.</p>}</>}</div>
       </article>)}
     </div>
   </section>;

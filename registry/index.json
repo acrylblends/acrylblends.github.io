@@ -12,6 +12,7 @@
       "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.",
       "parent": "acryl.blank",
       "runtime": "acryl",
+      "status": "converting",
       "origin": "official"
     },
     {
@@ -36,6 +37,7 @@
       "category": "starter",
       "description": "The smallest working agent that can grow itself. Add plugins, or ask the builder inside to build them.",
       "runtime": "acryl",
+      "status": "converting",
       "origin": "official"
     },
     {
@@ -61,6 +63,7 @@
       "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
       "parent": "acryl.blank",
       "runtime": "acryl",
+      "status": "converting",
       "origin": "official"
     },
     {
@@ -74,6 +77,7 @@
       "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works.",
       "parent": "acryl.blank",
       "runtime": "acryl",
+      "status": "converting",
       "origin": "official"
     },
     {
@@ -87,6 +91,7 @@
       "description": "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.",
       "parent": "acryl.blank",
       "runtime": "acryl",
+      "status": "converting",
       "origin": "official"
     },
     {
@@ -100,6 +105,7 @@
       "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
       "parent": "acryl.blank",
       "runtime": "acryl",
+      "status": "converting",
       "origin": "official"
     },
     {

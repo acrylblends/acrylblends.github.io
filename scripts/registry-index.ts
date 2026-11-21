@@ -87,7 +87,9 @@ export function indexText(root: string): { text: string; problems: string[] } {
     out.push(...checkPortable(dir).map((message) => `${String(entry.path)}: ${message}`));
     // Every folder under registry/blends/ is in this repository, which belongs to the acrylblends organisation: official. A community Blend is never a folder here;
     // it is found in its own repository (scripts/sync-blends.ts writes discovered.json with origin decided from the repository owner's id).
-    if (!existsSync(join(dir, MARKER))) return { ...entry, runtime: "acryl", origin: "official" };
+    // A starter for the ACRYL app (the DSH-engine app of the earlier IDE) cannot be made by create-acrylblends, run in a WebBox or started from Control Center: it is being converted to an
+    // acrylblends app, one entry at a time (a converted entry gains its acryl.template.json and becomes runtime acrylblends, same id). `status` tells every listing to offer it no button.
+    if (!existsSync(join(dir, MARKER))) return { ...entry, runtime: "acryl", status: "converting", origin: "official" };
     const apps = checkApp(dir);
     out.push(...apps.map(message => `${String(entry.path)}: ${message}`));
     return { ...entry, runtime: "acrylblends", origin: "official" };
