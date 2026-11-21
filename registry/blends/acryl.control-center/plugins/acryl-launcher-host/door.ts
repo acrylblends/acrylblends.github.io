@@ -63,7 +63,7 @@ export function fileDoor(fetchImpl: Fetch = (input, init) => fetch(input, init),
     }
   }
   return {
-    call: (folder, verb, args) => post(folder, '/api/acryl-door/call', { verb, args }),
-    confirmPublish: (folder, body) => post(folder, '/api/acryl-door/publish-confirmed', body),
+    call: (folder, verb, args) => post(folder, '/api/door/call', { verb, args }),
+    confirmPublish: (folder, body) => post(folder, '/api/door/publish-confirmed', body),
   }
 }

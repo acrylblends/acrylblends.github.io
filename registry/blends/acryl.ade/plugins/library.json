@@ -1,10 +1,10 @@
 {
   "plugins": [
-    "acryl-door",
-    "acryl-node-server",
-    "acryl-page",
-    "acryl-router",
-    "acryl-web-server",
+    "door",
+    "node-server",
+    "page",
+    "router",
+    "web-server",
     "extensions",
     "manifest",
     "plugin-share",

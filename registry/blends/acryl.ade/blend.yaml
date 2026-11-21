@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.ade
   name: "ACRYL ADE"
-  version: 0.2.4
+  version: 0.2.6
   category: ai
   description: "ACRYL ADE, the Agent Development Environment: ACRYL's development environment as a Blend. Projects and git worktrees on the left, chats, terminals and coding agents as tabs, the changed files, review and files on the right."
   license: MIT

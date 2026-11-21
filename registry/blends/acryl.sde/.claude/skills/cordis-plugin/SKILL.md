@@ -1,6 +1,6 @@
 ---
 name: cordis-plugin
-description: Add a Cordis plugin to acryl-ade - a plugins/<name>/ folder with name, inject, apply and an optional check, its routes as an Acryl app, how its blend.yaml row mounts it, and how to verify it. Use when a feature should be its own plugin, or when asked to extend the app.
+description: Add a Cordis plugin to framed - a plugins/<name>/ folder with name, inject, apply and an optional check, its routes as an Acryl app, how its blend.yaml row mounts it, and how to verify it. Use when a feature should be its own plugin, or when asked to extend the app.
 ---
 
 # Adding a Cordis plugin
@@ -9,7 +9,7 @@ A plugin is a folder `plugins/<name>/` with an `index.ts` exporting `name` (its 
 
 ```ts
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '@acryldev/blends'
+import { Acryl } from 'acrylblends'
 
 export const name = 'due-dates'
 export const inject = ['router']

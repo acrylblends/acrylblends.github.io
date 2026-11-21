@@ -16,6 +16,7 @@ const { selectInstance } = await import('@acryldev/instance')
 const chosen = selectInstance({ projectRoot: frameworkRoot, env: process.env })
 const appRoot = chosen.root
 const home = chosen.home
+// The host plugins live in the program (in a packaged app only the bundle overlay finds them, existsSync does not): their folders are plugins/<id>.
 const profileName = 'acrylblends-acryl'
 // The page and its tab are named for the app: the package's name, as the frame's header says it, else the folder's.
 const appTitle = (() => {
@@ -156,6 +157,10 @@ const clientRows = [
   {
     "id": "client-modules",
     "name": "@deepseek-ai/dsh-client-modules"
+  },
+  {
+    "id": "client-hmr",
+    "name": "@deepseek-ai/dsh-client-hmr"
   },
   {
     "id": "client-locale",
@@ -303,10 +308,6 @@ const clientRows = [
   {
     "id": "ui-input-trigger",
     "name": "@deepseek-ai/dsh-client-ui-input-trigger"
-  },
-  {
-    "id": "client-hmr",
-    "name": "@deepseek-ai/dsh-client-hmr"
   }
 ]
 const agentRows = [
@@ -386,9 +387,9 @@ function dshStandardPlugin(id) {
 agentRows.find((row) => row.id === 'preset-acryl-blends').config.plugins.push(...DSH_STANDARD_PLUGINS.map(dshStandardPlugin))
 const hostLayer = anchorRows([{
   insert: [
-    { id: 'node-server', name: './plugins/acryl-node-server/src/index.ts', config: { hostname: chosen.host ?? '127.0.0.1', port: Number(port), scan: Number(port) === 0 ? 0 : 20 } },
-    { id: 'web-server', name: './plugins/acryl-web-server/src/index.ts' },
-    { id: 'page', name: './plugins/acryl-page/src/index.ts', config: { title: appTitle } },
+    { id: 'node-server', name: `./plugins/node-server/src/index.ts`, config: { hostname: chosen.host ?? '127.0.0.1', port: Number(port), scan: Number(port) === 0 ? 0 : 20 } },
+    { id: 'web-server', name: `./plugins/web-server/src/index.ts` },
+    { id: 'page', name: `./plugins/page/src/index.ts`, config: { title: appTitle } },
     ...clientRows,
     ...agentRows,
   ],
@@ -574,5 +575,12 @@ if (check) {
   }
   await ctx.fiber.dispose()
 } else {
-  for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void ctx.fiber.dispose() })
+  let stopping = false
+  for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => {
+    if (stopping) return
+    stopping = true
+    console.log('acrylblends host: stopping')
+    setTimeout(() => { console.warn('acrylblends host: not stopped after 5 s, leaving now'); process.exit(1) }, 5_000).unref()
+    void ctx.fiber.dispose()
+  })
 }

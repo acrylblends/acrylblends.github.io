@@ -5,20 +5,46 @@
  * same guards hold: no file that holds a secret, and a private app never goes to a public repository.
  */
 import { spawnSync } from 'node:child_process'
-import { readFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { basename, join } from 'node:path'
 import {
+  type AppIdentity,
+  type CatalogCategory,
   connectRemote,
+  GITHUB_VIA_GH,
   type GitPort,
   gitCli,
   githubHosting,
   type HostingPort,
   PersistenceError,
+  type Placement,
+  placementOf,
+  placementProblem,
   readAppIdentity,
   type SecretFinding,
   saveApp,
+  suggestPlacement,
   type Visibility,
+  withId,
+  withLicense,
+  withPlacement,
+  withVersion,
+  withVisibility,
 } from '@acryldev/app-persistence'
+
+/** The GitHub topic acrylblends.github.io's hourly sync finds a Blend's repository by. */
+export const BLEND_TOPIC = 'acrylblends-blend'
+
+/** Where and how the Blends store lists the app: shown in the plan, written by the share. */
+export interface StoreListing {
+  /** Its id in the store, under its owner's name (`ana.notes`): an app made from a starter is `acrylblends.<name>`, which only official owners may list. */
+  readonly id: string
+  readonly placement: Placement
+  /** An SPDX licence id (MIT): a public Blend names its terms. */
+  readonly license: string
+  /** The tag people start from (`--from github:owner/repo#v1.0.0`): v and the app's version. */
+  readonly tag: string
+}
 
 /** What a share would send, and where. */
 export interface SharePlan {
@@ -29,6 +55,8 @@ export interface SharePlan {
   readonly visibility: Visibility
   /** How many files changed since the last save; the share saves them first. */
   readonly changes: number
+  /** Listed in the Blends store too (acrylblends.github.io and Control Center's store), as Community under the owner's name. */
+  readonly listing?: StoreListing
 }
 
 export type ShareRefused = {
@@ -44,12 +72,24 @@ export type ShareResult =
       readonly created: boolean
       /** The version saved by the share, when something had changed. */
       readonly commit?: string
+      /** The store listing: its tag, and whether this share made it (an existing tag is kept, so a new listing needs a new version). */
+      readonly listed?: { readonly tag: string; readonly created: boolean }
     }
   | ShareRefused
 
 export interface ShareOptions {
   /** The GitHub account or organization for a new repository; the signed-in account when absent. */
   readonly owner?: string
+  /** Who may see a new repository; blend.yaml's metadata.visibility when absent. A share with it records it there, so later saves agree. */
+  readonly visibility?: Visibility
+  /** List it in the Blends store. Any part not given is taken from the app: its earlier listing, else its starter's category; licence MIT. */
+  readonly list?: {
+    readonly category?: string
+    readonly subcategory?: string
+    readonly license?: string
+  }
+  /** The published category list (acrylblends.github.io/categories.json), to check the place against; unchecked when absent. */
+  readonly categories?: readonly CatalogCategory[]
 }
 
 /** What a share needs from the computer; tests give their own. */
@@ -60,6 +100,10 @@ export interface SharePorts {
   account(): string | undefined
   /** How many files differ from the last save. */
   pending(): number
+  /** Label `owner/repo` for the Blends store and push the tag; false when the tag already existed (it is never moved). */
+  list(repository: string, tag: string): boolean
+  /** Whether release `tag` exists here: `none`, `current` (it is this commit), or `older` (versions were saved since). */
+  released(tag: string): 'none' | 'current' | 'older'
 }
 
 /** The person's own git and gh, in the app's folder. */
@@ -79,6 +123,32 @@ export function sharePorts(appRoot: string): SharePorts {
       const result = run('git', ['status', '--porcelain'])
       return result.status === 0 ? result.stdout.split('\n').filter(Boolean).length : 0
     },
+    released: (tag) => {
+      const tagged = run('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}^{commit}`])
+      if (tagged.status !== 0) return 'none'
+      const head = run('git', ['rev-parse', '-q', '--verify', 'HEAD'])
+      return head.status === 0 && head.stdout.trim() === tagged.stdout.trim() ? 'current' : 'older'
+    },
+    list: (repository, tag) => {
+      const must = (command: string, args: readonly string[], what: string) => {
+        const result = run(command, args)
+        if (result.status !== 0)
+          throw new PersistenceError(`${what}: ${(result.stderr || result.stdout).trim()}`)
+      }
+      must(
+        'gh',
+        ['repo', 'edit', repository, '--add-topic', BLEND_TOPIC],
+        'could not label the repository for the Blends store',
+      )
+      if (run('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`]).status === 0) return false
+      must('git', ['tag', tag], `could not tag ${tag}`)
+      must(
+        'git',
+        [...GITHUB_VIA_GH, 'push', '--quiet', 'origin', `refs/tags/${tag}`],
+        `could not push ${tag}`,
+      )
+      return true
+    },
   }
 }
 
@@ -93,25 +163,208 @@ const repositoryName = (name: string): string =>
     .replace(/^[-.]+|[-.]+$/gu, '')
     .toLowerCase()
 
+/** `owner/repo` of a GitHub remote address, or undefined for another host. */
+export const githubRepository = (remote: string): string | undefined =>
+  /github\.com[/:]([^/]+\/[^/]+?)(?:\.git)?\/?$/u.exec(remote)?.[1]
+
+const INSTALL_SCRIPTS = [
+  'preinstall',
+  'install',
+  'postinstall',
+  'prepublish',
+  'preprepare',
+  'prepare',
+  'postprepare',
+]
+const LICENSE_ID = /^[A-Za-z0-9][A-Za-z0-9.+-]*$/u
+
+interface PackageJson {
+  version?: unknown
+  keywords?: unknown
+  scripts?: Record<string, unknown>
+  [key: string]: unknown
+}
+const packageOf = (appRoot: string): PackageJson | undefined => {
+  try {
+    return JSON.parse(readFileSync(join(appRoot, 'package.json'), 'utf8')) as PackageJson
+  } catch {
+    return undefined
+  }
+}
+
+/** `1.2.0` -> `1.2.1`; a version that is not three numbers gets `.1` added, so it still moves on. */
+export const nextPatch = (version: string): string => {
+  const parts = /^(\d+)\.(\d+)\.(\d+)$/u.exec(version)
+  return parts === null ? `${version}.1` : `${parts[1]}.${parts[2]}.${Number(parts[3]) + 1}`
+}
+
+/** The store listing a share asked for, as the person will read it, or why it cannot be listed. */
+function planListing(
+  appRoot: string,
+  identity: AppIdentity,
+  visibility: Visibility,
+  repository: string | undefined,
+  options: ShareOptions,
+  ports: SharePorts,
+): StoreListing | ShareRefused | undefined {
+  const asked = options.list
+  if (asked === undefined) return undefined
+  if (visibility !== 'public')
+    return refused('only a public app can be listed in the Blends store: choose public')
+  if (repository === undefined)
+    return refused('only an app on GitHub can be listed in the Blends store')
+  if (identity.description === undefined)
+    return refused(
+      'the store lists an app with its description: add one to blend.yaml (metadata.description)',
+    )
+  const pkg = packageOf(appRoot)
+  if (pkg === undefined) return refused('the app has no readable package.json')
+  const script = INSTALL_SCRIPTS.find((name) => typeof pkg.scripts?.[name] === 'string')
+  if (script !== undefined)
+    return refused(
+      `package.json defines the install script "${script}", which a listed app may not`,
+    )
+  const categories = options.categories ?? []
+  const placement: Placement | undefined =
+    asked.category !== undefined
+      ? {
+          category: asked.category,
+          ...(asked.subcategory === undefined ? {} : { subcategory: asked.subcategory }),
+        }
+      : (placementOf(pkg.keywords) ?? suggestPlacement(identity.category, categories))
+  if (placement === undefined)
+    return refused(
+      'choose its category, one of acrylblends.github.io/blends (for example --category gaming)',
+    )
+  const problem = categories.length > 0 ? placementProblem(placement, categories) : undefined
+  if (problem !== undefined) return refused(problem)
+  const license = asked.license ?? identity.license ?? 'MIT'
+  if (!LICENSE_ID.test(license))
+    return refused(`"${license}" is not a licence id (such as MIT or Apache-2.0)`)
+  // A release is never moved: when this version is already tagged and the app changed since, the share releases the next patch version.
+  let version = typeof pkg.version === 'string' ? pkg.version : (identity.version ?? '0.1.0')
+  for (let guard = 0; guard < 100; guard += 1) {
+    const released = ports.released(`v${version}`)
+    if (released === 'none' || (released === 'current' && ports.pending() === 0)) break
+    version = nextPatch(version)
+  }
+  const name = (identity.id ?? '').split('.').slice(1).join('.') || repository.split('/')[1] || ''
+  const id = `${(repository.split('/')[0] ?? '').toLowerCase()}.${name.toLowerCase()}`
+  return { id, placement, license, tag: `v${version}` }
+}
+
+const MIT = (year: number, holder: string) => `MIT License
+
+Copyright (c) ${String(year)} ${holder}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+`
+
+/**
+ * The files the store reads, written into the app before it is saved: the licence in blend.yaml (and an MIT LICENSE file when it has none),
+ * the marker and placement keywords in package.json, and the acryl.template.json that lets people start an app from it. Returns blend.yaml's text.
+ */
+function writeListing(
+  appRoot: string,
+  manifestText: string,
+  listing: StoreListing,
+  repository: string,
+): string {
+  const identity = readAppIdentity(manifestText)
+  let text = manifestText
+  if (identity.id !== listing.id) text = withId(text, listing.id)
+  if (identity.license !== listing.license) text = withLicense(text, listing.license)
+  const pkg = packageOf(appRoot) ?? {}
+  // The release this share tags: when planListing moved past an existing tag, the app carries the new version in both files.
+  const version = listing.tag.replace(/^v/u, '')
+  const bumped = typeof pkg.version === 'string' && pkg.version !== version
+  if (bumped || (pkg.version === undefined && identity.version !== version))
+    text = withVersion(text, version)
+  if (text !== manifestText) writeFileSync(join(appRoot, 'blend.yaml'), text)
+  const before = Array.isArray(pkg.keywords)
+    ? pkg.keywords.filter((word): word is string => typeof word === 'string')
+    : []
+  const keywords = withPlacement(
+    before.includes(BLEND_TOPIC) ? before : [...before, BLEND_TOPIC],
+    listing.placement,
+  )
+  if (bumped || JSON.stringify(keywords) !== JSON.stringify(pkg.keywords))
+    writeFileSync(
+      join(appRoot, 'package.json'),
+      `${JSON.stringify({ ...pkg, ...(bumped ? { version } : {}), keywords }, null, 2)}\n`,
+    )
+  const template = join(appRoot, 'acryl.template.json')
+  if (!existsSync(template))
+    writeFileSync(
+      template,
+      `${JSON.stringify({ name: identity.name ?? basename(appRoot), description: identity.description ?? '' }, null, 2)}\n`,
+    )
+  if (
+    listing.license === 'MIT' &&
+    !['LICENSE', 'LICENSE.md', 'LICENSE.txt'].some((file) => existsSync(join(appRoot, file)))
+  )
+    writeFileSync(
+      join(appRoot, 'LICENSE'),
+      MIT(new Date().getFullYear(), repository.split('/')[0] ?? ''),
+    )
+  return text
+}
+
 /** What sharing the app would send. Sends nothing and changes nothing. */
 export function planShare(
   appRoot: string,
   options: ShareOptions = {},
   ports: SharePorts = sharePorts(appRoot),
 ): SharePlan | ShareRefused {
+  const plan = planRepository(appRoot, options, ports)
+  if ('ok' in plan) return plan
+  const listing = planListing(
+    appRoot,
+    readAppIdentity(manifestOf(appRoot)),
+    plan.visibility,
+    plan.create ? plan.repository : githubRepository(plan.repository),
+    options,
+    ports,
+  )
+  if (listing !== undefined && 'ok' in listing) return listing
+  return listing === undefined ? plan : { ...plan, listing }
+}
+
+function planRepository(
+  appRoot: string,
+  options: ShareOptions,
+  ports: SharePorts,
+): SharePlan | ShareRefused {
   const identity = readAppIdentity(manifestOf(appRoot))
+  const visibility = options.visibility ?? identity.visibility
   const changes = ports.pending()
   const remote = ports.git.remoteUrl()
   if (remote !== undefined) {
     const known = ports.hosting.visibilityOf(remote)
-    if (identity.visibility === 'private' && known === 'public')
+    if (visibility === 'private' && known === 'public')
       return refused(
         `this app is private (blend.yaml metadata.visibility) but its remote ${remote} is public. Make the remote private, or set visibility: public if you mean to open it`,
       )
     return {
       repository: remote,
       create: false,
-      visibility: known === 'unknown' ? identity.visibility : known,
+      visibility: known === 'unknown' ? visibility : known,
       changes,
     }
   }
@@ -125,14 +378,15 @@ export function planShare(
   const name = repositoryName(identity.name ?? basename(appRoot))
   if (name === '')
     return refused('the app has no name to call its repository by (blend.yaml metadata.name)')
-  return { repository: `${owner}/${name}`, create: true, visibility: identity.visibility, changes }
+  return { repository: `${owner}/${name}`, create: true, visibility, changes }
 }
 
 export const sameSharePlan = (a: SharePlan, b: SharePlan): boolean =>
   a.repository === b.repository &&
   a.create === b.create &&
   a.visibility === b.visibility &&
-  a.changes === b.changes
+  a.changes === b.changes &&
+  JSON.stringify(a.listing) === JSON.stringify(b.listing)
 
 /** The person's yes: share exactly the plan they read. An app that changed since is not shared; the plan is read again first. */
 export function shareApp(
@@ -147,8 +401,18 @@ export function shareApp(
     return refused(
       'the app changed since this plan was shown, so nothing was sent. Read the new plan and confirm it',
     )
-  const manifestText = manifestOf(appRoot)
+  let manifestText = manifestOf(appRoot)
+  if (
+    options.visibility !== undefined &&
+    readAppIdentity(manifestText).visibility !== options.visibility
+  ) {
+    manifestText = withVisibility(manifestText, options.visibility)
+    writeFileSync(join(appRoot, 'blend.yaml'), manifestText)
+  }
+  const repository = now.create ? now.repository : githubRepository(now.repository)
   try {
+    if (now.listing !== undefined && repository !== undefined)
+      manifestText = writeListing(appRoot, manifestText, now.listing, repository)
     let remote = now.repository
     if (now.create) {
       const connected = connectRemote(
@@ -168,11 +432,16 @@ export function shareApp(
       }
     // Nothing new to save: the versions already saved still have to reach the remote.
     if (saved.status === 'nothing-to-save') ports.git.push()
+    const listed =
+      now.listing !== undefined && repository !== undefined
+        ? { tag: now.listing.tag, created: ports.list(repository, now.listing.tag) }
+        : undefined
     return {
       ok: true,
       remote,
       created: now.create,
       ...(saved.status === 'saved' ? { commit: saved.commit } : {}),
+      ...(listed === undefined ? {} : { listed }),
     }
   } catch (error) {
     if (error instanceof PersistenceError) return refused(error.message)
@@ -189,5 +458,14 @@ export function renderSharePlan(plan: SharePlan): string {
     plan.changes === 0
       ? 'the versions saved so far'
       : `${String(plan.changes)} changed ${plan.changes === 1 ? 'file' : 'files'}, saved first, and the versions saved so far`
-  return `Share this app to ${where}: ${what}.`
+  const listed =
+    plan.listing === undefined
+      ? ''
+      : ` Listed in the Blends store as ${plan.listing.id}, Community, under ${placementWords(plan.listing.placement)} (licence ${plan.listing.license}, people start from ${plan.listing.tag}).`
+  return `Share this app to ${where}: ${what}.${listed}`
 }
+
+const placementWords = (placement: Placement): string =>
+  placement.subcategory === undefined
+    ? placement.category
+    : `${placement.category} › ${placement.subcategory}`

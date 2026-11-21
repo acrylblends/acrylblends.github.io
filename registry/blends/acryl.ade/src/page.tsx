@@ -1,6 +1,6 @@
 import { doorEnabled } from './door.ts'
 
-/** A page written in JSX: Node.js runs it through plugins/acryl-node-server/src/register.ts (see the scripts in package.json), which compiles .tsx with this app's own typescript. */
+/** A page written in JSX: Node.js runs it through plugins/node-server/src/register.ts (see the scripts in package.json), which compiles .tsx with this app's own typescript. */
 const About = () => (
   <main>
     <h1>About</h1>
@@ -23,7 +23,7 @@ export const counterPage = (prefix = ''): string =>
         <h1>Counter</h1>
         <div id="counter" />
         <script type="module" src={`${prefix}/client/counter.tsx`} />
-        {doorEnabled() ? <script type="module" src="/api/acryl-door/page.js" /> : null}
+        {doorEnabled() ? <script type="module" src="/api/door/page.js" /> : null}
       </body>
     </html>
   ).toString()
