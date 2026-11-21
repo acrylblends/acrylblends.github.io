@@ -1,6 +1,6 @@
 /** Work orders: the create form at `/work-orders/new` and the detail at `/work-orders/:id` with assign, schedule, start and a dated close-out. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { longDate, PlantError, priorityLabel, workLabel, type Plant } from '../plant/index.ts'
 
 export const name = 'work-orders'

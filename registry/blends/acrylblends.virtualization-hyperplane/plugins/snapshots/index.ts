@@ -1,6 +1,6 @@
 /** Snapshots (`/snapshots`): every restore point with its machine, size and age, and a way to delete one. Taking one is the machines' job. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fleetErrorOf, whenLabel, withNotice } from '../fleet-shell/index.ts'
 import type {} from '../hyperplane/index.ts'
 

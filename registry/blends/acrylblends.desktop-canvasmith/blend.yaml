@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.desktop-canvasmith
   name: "Canvasmith Desktop"
-  version: 0.1.1
+  version: 0.1.2
   category: desktop
   description: "A desktop-style design workspace: a project of files, an artboard drawn from layers at a chosen zoom, an inspector with checked property edits, layer ordering, tools that add layers, and simulated exports with an activity log."
   license: MIT

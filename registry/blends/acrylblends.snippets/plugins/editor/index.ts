@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /new, GET /snippets/:id/edit, POST /snippets, POST /snippets/:id.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { fileNameOf, LANGUAGES, type Snippet, SnippetsError } from '../snippets/index.ts'
 
 export const name = 'editor'

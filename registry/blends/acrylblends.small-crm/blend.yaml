@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.small-crm
   name: "Small CRM"
-  version: 0.1.1
+  version: 0.1.2
   category: business
   description: "A relationship-first CRM for a small sales team: a deals pipeline with an inspector, contacts, company profiles, a follow-up queue and a pipeline report, composed from Cordis plugins."
   license: MIT

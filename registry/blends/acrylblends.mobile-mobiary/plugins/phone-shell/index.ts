@@ -4,7 +4,7 @@
  * and renders with `ctx.phoneShell.screen(...)`; the companion panel's cards are parts plugins put there with `ctx.phoneShell.side(...)`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Journal } from '../mobiary/index.ts'
 import { PHONE_STYLES } from './styles.ts'
 

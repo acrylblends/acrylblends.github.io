@@ -1,6 +1,6 @@
 /** The Sensor Dashboard shell: the SENSEGRID top bar with the tenant, the ingest label and the simulate action. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Sensors } from '../sensors/index.ts'
 import { createShell, escapeHtml, type NavItem, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

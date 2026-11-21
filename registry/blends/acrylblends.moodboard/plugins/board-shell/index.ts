@@ -1,6 +1,6 @@
 /** The Moodboard shell: the field-notes top bar with the project crumb, the history/share actions and the save form. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Boards } from '../boards/index.ts'
 import { createShell, escapeHtml, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

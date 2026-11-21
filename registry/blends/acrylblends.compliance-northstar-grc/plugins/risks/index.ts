@@ -1,6 +1,6 @@
 /** Risk watchlist (side column): open risks with their residual score and rating, the treatment form for the selected risk, and the New risk form (`?newrisk=1`). The posture strip recalculates after a change. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { TREATMENTS, inherentOf, rating, residualOf, type Rating } from '../grc/index.ts'
 import { escapeHtml, fieldOf, grcErrorOf, withNotice } from '../grc-shell/index.ts'
 

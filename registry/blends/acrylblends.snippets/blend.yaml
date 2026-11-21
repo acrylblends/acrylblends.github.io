@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.snippets
   name: "Snippet Manager"
-  version: 0.1.1
+  version: 0.1.2
   category: developer
   description: "A developer's snippet vault: 128 reusable code snippets with tags, variables, syntax-coloured previews, search and collections."
   license: MIT

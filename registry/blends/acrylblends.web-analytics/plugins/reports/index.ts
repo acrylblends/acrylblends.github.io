@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /acquisition, GET /pages, GET /events?name, GET /conversions.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { number, percent, whenText } from '../analytics/index.ts'
 
 export const name = 'reports'

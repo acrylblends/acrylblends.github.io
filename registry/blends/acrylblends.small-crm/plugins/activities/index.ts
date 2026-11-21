@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /activities?type, POST /activities/tasks/:id/complete.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { ActivityType } from '../crm/index.ts'
 
 export const name = 'activities'

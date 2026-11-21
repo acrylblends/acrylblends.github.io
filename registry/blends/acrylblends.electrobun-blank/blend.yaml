@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.electrobun-blank
   name: "Electrobun Blank"
-  version: 0.1.1
+  version: 0.1.2
   category: desktop
   description: "The blank ACRYL Blend in an Electrobun window instead of Electron: the same Blends frame with chat and agents, in a native window with the system webview. Electrobun 2.0.6 on macOS arm64; the page lists the measured size wins."
   license: MIT

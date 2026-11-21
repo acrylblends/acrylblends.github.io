@@ -1,6 +1,6 @@
 /** Project sidebar (left): the project's files (opening one selects it) and the layer list of the open file, with a visibility toggle per layer; the layer list can be hidden from the toolbar. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, projectErrorOf, withNotice } from '../window-shell/index.ts'
 import { KIND_ICON } from '../canvasmith/index.ts'
 

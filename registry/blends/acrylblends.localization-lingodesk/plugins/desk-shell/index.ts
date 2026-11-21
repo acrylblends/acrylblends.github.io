@@ -5,7 +5,7 @@
  * `?key=`: transient editor state, not part of the saved project.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Desk, type Filter, type Locale, type TypeId, FILTERS, TYPES } from '../lingodesk/index.ts'
 import { DESK_STYLES } from './styles.ts'
 

@@ -1,6 +1,6 @@
 /** Policies: the vulnerability-management policy at `/policies` - the SLA by severity and the evidence rule the console enforces. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'policies'
 export const inject = ['vulns', 'shell', 'router']

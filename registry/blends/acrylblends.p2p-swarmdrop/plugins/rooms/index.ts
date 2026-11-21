@@ -1,6 +1,6 @@
 /** Rooms (aside) and Copy room code (header): the transfer rooms to switch between, create a room for a file, join one by its code, close one. "Copy room code" shows the code (and copies it when the browser allows). */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { percentOf, sizeLabel } from '../swarmdrop/index.ts'
 import { escapeHtml, fieldOf, swarmErrorOf, withNotice } from '../swarm-shell/index.ts'
 

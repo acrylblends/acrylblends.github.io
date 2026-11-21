@@ -1,6 +1,6 @@
 /** Theme and publish (right column, below the inspector; top bar buttons): the accent colour and heading font, preview mode with a Desktop / Mobile switch, and "Publish", which records a simulated build with any contrast warnings. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, siteErrorOf, withNotice } from '../builder-shell/index.ts'
 import { whenLabel } from '../pagefoundry/index.ts'
 

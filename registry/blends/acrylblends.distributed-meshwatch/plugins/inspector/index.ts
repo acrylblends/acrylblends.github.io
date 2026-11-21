@@ -3,7 +3,7 @@
  * rehearse a failure), the safe-drill note, and the recent events.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, meshErrorOf, withNotice } from '../mesh-shell/index.ts'
 import { HEALTH_LABEL, type NodeHealth, clockOf, commitIndex, formatNumber, heartbeatLabel } from '../meshwatch/index.ts'
 

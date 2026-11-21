@@ -3,7 +3,7 @@
  * answer from canned fixtures; nothing is executed. Also opens and closes sessions (`/sessions`, `/sessions/:id/close`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { backTo, escapeHtml, fieldOf, relayErrorOf, withNotice } from '../relay-shell/index.ts'
 import { type ConnectionProfile, type RemoteSession, statusOf } from '../relay/index.ts'

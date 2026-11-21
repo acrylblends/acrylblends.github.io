@@ -3,7 +3,7 @@
  * share actions (POST `/photos/:id/favourite`, POST `/photos/:id/share`). Arrow keys and Escape work through the shell's shared script.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { artOf, dateText, dimensionText, sizeText, type Gallery, type Photo } from '../gallery/index.ts'
 import { escapeHtml, type Shell } from '../gallery-shell/index.ts'
 

@@ -3,7 +3,7 @@
  * "Replay selected" and a link to the dead-letter queue.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { backTo, busErrorOf, escapeHtml, fieldOf, withNotice } from '../bus-shell/index.ts'
 import { STATE_LABEL, clockOf, compact, summarize } from '../pulsebus/index.ts'

@@ -1,6 +1,6 @@
 /** The Vehicle Log shell: the MOTORLOG top bar with the garage links and the vehicle count. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Garage } from '../garage/index.ts'
 import { createShell, escapeHtml, type NavItem, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

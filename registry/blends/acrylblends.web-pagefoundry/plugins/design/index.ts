@@ -1,6 +1,6 @@
 /** Design inspector (right column): the selected section's headline, body, button, items, background, width and visibility, with the contrast it gives; Save, move up or down, and delete. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, siteErrorOf, withNotice } from '../builder-shell/index.ts'
 import { KIND_NAME, MIN_CONTRAST, VISIBILITY_LABEL, WIDTH_LABEL, type Visibility, type Width, contrastOf } from '../pagefoundry/index.ts'
 

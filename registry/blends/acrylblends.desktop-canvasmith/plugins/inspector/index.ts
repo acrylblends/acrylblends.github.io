@@ -1,6 +1,6 @@
 /** Inspector (right): the selected layer's name, position, size, opacity, fill, corner radius, visibility and (for text) content; Apply saves them with the checks; Arrange moves it forward or back; Delete removes it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, projectErrorOf, withNotice } from '../window-shell/index.ts'
 import type {} from '../canvasmith/index.ts'
 

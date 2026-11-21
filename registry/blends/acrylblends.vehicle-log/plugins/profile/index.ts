@@ -1,6 +1,6 @@
 /** The vehicle profile at `/`: the hero, running-cost metrics, service history, cost trend, fuel entry, odometer and reminders. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dateLabel, GarageError, money, money2, monthLabel, number, type Garage } from '../garage/index.ts'
 import type { Shell } from '../garage-shell/index.ts'
 

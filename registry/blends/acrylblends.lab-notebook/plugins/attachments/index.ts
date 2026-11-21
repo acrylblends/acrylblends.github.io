@@ -1,6 +1,6 @@
 /** Attachments: the experiment's files at `/experiments/:id/attachments`, with the add form and its type and size validation. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { LabError, type Lab } from '../lab/index.ts'
 import { attachmentHtml, escapeHtml, pageHead, type Shell } from '../lab-shell/index.ts'
 

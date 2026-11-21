@@ -4,7 +4,7 @@
  * mounts its routes at `ctx.shell.prefix` and writes every link with `ctx.shell.href(path)`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Snippets } from '../snippets/index.ts'
 import { createShell, escapeHtml, type NavItem, type Shell, CLIENT_SCRIPT, badge } from './core.ts'
 import { STYLES } from './styles.ts'

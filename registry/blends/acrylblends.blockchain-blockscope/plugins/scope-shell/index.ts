@@ -5,7 +5,7 @@
  * (`?block=`, `?q=`, `?before=`): transient, not saved.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Chain } from '../blockscope/index.ts'
 import { SCOPE_STYLES } from './styles.ts'
 

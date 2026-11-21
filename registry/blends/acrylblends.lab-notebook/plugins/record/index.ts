@@ -3,7 +3,7 @@
  * converter, instrument metadata and reproducibility stamp. `/` opens the first experiment; `/experiments/:id` any other.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import {
   cleanUnit,
   cleanValue,

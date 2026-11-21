@@ -1,6 +1,6 @@
 /** Watchlist (inspector): the blocks, transactions and addresses the person watches (saved), and the route behind every Watch button. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { formatHeight, labelOf, short } from '../blockscope/index.ts'
 import { chainErrorOf, escapeHtml, fieldOf, withNotice } from '../scope-shell/index.ts'
 

@@ -6,7 +6,7 @@
  * POST /api/racket/telemetry, POST /api/racket/feedback, POST /api/match/sync, POST /api/match/create.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'relay'
 export const inject = ['router']

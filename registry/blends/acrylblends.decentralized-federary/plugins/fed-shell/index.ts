@@ -4,7 +4,7 @@
  * `ctx.fedShell.side(...)` inside `ctx.effect`, so a part leaves with its plugin. The open instance is the URL's `?instance=`: transient, not saved.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Fed, Instance } from '../federary/index.ts'
 import { FED_STYLES } from './styles.ts'
 

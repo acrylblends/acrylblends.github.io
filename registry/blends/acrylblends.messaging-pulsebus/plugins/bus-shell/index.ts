@@ -5,7 +5,7 @@
  * resolves them (the topic's newest message when none is named) and links are written with `ctx.busShell.hrefFor(...)` so the selection travels.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Bus, Message, Topic } from '../pulsebus/index.ts'
 import { BUS_STYLES } from './styles.ts'
 

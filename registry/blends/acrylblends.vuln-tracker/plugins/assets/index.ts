@@ -1,6 +1,6 @@
 /** The asset inventory: environment, platform, owner, criticality and the open findings on each asset. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'assets'
 export const inject = ['vulns', 'shell', 'router']

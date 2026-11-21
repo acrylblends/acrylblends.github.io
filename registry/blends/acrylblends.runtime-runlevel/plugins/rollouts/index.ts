@@ -4,7 +4,7 @@
  * draft is run, discarded, or (once succeeded) rolled back.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, runErrorOf, withNotice } from '../run-shell/index.ts'
 import { ROLLOUT_LABEL, ruleFor, whenLabel } from '../runlevel/index.ts'
 

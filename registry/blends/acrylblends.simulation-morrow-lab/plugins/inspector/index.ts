@@ -3,7 +3,7 @@
  * keeps the setup's current parameters under a name.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, labErrorOf, noticeQuery } from '../lab-shell/index.ts'
 import { GRID, STEP_MIN } from '../morrow-lab/index.ts'
 

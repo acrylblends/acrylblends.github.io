@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.remote-relay
   name: "Remote Relay"
-  version: 0.1.1
+  version: 0.1.2
   category: remote-computing
   description: "A remote-computing workspace: saved SSH-style connections, simulated terminal sessions with allowlisted demo commands, a transfer queue with file metadata and a session audit log."
   license: MIT

@@ -1,6 +1,6 @@
 /** Snapshot ledger (`/snapshots`): every restore point with size, retention and status; record a snapshot, verify a queued one, purge an expired one. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, vaultErrorOf, whenLabel, withNotice } from '../vault-shell/index.ts'
 import { RETENTION_CHOICES, expiresAt, formatGb, isExpired } from '../vaultline/index.ts'
 

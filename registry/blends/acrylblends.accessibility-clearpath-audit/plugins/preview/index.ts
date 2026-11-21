@@ -3,7 +3,7 @@
  * outlined, and the three view settings (high contrast, larger text, focus outlines). Nothing here audits a real site.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { SETTINGS, type Setting, summarize } from '../clearpath/index.ts'
 import { auditErrorOf, escapeHtml, fieldOf, withNotice } from '../audit-shell/index.ts'

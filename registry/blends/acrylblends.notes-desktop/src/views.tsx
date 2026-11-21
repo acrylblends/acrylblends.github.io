@@ -57,7 +57,7 @@ const Layout = ({
       {children}
       <script dangerouslySetInnerHTML={{ __html: counterScript }} />
       <script type="module" src={`${base}/client/counter.tsx`} />
-      {doorEnabled() ? <script type="module" src="/api/acryl-door/page.js" /> : null}
+      {doorEnabled() ? <script type="module" src="/api/door/page.js" /> : null}
     </body>
   </html>
 )

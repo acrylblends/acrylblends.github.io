@@ -3,7 +3,7 @@
  * its preflight and log. "Verify latest point" and "Preview restore simulation" are simulations over seeded metadata; nothing is read or restored.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { DESTINATIONS, type Job, type RecoveryPoint, horizonDays, latestVerified, pointLabel, readiness, rpoMet, sizeLabel, whenLabel } from '../restorepoint/index.ts'
 import { escapeHtml, fieldOf, opsErrorOf, withNotice } from '../ops-shell/index.ts'

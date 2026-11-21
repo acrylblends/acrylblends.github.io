@@ -1,6 +1,6 @@
 /** Event inspector (right column): the selected message's schema version, headers and JSON envelope, delivery details, and "Publish test message" with schema validation. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, busErrorOf, escapeHtml, fieldOf, withNotice } from '../bus-shell/index.ts'
 import { STATE_LABEL, envelope } from '../pulsebus/index.ts'
 

@@ -3,7 +3,7 @@
  * to. Every object type has its own fields, and invalid input keeps the form with a message.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { BoardError, isObjectType, type BoardObject, type Boards, type ObjectType } from '../boards/index.ts'
 import { escapeHtml, pageHead, renderObject, type Shell } from '../board-shell/index.ts'
 

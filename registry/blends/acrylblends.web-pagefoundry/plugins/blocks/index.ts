@@ -1,6 +1,6 @@
 /** Add block (left column): the block library (hero, feature grid, quote, call to action); a click inserts the block at the end of the current page and selects it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, siteErrorOf, withNotice } from '../builder-shell/index.ts'
 import { BLOCKS } from '../pagefoundry/index.ts'
 

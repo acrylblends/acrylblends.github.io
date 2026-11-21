@@ -6,7 +6,7 @@
  * POST /prompts, POST /prompts/:id/version, POST /prompts/:id/run, POST /prompts/:id/evaluate.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { LabError, outputView, type Prompt, type Run, timeOf, whenText } from '../promptlab/index.ts'
 
 export const name = 'library'

@@ -4,7 +4,7 @@
  * in the frame.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { todayOf } from './format.ts'
 import { inboxPage } from './page.ts'
 

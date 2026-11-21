@@ -3,7 +3,7 @@
  * recent request traces and "Run test request", which simulates a request through the policy and records the trace.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { escapeHtml, gateErrorOf, withNotice } from '../gate-shell/index.ts'
 import { clockOf, label, pipelineOf } from '../gatehouse/index.ts'

@@ -3,7 +3,7 @@
  * (accept the evidence, request a refresh), the exception form and the control's audit trail.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { agoLabel, dateLabel, isFresh, latestEvidence, statusOf } from '../grc/index.ts'
 import { escapeHtml, fieldOf, grcErrorOf, withNotice } from '../grc-shell/index.ts'
 

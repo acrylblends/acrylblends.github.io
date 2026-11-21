@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /contacts?q&orphans=1, POST /contacts, POST /contacts/import.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'contacts'
 export const inject = ['crm', 'shell', 'router']

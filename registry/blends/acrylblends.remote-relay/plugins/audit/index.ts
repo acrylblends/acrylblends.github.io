@@ -1,6 +1,6 @@
 /** Session audit (`/audit`): the selected session's event log (opened, profile selected, every command with its exit, transfers, closed) and the connection's details. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml } from '../relay-shell/index.ts'
 import { clockOf, whenLabel } from '../relay/index.ts'
 

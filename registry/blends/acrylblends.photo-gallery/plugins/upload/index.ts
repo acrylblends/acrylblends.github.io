@@ -3,7 +3,7 @@
  * demo needs no file picker, no object URLs and no network; a real app would store the original and a generated thumbnail behind the same boundary.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { artOf, ART_STYLES, type ArtStyle, GalleryError, type Gallery } from '../gallery/index.ts'
 import { escapeHtml, pageHead, type Shell } from '../gallery-shell/index.ts'
 

@@ -1,6 +1,6 @@
 /** Export topology (masthead button): downloads the instances with their relation, health and policy, and the links drawn on the map, as JSON. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'topology-export'
 export const inject = ['router', 'fed', 'fedShell']

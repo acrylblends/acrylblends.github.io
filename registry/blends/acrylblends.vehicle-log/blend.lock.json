@@ -67,31 +67,31 @@
       "name": "acryl-door",
       "origin": "local",
       "digest": "sha256:33468e9fe92b1fd9b74b2ff2634ecc92536bb254edf8f23449734792c48c8085",
-      "source": "plugins/acryl-door"
+      "source": "plugins/door"
     },
     {
       "name": "acryl-node-server",
       "origin": "local",
       "digest": "sha256:a6a0ca8b7117cfc07e6cc5f8338c79491d37574e3c2e106f8d7bc60f32c24108",
-      "source": "plugins/acryl-node-server"
+      "source": "plugins/node-server"
     },
     {
       "name": "acryl-page",
       "origin": "local",
       "digest": "sha256:d6c2395b7adbed77f5897bf7b3192e6a007a2ac9d584c452ac4991770134faf7",
-      "source": "plugins/acryl-page"
+      "source": "plugins/page"
     },
     {
       "name": "acryl-router",
       "origin": "local",
       "digest": "sha256:ab4da3de0c211b9f176b3b42ec28eb7a405b263e01e103d42d09a8c9c1ec577d",
-      "source": "plugins/acryl-router"
+      "source": "plugins/router"
     },
     {
       "name": "acryl-web-server",
       "origin": "local",
       "digest": "sha256:d779f808eccf489a1edd21125176a430c5a6fd1fd1837161fe10f5af64965137",
-      "source": "plugins/acryl-web-server"
+      "source": "plugins/web-server"
     },
     {
       "name": "documents",

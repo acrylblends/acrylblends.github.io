@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.api-orbit-console
   name: "Orbit API Console"
-  version: 0.1.1
+  version: 0.1.2
   category: api-sdk
   description: "An API console: browse endpoints, fill in parameters or a request body, send a request to a local fixture API that validates and creates like the real one, read the response, and copy JavaScript, Python or Go snippets."
   license: MIT

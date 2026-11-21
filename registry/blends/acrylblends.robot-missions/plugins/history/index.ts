@@ -1,6 +1,6 @@
 /** Mission history at `/missions`: every mission with its status, robot and waypoint count, plus the simulation event log. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { statusLabel, type Fleet } from '../fleet/index.ts'
 
 export const name = 'history'

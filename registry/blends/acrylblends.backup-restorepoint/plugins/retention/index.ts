@@ -1,6 +1,6 @@
 /** Retention policies (`/retention`): per workload, how many daily, weekly and monthly points are kept and the RPO target, with the days the policy reaches back. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { horizonDays } from '../restorepoint/index.ts'
 import { escapeHtml, fieldOf, opsErrorOf, withNotice } from '../ops-shell/index.ts'
 

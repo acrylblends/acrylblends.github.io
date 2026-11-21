@@ -6,7 +6,7 @@
  * GET /datasets/:id/chart?groupBy&metric, GET /datasets/:id/export.csv, POST /datasets/:id/views.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import {
   type Bar,
   type Chart,

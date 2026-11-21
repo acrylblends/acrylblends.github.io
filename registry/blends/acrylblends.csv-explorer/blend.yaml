@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.csv-explorer
   name: "CSV Explorer"
-  version: 0.1.2
+  version: 0.1.3
   category: data
   description: "A local-first data workbench: import a CSV, read its column profile, filter and sort the rows, chart a column and save views."
   license: MIT

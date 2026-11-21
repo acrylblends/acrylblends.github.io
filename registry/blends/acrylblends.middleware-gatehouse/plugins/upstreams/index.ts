@@ -1,6 +1,6 @@
 /** Upstream services (left column, under the routes): address and latency, and a switch that marks a service down so the pipeline can be seen failing. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, gateErrorOf, withNotice } from '../gate-shell/index.ts'
 import type {} from '../gatehouse/index.ts'
 

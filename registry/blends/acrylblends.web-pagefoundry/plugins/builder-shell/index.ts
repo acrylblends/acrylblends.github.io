@@ -5,7 +5,7 @@
  * resolves them and `ctx.builderShell.hrefFor(...)` keeps them in links. In preview mode the side regions fold away.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Page, Section, Site } from '../pagefoundry/index.ts'
 import { BUILDER_STYLES } from './styles.ts'
 

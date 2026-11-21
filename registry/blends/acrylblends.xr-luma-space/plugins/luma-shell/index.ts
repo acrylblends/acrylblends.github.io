@@ -4,7 +4,7 @@
  * is the URL's `?object=`: transient editor state, not part of the saved scene.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Scene, SceneObject } from '../luma/index.ts'
 import { LUMA_STYLES } from './styles.ts'
 

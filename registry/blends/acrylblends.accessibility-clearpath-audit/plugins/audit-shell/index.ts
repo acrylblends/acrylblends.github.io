@@ -5,7 +5,7 @@
  * and `?severity=`: transient state, not part of the saved audit.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Audit, Issue, Severity } from '../clearpath/index.ts'
 import { AUDIT_STYLES } from './styles.ts'
 

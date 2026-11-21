@@ -1,6 +1,6 @@
 /** Export review (masthead button): downloads the review as a Markdown file: posture, controls, risks and open audit actions. Synthetic data only. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { reviewMarkdown } from '../grc/index.ts'
 
 export const name = 'review-export'

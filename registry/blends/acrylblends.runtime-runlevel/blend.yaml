@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.runtime-runlevel
   name: "Runlevel"
-  version: 0.1.1
+  version: 0.1.2
   category: runtime
   description: "A runtime operations desk: hosts and their managed processes with a simulated restart, a runtime compatibility matrix, and rollout drafts checked against it with history and roll-back."
   license: MIT

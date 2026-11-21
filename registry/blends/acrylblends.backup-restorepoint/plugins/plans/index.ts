@@ -1,6 +1,6 @@
 /** Recovery plans (`/plans`): every restore preview that was run, newest first, with its scope, destination and result; a blocked one names the preflight check that failed. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { DESTINATIONS, pointLabel, whenLabel } from '../restorepoint/index.ts'
 import { escapeHtml } from '../ops-shell/index.ts'
 

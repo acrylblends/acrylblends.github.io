@@ -2,7 +2,7 @@
  * Assets: the reference image and colour library at `/assets`, with an add form and one action per asset that places it on the board as a new object.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { artOf, BoardError, type Asset, type Boards } from '../boards/index.ts'
 import { escapeHtml, pageHead, type Shell } from '../board-shell/index.ts'
 

@@ -4,18 +4,18 @@
   "private": true,
   "type": "module",
   "imports": {
-    "#acryl-jsx/jsx-runtime": "./plugins/acryl-router/src/core/jsx/jsx-runtime.ts",
-    "#acryl-jsx/jsx-dev-runtime": "./plugins/acryl-router/src/core/jsx/jsx-dev-runtime.ts"
+    "#acryl-jsx/jsx-runtime": "./plugins/router/src/core/jsx/jsx-runtime.ts",
+    "#acryl-jsx/jsx-dev-runtime": "./plugins/router/src/core/jsx/jsx-dev-runtime.ts"
   },
   "engines": {
     "node": ">=22.19.0"
   },
   "scripts": {
     "desktop": "acryl-desktop",
-    "acryl": "node plugins/acryl-door/src/cli/acryl.ts",
-    "start": "node --import ./plugins/acryl-node-server/src/register.ts src/main.ts",
-    "dev": "node --import ./plugins/acryl-node-server/src/register.ts scripts/ide-host.mjs",
-    "test": "node --import ./plugins/acryl-node-server/src/register.ts --test \"test/**/*.test.{ts,tsx}\"",
+    "acryl": "node plugins/door/src/cli/acryl.ts",
+    "start": "node --import ./plugins/node-server/src/register.ts src/main.ts",
+    "dev": "node --import ./plugins/node-server/src/register.ts scripts/ide-host.mjs",
+    "test": "node --import ./plugins/node-server/src/register.ts --test \"test/**/*.test.{ts,tsx}\"",
     "check": "tsc --noEmit",
     "lock": "node plugins/manifest/lock.ts",
     "snapshot": "node plugins/manifest/snapshot.ts",
@@ -28,11 +28,8 @@
     "precheck": "node scripts/check-node.cjs"
   },
   "dependencies": {
-    "@deepseek-ai/cordis": "4.0.5",
+    "@deepseek-ai/cordis": "4.0.4",
     "@deepseek-ai/schemastery": "3.18.4",
-    "@webboxes/app-persistence": "0.1.2",
-    "@webboxes/blends-core": "0.5.0",
-    "@webboxes/plugin-hub": "0.2.2",
     "typescript": "6.0.3",
     "yaml": "2.9.0",
     "@acrylblends/app-context": "^0.1.0",
@@ -52,7 +49,10 @@
     "@deepseek-ai/dsh-web-app": "0.2.0-rc.2",
     "acrylblends": "^1.5.13",
     "js-yaml": "^4.2.0",
-    "@acryldev/instance": "0.1.2"
+    "@acryldev/instance": "0.1.2",
+    "@acryldev/app-persistence": "0.1.5",
+    "@acryldev/blends": "^1.7.11",
+    "@acryldev/plugin-hub-core": "0.2.3"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

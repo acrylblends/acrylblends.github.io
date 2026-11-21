@@ -1,6 +1,6 @@
 /** Issue details (right column): the open finding's severity, description, what was measured, the suggested remediation, and the checklist (mark resolved, add to the next design review). */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { SEVERITIES, measure } from '../clearpath/index.ts'
 import { auditErrorOf, escapeHtml, fieldOf, withNotice } from '../audit-shell/index.ts'
 

@@ -3,7 +3,7 @@
  * block" and the Auto-refresh demo toggle (`?live=1`, which only re-renders), and the block inspector in the side column for the selected block (`?block=`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { FINALITY_LAG, GENESIS, SAMPLE_TXS, ageLabel, atl, formatHeight, short } from '../blockscope/index.ts'
 import { chainErrorOf, escapeHtml, fieldOf, watchForm, withNotice } from '../scope-shell/index.ts'

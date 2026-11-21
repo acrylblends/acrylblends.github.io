@@ -1,6 +1,6 @@
 /** Pages (left column): the site map with the current page highlighted, "New page", and delete for every page but the first. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, siteErrorOf, withNotice } from '../builder-shell/index.ts'
 import type {} from '../pagefoundry/index.ts'
 

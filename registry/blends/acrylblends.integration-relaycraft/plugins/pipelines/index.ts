@@ -4,7 +4,7 @@
  * unsaved until Save draft bumps its version. A new pipeline is made between two connected connectors.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { escapeHtml, fieldOf, studioErrorOf, withNotice } from '../craft-shell/index.ts'
 import { TRANSFORMS, ago, checkMappings, missingRequired, preview } from '../relaycraft/index.ts'

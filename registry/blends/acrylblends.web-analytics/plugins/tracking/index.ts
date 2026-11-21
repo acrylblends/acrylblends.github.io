@@ -5,7 +5,7 @@
  * POST /settings/tracking/properties.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { AnalyticsError, trackingSnippet, whenText } from '../analytics/index.ts'
 
 export const name = 'tracking'

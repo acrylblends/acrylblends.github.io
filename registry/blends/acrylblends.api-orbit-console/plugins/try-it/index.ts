@@ -3,7 +3,7 @@
  * request" runs it against the local fixture API and the response appears in the inspector. What was typed is remembered per endpoint.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { escapeHtml, fieldOf, orbitErrorOf, withNotice } from '../orbit-shell/index.ts'
 import { type Inputs, urlOf } from '../orbit/index.ts'

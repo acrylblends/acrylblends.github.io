@@ -3,7 +3,7 @@
  * routes share one renderer, and the entries in the rail and the top bar are registered in `ctx.effect`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Gallery, PhotoFilter } from '../gallery/index.ts'
 import { addPhotographs, emptyState, grid, pageHead, pager, type Shell } from '../gallery-shell/index.ts'
 

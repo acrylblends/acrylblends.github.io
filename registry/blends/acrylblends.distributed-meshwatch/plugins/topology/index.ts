@@ -1,6 +1,6 @@
 /** Topology map, the first page (`/`): the five nodes and their links on a map, the leader highlighted, degraded nodes in yellow, down nodes dashed; click a node to inspect it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { escapeHtml } from '../mesh-shell/index.ts'
 import { EDGES, type MeshNode, upNodes } from '../meshwatch/index.ts'

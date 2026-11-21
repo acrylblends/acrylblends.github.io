@@ -1,6 +1,6 @@
 /** Robot detail at `/robots/:id`: battery, pose, mode, telemetry history and the missions assigned to the unit. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { statusLabel, type Fleet } from '../fleet/index.ts'
 
 export const name = 'robots'

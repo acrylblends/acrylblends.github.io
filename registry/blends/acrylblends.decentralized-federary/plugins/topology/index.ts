@@ -1,6 +1,6 @@
 /** The federation topology, the first page (`/`): the instance cards on the map with their trust edges; picking one (`?instance=`) opens its profile. Edges follow the relations: blocked instances lose their links. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { counts, edges, healthLabel } from '../federary/index.ts'
 import { escapeHtml } from '../fed-shell/index.ts'

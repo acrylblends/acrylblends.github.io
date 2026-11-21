@@ -3,7 +3,7 @@
  * quick-capture buttons on Home open this screen with the kind chosen (`?kind=`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, journalErrorOf, withNotice } from '../phone-shell/index.ts'
 import { KIND_ICON, KIND_WORD, type EntryKind, MAX_TITLE } from '../mobiary/index.ts'
 

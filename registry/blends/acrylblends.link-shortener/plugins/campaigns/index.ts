@@ -1,6 +1,6 @@
 /** Campaigns: the tags the workspace uses, at `/campaigns`, with each tag's links, active links and clicks. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { isActive, number, type Shortly } from '../shortly/index.ts'
 
 export const name = 'campaigns'

@@ -14,7 +14,7 @@ export const FRAME_MOUNT_PREFIX = '/app'
 /** The door's page script (`.acryl/bin/acryl look` and `act`), in development only: `src/app.ts` leaves the door out in production and with ACRYL_DOOR=off. */
 const DOOR_TAG =
   process.env.NODE_ENV !== 'production' && process.env.ACRYL_DOOR !== 'off'
-    ? '<script type="module" src="/api/acryl-door/page.js"></script>'
+    ? '<script type="module" src="/api/door/page.js"></script>'
     : ''
 
 /**

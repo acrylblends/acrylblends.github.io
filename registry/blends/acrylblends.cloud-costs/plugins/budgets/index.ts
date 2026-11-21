@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /budgets, POST /budgets, GET /alerts, GET /allocation-rules, POST /allocation-rules.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { euro, FinopsError, number, percent, teamOf, whenText } from '../finops/index.ts'
 
 export const name = 'budgets'

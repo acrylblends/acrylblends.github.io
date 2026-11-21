@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.accessibility-clearpath-audit
   name: "Clearpath Audit"
-  version: 0.1.1
+  version: 0.1.2
   category: accessibility
   description: "An accessibility audit and assistive-preview console: sample findings filtered by priority, a live sample page with the affected component outlined, high-contrast, larger-text and focus-outline previews, remediation that is applied to the preview, and a re-run score. A triage concept, not a conformance check."
   license: MIT

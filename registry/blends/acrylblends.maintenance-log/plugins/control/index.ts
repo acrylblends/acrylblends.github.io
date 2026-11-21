@@ -1,6 +1,6 @@
 /** The maintenance control room at `/`: metrics, the equipment register with a status filter, upcoming work and the selected asset panel. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { longDate, shortDate, statusLabel, workLabel, type Machine, type Plant } from '../plant/index.ts'
 
 export const name = 'control'

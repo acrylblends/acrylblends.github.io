@@ -1,6 +1,6 @@
 /** The transfer room, the first page (`/`): the file hero with its progress, speed and time remaining. Everything else on the page is a part other plugins add. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { CHUNKS, RANGES, count, etaLabel, percentOf, rateLabel, rateOf, sizeLabel } from '../swarmdrop/index.ts'
 import { escapeHtml } from '../swarm-shell/index.ts'

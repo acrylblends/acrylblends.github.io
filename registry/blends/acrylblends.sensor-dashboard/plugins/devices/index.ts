@@ -1,6 +1,6 @@
 /** Devices: the inventory at `/devices` with a status filter, and the device detail at `/devices/:id` with readings, thresholds and alerts. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { evaluate, SensorsError, seriesOf, sparkPath, valueText, whenText, type Sensors } from '../sensors/index.ts'
 
 export const name = 'devices'

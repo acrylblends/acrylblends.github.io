@@ -4,7 +4,7 @@
  */
 import { readFileSync } from 'node:fs'
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Tables } from '../tables/index.ts'
 import { createShell, escapeHtml, type NavItem, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

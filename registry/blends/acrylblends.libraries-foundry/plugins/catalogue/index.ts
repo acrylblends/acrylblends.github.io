@@ -1,6 +1,6 @@
 /** Featured building blocks, the first page (`/`): the package cards that match the search and filters, two to a row; picking a card loads it in the detail column. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { escapeHtml } from '../foundry-shell/index.ts'
 import { latestOf } from '../foundry/index.ts'

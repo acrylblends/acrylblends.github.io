@@ -1,6 +1,6 @@
 /** The HTTP ingest contract at `/ingest`: POST { deviceId or code, value, unit, timestamp? } with device, unit and timestamp validation. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { SensorsError, type Sensors } from '../sensors/index.ts'
 
 export const name = 'ingest'

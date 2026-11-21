@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /collections, GET /collections/:id, POST /collections, POST /collections/:id/add.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { fileNameOf, SnippetsError, whenText } from '../snippets/index.ts'
 import { badge } from '../snips-shell/index.ts'
 

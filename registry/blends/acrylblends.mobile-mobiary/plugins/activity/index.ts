@@ -1,6 +1,6 @@
 /** Activity (`/activity`): every saved moment, newest first, filterable by kind (`?kind=`), each with a delete. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, journalErrorOf, withNotice } from '../phone-shell/index.ts'
 import { KIND_ICON, KIND_WORD, type EntryKind, subtitleOf } from '../mobiary/index.ts'
 

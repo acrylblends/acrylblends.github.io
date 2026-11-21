@@ -1,6 +1,6 @@
 /** Replica health (`/replicas`): every node's role, status, lag and last heartbeat; a node's row selects it in the inspector. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml } from '../mesh-shell/index.ts'
 import { HEALTH_LABEL, heartbeatLabel } from '../meshwatch/index.ts'
 

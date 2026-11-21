@@ -3,7 +3,7 @@
  * focusable and movable with the arrow keys; the shared script autosaves a pointer drag.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Boards } from '../boards/index.ts'
 import { escapeHtml, layersRail, paletteRail, renderObject, toolsLinks, type Shell } from '../board-shell/index.ts'
 

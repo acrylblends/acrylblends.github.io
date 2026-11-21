@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "agent": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "273e97797b619a64ec2f",
@@ -14,7 +14,7 @@
       }
     },
     "agent-panel": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "aa5fdbf467f0fa5d1191",
@@ -32,7 +32,7 @@
       }
     },
     "builder": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "9f2bb87e4dd766c98d60",
@@ -41,16 +41,16 @@
       }
     },
     "door": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
-        "src/cli/acryl.ts": "5fd10a53c3f00728625f",
+        "src/cli/acryl.ts": "36eca50f7d4f83c554b8",
         "src/host/api.ts": "3a160dc7fef94f559775",
         "src/host/audit.ts": "c46ff2b2133e5243afff",
         "src/host/channel.ts": "ea57dcfbbd598a82982e",
         "src/host/chat-tools.ts": "364221a07c1e7d09cfe9",
         "src/host/door-file.ts": "12adeec17fb026f39814",
-        "src/host/door.ts": "316ec6b6051f52ddaa73",
+        "src/host/door.ts": "b7088aee655e6e9a6333",
         "src/host/http.ts": "4ca8cb4cba0da3947281",
         "src/host/mcp-routes.ts": "c7860c830137a2b62fc1",
         "src/host/operator-routes.ts": "5bb27461c92b306094e2",
@@ -58,30 +58,30 @@
         "src/host/page-socket.ts": "ee15c0384675efbef6ae",
         "src/host/shell.ts": "f96b0b83024175823356",
         "src/host/shim.ts": "72e1990b5546b827eae2",
-        "src/host/verbs.ts": "7a4037b23640feb08a1e",
+        "src/host/verbs.ts": "3c1ee5752e4e5a8b6866",
         "src/index.ts": "f168f2529f1986459aad",
         "src/page/api.ts": "2a77e5fd5b74996d5114",
         "src/page/base.ts": "6604aa244a127f938bca",
         "src/page/channel.ts": "22617fbe4740a81c9bc9",
         "src/page/driver/accessibility.ts": "f79e2c5a2c80b569d9d7",
         "src/page/driver/actions.ts": "5b6ad0cf71a1873ff035",
-        "src/page/driver/driver.ts": "05facbe2d7704091fd8e",
+        "src/page/driver/driver.ts": "a95bbf996761da7c6ed5",
         "src/page/driver/ref-table.ts": "ee4372af68a383ffe91a",
         "src/page/driver/sensitivity.ts": "699111c1e667ce4a5645",
         "src/page/driver/snapshot.ts": "3c2c474de180a61e6465",
-        "src/page/index.ts": "b32fee7db89b7ca8f258",
+        "src/page/index.ts": "b3719bf81d91bb0dcb6c",
         "src/page/indicator.ts": "02092d0177433c806016",
         "src/page/main.ts": "114a9fbe1a3f278bcb2a",
         "src/page/outline.ts": "73d02cfcb2114b28ffa3",
-        "src/page/protocol.ts": "119259f1b2e74ddfc6f9",
-        "src/page/snapshot-text.ts": "a26473a5e2aed0373d54",
+        "src/page/protocol.ts": "76c0950a0fca1cc673b4",
+        "src/page/snapshot-text.ts": "8928924b51d0cb119426",
         "src/page/socket-source.ts": "e5cf8719685db8a61fae",
         "src/page/user-input.ts": "edf3e28136a947b16ba1",
         "src/shell/protocol.ts": "b34db25a8bc53beb00c3"
       }
     },
     "drivers": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "bfebcff94997cb2798f0",
@@ -89,7 +89,7 @@
       }
     },
     "extensions": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "c8936159cdf9413be38a",
@@ -103,7 +103,7 @@
       }
     },
     "home": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "b1997dc16580e1b376c1",
@@ -111,7 +111,7 @@
       }
     },
     "manifest": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "e5c0fb5a8d03a9f6c2d7",
@@ -124,7 +124,7 @@
       }
     },
     "node-server": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "ecdf1ae9ccd7deee92e0",
@@ -155,7 +155,7 @@
       }
     },
     "openai": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "4b952e097ba516c45750",
@@ -164,15 +164,15 @@
       }
     },
     "page": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
-        "src/favicon.ts": "b62a0a6a93a5616e7876",
-        "src/index.ts": "ea735037b64675ed98dd"
+        "src/favicon.ts": "06d5fb0711c521ac5380",
+        "src/index.ts": "e756a47166e67f75d4e2"
       }
     },
     "plugin-share": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "1cc6db66ee2e8cdd2e2c",
@@ -186,7 +186,7 @@
       }
     },
     "router": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -387,7 +387,7 @@
       }
     },
     "sandbox": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "59e8a27d1ddca4210ef1",
@@ -396,18 +396,18 @@
       }
     },
     "save": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "3ca5c183f7ea0bdf6b95",
-        "cli.ts": "fccad83af5a41bde542b",
+        "cli.ts": "1cdf16d7c4d47eb9aa93",
         "index.ts": "87f0933285eb83af7ad0",
-        "share-cli.ts": "97cdb3ceaf2c73327454",
-        "share.ts": "353ea9b5e115787c595f"
+        "share-cli.ts": "2cdeac61dfd25bb0fa11",
+        "share.ts": "71410a74dbcc3161b433"
       }
     },
     "state": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "9e159eea922378a88a12",
         "src/cell.ts": "2add14530d4a39c2b358",
@@ -418,7 +418,7 @@
       }
     },
     "tasks": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "33444ab7c35e08867d89",
@@ -427,7 +427,7 @@
       }
     },
     "web-server": {
-      "from": "1.7.4",
+      "from": "1.7.11",
       "files": {
         "src/index.ts": "71bebe57fa8ebabfce5a"
       }

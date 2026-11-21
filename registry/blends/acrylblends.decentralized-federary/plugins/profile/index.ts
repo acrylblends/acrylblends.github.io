@@ -1,6 +1,6 @@
 /** Instance profile (side column): software, policy, peers, last handshake and identity assertion of the open instance, its trust relationship, the peering actions it allows (reversible), the handshake and its peer list. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { POLICIES, RELATION_LABEL, TRANSITIONS, type RelationAction, ago, peersOf } from '../federary/index.ts'
 import { backTo, escapeHtml, fedErrorOf, fieldOf, postButton, withNotice } from '../fed-shell/index.ts'
 

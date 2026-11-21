@@ -1,6 +1,6 @@
 /** Swarm peers (aside) and Add demo peer (header): contribution and connection quality of each peer, the selected peer's detail with how many ranges it holds, drop a peer, and the room code. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { RANGES, SLOW_LATENCY_MS, holds, quality, rateLabel } from '../swarmdrop/index.ts'
 import { escapeHtml, swarmErrorOf, withNotice } from '../swarm-shell/index.ts'
 

@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /services, GET /environments, GET /events.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { stateLabel, whenText } from '../release/index.ts'
 
 export const name = 'services'

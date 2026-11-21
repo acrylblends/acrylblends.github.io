@@ -1,6 +1,6 @@
 /** Trust rules (side column): the rules that can stop a peering approval (signed identity required, denied domains) or limit a peer; each can be switched on or off after review. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fedErrorOf, fieldOf, postButton, withNotice } from '../fed-shell/index.ts'
 
 export const name = 'trust'

@@ -5,7 +5,7 @@
  * profile and its session (`ctx.relayShell.selection(url)`) and keeps it in the tab links.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { ConnectionProfile, RemoteSession, Relay } from '../relay/index.ts'
 import { RELAY_STYLES } from './styles.ts'
 

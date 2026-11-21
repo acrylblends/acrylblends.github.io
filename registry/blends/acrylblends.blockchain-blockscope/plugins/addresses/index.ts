@@ -1,6 +1,6 @@
 /** Address page (`/address/:address`): the label and kind, a synthetic balance, and the recent transactions among the generated blocks that involve it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { atl, formatHeight, hex, labelOf, short, txsOf } from '../blockscope/index.ts'
 import { escapeHtml, watchForm } from '../scope-shell/index.ts'
 

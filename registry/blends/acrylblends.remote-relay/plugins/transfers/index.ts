@@ -3,7 +3,7 @@
  * "Queue sample transfer", and the transfer policy. Nothing moves; a job is a state machine a person steps through.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, relayErrorOf, withNotice } from '../relay-shell/index.ts'
 import { NEXT_STATE, TRANSFER_LABEL, type TransferJob, formatBytes } from '../relay/index.ts'
 

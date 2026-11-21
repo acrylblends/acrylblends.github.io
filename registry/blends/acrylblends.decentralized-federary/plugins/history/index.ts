@@ -1,6 +1,6 @@
 /** Peering history (side column): the recent decisions with Undo (while the result still stands) and the federation events of the open instance. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { ago } from '../federary/index.ts'
 import { backTo, escapeHtml, fedErrorOf, fieldOf, postButton, withNotice } from '../fed-shell/index.ts'
 

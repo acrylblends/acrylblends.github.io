@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.storage-vaultline
   name: "Vaultline"
-  version: 0.1.1
+  version: 0.1.2
   category: storage
   description: "A storage console: pool capacity and health, volumes created against free capacity, object buckets with browsable metadata, and a snapshot ledger with retention."
   license: MIT

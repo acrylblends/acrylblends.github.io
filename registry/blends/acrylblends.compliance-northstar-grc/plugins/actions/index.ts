@@ -1,6 +1,6 @@
 /** Audit actions (side column): the open actions with their due date, and Mark done; completing a refresh action brings the refreshed evidence in for review. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dueLabel } from '../grc/index.ts'
 import { escapeHtml, grcErrorOf, withNotice } from '../grc-shell/index.ts'
 

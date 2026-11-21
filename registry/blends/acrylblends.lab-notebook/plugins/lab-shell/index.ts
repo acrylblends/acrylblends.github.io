@@ -1,6 +1,6 @@
 /** The Lab Notebook shell: the FIELD / LAB sidebar with notebooks, the new-notebook action, the experiments and the project footer. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dateText, type Lab } from '../lab/index.ts'
 import { createShell, escapeHtml, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

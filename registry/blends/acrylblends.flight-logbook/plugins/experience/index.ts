@@ -1,6 +1,6 @@
 /** Experience summary at `/experience`: hours by aircraft class, role, day/night and period. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { hoursText, type Logbook } from '../logbook/index.ts'
 import type { Shell } from '../logbook-shell/index.ts'
 

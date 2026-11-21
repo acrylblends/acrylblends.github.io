@@ -3,7 +3,7 @@
  * The series averages stay in the record; this table is the specimen-level evidence.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { formatNumber, LabError, stampText, type Lab } from '../lab/index.ts'
 import { escapeHtml, pageHead, type Shell } from '../lab-shell/index.ts'
 

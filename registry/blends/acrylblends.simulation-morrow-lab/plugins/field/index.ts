@@ -3,7 +3,7 @@
  * run picked with `?run=`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { fieldMap } from '../lab-shell/charts.ts'
 import { escapeHtml } from '../lab-shell/index.ts'
 import { type SimulationRun, thermalField } from '../morrow-lab/index.ts'

@@ -3,7 +3,7 @@
  * (the difference in completion and response time and in the settings). The comparison lives in the URL (`?a=&b=`), not in the saved data.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { modalityOf, whenLabel } from '../sensepath/index.ts'
 import { escapeHtml, fieldOf, labErrorOf, withNotice } from '../sense-shell/index.ts'
 

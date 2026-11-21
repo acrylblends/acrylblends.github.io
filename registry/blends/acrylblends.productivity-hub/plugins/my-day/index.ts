@@ -4,7 +4,7 @@
  * while those plugins are on. Every change is a form that posts here and lands back on the page with a notice; the hub does the writing.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { myDayPage } from './page.ts'
 
 export const name = 'my-day'

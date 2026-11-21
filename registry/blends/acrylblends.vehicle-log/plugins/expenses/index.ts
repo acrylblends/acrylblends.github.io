@@ -1,6 +1,6 @@
 /** Expenses at `/expenses`: the fuel, service and other cost breakdown, the lists and the add form. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dateLabel, EXPENSE_CATEGORIES, GarageError, money, money2, type Garage } from '../garage/index.ts'
 import type { Shell } from '../garage-shell/index.ts'
 

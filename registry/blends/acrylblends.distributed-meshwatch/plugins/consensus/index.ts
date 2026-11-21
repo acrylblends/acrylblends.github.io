@@ -1,6 +1,6 @@
 /** Consensus log (`/consensus`): the append-only Raft commit log, newest first, with index, term, origin, event and whether it committed. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml } from '../mesh-shell/index.ts'
 import type {} from '../meshwatch/index.ts'
 

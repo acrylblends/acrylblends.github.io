@@ -6,7 +6,7 @@
  * Settings > Plugins), renders with `ctx.shell.page(...)`, mounts its routes at `ctx.shell.prefix` and writes every link with `ctx.shell.href(path)`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Company, Crm, Owner } from '../crm/index.ts'
 import { createShell, escapeHtml, type Notice, type NavItem, noticeQuery, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

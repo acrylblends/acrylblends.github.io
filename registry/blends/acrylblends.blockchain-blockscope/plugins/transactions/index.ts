@@ -1,6 +1,6 @@
 /** Transaction page (`/tx/:hash`): status, block, parties, value, gas and fee, and the decoded event logs with their topics. Only transactions the demo generated (each block's first eight) exist. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { atl, findTx, formatHeight, labelOf, short } from '../blockscope/index.ts'
 import { escapeHtml, watchForm } from '../scope-shell/index.ts'
 

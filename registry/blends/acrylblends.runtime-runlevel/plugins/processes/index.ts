@@ -3,7 +3,7 @@
  * Running, Restarting, back to Running; "Complete restart" is the local confirmation. On the frame's home page it shows the degraded processes.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { backTo, escapeHtml, fieldOf, runErrorOf, withNotice } from '../run-shell/index.ts'
 import { STATUS_LABEL } from '../runlevel/index.ts'

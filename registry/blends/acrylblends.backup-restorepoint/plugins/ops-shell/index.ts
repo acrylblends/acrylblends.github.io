@@ -5,7 +5,7 @@
  * URL's query (`?workload=`, `?point=`, `?scope=`, `?dest=`): transient, not part of the saved state.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { DESTINATIONS, type Destination, type Ops, type RecoveryPoint, type Scope, type Workload, latestVerified } from '../restorepoint/index.ts'
 import { OPS_STYLES } from './styles.ts'
 

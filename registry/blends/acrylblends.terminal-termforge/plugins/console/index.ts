@@ -4,7 +4,7 @@
  * the history the page carries; without it the Run button works the same).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { type Entry, isCommand, promptOf } from '../termforge/index.ts'
 import { escapeHtml, fieldOf, forgeErrorOf, withNotice } from '../term-shell/index.ts'

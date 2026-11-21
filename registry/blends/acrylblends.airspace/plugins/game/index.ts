@@ -8,8 +8,8 @@
  */
 import { fileURLToPath } from 'node:url'
 import type { Context } from '@deepseek-ai/cordis'
-import { serveStatic } from '../acryl-node-server/src/index.ts'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { serveStatic } from '../node-server/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'game'
 export const inject = ['router']

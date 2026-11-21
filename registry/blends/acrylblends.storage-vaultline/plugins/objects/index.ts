@@ -3,7 +3,7 @@
  * picked with `?bucket=`, folders with `?prefix=`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, vaultErrorOf, whenLabel, withNotice } from '../vault-shell/index.ts'
 import { etagOf, formatBytes, formatCount, iconFor } from '../vaultline/index.ts'
 

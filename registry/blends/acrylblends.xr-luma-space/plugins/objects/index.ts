@@ -1,6 +1,6 @@
 /** Scene objects (rail): the project, the object hierarchy (children indented), "Add spatial anchor" and the scene health pill. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { KINDS, ago, hierarchy, validate } from '../luma/index.ts'
 import { escapeHtml, sceneErrorOf, withNotice } from '../luma-shell/index.ts'
 

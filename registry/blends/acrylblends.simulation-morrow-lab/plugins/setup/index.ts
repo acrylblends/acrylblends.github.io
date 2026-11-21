@@ -4,7 +4,7 @@
  * last run as a widget.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { crossSection } from '../lab-shell/charts.ts'
 import { escapeHtml, fieldOf, labErrorOf, noticeQuery } from '../lab-shell/index.ts'

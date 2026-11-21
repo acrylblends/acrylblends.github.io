@@ -1,6 +1,6 @@
 /** Examples (`/examples`): a ready-to-paste SDK snippet for the endpoint in JavaScript, Python or Go (`?lang=`), built from the values typed in Try it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml } from '../orbit-shell/index.ts'
 import { LANGUAGES, type Language, snippetOf } from '../orbit/index.ts'
 

@@ -6,7 +6,7 @@
  * POST /monitors/:id/check, POST /monitors/:id/pause.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import {
   type Check,
   historyCounts,

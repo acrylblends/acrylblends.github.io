@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /import, POST /import.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { number, TablesError } from '../tables/index.ts'
 
 export const name = 'imports'

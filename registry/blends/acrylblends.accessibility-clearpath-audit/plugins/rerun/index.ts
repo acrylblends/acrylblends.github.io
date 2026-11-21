@@ -1,6 +1,6 @@
 /** Re-run (top bar and rail): "Re-run sample audit" records a run with the score of the findings as they stand; the rail lists the latest runs with their change. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { ago } from '../clearpath/index.ts'
 import { auditErrorOf, escapeHtml, withNotice } from '../audit-shell/index.ts'
 

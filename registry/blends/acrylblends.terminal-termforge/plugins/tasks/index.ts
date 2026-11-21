@@ -1,6 +1,6 @@
 /** Task launcher (rail): build, test and deploy routines. A routine runs its allowed commands in order in the current tab and stops at the first failure. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { TASKS } from '../termforge/index.ts'
 import { backTo, escapeHtml, fieldOf, forgeErrorOf, withNotice } from '../term-shell/index.ts'
 

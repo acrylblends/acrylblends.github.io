@@ -5,7 +5,7 @@
  * Routes: GET /, GET /links?q&state, GET /links/:id, POST /links, POST /links/:id/toggle, GET /s/:slug.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type ShortLink, ShortlyError, number, percent, whenText } from '../shortly/index.ts'
 
 export const name = 'links'

@@ -3,7 +3,7 @@
  * the draft, "Apply to pipeline" makes it the policy in force, and "Discard draft" drops it. The pipeline only changes on apply.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, gateErrorOf, withNotice } from '../gate-shell/index.ts'
 import { LAYER_LABEL, type Layers, label } from '../gatehouse/index.ts'
 

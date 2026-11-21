@@ -3,7 +3,7 @@
  * probes' end values, and the traces as CSV (`/traces.csv`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Series, traceChart } from '../lab-shell/charts.ts'
 import { escapeHtml } from '../lab-shell/index.ts'
 import { type SimulationRun, tracesCsv } from '../morrow-lab/index.ts'

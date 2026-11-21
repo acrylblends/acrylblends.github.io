@@ -3,7 +3,7 @@
  * stale once a segment changed after it), and "Approve locale" is refused until QA passes.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Level } from '../lingodesk/index.ts'
 import { escapeHtml, fieldOf, deskErrorOf, withNotice } from '../desk-shell/index.ts'
 

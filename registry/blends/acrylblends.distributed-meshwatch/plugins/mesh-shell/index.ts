@@ -4,7 +4,7 @@
  * puts its parts in the right column with `ctx.meshShell.side(...)`. The node being looked at is chosen by `?node=` and kept in the tab links.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Mesh, type MeshNode, commitIndex, formatNumber, hasQuorum, quorumSize, replicationLagMs, upNodes } from '../meshwatch/index.ts'
 import { MESH_STYLES } from './styles.ts'
 

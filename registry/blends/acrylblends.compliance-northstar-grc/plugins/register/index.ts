@@ -1,6 +1,6 @@
 /** The control register, the first page (`/`): controls with owner, framework, status and evidence freshness, filtered by framework, owner and status. Picking a control opens its evidence (`?control=`). */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { agoLabel, filterControls, isFresh, latestEvidence, posture, statusOf } from '../grc/index.ts'
 import { escapeHtml } from '../grc-shell/index.ts'

@@ -1,6 +1,6 @@
 /** Remediation: the console-wide audit trail at `/remediation`, newest first, with an action filter and the finding each event belongs to. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { stampText, type Vulns } from '../vulns/index.ts'
 
 export const name = 'remediation'

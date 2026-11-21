@@ -3,7 +3,7 @@
  * "Reset fixture". The top bar's "Run failover drill" posts here too. The rules are the mesh's; this plugin reads forms and shows what it answers.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, meshErrorOf, withNotice } from '../mesh-shell/index.ts'
 import { bestFollower, dayLabel } from '../meshwatch/index.ts'
 

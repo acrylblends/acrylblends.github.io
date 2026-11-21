@@ -1,6 +1,6 @@
 /** Flights: the detail at `/flights/:id`, the new form at `/flights/new`, the draft editor and the CSV export. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dateLabel, hoursText, LogbookError, type Flight, type Logbook } from '../logbook/index.ts'
 import type { Shell } from '../logbook-shell/index.ts'
 

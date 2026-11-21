@@ -1,6 +1,6 @@
 /** Fabric overview, the first page (`/`): pool capacity with health, and the fabric's health card (nodes, replication lag, pending scrubs, last integrity scan). */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { escapeHtml } from '../vault-shell/index.ts'
 import { formatGb, percent, poolUsedGb } from '../vaultline/index.ts'

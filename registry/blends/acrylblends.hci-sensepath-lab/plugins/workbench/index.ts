@@ -3,7 +3,7 @@
  * style) and the routes that choose a variant, save a calibration, run the task simulation and reset. Every result is synthetic.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { FEEDBACK, type FeedbackId, MAX_SENSITIVITY, MIN_SENSITIVITY, MODALITIES } from '../sensepath/index.ts'
 import { escapeHtml, fieldOf, labErrorOf, withNotice } from '../sense-shell/index.ts'

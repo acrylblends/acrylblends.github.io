@@ -1,6 +1,6 @@
 /** Asset profile at `/machines/:id`: operating hours, health, open tasks and the service history of one machine. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { longDate, statusLabel, workLabel, type Plant } from '../plant/index.ts'
 
 export const name = 'machines'

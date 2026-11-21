@@ -1,6 +1,6 @@
 /** Response inspector (right column): the last response (status, timing, JSON body, headers) from the local fixture API, and "Reset fixtures". */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, highlight, withNotice } from '../orbit-shell/index.ts'
 import type {} from '../orbit/index.ts'
 

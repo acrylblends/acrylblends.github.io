@@ -1,15 +1,24 @@
 /**
- * `npm run share [-- --owner <account>]`: show what sharing this app would send, and ask. Only a plain yes at the terminal sends it.
+ * `npm run share [-- --owner <account>] [--visibility private|public]`: show what sharing this app would send, and ask. Only a plain yes at the
+ * terminal sends it. --visibility decides who may see a new repository and is kept in blend.yaml (metadata.visibility).
  *   --json             print the plan as JSON and send nothing (what a program, or an agent, reads)
  *   --confirm <plan>   send exactly this plan (the JSON `--json` printed, as it is or base64url-encoded so no shell can change it), and nothing when
  *                      the app no longer matches it: for a person's own surface that showed them the plan and took their yes (the ACRYL
  *                      launcher's Share)
+ *   --list             list it in the Blends store too (public only), as Community under your name; --category <address> and
+ *                      --subcategory <address> place it (default: its earlier place, else its starter's category), --license <id> (default MIT)
  * Exits 1 when the share was refused.
  */
 import { realpathSync } from 'node:fs'
 import { createInterface } from 'node:readline/promises'
 import { fileURLToPath } from 'node:url'
 import { parseArgs } from 'node:util'
+import {
+  adoptGithubToken,
+  CATEGORIES_URL,
+  type CatalogCategory,
+  readCategories,
+} from '@acryldev/app-persistence'
 import { planShare, renderSharePlan, type SharePlan, type ShareResult, shareApp } from './share.ts'
 
 function report(result: ShareResult): number {
@@ -20,6 +29,12 @@ function report(result: ShareResult): number {
     return 1
   }
   console.log(`shared to ${result.remote}${result.created ? ' (created)' : ''}`)
+  if (result.listed !== undefined)
+    console.log(
+      result.listed.created
+        ? `listed in the Blends store from ${result.listed.tag}: acrylblends.github.io shows it within about an hour`
+        : `${result.listed.tag} was already tagged, so the store keeps that version: raise the version in package.json to list this one`,
+    )
   return 0
 }
 
@@ -43,14 +58,79 @@ function readPlan(text: string): unknown {
   return undefined
 }
 
+/** The store's category list; without it (offline) a place is not checked here, and the store's sync still is. */
+async function publishedCategories(): Promise<{ categories?: readonly CatalogCategory[] }> {
+  try {
+    const response = await fetch(CATEGORIES_URL, { signal: AbortSignal.timeout(10_000) })
+    const categories = response.ok ? readCategories(await response.json()) : 'unreachable'
+    return typeof categories === 'string' ? {} : { categories }
+  } catch {
+    return {}
+  }
+}
+
+const HELP = `npm run share [-- options]: send this app to a GitHub repository of your own (through your gh login). The plan comes first; nothing is sent until you type yes.
+
+  --owner <account>           the GitHub account or organization for a new repository (default: yours)
+  --visibility private|public who may see a new repository (default: blend.yaml metadata.visibility, else private); kept in blend.yaml
+  --list                      also list it in the Blends store (acrylblends.github.io and Control Center), as Community under your name; public only
+  --category <address>        its category, one of acrylblends.github.io/blends (default: its earlier place, else its starter's category)
+  --subcategory <address>     a subcategory of that category
+  --license <id>              its licence when listed, an SPDX id (default MIT)
+  --json                      print the plan as JSON and send nothing
+  --confirm <plan>            send exactly this plan (the JSON --json printed); for a surface that showed a person the plan
+  -h, --help                  this text
+
+Example: npm run share -- --visibility public --list --category business --subcategory crm`
+
 async function main(argv: readonly string[]): Promise<number> {
+  // The GitHub sign-in made in Control Center or in an app (`~/.acryl/github.json`) is this share's login: gh and git start with it, and fall back to their own login without it.
+  adoptGithubToken()
   const appRoot = fileURLToPath(new URL('../..', import.meta.url))
   const { values } = parseArgs({
     args: [...argv],
     strict: true,
-    options: { owner: { type: 'string' }, json: { type: 'boolean' }, confirm: { type: 'string' } },
+    options: {
+      owner: { type: 'string' },
+      visibility: { type: 'string' },
+      json: { type: 'boolean' },
+      confirm: { type: 'string' },
+      list: { type: 'boolean' },
+      category: { type: 'string' },
+      subcategory: { type: 'string' },
+      license: { type: 'string' },
+      help: { type: 'boolean', short: 'h' },
+    },
   })
-  const options = values.owner === undefined ? {} : { owner: values.owner }
+  if (values.help === true) {
+    console.log(HELP)
+    return 0
+  }
+  if (
+    values.visibility !== undefined &&
+    values.visibility !== 'private' &&
+    values.visibility !== 'public'
+  ) {
+    console.error('not shared: --visibility is private or public')
+    return 1
+  }
+  const listing = values.list === true || values.category !== undefined
+  const options = {
+    ...(listing
+      ? {
+          list: {
+            ...(values.category === undefined ? {} : { category: values.category }),
+            ...(values.subcategory === undefined ? {} : { subcategory: values.subcategory }),
+            ...(values.license === undefined ? {} : { license: values.license }),
+          },
+          ...(await publishedCategories()),
+        }
+      : {}),
+    ...(values.owner === undefined ? {} : { owner: values.owner }),
+    ...(values.visibility === undefined
+      ? {}
+      : { visibility: values.visibility as 'private' | 'public' }),
+  }
   if (values.confirm !== undefined) {
     const confirmed = readPlan(values.confirm)
     if (!isPlan(confirmed)) {

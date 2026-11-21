@@ -1,6 +1,6 @@
 /** Export and activity (inspector, below the properties): "Export preview" makes a simulated export at a chosen format and scale and lists the last ones; the activity list shows what happened in the project. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, projectErrorOf, withNotice } from '../window-shell/index.ts'
 import { FORMATS, SCALES } from '../canvasmith/index.ts'
 

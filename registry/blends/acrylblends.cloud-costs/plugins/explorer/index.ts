@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /explorer?provider&service&q, GET /imports, POST /imports.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { euro, FinopsError, monthOf, number, percent, whenText } from '../finops/index.ts'
 
 export const name = 'explorer'

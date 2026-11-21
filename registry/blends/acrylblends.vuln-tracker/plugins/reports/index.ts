@@ -1,6 +1,6 @@
 /** Reports: the severity and status distribution at `/reports`, with the JSON record and the findings CSV at `/export.json` and `/export.csv`. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { isOpen, SEVERITIES, STATUSES, type Vulns } from '../vulns/index.ts'
 
 export const name = 'reports'

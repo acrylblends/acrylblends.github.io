@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { Acryl } from '../plugins/acryl-router/src/index.ts'
+import { Acryl } from '../plugins/router/src/index.ts'
 import { relayApp } from '../plugins/relay/index.ts'
 
 /** The relay as the frame mounts it: under /app. */

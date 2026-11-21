@@ -1,6 +1,6 @@
 /** Service history at `/services` with a type filter, and the add form at `/services/new`. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dateLabel, GarageError, money, SERVICE_TYPES, type Garage, type ServiceType } from '../garage/index.ts'
 import type { Shell } from '../garage-shell/index.ts'
 

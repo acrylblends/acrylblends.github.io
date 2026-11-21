@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /, GET /costs.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { euro, monthName, number, percent } from '../finops/index.ts'
 
 export const name = 'overview'

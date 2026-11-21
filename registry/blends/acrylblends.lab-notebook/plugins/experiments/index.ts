@@ -1,6 +1,6 @@
 /** Experiments: the create form at `/experiments/new`, the audit history at `/experiments/:id/history` and the record export at `/experiments/:id/export.json`. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { LabError, stampOf, stampText, type Lab } from '../lab/index.ts'
 import { escapeHtml, pageHead, type Shell } from '../lab-shell/index.ts'
 

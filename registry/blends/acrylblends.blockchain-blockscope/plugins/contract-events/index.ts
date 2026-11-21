@@ -1,6 +1,6 @@
 /** Contract events (`/events`): the decoded event logs of the recent blocks, filtered by event name and time range, with the contracts that emit them and their log topics. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { EVENT_DEFS, EVENT_NAMES, RANGES, eventsIn, formatHeight, labelOf, short } from '../blockscope/index.ts'
 import { escapeHtml } from '../scope-shell/index.ts'
 

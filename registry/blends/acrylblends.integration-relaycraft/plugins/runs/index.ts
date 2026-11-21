@@ -3,7 +3,7 @@
  * `POST /pipelines/:id/run`, which runs the pipeline over the sample rows. A run is refused until the destination's required fields are mapped.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, studioErrorOf, withNotice } from '../craft-shell/index.ts'
 import { clockOf, runStatus } from '../relaycraft/index.ts'
 

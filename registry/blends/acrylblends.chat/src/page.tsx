@@ -36,7 +36,7 @@ export const chatPage = (
         </div>
         <div id="chat" data-conversation={current ? String(current.id) : ''} data-base={base} />
         <script type="module" src={`${base}/client/chat.tsx`} />
-        {doorEnabled() ? <script type="module" src="/api/acryl-door/page.js" /> : null}
+        {doorEnabled() ? <script type="module" src="/api/door/page.js" /> : null}
       </body>
     </html>
   ).toString()

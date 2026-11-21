@@ -1,6 +1,6 @@
 /** Chunk availability (main column): the range map (verified, in flight, not received; click a range to inspect it), the range inspector, and the controls: pause or resume, advance the simulation one step, run the integrity check. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { RANGES, availability, holds, rangeHash, rangeLabel, span, stateAt } from '../swarmdrop/index.ts'
 import { escapeHtml, swarmErrorOf, withNotice } from '../swarm-shell/index.ts'
 

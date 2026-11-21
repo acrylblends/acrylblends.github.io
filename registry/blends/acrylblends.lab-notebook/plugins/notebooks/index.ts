@@ -1,6 +1,6 @@
 /** Notebooks: the list at `/notebooks` and the create form at `/notebooks/new`, with the notebook code and project validated. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { LabError, type Lab } from '../lab/index.ts'
 import { escapeHtml, pageHead, type Shell } from '../lab-shell/index.ts'
 

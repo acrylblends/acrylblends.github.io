@@ -6,7 +6,7 @@
  * POST /findings/:id/assign, /findings/:id/start, /findings/:id/accept, /findings/:id/evidence.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import {
   type Finding,
   type FindingStatus,

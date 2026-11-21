@@ -3,7 +3,7 @@
  * the space and the tags, shows when there are unsaved changes, and links the note to the tasks it belongs with. Recent notes also sit on My Day.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../hub-shell/index.ts'
 import type { Note } from '../productivity-hub/index.ts'
 

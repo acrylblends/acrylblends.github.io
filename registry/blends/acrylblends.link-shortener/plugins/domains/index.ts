@@ -1,6 +1,6 @@
 /** The short domains and their verification state. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'domains'
 export const inject = ['shortly', 'shell', 'router']

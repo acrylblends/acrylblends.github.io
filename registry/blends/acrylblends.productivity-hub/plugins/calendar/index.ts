@@ -4,7 +4,7 @@
  * strip and today's and the next day's agenda in the right rail (the `calendar` widget).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, type HubShell, noticeQuery } from '../hub-shell/index.ts'
 import {
   addDays,

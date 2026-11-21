@@ -7,7 +7,7 @@
  * the ACRYL frame at `/app`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Fleet, STATE_LABEL, type VirtualMachine, actionLabel, actionsFor, percent } from '../hyperplane/index.ts'
 import { FLEET_STYLES } from './styles.ts'
 

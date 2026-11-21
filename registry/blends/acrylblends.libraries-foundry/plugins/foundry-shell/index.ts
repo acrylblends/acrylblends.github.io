@@ -6,7 +6,7 @@
  * keeps it, with some of it changed.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Atlas } from '../foundry/index.ts'
 import { FOUNDRY_STYLES } from './styles.ts'
 

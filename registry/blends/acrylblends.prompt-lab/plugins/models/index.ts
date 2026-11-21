@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /settings/models.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'models'
 export const inject = ['lab', 'shell', 'router']

@@ -1,6 +1,6 @@
 /** Volume explorer (`/volumes`): the logical volumes with pool, kind, size, use and status; create a volume (guarded by the pool's free capacity), activate, scrub or delete one. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, vaultErrorOf, withNotice } from '../vault-shell/index.ts'
 import { formatGb } from '../vaultline/index.ts'
 

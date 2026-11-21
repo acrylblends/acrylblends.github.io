@@ -3,7 +3,7 @@
  * models; the lab (`ctx.lab`) keeps them.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, labErrorOf, noticeQuery, whenLabel } from '../lab-shell/index.ts'
 import type {} from '../morrow-lab/index.ts'
 

@@ -4,7 +4,7 @@
  * its plugin. What is selected lives in the URL: `?ws=` the workspace, `?tab=` the tab, `?cmd=` a command to put in the prompt.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Forge, Tab, Workspace } from '../termforge/index.ts'
 import { TERM_STYLES } from './styles.ts'
 

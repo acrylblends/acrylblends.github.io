@@ -1,6 +1,6 @@
 /** Profile (`/profile`): the person, the quiet-hours window (editable), and what the notification preference currently means. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, journalErrorOf, withNotice } from '../phone-shell/index.ts'
 import type {} from '../mobiary/index.ts'
 

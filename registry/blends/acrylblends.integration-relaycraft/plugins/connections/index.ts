@@ -1,6 +1,6 @@
 /** Connected systems: a card in the pipelines page's right column and the `/connections` page, with Connect and Disconnect. A connection keeps a credential reference only. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, studioErrorOf, withNotice } from '../craft-shell/index.ts'
 import type {} from '../relaycraft/index.ts'
 

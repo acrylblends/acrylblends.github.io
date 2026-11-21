@@ -4,7 +4,7 @@
  * `ctx.senseShell.side(...)` inside `ctx.effect`, so a part leaves with its plugin. The open modality is the URL's `?modality=` (transient).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Lab, type Modality, type Run, type Settings, MODALITIES } from '../sensepath/index.ts'
 import { SENSE_STYLES } from './styles.ts'
 

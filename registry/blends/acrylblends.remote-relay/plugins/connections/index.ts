@@ -3,7 +3,7 @@
  * connection". Choosing a profile selects it for every tab (`?profile=`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, relayErrorOf, withNotice } from '../relay-shell/index.ts'
 import type {} from '../relay/index.ts'
 

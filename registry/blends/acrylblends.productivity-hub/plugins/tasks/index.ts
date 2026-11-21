@@ -3,7 +3,7 @@
  * add, edit, complete and reopen in place. The data and its rules are the hub's (`ctx.hub`); the page is the shell's (`ctx.hubShell`).
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../hub-shell/index.ts'
 import type { Task } from '../productivity-hub/index.ts'
 

@@ -5,7 +5,7 @@
  * are written with `ctx.runShell.hrefFor(...)` so the selection travels.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Desk, type Host, type ManagedProcess, unitWord } from '../runlevel/index.ts'
 import { RUN_STYLES } from './styles.ts'
 

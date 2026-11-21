@@ -4,7 +4,7 @@
  * itself only routes. What is open is the URL's query (`?room=`, `?range=`, `?peer=`): transient, not saved.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Peer, type Room, type Swarm, RANGES } from '../swarmdrop/index.ts'
 import { SWARM_STYLES } from './styles.ts'
 

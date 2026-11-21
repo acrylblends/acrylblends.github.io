@@ -1,6 +1,6 @@
 /** Command snippets (right column): saved commands that fill the prompt when clicked; save a new one from the allowlist, delete one. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { COMMANDS } from '../termforge/index.ts'
 import { backTo, escapeHtml, fieldOf, forgeErrorOf, withNotice } from '../term-shell/index.ts'
 

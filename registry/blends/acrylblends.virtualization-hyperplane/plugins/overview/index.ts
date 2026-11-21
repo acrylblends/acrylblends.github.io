@@ -3,7 +3,7 @@
  * resource allocation of the cluster or of the picked host, and the recent snapshots. On the frame's home page it shows the cluster's headline.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { capacityOf, percent, usageOf } from '../hyperplane/index.ts'
 import { escapeHtml, whenLabel } from '../fleet-shell/index.ts'

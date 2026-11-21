@@ -3,7 +3,7 @@
  * switch (AR, VR, MR), the world scale and the floating label of the inspected object. Nothing here is an XR session.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { KINDS, MAX_SCALE, MIN_SCALE, MODES, type SceneObject, worldTransform } from '../luma/index.ts'
 import { backTo, escapeHtml, fieldOf, sceneErrorOf, withNotice } from '../luma-shell/index.ts'

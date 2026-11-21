@@ -1,6 +1,6 @@
 /** The alert log at `/alerts`: threshold crossings, their severity and state, and the acknowledge action. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { whenText, type Sensors } from '../sensors/index.ts'
 
 export const name = 'alerts'

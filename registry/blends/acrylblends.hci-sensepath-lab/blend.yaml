@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.hci-sensepath-lab
   name: "Sensepath Lab"
-  version: 0.1.1
+  version: 0.1.2
   category: hci
   description: "An interaction research workbench: six simulated input modalities (speech, gesture, eye tracking, alternative input, haptics, a BCI concept), a scenario with a calibration, a deterministic task simulation with synthetic timing events, and saved observations to compare. No sensor is accessed."
   license: MIT

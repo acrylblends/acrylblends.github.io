@@ -1,6 +1,6 @@
 /** Object inspector (right column): name, position (m), rotation (°), scale, parent, visibility and interaction of the selected object; apply, preview the interaction, delete. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { KINDS, MAX_SCALE, MIN_SCALE, TRIGGERS, descendantsOf } from '../luma/index.ts'
 import { escapeHtml, fieldOf, sceneErrorOf, withNotice } from '../luma-shell/index.ts'
 

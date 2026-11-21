@@ -1,6 +1,6 @@
 /** The Link Shortener's shell: the compact green top bar with the workspace links and the person, then the page column. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Shortly } from '../shortly/index.ts'
 import { createShell, escapeHtml, type NavItem, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

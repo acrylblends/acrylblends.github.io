@@ -5,7 +5,7 @@
  * resolves it and `ctx.orbitShell.hrefFor(path, endpointId)` keeps it in links.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Endpoint, Orbit } from '../orbit/index.ts'
 import { ORBIT_STYLES } from './styles.ts'
 

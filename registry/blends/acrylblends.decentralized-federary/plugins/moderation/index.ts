@@ -1,6 +1,6 @@
 /** Moderation queue (side column): open content reports from peer instances; dismiss one, or limit (quarantine) or block the instance. Every decision is recorded and reversible. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { ago } from '../federary/index.ts'
 import { backTo, escapeHtml, fedErrorOf, fieldOf, postButton, withNotice } from '../fed-shell/index.ts'
 

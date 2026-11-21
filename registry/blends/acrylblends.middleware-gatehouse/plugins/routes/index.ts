@@ -1,6 +1,6 @@
 /** Route registry (left column): every route with its upstream and traffic, picking one selects it everywhere (`?route=`); "Add route" registers one with the default policy. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, gateErrorOf, withNotice } from '../gate-shell/index.ts'
 import { METHODS, compact, label } from '../gatehouse/index.ts'
 

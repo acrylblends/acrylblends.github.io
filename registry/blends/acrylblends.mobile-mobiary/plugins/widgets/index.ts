@@ -3,7 +3,7 @@
  * and the quick-note form. Each switch is a form; the device preview changes as soon as the page reloads.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { backTo, escapeHtml, fieldOf, journalErrorOf, withNotice } from '../phone-shell/index.ts'
 import { WIDGETS, progressOf } from '../mobiary/index.ts'
 

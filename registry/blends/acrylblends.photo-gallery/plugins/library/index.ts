@@ -3,7 +3,7 @@
  * bar and its All photographs row in the rail are registered in `ctx.effect`, so switching the plugin off removes the page and both entries.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Gallery } from '../gallery/index.ts'
 import { addPhotographs, emptyState, grid, pageHead, pager, tabs, type Shell } from '../gallery-shell/index.ts'
 

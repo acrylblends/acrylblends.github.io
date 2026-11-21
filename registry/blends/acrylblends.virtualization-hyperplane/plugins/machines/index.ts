@@ -4,7 +4,7 @@
  * state machine, capacity guards) are the fleet's; this plugin only reads forms and shows what the fleet answers.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Action, type VmState, STATE_LABEL, actionLabel, actionsFor, percent, usageOf } from '../hyperplane/index.ts'
 import { escapeHtml, fieldOf, fleetErrorOf, whenLabel, withNotice } from '../fleet-shell/index.ts'
 

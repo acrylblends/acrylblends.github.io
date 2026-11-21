@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /incidents, GET /groups, POST /groups, GET /status-page.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { healthLabel, latencyText, uptimeText, whenText } from '../uptime/index.ts'
 
 export const name = 'incidents'

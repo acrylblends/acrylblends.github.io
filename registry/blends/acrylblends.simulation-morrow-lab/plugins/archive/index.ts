@@ -3,7 +3,7 @@
  * snapshots, which load their parameters back into the setup or are deleted.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, labErrorOf, noticeQuery, whenLabel } from '../lab-shell/index.ts'
 import type {} from '../morrow-lab/index.ts'
 

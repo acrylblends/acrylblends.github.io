@@ -1,6 +1,6 @@
 /** The dashboard, device detail, alerts, ingest and threshold forms. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { evaluate, seriesOf, sparkPath, valueText, whenText } from '../sensors/index.ts'
 const escape = (text: string): string => text.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;')
 export const name = 'dashboard'

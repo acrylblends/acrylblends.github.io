@@ -8,7 +8,7 @@
  * Quick capture (the sidebar field, focused with Cmd/Ctrl+K) posts to the inbox's page, so it shows only while a plugin registered the `inbox` entry.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Hub } from '../productivity-hub/index.ts'
 import { HUB_STYLES } from './styles.ts'
 

@@ -3,7 +3,7 @@
  * manifest and install commands the stack would produce. Add (`POST /stack`), re-pin, remove and clear.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { atlasErrorOf, backTo, escapeHtml, fieldOf, withNotice } from '../foundry-shell/index.ts'
 import { commandsOf, latestOf, manifestOf, standing, warningsOf } from '../foundry/index.ts'
 

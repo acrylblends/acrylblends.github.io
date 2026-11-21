@@ -5,7 +5,7 @@
  * `?status=`, `?control=`, `?risk=`, `?newrisk=1`): transient, not part of the saved workspace.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Control, type Grc, type Risk, filterControls } from '../grc/index.ts'
 import { GRC_STYLES } from './styles.ts'
 

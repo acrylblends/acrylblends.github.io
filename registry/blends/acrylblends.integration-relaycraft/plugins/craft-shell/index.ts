@@ -5,7 +5,7 @@
  * being edited is `?pipeline=`; `ctx.craftShell.selected(url)` resolves it.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Pipeline, Studio } from '../relaycraft/index.ts'
 import { CRAFT_STYLES } from './styles.ts'
 

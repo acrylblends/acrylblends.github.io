@@ -1,6 +1,6 @@
 /** Dead-letter queue (`/dead-letters`): messages that failed every delivery, with the reason; redrive one (a fresh delivery attempt) or discard it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { busErrorOf, escapeHtml, withNotice } from '../bus-shell/index.ts'
 import { clockOf, summarize } from '../pulsebus/index.ts'
 

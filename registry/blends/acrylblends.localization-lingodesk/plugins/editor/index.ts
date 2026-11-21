@@ -3,7 +3,7 @@
  * (needs review), approved, or reopened; an approved segment is read-only until it is reopened, so an approved translation is never rewritten silently.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type {} from '../home/index.ts'
 import { FILTERS, type Filter, type Segment, TYPES, ago, countsFor, filterMatches, placeholdersOf } from '../lingodesk/index.ts'
 import { escapeHtml, fieldOf, deskErrorOf, withNotice } from '../desk-shell/index.ts'

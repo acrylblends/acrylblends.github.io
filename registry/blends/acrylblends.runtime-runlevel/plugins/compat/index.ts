@@ -1,6 +1,6 @@
 /** Compatibility (`/compat`): the runtime compatibility matrix, workload by workload, current runtime against target with a verdict and the reason; each row leads to a prepared rollout. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml } from '../run-shell/index.ts'
 import { VERDICT_LABEL } from '../runlevel/index.ts'
 

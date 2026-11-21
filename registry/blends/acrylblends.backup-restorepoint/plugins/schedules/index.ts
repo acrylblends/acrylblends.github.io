@@ -1,6 +1,6 @@
 /** Backup schedules (`/schedules`): every workload's backup jobs with their schedule and last run; a job can be paused or resumed, which can put the RPO target at risk. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { rpoMet, whenLabel } from '../restorepoint/index.ts'
 import { escapeHtml, opsErrorOf, withNotice } from '../ops-shell/index.ts'
 

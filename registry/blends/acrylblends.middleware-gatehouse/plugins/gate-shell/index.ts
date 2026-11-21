@@ -5,7 +5,7 @@
  * first route when none is named) and `ctx.gateShell.hrefFor(path, route)` keeps it in links.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Gate, Route } from '../gatehouse/index.ts'
 import { GATE_STYLES } from './styles.ts'
 

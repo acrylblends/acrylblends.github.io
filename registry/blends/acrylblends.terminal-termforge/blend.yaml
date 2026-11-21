@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.terminal-termforge
   name: "Termforge"
-  version: 0.1.1
+  version: 0.1.2
   category: terminal
   description: "A terminal workspace simulator: workspaces with tabs, a strict command allowlist answered from fixtures, a command deck and task launcher, saved snippets, command history and recall, and a session status panel. It never runs a host process."
   license: MIT

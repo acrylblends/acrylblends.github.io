@@ -3,7 +3,7 @@
  * their top-bar entry and one rail row per album in `ctx.effect`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { artOf, coverOf, dateText, groupDigits, sizeText, type Album, type Gallery } from '../gallery/index.ts'
 import { addPhotographs, emptyState, escapeHtml, grid, pageHead, pager, tabs, type Shell } from '../gallery-shell/index.ts'
 

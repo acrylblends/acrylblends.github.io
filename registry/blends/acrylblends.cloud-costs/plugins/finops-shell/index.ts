@@ -3,7 +3,7 @@
  * page links and the connected providers, and the main column every page fills.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Finops } from '../finops/index.ts'
 import { escapeHtml as e, createShell, type NavItem, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

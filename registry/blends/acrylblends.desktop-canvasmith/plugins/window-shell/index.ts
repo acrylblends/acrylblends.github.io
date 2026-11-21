@@ -5,7 +5,7 @@
  * `?layer=`; `ctx.windowShell.selection(url)` resolves them and `ctx.windowShell.hrefFor(...)` keeps them in links.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Doc, type Layer, type Project, countLayers } from '../canvasmith/index.ts'
 import { WINDOW_STYLES } from './styles.ts'
 

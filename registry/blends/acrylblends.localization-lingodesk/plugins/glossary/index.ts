@@ -1,6 +1,6 @@
 /** Terminology and translation memory (right column): the glossary for the open locale, each term insertable into the selected segment, and the best translation-memory suggestion for it. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, fieldOf, deskErrorOf, withNotice } from '../desk-shell/index.ts'
 
 export const name = 'glossary'

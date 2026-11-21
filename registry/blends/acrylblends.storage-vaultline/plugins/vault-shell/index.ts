@@ -5,7 +5,7 @@
  * app is at the root, in the ACRYL frame at `/app`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Vault, formatCount, formatGb } from '../vaultline/index.ts'
 import { VAULT_STYLES } from './styles.ts'
 

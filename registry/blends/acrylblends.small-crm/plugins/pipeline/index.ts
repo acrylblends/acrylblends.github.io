@@ -5,7 +5,7 @@
  * Routes (under the shell's prefix): GET /, GET /pipeline?tab&q&deal&new&stage, POST /pipeline/deals, POST /pipeline/deals/:id/stage|owner|complete.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { BoardColumn, Deal, Stage } from '../crm/index.ts'
 
 export const name = 'pipeline'

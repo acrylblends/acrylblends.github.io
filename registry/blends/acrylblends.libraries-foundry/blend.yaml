@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.libraries-foundry
   name: "The Foundry"
-  version: 0.1.1
+  version: 0.1.2
   category: libraries-frameworks
   description: "A curated package atlas: search and filter libraries and frameworks, read their metadata and version history, copy an install command, and assemble a local stack with warnings and a manifest preview."
   license: MIT

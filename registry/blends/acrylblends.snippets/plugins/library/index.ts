@@ -6,7 +6,7 @@
  * POST /snippets/:id/star, GET and POST /snippets/:id/delete.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import {
   fileNameOf,
   LANGUAGES,

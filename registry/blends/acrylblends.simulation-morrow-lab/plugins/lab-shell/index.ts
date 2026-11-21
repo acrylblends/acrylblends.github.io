@@ -7,7 +7,7 @@
  * root, in the ACRYL frame at `/app`.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Lab } from '../morrow-lab/index.ts'
 import { LAB_STYLES } from './styles.ts'
 

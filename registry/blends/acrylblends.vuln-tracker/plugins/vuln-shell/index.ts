@@ -1,6 +1,6 @@
 /** The Vulnerability Tracker's shell: the dark security rail, the page wrapper and the toast/copy client script. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import type { Vulns } from '../vulns/index.ts'
 import { createShell, escapeHtml, type NavItem, type Shell } from './core.ts'
 import { STYLES } from './styles.ts'

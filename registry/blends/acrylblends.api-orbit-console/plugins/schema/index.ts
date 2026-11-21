@@ -1,6 +1,6 @@
 /** Schema (`/schema`): the resource the endpoint returns (an Order, a Customer or an Event) as a type map, and for a POST the request body's fields with whether they are required. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { escapeHtml, highlight } from '../orbit-shell/index.ts'
 import { SCHEMAS } from '../orbit/index.ts'
 

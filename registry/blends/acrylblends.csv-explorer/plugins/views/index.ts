@@ -5,7 +5,7 @@
  * Route (under the shell's prefix): GET /views/:id.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { type Column, euro, euroShort, number, type SavedView } from '../tables/index.ts'
 
 export const name = 'views'

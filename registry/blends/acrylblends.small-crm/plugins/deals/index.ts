@@ -4,7 +4,7 @@
  * Routes (under the shell's prefix): GET /deals/:id?confirm=won|lost, POST /deals/:id/stage|owner|close-date|contact|activity|next-action|close|tasks/:taskId/complete.
  */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 
 export const name = 'deals'
 export const inject = ['crm', 'shell', 'router']

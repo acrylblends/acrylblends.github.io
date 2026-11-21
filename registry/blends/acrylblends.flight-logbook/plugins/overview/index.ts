@@ -1,6 +1,6 @@
 /** The logbook at `/`: pilot summary, hour totals, the flight table with aircraft/role filters and the selected flight's route card. */
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../acryl-router/src/index.ts'
+import { Acryl } from '../router/src/index.ts'
 import { dateLabel, hoursText, type Flight, type Logbook, shortDate } from '../logbook/index.ts'
 import type { Shell } from '../logbook-shell/index.ts'
 
