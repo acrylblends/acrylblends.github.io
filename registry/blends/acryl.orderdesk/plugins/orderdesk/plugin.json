@@ -1,0 +1,13 @@
+{
+  "name": "orderdesk",
+  "description": "An order desk for a small business: customer emails (dropped into inbox/, pasted, or handed over by the agent) become orders that reserve stock, large ones wait for approval, shipping writes a delivery note and tells the customer, arriving stock releases waiting orders. Messages land in outbox/ as .eml files, delivery notes in delivery-notes/. JSON routes the agent and the page call, and the desk as a widget on the first screen. Data in orderdesk.json in the app's home.",
+  "requires": [],
+  "inject": ["router", "home", "appInstance"],
+  "provides": [],
+  "mount": "a row `- id: orderdesk` / `name: orderdesk` before the server row in blend.yaml",
+  "config": {
+    "store": "an OrderDeskStore for tests (default: orderdesk.json in the app's home)",
+    "now": "what time it is (ISO), for tests (default: the system clock)",
+    "sweepMs": "how often the inbox/ folder is read (default 3000; 0 reads it once at start)"
+  }
+}

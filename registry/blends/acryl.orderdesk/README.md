@@ -1,26 +1,30 @@
 # Order Desk
 
-A starter for a small business that sells from stock: customer emails in, orders out. The app opens on the pipeline (Inbox, Needs approval, Ready
-to ship, Backorder, Shipped), with the agent beside it.
+An order desk for a small business. Customer emails arrive (dropped into `inbox/`, pasted in the widget, or handed over by the agent); orders reserve stock, large ones wait for approval, shipping writes a delivery note and tells the customer, and stock that arrives releases the orders waiting for it. Messages land in `outbox/` as `.eml` files and delivery notes in `delivery-notes/`, in the app's home. The desk is the widget on the first screen; the same operations are JSON routes under `/orderdesk` (see the header of `plugins/orderdesk/index.ts`), which is how the agent inside the app runs it. The rules are in `plugins/orderdesk/lib/domain.js` (pure, tested), the data in `orderdesk.json`. It grew from the earlier ACRYL-app starter of the same name: `domain.js`, `files.js` and `store.js` are that code, unchanged, and its own domain tests run with the app's (`test/orderdesk-domain.test.ts`); `plugins/orderdesk/index.ts` is the adapter.
 
-- **Emails** arrive in the Inbox: drop `.eml` or `.txt` files into the app's `inbox/` folder (a mail rule or a script can do that), paste one in the
-  window, or forward the text to the agent.
-- **The agent reads them** in any language ("Process the inbox"): it maps what the customer wrote to your products and makes the order, or answers
-  the question, or asks you.
-- **Stock** is reserved for each order, or the order waits as a backorder; when stock arrives ("we received 40 kg espresso"), waiting orders are
-  reserved, oldest first, and their customers told.
-- **Approval** is a rule: orders above a limit (1,000 EUR net by default) wait for a person.
-- **Shipping** writes a printable delivery note (`delivery-notes/DN-1001.html`) and emails the customer.
-- **Everything sent** (confirmations, shipping notices, replies, purchase orders to suppliers) is in the Outbox and as `.eml` files in `outbox/`.
+Below is what every app made by `acrylblends init` carries.
 
-```bash
-acryl new my-desk --from acryl.orderdesk
-my-desk/bin/acryl web
+A Cordis app on Node, scaffolded by `acrylblends init`. TypeScript, run by Node with no build step. Every part is a
+Cordis plugin.
+
+```sh
+npm install
+npm run dev        # prints its URL; data lives in ~/.acryl/apps/<id>/data/
+npm test
+npm run check      # type-check
 ```
 
-Click "Load the sample business" to try it with a coffee roaster's catalog and four customer emails (one in German, one a question, two that
-the stock cannot cover), then ask the agent: "Process the inbox."
+- `src/main.ts` chooses where the app lives (the `@acryldev/instance` package) and starts it.
+- `blend.yaml` is the app as data: which plugins it mounts, in what order, with what config and parameters. Switch
+  one off with `disabled: true`. `npm run lock` writes `blend.lock.json`: the manifest's digest and a digest of
+  every plugin folder, so a diff of the lock shows what changed.
+- `src/app.ts` holds the registry of plugins the code provides, and mounts the manifest's rows.
+- `src/routes.ts` is your own plugin: it builds an `App` (`import { App } from './plugins/router/src/index.ts'`) and mounts it with `ctx.router.route(prefix, app)`. Routes added to the app after it is mounted are not served. A page mounted at `/x` answers `/x`, not `/x/` (trailing slashes are strict). The router API is documented at https://acrylblends.github.io/docs/framework/the-acryl-framework and in `docs/framework` of the acrylblends repository.
+- `plugins/` holds the plugins copied from the ACRYLBLENDS library. They are yours now; edit them freely.
+  Add more with `acrylblends add <plugin>`.
 
-Your data stays in your app (`.acryl/orderdesk.json`). Then ask the builder inside for what your business needs: invoices for shipped orders,
-a price list per customer, sending the outbox through your mail server. The project is yours: private and proprietary until you decide
-otherwise. This starter's code is MIT licensed; its notice travels with your project in `THIRD-PARTY.md`.
+`npm run save -- "message"` commits the app with git (and pushes when it has a remote). It refuses a file that looks like
+it holds a secret, and refuses to push a private app (anything but `visibility: public` in `blend.yaml`) to a public
+remote.
+
+Set `ACRYLBLENDS_HOME` to keep data elsewhere, and `ACRYLBLENDS_PORT` to choose the first port tried.

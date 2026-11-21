@@ -5,7 +5,7 @@ Starting points other people published. Each entry is a folder under `blends/<id
 | Runtime | What the entry is | How to start from it |
 | --- | --- | --- |
 | `acrylblends` | A whole app for the `acrylblends` framework: `blend.yaml`, `plugins/`, `src/`, `package.json`, `README.md`, and an `acryl.template.json`. | `npm create acrylblends@latest my-app -- --from <id>` |
-| `acryl` | A starter for the ACRYL app (a Blueprint whose rows are ACRYL plugins). It runs only inside ACRYL. | Open it in the ACRYL app (<https://acryl.dev>). `create-acrylblends` refuses it with one line saying so. |
+| `acryl` | A starter for the earlier ACRYL app (a Blueprint whose rows are ACRYL plugins). It runs only inside that app, and `create-acrylblends` refuses it. **No entry has this runtime any more**: the five that did (Accounting, GTD Planner, Music, Order Desk, Organizer) are acrylblends apps now, and an entry that still has this runtime is listed as `status: converting` and offered no start command. | Use an `acrylblends` entry. |
 
 A project started from any of them is its owner's, in their own repository: the new app is private, named after its folder, and carries none of the starter's id or licence.
 
@@ -36,9 +36,9 @@ No pull request needed: keep the Blend in your own public GitHub repository and 
 
 The listing reads these files and never runs them. It is labelled **Community**, names you as the author, and says that we have not reviewed the code; only repositories owned by the project's organisations (`official-owners.json`) are **Official**, and a community Blend's id may not start with one of their prefixes (`acryl.`, `acrylblends.`, ...). A repository that does not pass is left out with its reason in the Pages workflow's log. `blocklist.json` removes an owner or a repository at the next sync. The list is `registry/discovered.json`, written by `scripts/sync-blends.ts` on each deploy and every hour.
 
-## Publish a starter for the ACRYL app
+## Starters for the earlier ACRYL app
 
-`blends/<id>/` with `blend.yaml` (`kind: Blueprint`, `spec.extends` naming the Blueprint it grew from, usually `acryl.blank`), `plugins/` (the plugins it adds, source, no `node_modules`) and `README.md`. No `acryl.template.json`: that is what makes the entry `runtime: acryl`. People start from it in the ACRYL app.
+No new ones: an entry without an `acryl.template.json` is a starter for the earlier ACRYL app, and the index marks it `status: converting` so no listing offers it. Make an acrylblends app instead (above). The five official ones were converted by keeping their domain code (`domain.js`, `store.js`) and writing an adapter plugin: routes under the app's own prefix and a widget on the first screen.
 
 ## Keeping a starter private
 

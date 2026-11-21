@@ -1,0 +1,5 @@
+{
+  "name": "Order Desk",
+  "description": "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.",
+  "plugins": []
+}

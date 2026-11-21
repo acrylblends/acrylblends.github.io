@@ -1,28 +1,43 @@
-# Order desk: a starter for a small business. Customer emails become orders, orders reserve stock, large ones wait for approval, shipping
-# writes the delivery note and tells the customer - the pipeline is the window, the agent sits beside it.
-# Start a project from it:  acryl new my-desk --from acryl.orderdesk
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
 apiVersion: blends.acryl.dev/v1alpha1
 kind: Blueprint
 metadata:
   id: acryl.orderdesk
-  name: Order Desk
-  version: 0.1.0
+  name: "Order Desk"
+  version: 0.2.0
   category: business
-  description: Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.
+  description: "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer."
   license: MIT
   visibility: public
 spec:
   runtime: cordis
-  extends: acryl.blank
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
   rows:
-    - id: brand
-      name: acryl-brand
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # Order desk: emails become orders that reserve stock, with approval, shipping and delivery notes (plugins/orderdesk/). Its widget is on the first screen; its routes are under /orderdesk.
+    - id: orderdesk
+      name: orderdesk
+    - id: routes
+      name: routes
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    # Sharing: `npm run acryl -- plugin pull github:<owner>/<repo>@<version>` installs a plugin someone released (development only).
+    - id: plugin-share
+      name: plugin-share
+    - id: server
+      name: acryl-node-server
       config:
-        name: Order Desk
-        tagline: Customer emails in, orders out.
-        accent: "#0c8599"
-        accentDark: "#3bc9db"
-    - id: acryl-app-shell
-      name: acryl-app-shell
-    - id: acryl-orderdesk
-      name: acryl-orderdesk
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door
