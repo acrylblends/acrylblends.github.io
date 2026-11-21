@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.music
   name: "Music"
-  version: 0.2.0
+  version: 0.3.0
   category: creative
   description: "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works."
   license: MIT

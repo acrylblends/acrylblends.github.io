@@ -53,7 +53,7 @@
       "id": "acryl.music",
       "name": "Music",
       "kind": "Blueprint",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "path": "blends/acryl.music",
       "license": "MIT",
       "category": "creative",

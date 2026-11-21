@@ -33,13 +33,23 @@ const send = (app: App, path: string, payload?: unknown) =>
 type State = { pattern: { tempo: number; steps: number; tracks: Record<string, string> }; saved: Record<string, unknown> }
 const state = async (response: Response) => (await response.json()) as State
 
-test('the drum machine is on the first screen, with its synthesizer', () =>
+test('the first screen is the drum machine: the starter\'s own React UI, with React 18 served by the app; other clients still get the JSON hello', () =>
   withHome((home) =>
     withApp(home, async (app) => {
-      const html = await (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()
-      assert.ok(html.includes('data-test="music"'))
-      assert.ok(html.includes('createOscillator'), 'the page plays the pattern with WebAudio')
-      assert.ok(html.includes('"hiphop"') || html.includes('hiphop'), 'the styles are listed')
+      const page = await app.root.router.request('/', { headers: { accept: 'text/html' } })
+      const html = await page.text()
+      assert.match(page.headers.get('content-type') ?? '', /text\/html/u)
+      assert.ok(html.includes('id="music-root"'))
+      for (const src of ['music/assets/vendor/react.js', 'music/assets/vendor/react-dom.js', 'music/assets/client.js']) {
+        assert.ok(html.includes(`src="${src}"`), src)
+        const asset = await app.root.router.request(`/${src}`)
+        assert.equal(asset.status, 200, src)
+        assert.match(asset.headers.get('content-type') ?? '', /javascript/u)
+      }
+      const client = await (await app.root.router.request('/music/assets/client.js')).text()
+      assert.ok(client.includes('createOscillator'), 'the page plays the pattern with WebAudio')
+      assert.ok(!client.includes('__ModuleLoader__') && !client.includes('acryl-app-shell/client') && !client.includes("fetch('/api/"), 'no DSH integration is left in it')
+      assert.deepEqual(await (await app.root.router.request('/')).json(), { app: app.root.get('appInstance')?.name, ok: true })
     })))
 
 test('what the agent does through the routes changes the pattern: style, tempo, beats, steps, a single step, a whole track, clear', () =>
@@ -85,6 +95,5 @@ test('the pattern survives a restart', () =>
     await withApp(home, async (app) => { await send(app, 'tempo', { bpm: 77 }) })
     await withApp(home, async (app) => {
       assert.equal((await state(await send(app, 'state'))).pattern.tempo, 77)
-      assert.deepEqual(app.root.home.widgets().map((widget) => widget.id), ['music'])
     })
   }))
