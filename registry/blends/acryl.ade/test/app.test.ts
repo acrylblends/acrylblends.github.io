@@ -4,7 +4,7 @@ import { mkdtemp, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 import { test } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { pinnedInstance, withPort } from '../plugins/instance/index.ts'
+import { pinnedInstance, withPort } from '@acryldev/instance'
 import { type App, createApp } from '../src/app.ts'
 import { APP_NAME, FRAME_MOUNT_PREFIX } from '../src/routes.ts'
 
@@ -43,7 +43,7 @@ test('GET /about renders the JSX page', () =>
     assert.match(response.headers.get('content-type') ?? '', /html/)
     assert.match(
       await response.text(),
-      /<main><h1>About<\/h1><p>ACRYL ADE, the Agent Development Environment: the ACRYL IDE as a Blend\.<\/p><\/main>/,
+      /<main><h1>About<\/h1><p>ACRYL ADE, the Agentic Development Environment: the ACRYL IDE as a Blend\. It updates itself: Check for Updates in the app menu, and keeps your work while it does\.<\/p><\/main>/,
     )
   }))
 
@@ -74,7 +74,7 @@ test('GET /counter serves a page with a client component, and the component is c
     assert.match(module.headers.get('content-type') ?? '', /javascript/)
     assert.doesNotMatch(await module.text(), /<Counter|<button/)
     // The component's import of the DOM renderer is pointed at the browser build the acrylblends package ships.
-    const runtime = await app.root.router.request('/client/@acrylblends/jsx-dom.js')
+    const runtime = await app.root.router.request('/client/@acryldev/jsx-dom.js')
     assert.equal(runtime.status, 200)
   }))
 
@@ -102,7 +102,7 @@ test('the frame mounts the app at /app: its pages, health route and client compo
       assert.doesNotMatch(await module.text(), /<Counter|<button/u)
       // The component's import of the DOM renderer is served below the app's prefix too.
       assert.equal(
-        (await app.root.router.request(`${FRAME_MOUNT_PREFIX}/client/@acrylblends/jsx-dom.js`))
+        (await app.root.router.request(`${FRAME_MOUNT_PREFIX}/client/@acryldev/jsx-dom.js`))
           .status,
         200,
       )

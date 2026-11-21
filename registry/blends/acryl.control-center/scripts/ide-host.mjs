@@ -7,12 +7,12 @@ import { createRequire } from 'node:module'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { DEFAULT_SCHEMA, dump as dumpYaml, Type, load as parseYaml } from 'js-yaml'
-import { Acryl } from 'acrylblends'
+import { Acryl } from '@acryldev/blends'
 
 // The framework's files (this launcher, the composition it reads) sit next to it; the app is chosen by the app's own family: this folder, or the
 // source a desktop product names when it runs the framework from its bundle. Its home and its port come with it, decided once.
 const frameworkRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
-const { selectInstance } = await import(new URL('../plugins/instance/index.ts', import.meta.url).href)
+const { selectInstance } = await import('@acryldev/instance')
 const chosen = selectInstance({ projectRoot: frameworkRoot, env: process.env })
 const appRoot = chosen.root
 const home = chosen.home
@@ -31,7 +31,7 @@ process.env.DSH_HOME = home
 // of the app's src/ then resolves under a generation the frame's Host raises, so nothing but the app's own rows restarts. Before anything of the app loads;
 // a frame package that predates the hook leaves the code as it started.
 try {
-  const { installAppGeneration } = await import('@acrylblends/blends-frame/app-generation')
+  const { installAppGeneration } = await import('@acryldev/blends-frame/app-generation')
   installAppGeneration({ appRoot })
 } catch (error) {
   if (error?.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED' && error?.code !== 'ERR_MODULE_NOT_FOUND') throw error
@@ -303,6 +303,10 @@ const clientRows = [
   {
     "id": "ui-input-trigger",
     "name": "@deepseek-ai/dsh-client-ui-input-trigger"
+  },
+  {
+    "id": "client-hmr",
+    "name": "@deepseek-ai/dsh-client-hmr"
   }
 ]
 const agentRows = [

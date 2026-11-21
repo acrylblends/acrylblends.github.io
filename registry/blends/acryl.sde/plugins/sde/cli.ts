@@ -10,7 +10,7 @@
  */
 import { fileURLToPath } from 'node:url'
 import { join } from 'node:path'
-import { selectInstance } from '../instance/index.ts'
+import { selectInstance } from '@acryldev/instance'
 import { Sde, SdeError } from './src/engine.ts'
 
 const chosen = selectInstance({ projectRoot: fileURLToPath(new URL('../..', import.meta.url)), env: process.env })

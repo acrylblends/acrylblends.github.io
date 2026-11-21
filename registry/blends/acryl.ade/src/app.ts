@@ -5,7 +5,7 @@ import * as door from '../plugins/acryl-door/src/index.ts'
 import * as nodeServer from '../plugins/acryl-node-server/src/index.ts'
 import * as router from '../plugins/acryl-router/src/index.ts'
 import { extensions } from '../plugins/extensions/index.ts'
-import { type AppInstance, instance } from '../plugins/instance/index.ts'
+import { type AppInstance, instance } from '@acryldev/instance'
 import {
   appPluginNames,
   blueprintsIn,

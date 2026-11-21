@@ -20,6 +20,10 @@ export const LAUNCHER_PUBLISH_PLAN_PATH = `${LAUNCHER_API_PREFIX}/publish-plan`
 export const LAUNCHER_PUBLISH_PATH = `${LAUNCHER_API_PREFIX}/publish`
 export const LAUNCHER_SHARE_PLAN_PATH = `${LAUNCHER_API_PREFIX}/share-plan`
 export const LAUNCHER_SHARE_PATH = `${LAUNCHER_API_PREFIX}/share`
+export const LAUNCHER_GITHUB_PATH = `${LAUNCHER_API_PREFIX}/github`
+export const LAUNCHER_GITHUB_START_PATH = `${LAUNCHER_API_PREFIX}/github-start`
+export const LAUNCHER_GITHUB_POLL_PATH = `${LAUNCHER_API_PREFIX}/github-poll`
+export const LAUNCHER_GITHUB_DISCONNECT_PATH = `${LAUNCHER_API_PREFIX}/github-disconnect`
 
 /** The three kinds of app (spec 050 D10): a web app, a desktop window, and the lightest, a terminal app, which is listed but not yet made. */
 export type Surface = 'web' | 'desktop' | 'tui'
@@ -49,6 +53,16 @@ export interface AppView {
   readonly version?: string
   /** A newer release of that Blend in the registry: `acrylblends update` brings it in, keeping the person's changes. */
   readonly update?: string
+  /** Where the app was shared to (`https://github.com/<owner>/<repo>`), from its origin remote; what WebBoxes.ai deploys from. */
+  readonly github?: string
+}
+
+/** WebBoxes.ai's New WebBox form, opened with the app's repository filled in (the person signs in and presses Create there). */
+export function webboxesDeployUrl(github: string, name: string): string {
+  const url = new URL(WEBBOXES_NEW_BOX)
+  url.searchParams.set('github', github)
+  url.searchParams.set('name', name.toLowerCase().replace(/[^a-z0-9-]+/gu, '-').replace(/^-+|-+$/gu, '').slice(0, 40))
+  return url.href
 }
 
 export interface StarterView {
@@ -99,6 +113,12 @@ export interface BlendView {
   readonly version: string
   readonly category: string
   readonly description: string
+  /** Who released it: the ACRYL project (`official`) or anyone else (`community`, not reviewed); the registry's `origin`. */
+  readonly origin: 'official' | 'community'
+  /** A community Blend's release on GitHub (`github:owner/repo#tag`), what `--from` takes for a Blend outside the public registry; absent: `--from <id>`. */
+  readonly source?: string
+  /** A community Blend's GitHub owner, shown as "by @owner". */
+  readonly publisher?: string
 }
 
 export interface BlendsResponse {
@@ -106,7 +126,13 @@ export interface BlendsResponse {
 }
 
 /** A Blend id as `acryl new --from` takes it: it starts with a letter or digit, so it can never read as an option. */
+/** WebBoxes.ai's WebBoxes page: with `github` (a public https://github.com/owner/repo) and `name` it opens the New WebBox form filled in. */
+export const WEBBOXES_NEW_BOX = 'https://webboxes.ai/dashboard/webboxes'
+
 export const BLEND_ID = /^[a-z0-9][a-z0-9._-]{0,127}$/u
+
+/** A Blend released on GitHub, as `--from` takes it (create-acrylblends `github:owner/repo#ref`): what a community Blend is made from. */
+export const BLEND_SOURCE = /^github:[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})\/[A-Za-z0-9._-]{1,100}(?:#[A-Za-z0-9._/-]{1,100})?$/u
 
 /** The app to make: from a starter (`acryl new <name> <starter>`) or from a registry Blend (`acryl new <name> --from <id>`), never both. */
 export interface NewAppRequest {
@@ -184,7 +210,29 @@ export interface AppSharePlanRequest {
   readonly id: string
   /** The account that owns a new repository; absent means the signed-in one. */
   readonly owner?: string
+  /** Who may see it: written to the app's blend.yaml (metadata.visibility, the one place it is kept) before the plan is read; absent keeps it. */
+  readonly visibility?: 'private' | 'public'
 }
+
+/** The GitHub connection Control Center hands its apps (as GH_TOKEN): who is signed in, never the token. */
+export interface GithubView {
+  /** False when this build has no GitHub app to sign in with. */
+  readonly available: boolean
+  readonly login: string | null
+}
+
+/** A sign-in under way: the code the person types at GitHub. The device code stays in the service. */
+export interface GithubStartView {
+  readonly userCode: string
+  readonly verificationUri: string
+  /** Seconds between polls. */
+  readonly interval: number
+}
+
+export type GithubPollView =
+  | { readonly state: 'pending', readonly interval?: number }
+  | { readonly state: 'connected', readonly login: string }
+  | { readonly state: 'failed', readonly reason: string }
 
 /** The person's yes: the plan they read, sent back as it was. */
 export interface AppShareRequest extends AppSharePlanRequest {

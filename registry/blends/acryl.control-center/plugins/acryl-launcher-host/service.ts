@@ -5,13 +5,15 @@
  */
 import { basename, join } from 'node:path'
 import {
-  addApp, APP_NAME, appNameProblem, APP_MARKER, blendOf, blendVersionOf, inspectApp, maskKey, modelEnv, readApps, readModelKey, removeApp, STARTERS, whereProblem,
+  addApp, APP_NAME, appNameProblem, APP_MARKER, blendOf, blendVersionOf, clearGithub, githubOf, githubClientId, githubEnv, inspectApp, maskKey, modelEnv, pollGithubSignIn,
+  readApps, readGithub, readModelKey, removeApp, setBlendVisibility, startGithubSignIn, STARTERS, toolsEnv, whereProblem,
   type AppEntry,
-} from './launcher-lib/index.js'
+} from '@acryldev/launcher'
 import type {
+  GithubPollView, GithubStartView, GithubView,
   AppSharePlanRequest, AppSharePlanView, AppShareRequest, AppShareResponse, AppRunState, AppView, BlendView, HealthView, JobView, NewAppRequest, PluginPullResponse, PluginView, PublishPlanRequest, PublishPlanView, PublishRequest, PublishResponse, StateResponse, Surface,
 } from './contract.ts'
-import { ACCOUNT_NAME, BLEND_ID, LICENSE_ID, MAKEABLE_SURFACES, PLUGIN_NAME } from './contract.ts'
+import { ACCOUNT_NAME, BLEND_ID, BLEND_SOURCE, LICENSE_ID, MAKEABLE_SURFACES, PLUGIN_NAME } from './contract.ts'
 import { DoorUnavailable, type Door, type DoorAnswer } from './door.ts'
 import { appEnvironment, type Run, type Runner } from './runner.ts'
 
@@ -32,6 +34,11 @@ export interface LauncherPorts {
   readonly blends: () => Promise<readonly BlendView[]>
   /** The running apps' doors: what lists, pulls and publishes their plugins. */
   readonly door: Door
+  /**
+   * Fetch whatever of Node.js (with npm) and gh this computer lacks into `<home>/tools` (`prepareTools` of @acryldev/launcher); absent, the
+   * computer's own tools are used as they are (tests, and a launcher run from a terminal).
+   */
+  readonly prepareTools?: () => Promise<readonly string[]>
 }
 
 /** The address an app prints, with the token it needs: `http://127.0.0.1:3999/?token=...`. */
@@ -83,7 +90,30 @@ export class LauncherService {
   #job: Job | undefined
   #blends: { at: number, list: readonly BlendView[] } | undefined
 
+  #signIn: { readonly clientId: string, readonly deviceCode: string, readonly until: number } | undefined
+  /** Apps just made whose `npm install` is running (`#install`), by id. */
+  readonly #installing = new Map<string, Job>()
+  /** The tools apps need: being fetched (the first start on a computer without them), ready, or not had (apps then try the computer's own). */
+  #tools: { readonly state: 'preparing' } | { readonly state: 'ready' } | { readonly state: 'failed', readonly reason: string } = { state: 'ready' }
   constructor(ports: LauncherPorts) { this.#ports = ports }
+
+  /** Start fetching what this computer lacks of Node.js and gh; apps wait for it (`#toolsReady`). Called once, when the launcher starts. */
+  prepareTools(): Promise<void> {
+    const prepare = this.#ports.prepareTools
+    if (prepare === undefined) return Promise.resolve()
+    this.#tools = { state: 'preparing' }
+    return prepare().then(
+      () => { this.#tools = { state: 'ready' } },
+      (cause: unknown) => { this.#tools = { state: 'failed', reason: cause instanceof Error ? cause.message : String(cause) } },
+    )
+  }
+
+  /** Refuse, in words, to start anything while the tools are still being fetched; a failed fetch lets apps try the computer's own tools. */
+  #toolsReady(): void {
+    if (this.#tools.state === 'preparing') {
+      throw new LauncherRefusal('Getting Node.js and GitHub\'s tool ready for your apps (only on the first start on this computer, about a minute). Try again in a moment.')
+    }
+  }
 
   state(): StateResponse {
     // The registry's versions mark the apps with a newer Blend release; a stale list is read again in the background for the next state.
@@ -97,18 +127,22 @@ export class LauncherService {
   #view(entry: AppEntry): AppView {
     const started = this.#started.get(entry.id)
     const missing = inspectApp(entry).state === 'missing'
-    const state: AppRunState = missing ? 'missing' : started === undefined ? 'stopped' : started.address === undefined ? 'starting' : 'running'
+    const installing = this.#installing.get(entry.id)
+    const state: AppRunState = missing ? 'missing' : started === undefined ? (installing !== undefined ? 'starting' : 'stopped') : started.address === undefined ? 'starting' : 'running'
     const failure = this.#failures.get(entry.id)
     const blend = entry.blend === '' ? blendOf(entry.path) : entry.blend
     const version = missing ? '' : blendVersionOf(entry.path)
     const latest = this.#blends?.list.find(listed => listed.id === blend)?.version
+    const github = missing ? undefined : githubOf(entry.path)
     return {
       id: entry.id, name: basename(entry.path), path: entry.path, blend, madeBy: entry.madeBy, surface: entry.surface, state,
       ...version === '' ? {} : { version },
       ...version !== '' && latest !== undefined && newerVersion(latest, version) ? { update: latest } : {},
       ...started?.address === undefined ? {} : { address: started.address },
       ...started === undefined || started.address !== undefined || started.output === '' ? {} : { output: started.output.trimEnd() },
+      ...started === undefined && installing !== undefined && installing.output !== '' ? { output: installing.output.trimEnd() } : {},
       ...failure === undefined || state !== 'stopped' ? {} : { failure },
+      ...github === undefined ? {} : { github },
     }
   }
 
@@ -130,6 +164,7 @@ export class LauncherService {
    * browser), a Desktop app with `npm run desktop`, which starts the same app and opens it in its own window (Electron is fetched the first time).
    */
   start(id: string, surface?: Surface): void {
+    this.#toolsReady()
     const entry = readApps(this.#ports.home).find(app => app.id === id)
     if (entry === undefined) throw new LauncherRefusal(`there is no app "${id}" in the list`)
     if (inspectApp(entry).state === 'missing') throw new LauncherRefusal(`the folder ${entry.path} is gone: remove it from the list, or put it back`)
@@ -174,6 +209,7 @@ export class LauncherService {
    * install). A running app is stopped first and started again after.
    */
   update(id: string): void {
+    this.#toolsReady()
     if (this.#job?.status === 'running') throw new LauncherRefusal(`${this.#job.name} is still being worked on: wait for it to finish`)
     const entry = readApps(this.#ports.home).find(app => app.id === id)
     if (entry === undefined) throw new LauncherRefusal(`there is no app "${id}" in the list`)
@@ -210,12 +246,13 @@ export class LauncherService {
    * so the process it began is the app's running process: when its blend.yaml appears the app is listed and that process is adopted as the app's.
    */
   create(request: NewAppRequest): void {
+    this.#toolsReady()
     if (this.#job?.status === 'running') throw new LauncherRefusal(`${this.#job.name} is still being made: wait for it to finish`)
     const problem = whereProblem(request.where) ?? (APP_NAME.test(request.name) ? undefined : appNameProblem(request.name, this.#ports))
     if (problem !== undefined) throw new LauncherRefusal(problem)
     if ((request.starter === undefined) === (request.blend === undefined)) throw new LauncherRefusal('choose a starter or a Blend, not both')
     if (request.starter !== undefined && !STARTERS.some(starter => starter.value === request.starter)) throw new LauncherRefusal(`there is no starter "${request.starter}"`)
-    if (request.blend !== undefined && !BLEND_ID.test(request.blend)) throw new LauncherRefusal(`"${request.blend}" is not a Blend id (for example acrylblends.notes)`)
+    if (request.blend !== undefined && !BLEND_ID.test(request.blend) && !BLEND_SOURCE.test(request.blend)) throw new LauncherRefusal(`"${request.blend}" is not a Blend id (for example acrylblends.notes) or a Blend on GitHub (github:owner/repo#tag)`)
     if (!MAKEABLE_SURFACES.includes(request.surface)) throw new LauncherRefusal('CLI (TUI) apps are coming: choose Web or Desktop')
     const folder = join(request.where, request.name)
     if (this.#ports.exists(folder)) throw new LauncherRefusal(`there is already a folder named ${request.name} in ${request.where}`)
@@ -271,7 +308,16 @@ export class LauncherService {
 
   /** The plugins of a running app: the ones its people made (shareable) and the ones pulled from a registry. */
   async plugins(id: string): Promise<readonly PluginView[]> {
-    const answer = await this.#door(id, (door, folder) => door.call(folder, 'plugin-list', {}))
+    let answer: DoorAnswer
+    try {
+      answer = await this.#door(id, (door, folder) => door.call(folder, 'plugin-list', {}))
+    } catch (cause) {
+      // An app from an older Blueprint has neither plugin-share nor extensions: its door says so in words meant for an agent. Say it for a person.
+      if (cause instanceof LauncherRefusal && /no extensions plugin to drive/u.test(cause.message)) {
+        throw new LauncherRefusal('This app keeps its plugins in its own page: open it, then Settings > Plugins. Pulling a plugin from here needs an app made with a newer Blueprint.')
+      }
+      throw cause
+    }
     const list = Array.isArray(answer.value) ? answer.value as Array<Record<string, unknown>> : []
     return list.filter(plugin => typeof plugin.name === 'string').map(plugin => ({
       name: String(plugin.name), version: typeof plugin.version === 'string' ? plugin.version : '', state: typeof plugin.state === 'string' ? plugin.state : '',
@@ -326,10 +372,15 @@ export class LauncherService {
    * The app need not be running. An app made before that command has none, and is told how to get it.
    */
   async #shareCommand(request: AppSharePlanRequest, confirm: AppSharePlanView | undefined): Promise<Record<string, unknown>> {
+    this.#toolsReady()
     const entry = this.#entry(request.id)
     if (request.owner !== undefined && !ACCOUNT_NAME.test(request.owner)) throw new LauncherRefusal(`"${request.owner}" is not a GitHub account name`)
     if (!this.#ports.exists(join(entry.path, SHARE_COMMAND))) {
       throw new LauncherRefusal(`This app was made before apps could share themselves. In ${entry.path} run "npx acrylblends@latest upgrade", then try again.`)
+    }
+    // The person's choice is kept where the app's own share reads it, so the plan, the share and every later save agree.
+    if (request.visibility !== undefined && confirm === undefined) {
+      try { setBlendVisibility(entry.path, request.visibility) } catch (cause) { throw new LauncherRefusal(`Could not set who may see it: ${cause instanceof Error ? cause.message : String(cause)}`) }
     }
     // The plan goes back base64url-encoded: on Windows the command starts through a shell, which would take JSON's quotes.
     const args = [SHARE_COMMAND, '--json', ...request.owner === undefined ? [] : ['--owner', request.owner], ...confirm === undefined ? [] : ['--confirm', Buffer.from(JSON.stringify(confirm), 'utf8').toString('base64url')]]
@@ -382,8 +433,49 @@ export class LauncherService {
 
   #environment(): Record<string, string | undefined> {
     const inherited = this.#ports.environment()
-    // `modelEnv` returns only what to add (the saved key, unless the environment already names one).
-    return appEnvironment({ ...inherited, ...modelEnv(this.#ports.home, inherited) })
+    // `modelEnv` and `githubEnv` return only what to add (the saved key or GitHub token, unless the environment already names one).
+    // The fetched tools come first on PATH, so an app runs on the Node.js the launcher made sure of.
+    return appEnvironment(toolsEnv(this.#ports.home, { ...inherited, ...modelEnv(this.#ports.home, inherited), ...githubEnv(this.#ports.home, inherited) }))
+  }
+
+  /** Who is signed in to GitHub here (the token apps get as GH_TOKEN), never the token. */
+  github(): GithubView {
+    return { available: githubClientId(this.#ports.environment()) !== undefined, login: readGithub(this.#ports.home)?.login ?? null }
+  }
+
+  /** Start GitHub's device sign-in: the code for the person; the device code stays here until it is approved, refused or expires. */
+  async githubStart(): Promise<GithubStartView> {
+    const clientId = githubClientId(this.#ports.environment())
+    if (clientId === undefined) throw new LauncherRefusal('this build of Control Center has no GitHub app to sign in with')
+    try {
+      const started = await startGithubSignIn(clientId)
+      this.#signIn = { clientId, deviceCode: started.deviceCode, until: Date.now() + started.expiresIn * 1000 }
+      return { userCode: started.userCode, verificationUri: started.verificationUri, interval: started.interval }
+    } catch (cause) {
+      throw new LauncherRefusal(`GitHub sign-in could not start: ${cause instanceof Error ? cause.message : String(cause)}. Check the network and try again.`)
+    }
+  }
+
+  /** One poll of the sign-in under way: pending, connected (the token is saved and every app started from now on gets it), or failed. */
+  async githubPoll(): Promise<GithubPollView> {
+    const signIn = this.#signIn
+    if (signIn === undefined) return { state: 'failed', reason: 'no GitHub sign-in is under way: start it again' }
+    if (Date.now() > signIn.until) { this.#signIn = undefined; return { state: 'failed', reason: 'the code expired: start the sign-in again' } }
+    try {
+      const answer = await pollGithubSignIn(this.#ports.home, signIn.clientId, signIn.deviceCode)
+      if (answer.state !== 'pending') this.#signIn = undefined
+      return answer
+    } catch {
+      // A network blip between polls: keep waiting; the code's own expiry ends a sign-in that never comes back.
+      return { state: 'pending' }
+    }
+  }
+
+  /** Forget the GitHub connection on this machine. Apps started from now on no longer get the token. */
+  githubDisconnect(): GithubView {
+    this.#signIn = undefined
+    clearGithub(this.#ports.home)
+    return this.github()
   }
 
   /**
@@ -439,6 +531,8 @@ export class LauncherService {
 
   /** `npm install` in the new app's folder, as the job's second step; the job is still running while it does, and says so. */
   #install(appId: string, folder: string, job: Job): void {
+    // The app is listed already; until its install ends its card shows it starting, with the install's lines, not as stopped.
+    this.#installing.set(appId, job)
     job.step = 'Step 2 of 3: installing its dependencies (npm install, about a minute). Next: starting it.'
     job.output = ''
     // `--loglevel http` makes npm print each download, so the screen shows it working instead of a silent minute.
@@ -447,6 +541,7 @@ export class LauncherService {
     let output = ''
     run.onOutput((text) => { output = tail(`${output}${text}`); job.output = output })
     run.onEnd((end) => {
+      this.#installing.delete(appId)
       if (job.run !== run) return
       if (end.notFound) { job.status = 'failed'; job.message = 'Node.js and npm were not found on this machine. Install Node.js 22.19 or later from nodejs.org, then try again.' } else if (end.code === 0) this.#finish(appId, job)
       else { job.status = 'failed'; job.message = output === '' ? (end.error ?? 'npm install ended before the app could run.') : output.trimEnd() }

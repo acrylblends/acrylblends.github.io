@@ -55,6 +55,13 @@ cd 05-acryl-sde && npm install && npm run dev
 
 Approving and exporting are only on the page, by a person.
 
+## Releases
+
+A tag `v<version>` releases it: `git tag v0.1.0 && git push origin v0.1.0`. The workflow `.github/workflows/release.yml` packs the six
+installers (macOS, Windows and Linux, each for arm64 and x64) with the published ACRYL packages (`acrylblends pack` of `@acryldev/blends`)
+and publishes them as this repository's Latest release (`ACRYL-SDE-<mac|win|linux>-<arm64|x64>.<dmg|exe|deb>`). An installed app looks for
+its updates here. To pack one for this machine: `npx @acryldev/blends@1.7.12 pack --from . --product "ACRYL SDE"`.
+
 ## Next (from the plan)
 
 - Synthetic generation: re-implement the extracted architecture in another domain or language with a model, so the output is new code, not rewritten code; validate it builds and its tests pass in a sandbox.
