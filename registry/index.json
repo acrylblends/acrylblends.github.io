@@ -5,14 +5,12 @@
       "id": "acryl.accounting",
       "name": "Accounting",
       "kind": "Blueprint",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "path": "blends/acryl.accounting",
       "license": "MIT",
       "category": "finance",
       "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.",
-      "parent": "acryl.blank",
-      "runtime": "acryl",
-      "status": "converting",
+      "runtime": "acrylblends",
       "origin": "official"
     },
     {
