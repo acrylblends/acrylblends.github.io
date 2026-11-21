@@ -1,0 +1,11 @@
+{
+  "name": "organizer",
+  "description": "To-dos, a calendar and meeting booking that refuses overlaps: JSON routes the agent and the page call, and a widget on the first screen. Data in organizer.json in the app's home.",
+  "requires": [],
+  "inject": ["router", "home", "appInstance"],
+  "provides": [],
+  "mount": "a row `- id: organizer` / `name: organizer` before the server row in blend.yaml",
+  "config": {
+    "store": "an OrganizerStore for tests (default: organizer.json in the app's home)"
+  }
+}

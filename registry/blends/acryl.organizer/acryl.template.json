@@ -1,0 +1,5 @@
+{
+  "name": "Organizer",
+  "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
+  "plugins": []
+}

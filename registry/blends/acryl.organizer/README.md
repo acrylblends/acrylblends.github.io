@@ -1,13 +1,30 @@
 # Organizer
 
-A starter kit grown from Blank: to-dos, a calendar, and meeting booking that refuses overlapping meetings. The app opens on your day (to-dos and the
-day's calendar), with the assistant beside it: use the forms yourself, or ask ("book a one hour meeting with Sam on Friday at 14:00") and watch the day change.
-Your data stays in your app (`.acryl/organizer.json`).
+To-dos, a calendar and meeting booking that refuses overlaps. The widget is on the first screen; the same operations are JSON routes under `/organizer` (`GET /state`, `/agenda?day=`, `/free-slots?day=&minutes=`, `POST /todo`, `/todo-done`, `/meeting`, `/meeting-cancel`), which is how the agent inside the app operates it. The rules are in `plugins/organizer/lib/domain.js` (pure, tested), the data in `organizer.json` in the app's home. It grew from the earlier ACRYL-app starter of the same name: `domain.js` and `store.js` are that code, unchanged; `plugins/organizer/index.ts` is the adapter.
 
-```bash
-acryl new my-planner --from acryl.organizer
-my-planner/bin/acryl web
+Below is what every app made by `acrylblends init` carries.
+
+A Cordis app on Node, scaffolded by `acrylblends init`. TypeScript, run by Node with no build step. Every part is a
+Cordis plugin.
+
+```sh
+npm install
+npm run dev        # prints its URL; data lives in ~/.acryl/apps/<id>/data/
+npm test
+npm run check      # type-check
 ```
 
-Then ask the builder inside for what your work needs: reminders, a team calendar, invoices for booked sessions. The project is yours: private and proprietary
-until you decide otherwise. This starter's code is MIT licensed; its notice travels with your project in `THIRD-PARTY.md`.
+- `src/main.ts` chooses where the app lives (the `@acryldev/instance` package) and starts it.
+- `blend.yaml` is the app as data: which plugins it mounts, in what order, with what config and parameters. Switch
+  one off with `disabled: true`. `npm run lock` writes `blend.lock.json`: the manifest's digest and a digest of
+  every plugin folder, so a diff of the lock shows what changed.
+- `src/app.ts` holds the registry of plugins the code provides, and mounts the manifest's rows.
+- `src/routes.ts` is your own plugin: it builds an `App` (`import { App } from './plugins/router/src/index.ts'`) and mounts it with `ctx.router.route(prefix, app)`. Routes added to the app after it is mounted are not served. A page mounted at `/x` answers `/x`, not `/x/` (trailing slashes are strict). The router API is documented at https://acrylblends.github.io/docs/framework/the-acryl-framework and in `docs/framework` of the acrylblends repository.
+- `plugins/` holds the plugins copied from the ACRYLBLENDS library. They are yours now; edit them freely.
+  Add more with `acrylblends add <plugin>`.
+
+`npm run save -- "message"` commits the app with git (and pushes when it has a remote). It refuses a file that looks like
+it holds a secret, and refuses to push a private app (anything but `visibility: public` in `blend.yaml`) to a public
+remote.
+
+Set `ACRYLBLENDS_HOME` to keep data elsewhere, and `ACRYLBLENDS_PORT` to choose the first port tried.
