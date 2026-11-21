@@ -1,0 +1,11 @@
+{
+  "name": "gtd",
+  "description": "Getting Things Done: capture into an inbox, triage each item into one bucket (next, waiting, someday, reference, done), projects and a calendar of due days. JSON routes the agent and the page call, and the board as a widget on the first screen. Data in gtd.json in the app's home.",
+  "requires": [],
+  "inject": ["router", "home", "appInstance"],
+  "provides": [],
+  "mount": "a row `- id: gtd` / `name: gtd` before the server row in blend.yaml",
+  "config": {
+    "store": "a GtdStore for tests (default: gtd.json in the app's home)"
+  }
+}

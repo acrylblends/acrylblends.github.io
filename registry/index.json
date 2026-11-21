@@ -54,14 +54,12 @@
       "id": "acryl.gtd",
       "name": "GTD Planner",
       "kind": "Blueprint",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "path": "blends/acryl.gtd",
       "license": "MIT",
       "category": "productivity",
       "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
-      "parent": "acryl.blank",
-      "runtime": "acryl",
-      "status": "converting",
+      "runtime": "acrylblends",
       "origin": "official"
     },
     {

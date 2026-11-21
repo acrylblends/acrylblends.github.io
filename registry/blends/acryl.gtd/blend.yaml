@@ -1,27 +1,43 @@
-# GTD Planner: Blank plus Getting Things Done as the app itself - the board is the window (inbox, next actions, waiting for, someday/maybe, reference, calendar), the agent sits beside it.
-# Start a project from it:  acryl new my-planner --from acryl.gtd
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
 apiVersion: blends.acryl.dev/v1alpha1
 kind: Blueprint
 metadata:
   id: acryl.gtd
-  name: GTD Planner
-  version: 0.1.0
+  name: "GTD Planner"
+  version: 0.2.0
   category: productivity
-  description: Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.
+  description: "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas."
   license: MIT
   visibility: public
 spec:
   runtime: cordis
-  extends: acryl.blank
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
   rows:
-    - id: brand
-      name: acryl-brand
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # GTD: capture, triage, projects and a calendar of due days (plugins/gtd/). Its widget is on the first screen; its routes are under /gtd.
+    - id: gtd
+      name: gtd
+    - id: routes
+      name: routes
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    # Sharing: `npm run acryl -- plugin pull github:<owner>/<repo>@<version>` installs a plugin someone released (development only).
+    - id: plugin-share
+      name: plugin-share
+    - id: server
+      name: acryl-node-server
       config:
-        name: GTD Planner
-        tagline: Get it out of your head. Triage it. Do it.
-        accent: "#1971c2"
-        accentDark: "#4dabf7"
-    - id: acryl-app-shell
-      name: acryl-app-shell
-    - id: acryl-gtd
-      name: acryl-gtd
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door
