@@ -65,7 +65,7 @@
       "id": "acryl.orderdesk",
       "name": "Order Desk",
       "kind": "Blueprint",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "path": "blends/acryl.orderdesk",
       "license": "MIT",
       "category": "business",

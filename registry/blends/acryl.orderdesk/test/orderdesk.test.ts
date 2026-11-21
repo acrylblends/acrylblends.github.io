@@ -40,13 +40,25 @@ type View = {
 }
 const view = async (response: Response) => (await response.json()) as View
 
-test('the desk is on the first screen', () =>
+test('the first screen is the desk: the starter\'s own React UI, with React 18 served by the app; other clients still get the JSON hello', () =>
   withHome((home) =>
     withApp(home, async (app) => {
-      const html = await (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()
-      assert.ok(html.includes('data-test="orderdesk"'))
-      assert.ok(html.includes('Sent &amp; rules'))
+      const page = await app.root.router.request('/', { headers: { accept: 'text/html' } })
+      const html = await page.text()
+      assert.match(page.headers.get('content-type') ?? '', /text\/html/u)
+      assert.ok(html.includes('id="orderdesk-root"'))
+      for (const src of ['orderdesk/assets/vendor/react.js', 'orderdesk/assets/vendor/react-dom.js', 'orderdesk/assets/client.js']) {
+        assert.ok(html.includes(`src="${src}"`), src)
+        const asset = await app.root.router.request(`/${src}`)
+        assert.equal(asset.status, 200, src)
+        assert.match(asset.headers.get('content-type') ?? '', /javascript/u)
+      }
+      const client = await (await app.root.router.request('/orderdesk/assets/client.js')).text()
+      assert.ok(client.includes('Delivery note') || client.includes('odk-'), 'the starter\'s own UI')
+      assert.ok(!client.includes('__ModuleLoader__') && !client.includes('acryl-app-shell/client') && !client.includes("fetch('/api/"), 'no DSH integration is left in it')
+      assert.deepEqual(await (await app.root.router.request('/')).json(), { app: app.root.get('appInstance')?.name, ok: true })
       assert.ok(existsSync(join(home, 'inbox', 'README.md')), 'the drop folder is made')
+      assert.equal((await view(await app.root.router.request('/orderdesk/state'))).stats.newEmails, 0)
     })))
 
 test('the sample business: an email becomes an order that reserves stock, ships with a delivery note, and tells the customer', () =>
@@ -121,6 +133,5 @@ test('the desk survives a restart', () =>
     await withApp(home, async (app) => {
       const state = await view(await app.root.router.request('/orderdesk/state'))
       assert.deepEqual(state.products.map((p) => p.sku), ['TEA-250'])
-      assert.deepEqual(app.root.home.widgets().map((widget) => widget.id), ['orderdesk'])
     })
   }))

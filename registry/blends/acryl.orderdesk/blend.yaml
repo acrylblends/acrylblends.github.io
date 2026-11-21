@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.orderdesk
   name: "Order Desk"
-  version: 0.2.0
+  version: 0.3.0
   category: business
   description: "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer."
   license: MIT
