@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.messaging-pulsebus
   name: "Pulsebus"
-  version: 0.1.2
+  version: 0.1.3
   category: messaging-infrastructure
   description: "An event-bus explorer: browse topics and consumer groups, read a message stream with delivery and retry state, inspect JSON payloads, publish schema-validated synthetic events, replay and manage the dead-letter queue."
   license: MIT

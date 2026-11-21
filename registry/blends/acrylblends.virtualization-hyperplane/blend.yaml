@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.virtualization-hyperplane
   name: "Hyperplane"
-  version: 0.1.2
+  version: 0.1.3
   category: virtualization
   description: "A virtualization console: pick a host, search and filter the machine inventory, start, pause, stop and snapshot machines under a lifecycle state machine with capacity guards, and provision new ones."
   license: MIT

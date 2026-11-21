@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.productivity-hub
   name: "Productivity Hub"
-  version: 0.1.2
+  version: 0.1.3
   category: application
   description: "A calm personal workbench: quick capture and an inbox to triage, one daily focus, next actions, notes with linked tasks and a week calendar that warns before two events overlap."
   license: MIT

@@ -11,8 +11,8 @@ import {
   type AppIdentity,
   type CatalogCategory,
   connectRemote,
-  type GitPort,
   GITHUB_VIA_GH,
+  type GitPort,
   gitCli,
   githubHosting,
   type HostingPort,
@@ -28,6 +28,7 @@ import {
   withId,
   withLicense,
   withPlacement,
+  withVersion,
   withVisibility,
 } from '@acryldev/app-persistence'
 
@@ -82,7 +83,11 @@ export interface ShareOptions {
   /** Who may see a new repository; blend.yaml's metadata.visibility when absent. A share with it records it there, so later saves agree. */
   readonly visibility?: Visibility
   /** List it in the Blends store. Any part not given is taken from the app: its earlier listing, else its starter's category; licence MIT. */
-  readonly list?: { readonly category?: string; readonly subcategory?: string; readonly license?: string }
+  readonly list?: {
+    readonly category?: string
+    readonly subcategory?: string
+    readonly license?: string
+  }
   /** The published category list (acrylblends.github.io/categories.json), to check the place against; unchecked when absent. */
   readonly categories?: readonly CatalogCategory[]
 }
@@ -97,6 +102,8 @@ export interface SharePorts {
   pending(): number
   /** Label `owner/repo` for the Blends store and push the tag; false when the tag already existed (it is never moved). */
   list(repository: string, tag: string): boolean
+  /** Whether release `tag` exists here: `none`, `current` (it is this commit), or `older` (versions were saved since). */
+  released(tag: string): 'none' | 'current' | 'older'
 }
 
 /** The person's own git and gh, in the app's folder. */
@@ -116,15 +123,30 @@ export function sharePorts(appRoot: string): SharePorts {
       const result = run('git', ['status', '--porcelain'])
       return result.status === 0 ? result.stdout.split('\n').filter(Boolean).length : 0
     },
+    released: (tag) => {
+      const tagged = run('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}^{commit}`])
+      if (tagged.status !== 0) return 'none'
+      const head = run('git', ['rev-parse', '-q', '--verify', 'HEAD'])
+      return head.status === 0 && head.stdout.trim() === tagged.stdout.trim() ? 'current' : 'older'
+    },
     list: (repository, tag) => {
       const must = (command: string, args: readonly string[], what: string) => {
         const result = run(command, args)
-        if (result.status !== 0) throw new PersistenceError(`${what}: ${(result.stderr || result.stdout).trim()}`)
+        if (result.status !== 0)
+          throw new PersistenceError(`${what}: ${(result.stderr || result.stdout).trim()}`)
       }
-      must('gh', ['repo', 'edit', repository, '--add-topic', BLEND_TOPIC], 'could not label the repository for the Blends store')
+      must(
+        'gh',
+        ['repo', 'edit', repository, '--add-topic', BLEND_TOPIC],
+        'could not label the repository for the Blends store',
+      )
       if (run('git', ['rev-parse', '-q', '--verify', `refs/tags/${tag}`]).status === 0) return false
       must('git', ['tag', tag], `could not tag ${tag}`)
-      must('git', [...GITHUB_VIA_GH, 'push', '--quiet', 'origin', `refs/tags/${tag}`], `could not push ${tag}`)
+      must(
+        'git',
+        [...GITHUB_VIA_GH, 'push', '--quiet', 'origin', `refs/tags/${tag}`],
+        `could not push ${tag}`,
+      )
       return true
     },
   }
@@ -145,10 +167,23 @@ const repositoryName = (name: string): string =>
 export const githubRepository = (remote: string): string | undefined =>
   /github\.com[/:]([^/]+\/[^/]+?)(?:\.git)?\/?$/u.exec(remote)?.[1]
 
-const INSTALL_SCRIPTS = ['preinstall', 'install', 'postinstall', 'prepublish', 'preprepare', 'prepare', 'postprepare']
+const INSTALL_SCRIPTS = [
+  'preinstall',
+  'install',
+  'postinstall',
+  'prepublish',
+  'preprepare',
+  'prepare',
+  'postprepare',
+]
 const LICENSE_ID = /^[A-Za-z0-9][A-Za-z0-9.+-]*$/u
 
-interface PackageJson { version?: unknown; keywords?: unknown; scripts?: Record<string, unknown>; [key: string]: unknown }
+interface PackageJson {
+  version?: unknown
+  keywords?: unknown
+  scripts?: Record<string, unknown>
+  [key: string]: unknown
+}
 const packageOf = (appRoot: string): PackageJson | undefined => {
   try {
     return JSON.parse(readFileSync(join(appRoot, 'package.json'), 'utf8')) as PackageJson
@@ -157,27 +192,62 @@ const packageOf = (appRoot: string): PackageJson | undefined => {
   }
 }
 
+/** `1.2.0` -> `1.2.1`; a version that is not three numbers gets `.1` added, so it still moves on. */
+export const nextPatch = (version: string): string => {
+  const parts = /^(\d+)\.(\d+)\.(\d+)$/u.exec(version)
+  return parts === null ? `${version}.1` : `${parts[1]}.${parts[2]}.${Number(parts[3]) + 1}`
+}
+
 /** The store listing a share asked for, as the person will read it, or why it cannot be listed. */
-function planListing(appRoot: string, identity: AppIdentity, visibility: Visibility, repository: string | undefined, options: ShareOptions): StoreListing | ShareRefused | undefined {
+function planListing(
+  appRoot: string,
+  identity: AppIdentity,
+  visibility: Visibility,
+  repository: string | undefined,
+  options: ShareOptions,
+  ports: SharePorts,
+): StoreListing | ShareRefused | undefined {
   const asked = options.list
   if (asked === undefined) return undefined
-  if (visibility !== 'public') return refused('only a public app can be listed in the Blends store: choose public')
-  if (repository === undefined) return refused('only an app on GitHub can be listed in the Blends store')
-  if (identity.description === undefined) return refused('the store lists an app with its description: add one to blend.yaml (metadata.description)')
+  if (visibility !== 'public')
+    return refused('only a public app can be listed in the Blends store: choose public')
+  if (repository === undefined)
+    return refused('only an app on GitHub can be listed in the Blends store')
+  if (identity.description === undefined)
+    return refused(
+      'the store lists an app with its description: add one to blend.yaml (metadata.description)',
+    )
   const pkg = packageOf(appRoot)
   if (pkg === undefined) return refused('the app has no readable package.json')
-  const script = INSTALL_SCRIPTS.find(name => typeof pkg.scripts?.[name] === 'string')
-  if (script !== undefined) return refused(`package.json defines the install script "${script}", which a listed app may not`)
+  const script = INSTALL_SCRIPTS.find((name) => typeof pkg.scripts?.[name] === 'string')
+  if (script !== undefined)
+    return refused(
+      `package.json defines the install script "${script}", which a listed app may not`,
+    )
   const categories = options.categories ?? []
-  const placement: Placement | undefined = asked.category !== undefined
-    ? { category: asked.category, ...(asked.subcategory === undefined ? {} : { subcategory: asked.subcategory }) }
-    : placementOf(pkg.keywords) ?? suggestPlacement(identity.category, categories)
-  if (placement === undefined) return refused('choose its category, one of acrylblends.github.io/blends (for example --category gaming)')
+  const placement: Placement | undefined =
+    asked.category !== undefined
+      ? {
+          category: asked.category,
+          ...(asked.subcategory === undefined ? {} : { subcategory: asked.subcategory }),
+        }
+      : (placementOf(pkg.keywords) ?? suggestPlacement(identity.category, categories))
+  if (placement === undefined)
+    return refused(
+      'choose its category, one of acrylblends.github.io/blends (for example --category gaming)',
+    )
   const problem = categories.length > 0 ? placementProblem(placement, categories) : undefined
   if (problem !== undefined) return refused(problem)
   const license = asked.license ?? identity.license ?? 'MIT'
-  if (!LICENSE_ID.test(license)) return refused(`"${license}" is not a licence id (such as MIT or Apache-2.0)`)
-  const version = typeof pkg.version === 'string' ? pkg.version : identity.version ?? '0.1.0'
+  if (!LICENSE_ID.test(license))
+    return refused(`"${license}" is not a licence id (such as MIT or Apache-2.0)`)
+  // A release is never moved: when this version is already tagged and the app changed since, the share releases the next patch version.
+  let version = typeof pkg.version === 'string' ? pkg.version : (identity.version ?? '0.1.0')
+  for (let guard = 0; guard < 100; guard += 1) {
+    const released = ports.released(`v${version}`)
+    if (released === 'none' || (released === 'current' && ports.pending() === 0)) break
+    version = nextPatch(version)
+  }
   const name = (identity.id ?? '').split('.').slice(1).join('.') || repository.split('/')[1] || ''
   const id = `${(repository.split('/')[0] ?? '').toLowerCase()}.${name.toLowerCase()}`
   return { id, placement, license, tag: `v${version}` }
@@ -210,20 +280,49 @@ SOFTWARE.
  * The files the store reads, written into the app before it is saved: the licence in blend.yaml (and an MIT LICENSE file when it has none),
  * the marker and placement keywords in package.json, and the acryl.template.json that lets people start an app from it. Returns blend.yaml's text.
  */
-function writeListing(appRoot: string, manifestText: string, listing: StoreListing, repository: string): string {
+function writeListing(
+  appRoot: string,
+  manifestText: string,
+  listing: StoreListing,
+  repository: string,
+): string {
   const identity = readAppIdentity(manifestText)
   let text = manifestText
   if (identity.id !== listing.id) text = withId(text, listing.id)
   if (identity.license !== listing.license) text = withLicense(text, listing.license)
-  if (text !== manifestText) writeFileSync(join(appRoot, 'blend.yaml'), text)
   const pkg = packageOf(appRoot) ?? {}
-  const before = Array.isArray(pkg.keywords) ? pkg.keywords.filter((word): word is string => typeof word === 'string') : []
-  const keywords = withPlacement(before.includes(BLEND_TOPIC) ? before : [...before, BLEND_TOPIC], listing.placement)
-  if (JSON.stringify(keywords) !== JSON.stringify(pkg.keywords)) writeFileSync(join(appRoot, 'package.json'), `${JSON.stringify({ ...pkg, keywords }, null, 2)}\n`)
+  // The release this share tags: when planListing moved past an existing tag, the app carries the new version in both files.
+  const version = listing.tag.replace(/^v/u, '')
+  const bumped = typeof pkg.version === 'string' && pkg.version !== version
+  if (bumped || (pkg.version === undefined && identity.version !== version))
+    text = withVersion(text, version)
+  if (text !== manifestText) writeFileSync(join(appRoot, 'blend.yaml'), text)
+  const before = Array.isArray(pkg.keywords)
+    ? pkg.keywords.filter((word): word is string => typeof word === 'string')
+    : []
+  const keywords = withPlacement(
+    before.includes(BLEND_TOPIC) ? before : [...before, BLEND_TOPIC],
+    listing.placement,
+  )
+  if (bumped || JSON.stringify(keywords) !== JSON.stringify(pkg.keywords))
+    writeFileSync(
+      join(appRoot, 'package.json'),
+      `${JSON.stringify({ ...pkg, ...(bumped ? { version } : {}), keywords }, null, 2)}\n`,
+    )
   const template = join(appRoot, 'acryl.template.json')
-  if (!existsSync(template)) writeFileSync(template, `${JSON.stringify({ name: identity.name ?? basename(appRoot), description: identity.description ?? '' }, null, 2)}\n`)
-  if (listing.license === 'MIT' && !['LICENSE', 'LICENSE.md', 'LICENSE.txt'].some(file => existsSync(join(appRoot, file))))
-    writeFileSync(join(appRoot, 'LICENSE'), MIT(new Date().getFullYear(), repository.split('/')[0] ?? ''))
+  if (!existsSync(template))
+    writeFileSync(
+      template,
+      `${JSON.stringify({ name: identity.name ?? basename(appRoot), description: identity.description ?? '' }, null, 2)}\n`,
+    )
+  if (
+    listing.license === 'MIT' &&
+    !['LICENSE', 'LICENSE.md', 'LICENSE.txt'].some((file) => existsSync(join(appRoot, file)))
+  )
+    writeFileSync(
+      join(appRoot, 'LICENSE'),
+      MIT(new Date().getFullYear(), repository.split('/')[0] ?? ''),
+    )
   return text
 }
 
@@ -235,12 +334,23 @@ export function planShare(
 ): SharePlan | ShareRefused {
   const plan = planRepository(appRoot, options, ports)
   if ('ok' in plan) return plan
-  const listing = planListing(appRoot, readAppIdentity(manifestOf(appRoot)), plan.visibility, plan.create ? plan.repository : githubRepository(plan.repository), options)
+  const listing = planListing(
+    appRoot,
+    readAppIdentity(manifestOf(appRoot)),
+    plan.visibility,
+    plan.create ? plan.repository : githubRepository(plan.repository),
+    options,
+    ports,
+  )
   if (listing !== undefined && 'ok' in listing) return listing
   return listing === undefined ? plan : { ...plan, listing }
 }
 
-function planRepository(appRoot: string, options: ShareOptions, ports: SharePorts): SharePlan | ShareRefused {
+function planRepository(
+  appRoot: string,
+  options: ShareOptions,
+  ports: SharePorts,
+): SharePlan | ShareRefused {
   const identity = readAppIdentity(manifestOf(appRoot))
   const visibility = options.visibility ?? identity.visibility
   const changes = ports.pending()
@@ -301,7 +411,8 @@ export function shareApp(
   }
   const repository = now.create ? now.repository : githubRepository(now.repository)
   try {
-    if (now.listing !== undefined && repository !== undefined) manifestText = writeListing(appRoot, manifestText, now.listing, repository)
+    if (now.listing !== undefined && repository !== undefined)
+      manifestText = writeListing(appRoot, manifestText, now.listing, repository)
     let remote = now.repository
     if (now.create) {
       const connected = connectRemote(
@@ -321,9 +432,10 @@ export function shareApp(
       }
     // Nothing new to save: the versions already saved still have to reach the remote.
     if (saved.status === 'nothing-to-save') ports.git.push()
-    const listed = now.listing !== undefined && repository !== undefined
-      ? { tag: now.listing.tag, created: ports.list(repository, now.listing.tag) }
-      : undefined
+    const listed =
+      now.listing !== undefined && repository !== undefined
+        ? { tag: now.listing.tag, created: ports.list(repository, now.listing.tag) }
+        : undefined
     return {
       ok: true,
       remote,
@@ -346,11 +458,14 @@ export function renderSharePlan(plan: SharePlan): string {
     plan.changes === 0
       ? 'the versions saved so far'
       : `${String(plan.changes)} changed ${plan.changes === 1 ? 'file' : 'files'}, saved first, and the versions saved so far`
-  const listed = plan.listing === undefined
-    ? ''
-    : ` Listed in the Blends store as ${plan.listing.id}, Community, under ${placementWords(plan.listing.placement)} (licence ${plan.listing.license}, people start from ${plan.listing.tag}).`
+  const listed =
+    plan.listing === undefined
+      ? ''
+      : ` Listed in the Blends store as ${plan.listing.id}, Community, under ${placementWords(plan.listing.placement)} (licence ${plan.listing.license}, people start from ${plan.listing.tag}).`
   return `Share this app to ${where}: ${what}.${listed}`
 }
 
 const placementWords = (placement: Placement): string =>
-  placement.subcategory === undefined ? placement.category : `${placement.category} › ${placement.subcategory}`
+  placement.subcategory === undefined
+    ? placement.category
+    : `${placement.category} › ${placement.subcategory}`

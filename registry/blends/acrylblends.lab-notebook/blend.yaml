@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.lab-notebook
   name: "Lab Notebook"
-  version: 0.1.2
+  version: 0.1.3
   category: scientific-engineering
   description: "A research notebook: three notebooks and 23 experiments, an append-only record with measurements, a chart, observations, attachments, audit history, an exact unit converter and a CSV data table."
   license: MIT

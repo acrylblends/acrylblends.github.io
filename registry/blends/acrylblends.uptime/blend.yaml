@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.uptime
   name: "Uptime Checker"
-  version: 0.1.2
+  version: 0.1.3
   category: networking
   description: "A lightweight availability monitor: hosts and URLs checked on a schedule, with status history, response times and incidents."
   license: MIT

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.xr-luma-space
   name: "Luma Space"
-  version: 0.1.2
+  version: 0.1.3
   category: xr
   description: "An XR scene composer: a stylised 3D viewport with AR, VR and MR preview modes, an object hierarchy with parent-child transforms in metres, a transform inspector, spatial anchors, a simulated interaction preview and scene validation. Nothing is an XR session."
   license: MIT

@@ -55,6 +55,19 @@ cd 05-acryl-sde && npm install && npm run dev
 
 Approving and exporting are only on the page, by a person.
 
+
+### Arch Linux and Omarchy
+
+```bash
+mkdir acryl-sde && cd acryl-sde
+curl -LO https://github.com/acrylblends/05-acryl-sde/releases/latest/download/PKGBUILD
+makepkg -si
+```
+
+It installs the app in `/opt/acryl-sde` and `acryl-sde` on your PATH, with its menu entry. Without installing: download
+[ACRYL-SDE-linux-x64.tar.gz](https://github.com/acrylblends/05-acryl-sde/releases/latest/download/ACRYL-SDE-linux-x64.tar.gz) (or `-linux-arm64.tar.gz`),
+unpack it and run `./acryl-sde/acryl-sde`. It runs on Wayland (Hyprland) and X11.
+
 ## Releases
 
 A tag `v<version>` releases it: `git tag v0.1.0 && git push origin v0.1.0`. The workflow `.github/workflows/release.yml` packs the six

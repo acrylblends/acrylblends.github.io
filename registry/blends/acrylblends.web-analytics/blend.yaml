@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.web-analytics
   name: "Web Analytics"
-  version: 0.1.2
+  version: 0.1.3
   category: analytics
   description: "A privacy-conscious website analytics console: a tracking snippet, page-view events in, and a daily dashboard of visitors, sources, pages and conversions."
   license: MIT

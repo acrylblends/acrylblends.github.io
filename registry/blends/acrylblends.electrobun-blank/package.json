@@ -51,8 +51,8 @@
     "acrylblends": "^1.5.15",
     "js-yaml": "^4.2.0",
     "@acryldev/instance": "0.1.2",
-    "@acryldev/app-persistence": "0.1.5",
-    "@acryldev/blends": "^1.7.11",
+    "@acryldev/app-persistence": "0.1.6",
+    "@acryldev/blends": "^1.7.21",
     "@acryldev/plugin-hub-core": "0.2.3"
   },
   "devDependencies": {

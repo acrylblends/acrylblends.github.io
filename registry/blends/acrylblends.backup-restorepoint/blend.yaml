@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.backup-restorepoint
   name: "Restorepoint"
-  version: 0.1.2
+  version: 0.1.3
   category: backup
   description: "A backup operations and recovery-planning console: protected workloads, a recovery timeline with integrity status, backup schedules, retention policies, a restore plan with preflight checks and a simulated restore run. Nothing real is read or restored."
   license: MIT

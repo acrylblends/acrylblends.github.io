@@ -25,6 +25,19 @@ Linux: `sudo apt install ./ACRYL-ADE-linux-x64.deb`. On Windows and Linux ACRYL 
 
 Or with the `acryl` command, which makes and runs it from source in `~/.acryl/ade`: `npx acryl ade` (browser) or `npx acryl ade --gui` (window).
 
+
+### Arch Linux and Omarchy
+
+```bash
+mkdir acryl-ade && cd acryl-ade
+curl -LO https://github.com/acrylblends/05-acryl-ade/releases/latest/download/PKGBUILD
+makepkg -si
+```
+
+It installs the app in `/opt/acryl-ade` and `acryl-ade` on your PATH, with its menu entry. Without installing: download
+[ACRYL-ADE-linux-x64.tar.gz](https://github.com/acrylblends/05-acryl-ade/releases/latest/download/ACRYL-ADE-linux-x64.tar.gz) (or `-linux-arm64.tar.gz`),
+unpack it and run `./acryl-ade/acryl-ade`. It runs on Wayland (Hyprland) and X11.
+
 ## Start from source
 
 ```bash

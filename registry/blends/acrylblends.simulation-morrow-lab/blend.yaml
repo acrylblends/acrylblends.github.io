@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.simulation-morrow-lab
   name: "Morrow Lab"
-  version: 0.1.2
+  version: 0.1.3
   category: simulation
   description: "A simulation workbench: tune a thermal chamber's boundary conditions, run a deterministic local model, compare response traces and keep named parameter snapshots."
   license: MIT

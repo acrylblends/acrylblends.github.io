@@ -27,9 +27,9 @@
     "precheck": "node scripts/check-node.cjs"
   },
   "dependencies": {
-    "@acryldev/app-persistence": "0.1.5",
-    "@acryldev/blends": "^1.7.11",
-    "@acryldev/blends-core": "0.6.0",
+    "@acryldev/app-persistence": "0.1.6",
+    "@acryldev/blends": "^1.7.21",
+    "@acryldev/blends-core": "0.6.1",
     "@acryldev/instance": "0.1.2",
     "@acryldev/plugin-hub-core": "0.2.3",
     "@deepseek-ai/cordis": "4.0.4",

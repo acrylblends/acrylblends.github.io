@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.corridor
   name: "Corridor"
-  version: 0.1.2
+  version: 0.1.3
   category: gaming
   description: "A first-person psychological horror game: a looping corridor that changes over five loops, a flashlight, and six photo fragments to find while something follows you."
   license: MIT

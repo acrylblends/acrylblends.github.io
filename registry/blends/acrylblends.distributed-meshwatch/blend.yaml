@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.distributed-meshwatch
   name: "Meshwatch"
-  version: 0.1.2
+  version: 0.1.3
   category: distributed-systems
   description: "A distributed-systems console: a Raft cluster's topology map, node health, quorum, the append-only commit log, replica lag and failover drills that move the leader."
   license: MIT

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.notes-desktop
   name: "Notes, in a window"
-  version: 0.1.3
+  version: 0.1.4
   category: productivity
   description: "A multi-user notes app (sign-up, log-in, search, SQLite with migrations) that opens in its own desktop window as well as in the browser."
   license: MIT

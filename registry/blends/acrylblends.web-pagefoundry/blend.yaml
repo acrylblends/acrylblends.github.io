@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.web-pagefoundry
   name: "Pagefoundry"
-  version: 0.1.2
+  version: 0.1.3
   category: web
   description: "A website builder: a site of pages built from blocks, a live browser-framed preview with selectable sections, an inspector for headline, background, width and visibility with a contrast check, preview mode for desktop and mobile, and simulated publishes with warnings."
   license: MIT

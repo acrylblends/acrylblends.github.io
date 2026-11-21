@@ -21,6 +21,19 @@ The app, ready to install (the latest release, <https://github.com/acrylblends/6
 The apps are not signed yet. macOS: the first start is right-click > Open. Windows: SmartScreen may ask, More info > Run anyway.
 Linux: `sudo apt install ./ACRYL-Control-Center-linux-x64.deb`. On Windows and Linux it uses the git on your machine.
 
+
+### Arch Linux and Omarchy
+
+```bash
+mkdir acryl-control-center && cd acryl-control-center
+curl -LO https://github.com/acrylblends/63-acryl-control-center/releases/latest/download/PKGBUILD
+makepkg -si
+```
+
+It installs the app in `/opt/acryl-control-center` and `acryl-control-center` on your PATH, with its menu entry. Without installing: download
+[ACRYL-Control-Center-linux-x64.tar.gz](https://github.com/acrylblends/63-acryl-control-center/releases/latest/download/ACRYL-Control-Center-linux-x64.tar.gz) (or `-linux-arm64.tar.gz`),
+unpack it and run `./acryl-control-center/acryl-control-center`. It runs on Wayland (Hyprland) and X11.
+
 ## Start with the `acryl` command
 
 ```bash

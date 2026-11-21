@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.p2p-swarmdrop
   name: "Swarmdrop"
-  version: 0.1.2
+  version: 0.1.3
   category: p2p
   description: "A peer-to-peer transfer room: a chunk availability map with rarest-first requests, synthetic peers with rate and latency, a pausable simulation with a corrupt-copy retry, integrity verification and a completion receipt, and rooms you can create or join by code. Nothing is transferred."
   license: MIT

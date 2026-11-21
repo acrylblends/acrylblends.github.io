@@ -7,7 +7,6 @@
 import { existsSync, mkdirSync } from 'node:fs'
 import { homedir } from 'node:os'
 import { dirname, join } from 'node:path'
-import { prepareTools } from '@acryldev/launcher'
 import type { Context } from '@deepseek-ai/cordis'
 import type {} from '@acryldev/blends/cordis/router'
 import type {} from '@acryldev/blends/cordis/router-http'
@@ -35,15 +34,15 @@ export function apply(ctx: Context): void {
     makeFolder: (path) => { mkdirSync(path, { recursive: true }) },
     blends: () => readBlends(),
     door: fileDoor(),
-    // A computer without Node.js 22.19+ or gh gets them once, from their makers, into the home's tools folder.
-    prepareTools: () => prepareTools(home, process.env),
   })
-  void service.prepareTools()
   const report = (operation: string, cause: unknown): void => {
     ctx.logger.error(`@acryldev/launcher-desktop: failed to ${operation}: ${cause instanceof Error ? cause.message : String(cause)}`)
   }
   // Every process this plugin started goes with it, whether it unloads or the app quits.
-  ctx.effect(() => () => { service.stopAll() }, '@acryldev/launcher-desktop: apps it started')
+  ctx.effect(() => () => {
+    const kept = service.stopAll()
+    if (kept.length > 0) ctx.logger.info(`left open (a Desktop app with its window up; closing the window stops it): ${kept.join(', ')}`)
+  }, '@acryldev/launcher-desktop: apps it started')
   ctx.router.route('/', launcherRoutes(service, report))
   ctx.routerHttp.mount('/app' + LAUNCHER_API_PREFIX)
 }

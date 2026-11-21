@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.integration-relaycraft
   name: "Relaycraft"
-  version: 0.1.2
+  version: 0.1.3
   category: integration
   description: "An integration studio: connectors and connections, a pipeline canvas of source, transform and destination, field mappings with sample-record preview, and a deterministic sync simulation with run history."
   license: MIT

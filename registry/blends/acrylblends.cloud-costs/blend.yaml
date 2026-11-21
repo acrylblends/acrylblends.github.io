@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.cloud-costs
   name: "Cloud Costs"
-  version: 0.1.2
+  version: 0.1.3
   category: cloud
   description: "A FinOps cost explorer: monthly spend per provider and service from CSV exports, with forecasts, budgets and alerts."
   license: MIT

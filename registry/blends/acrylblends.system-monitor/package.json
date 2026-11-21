@@ -39,8 +39,8 @@
     "@acrylblends/system-prompt": "^0.1.0",
     "@acrylblends/versions": "^0.1.1",
     "@acrylblends/web": "^0.1.0",
-    "@acryldev/app-persistence": "0.1.5",
-    "@acryldev/blends-core": "0.6.0",
+    "@acryldev/app-persistence": "0.1.6",
+    "@acryldev/blends-core": "0.6.1",
     "@acryldev/plugin-hub-core": "0.2.3",
     "@deepseek-ai/cordis": "4.0.4",
     "@deepseek-ai/cordis-plugin-loader": "~1.0.6",
@@ -53,7 +53,7 @@
     "typescript": "6.0.3",
     "yaml": "2.9.0",
     "@acryldev/instance": "0.1.2",
-    "@acryldev/blends": "^1.7.11"
+    "@acryldev/blends": "^1.7.21"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
