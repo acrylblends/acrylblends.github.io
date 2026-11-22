@@ -530,6 +530,18 @@
       "origin": "official"
     },
     {
+      "id": "acrylblends.small-crm-eb",
+      "name": "Small CRM (Electrobun)",
+      "kind": "Blueprint",
+      "version": "0.1.2",
+      "path": "blends/acrylblends.small-crm-eb",
+      "license": "MIT",
+      "category": "business",
+      "description": "The Small CRM Blend in its smallest build: Electrobun with the system webview and the app host on Bun, no Chromium and no Node. Deals pipeline, contacts, companies, follow-ups and a pipeline report inside the full ACRYL frame with chat and agents.",
+      "runtime": "acrylblends",
+      "origin": "official"
+    },
+    {
       "id": "acrylblends.snippets",
       "name": "Snippet Manager",
       "kind": "Blueprint",

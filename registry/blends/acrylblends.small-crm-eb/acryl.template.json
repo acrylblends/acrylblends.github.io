@@ -1,0 +1,5 @@
+{
+  "name": "Small CRM (Electrobun)",
+  "description": "Small CRM in its smallest build: Electrobun (Bun + system webview), no Chromium, no Node.",
+  "plugins": []
+}

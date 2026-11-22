@@ -1,0 +1,15 @@
+{
+  "name": "crm",
+  "description": "The CRM's domain: companies, contacts, deals, activities and follow-ups, saved as JSON in the app's data home. Every page plugin injects it.",
+  "requires": [],
+  "inject": [
+    "appInstance"
+  ],
+  "provides": [
+    "crm"
+  ],
+  "dependencies": {
+    "@deepseek-ai/cordis": "4.0.4"
+  },
+  "mount": "a row `- id: crm` / `name: crm` before the page rows in blend.yaml; a page injects the `crm` service"
+}

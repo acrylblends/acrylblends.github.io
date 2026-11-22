@@ -49,6 +49,36 @@ export const registrySources: Record<string, Source> = {
   "acrylblends.action-rpg": repo("41-action-rpg"),
   "acrylblends.airspace": repo("41-airspace"),
   "acrylblends.corridor": repo("41-corridor"),
+  "acrylblends.small-crm-eb": {
+    ...repo("03-small-crm-eb", [
+      { os: "macOS", cpu: "Apple Silicon", url: "https://github.com/acrylblends/03-small-crm-eb/releases/latest/download/Small-CRM-Electrobun-mac-arm64.dmg" },
+      { os: "Windows", cpu: "x64", url: "https://github.com/acrylblends/03-small-crm-eb/releases/latest/download/Small-CRM-Electrobun-win-x64-Setup.zip" },
+      { os: "Windows", cpu: "ARM", url: "https://github.com/acrylblends/03-small-crm-eb/releases/latest/download/Small-CRM-Electrobun-win-arm64-Setup.zip" },
+      { os: "Linux", cpu: "x64", url: "https://github.com/acrylblends/03-small-crm-eb/releases/latest/download/Small-CRM-Electrobun-linux-x64-Setup.tar.gz" },
+      { os: "Linux", cpu: "ARM", url: "https://github.com/acrylblends/03-small-crm-eb/releases/latest/download/Small-CRM-Electrobun-linux-arm64-Setup.tar.gz" },
+    ]),
+    sizes: {
+      caption: "Release v0.1.2 (2026-11-22): the same Small CRM packed with Electron and with Electrobun in one release run (@acryldev/blends 1.7.25). Installed = the unpacked app, sum of file sizes; MB = 1,000,000 bytes.",
+      columns: ["OS", "Electron 44", "Electrobun 2.0.7, host on Bun"],
+      rows: [
+        ["macOS arm64, download", "205.8 MB", "83.5 MB (-59%)"],
+        ["macOS arm64, installed", "548.7 MB = shell 307.8 + app 204.9 + Git 35.9", "352.9 MB = shell 112.0 + app 204.9 + Git 35.9 (-36%)"],
+        ["Windows x64, download", "177.7 MB", "88.3 MB (-50%)"],
+        ["Windows x64, installed", "598.9 MB = shell 386.1 + app 212.9", "353.7 MB = shell 140.9 + app 212.9 (-41%)"],
+        ["Windows arm64, download", "172.1 MB", "83.4 MB (-52%)"],
+        ["Windows arm64, installed", "599.9 MB = shell 384.5 + app 215.4", "340.3 MB = shell 124.9 + app 215.4 (-43%)"],
+        ["Linux x64, download", "143.0 MB", "91.7 MB (-36%)"],
+        ["Linux x64, installed", "504.6 MB = shell 296.7 + app 207.9", "367.3 MB = shell 159.4 + app 207.9 (-27%)"],
+        ["Linux arm64, download", "137.4 MB", "90.3 MB (-34%)"],
+        ["Linux arm64, installed", "508.5 MB = shell 301.5 + app 207.0", "364.5 MB = shell 157.5 + app 207.0 (-28%)"],
+      ],
+      notes: [
+        "The smallest build of a Blend today: no Chromium (the system webview draws the window) and no Node (the app host runs on Electrobun's Bun).",
+        "The app part (the CRM plus the ACRYL frame, about 205-215 MB) is the same in both builds; only the shell differs.",
+        "Walked on macOS arm64 from the release DMG: every CRM page loads in the frame, the agent door sees the pipeline, nothing left running after Quit.",
+      ],
+    },
+  },
   "acrylblends.electrobun-blank": {
     ...repo("63-electrobun-blank", [
       { os: "macOS", cpu: "Apple Silicon", url: "https://github.com/acrylblends/63-electrobun-blank/releases/latest/download/ACRYL-Blends-Electrobun-mac-arm64.dmg" },

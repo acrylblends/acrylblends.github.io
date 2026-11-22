@@ -40,6 +40,7 @@ export const registryPlacement: Record<string, Placement> = {
   "acrylblends.agent": { category: "AI", subcategory: "AI agents" },
   "acrylblends.productivity-hub": { category: "Application", subcategory: "Productivity" },
   "acrylblends.small-crm": { category: "Business", subcategory: "CRM" },
+  "acrylblends.small-crm-eb": { category: "Business", subcategory: "CRM" },
   "acrylblends.simulation-morrow-lab": { category: "Simulation", subcategory: "Physics simulation" },
   "acrylblends.virtualization-hyperplane": { category: "Virtualization", subcategory: "Virtual machines" },
   "acrylblends.remote-relay": { category: "Remote Computing", subcategory: "SSH clients" },
