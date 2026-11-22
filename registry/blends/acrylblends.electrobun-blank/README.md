@@ -44,7 +44,7 @@ An agent in the right panel (or you, in an editor) adds a plugin (`plugins/<name
 code while it runs: the frame loads the change inside the running host, the plugin is served within 2 s, and the agent's terminal stays open.
 The host is started again only after it crashed, on the next saved change (`electrobun/run-host.mjs`; the Electron build restarts its host on
 every change, which closes the terminals). A new plugin may import the framework by name (`import { Acryl } from 'acrylblends'`).
-Tested from the release builds on macOS arm64, Windows 10 x64 and Ubuntu 24.04 x64.
+Tested from CI builds of the release commit on macOS arm64, Windows 10 x64 and Ubuntu 24.04 x64.
 
 Electrobun also keeps an uninstaller outside the app folder (`~/Library/Application Support/<id>`, `~/.local/share/<id>`,
 `%LOCALAPPDATA%\<id>`); the 38 MB `self-extraction` list it leaves there is removed on the first start.
