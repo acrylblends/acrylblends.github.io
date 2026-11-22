@@ -1,5 +1,0 @@
-{
-  "name": "Accounting",
-  "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.",
-  "plugins": []
-}

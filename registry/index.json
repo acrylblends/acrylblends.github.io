@@ -2,18 +2,6 @@
   "formatVersion": 1,
   "entries": [
     {
-      "id": "acryl.accounting",
-      "name": "Accounting",
-      "kind": "Blueprint",
-      "version": "0.3.0",
-      "path": "blends/acryl.accounting",
-      "license": "MIT",
-      "category": "finance",
-      "description": "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works.",
-      "runtime": "acrylblends",
-      "origin": "official"
-    },
-    {
       "id": "acryl.ade",
       "name": "ACRYL ADE",
       "kind": "Blueprint",
@@ -34,54 +22,6 @@
       "license": "MIT",
       "category": "desktop",
       "description": "ACRYL Control Center: your apps, new apps from a starter or a Blend, plugins to pull and share, in a window or the browser, with the Blends agents on the right.",
-      "runtime": "acrylblends",
-      "origin": "official"
-    },
-    {
-      "id": "acryl.gtd",
-      "name": "GTD Planner",
-      "kind": "Blueprint",
-      "version": "0.3.0",
-      "path": "blends/acryl.gtd",
-      "license": "MIT",
-      "category": "productivity",
-      "description": "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas.",
-      "runtime": "acrylblends",
-      "origin": "official"
-    },
-    {
-      "id": "acryl.music",
-      "name": "Music",
-      "kind": "Blueprint",
-      "version": "0.3.0",
-      "path": "blends/acryl.music",
-      "license": "MIT",
-      "category": "creative",
-      "description": "A browser drum machine you play by talking to it - 8 or 16 steps, four synthesized tracks, tempo, saved patterns. No audio files; the drum machine is the app, and it changes as the agent works.",
-      "runtime": "acrylblends",
-      "origin": "official"
-    },
-    {
-      "id": "acryl.orderdesk",
-      "name": "Order Desk",
-      "kind": "Blueprint",
-      "version": "0.3.0",
-      "path": "blends/acryl.orderdesk",
-      "license": "MIT",
-      "category": "business",
-      "description": "Customer emails in, orders out. The agent reads each email in any language and turns it into an order; stock is reserved or backordered, large orders wait for approval, shipping writes the delivery note and emails the customer.",
-      "runtime": "acrylblends",
-      "origin": "official"
-    },
-    {
-      "id": "acryl.organizer",
-      "name": "Organizer",
-      "kind": "Blueprint",
-      "version": "0.3.0",
-      "path": "blends/acryl.organizer",
-      "license": "MIT",
-      "category": "productivity",
-      "description": "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs.",
       "runtime": "acrylblends",
       "origin": "official"
     },
