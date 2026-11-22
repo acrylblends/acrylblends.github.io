@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.accounting
   name: "Accounting"
-  version: 0.2.0
+  version: 0.3.0
   category: finance
   description: "Invoices, expenses and a VAT and income summary for any period, kept as plain local data. Operate it in plain language; the books are the app, and they change as the agent works."
   license: MIT

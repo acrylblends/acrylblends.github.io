@@ -32,12 +32,23 @@ const send = (app: App, path: string, payload?: unknown) =>
   app.root.router.request(`/accounting/${path}`, payload === undefined ? undefined : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
 const json = async <T>(response: Response) => (await response.json()) as T
 
-test('the books are on the first screen', () =>
+test('the first screen is the books: the starter\'s own React UI, with React 18 served by the app; other clients still get the JSON hello', () =>
   withHome((home) =>
     withApp(home, async (app) => {
-      const html = await (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()
-      assert.ok(html.includes('data-test="accounting"'))
-      assert.ok(html.includes('VAT &amp; income'))
+      const page = await app.root.router.request('/', { headers: { accept: 'text/html' } })
+      const html = await page.text()
+      assert.match(page.headers.get('content-type') ?? '', /text\/html/u)
+      assert.ok(html.includes('id="accounting-root"'))
+      for (const src of ['accounting/assets/vendor/react.js', 'accounting/assets/vendor/react-dom.js', 'accounting/assets/client.js']) {
+        assert.ok(html.includes(`src="${src}"`), src)
+        const asset = await app.root.router.request(`/${src}`)
+        assert.equal(asset.status, 200, src)
+        assert.match(asset.headers.get('content-type') ?? '', /javascript/u)
+      }
+      const client = await (await app.root.router.request('/accounting/assets/client.js')).text()
+      assert.ok(client.includes('VAT & income'), 'the starter\'s own UI')
+      assert.ok(!client.includes('__ModuleLoader__') && !client.includes('acryl-app-shell/client') && !client.includes("fetch('/api/"), 'no DSH integration is left in it')
+      assert.deepEqual(await (await app.root.router.request('/')).json(), { app: app.root.get('appInstance')?.name, ok: true })
     })))
 
 test('an invoice is created with its VAT, shown overdue after its due day, and marked paid once', () =>
@@ -80,6 +91,5 @@ test('the books survive a restart', () =>
     await withApp(home, async (app) => {
       const view = await json<{ expenses: { description: string }[] }>(await send(app, 'state'))
       assert.deepEqual(view.expenses.map((x) => x.description), ['Remember me'])
-      assert.deepEqual(app.root.home.widgets().map((widget) => widget.id), ['accounting'])
     })
   }))
