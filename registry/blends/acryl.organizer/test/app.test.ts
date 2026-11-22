@@ -44,8 +44,9 @@ test('serves the index route: the first screen to a browser, the JSON hello to a
     assert.match(page.headers.get('content-type') ?? '', /text\/html/)
     const html = await page.text()
     // The ACRYL frame's first tile asks for a page: the root must never hand it JSON (Chrome's viewer is nearly invisible in the dark frame).
-    assert.ok(html.includes(`<h1>${appName}</h1>`), 'the page names the app')
-    assert.ok(html.includes('href="./about"'), 'the page links to About relatively')
+    // This app's first screen is the app itself (its plugin serves it at /), not the blank scaffold's welcome page.
+    assert.ok(html.includes(`<title>${appName}</title>`), 'the page names the app')
+    assert.ok(html.includes('id="organizer-root"'), 'the page is the app')
   }))
 
 test('renders a .tsx page, and an error in it names the .tsx line', () =>
@@ -98,10 +99,9 @@ test('the frame mounts the same app under /app; the app on its own server keeps 
   )
 })
 
-test('a plugin puts its widget on the first screen, and the widget leaves with the plugin', () =>
+test('a plugin puts its widget on the home page registry, and the widget leaves with the plugin', () =>
   withApp(async (app) => {
-    const page = async () =>
-      (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()
+    const widgets = () => app.root.home.widgets().map((widget) => widget.id)
     const feature = app.root.plugin({
       name: 'hello-widget',
       inject: ['home'],
@@ -116,12 +116,9 @@ test('a plugin puts its widget on the first screen, and the widget leaves with t
       },
     })
     await feature.await()
-    assert.match(
-      await page(),
-      /<section class="widget" data-widget="hello-widget">[\s\S]*<p id="hello">hi<\/p>/,
-    )
+    assert.ok(widgets().includes('hello-widget'))
     await feature.dispose()
-    assert.doesNotMatch(await page(), /data-widget="hello-widget"/)
+    assert.ok(!widgets().includes('hello-widget'))
   }))
 
 /** A sandbox may forbid listening on a port (Codex's workspace-write does); the one test that starts the real server is skipped there, and says so. */

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.organizer
   name: "Organizer"
-  version: 0.2.0
+  version: 0.3.0
   category: productivity
   description: "To-dos, a calendar and meeting booking that refuses overlaps. The builder inside extends it with whatever your day needs."
   license: MIT

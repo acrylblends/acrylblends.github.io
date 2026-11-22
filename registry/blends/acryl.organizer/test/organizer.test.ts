@@ -24,14 +24,23 @@ async function withApp(home: string, run: (app: App) => Promise<void>) {
 const send = (app: App, path: string, payload?: unknown) =>
   app.root.router.request(`/organizer/${path}`, payload === undefined ? undefined : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) })
 
-test('the widget is on the first screen', async () => {
+test('the first screen is the organizer: the starter\'s own React UI, with React 18 served by the app; other clients still get the JSON hello', async () => {
   const home = await mkdtemp(join(scratch, 'organizer-'))
   try {
     await withApp(home, async (app) => {
       const page = await app.root.router.request('/', { headers: { accept: 'text/html' } })
       const html = await page.text()
-      assert.ok(html.includes('data-test="organizer"'), 'the organizer widget is rendered')
-      assert.ok(html.includes('Nothing to do.'))
+      assert.match(page.headers.get('content-type') ?? '', /text\/html/u)
+      assert.ok(html.includes('id="organizer-root"'))
+      for (const src of ['organizer/assets/vendor/react.js', 'organizer/assets/vendor/react-dom.js', 'organizer/assets/client.js']) {
+        assert.ok(html.includes(`src="${src}"`), src)
+        const asset = await app.root.router.request(`/${src}`)
+        assert.equal(asset.status, 200, src)
+        assert.match(asset.headers.get('content-type') ?? '', /javascript/u)
+      }
+      const client = await (await app.root.router.request('/organizer/assets/client.js')).text()
+      assert.ok(!client.includes('__ModuleLoader__') && !client.includes('acryl-app-shell/client') && !client.includes("fetch('/api/"), 'no DSH integration is left in it')
+      assert.deepEqual(await (await app.root.router.request('/')).json(), { app: app.root.get('appInstance')?.name, ok: true })
     })
   } finally { await rm(home, { recursive: true, force: true }) }
 })
@@ -76,15 +85,13 @@ test('meetings: a booking that overlaps another is refused, back to back is allo
   } finally { await rm(home, { recursive: true, force: true }) }
 })
 
-test('the data survives a restart, and the widget belongs to its plugin', async () => {
+test('the data survives a restart', async () => {
   const home = await mkdtemp(join(scratch, 'organizer-'))
   try {
     await withApp(home, async (app) => { await send(app, 'todo', { title: 'Remember me' }) })
     await withApp(home, async (app) => {
       const state = await (await send(app, 'state')).json() as { todos: { title: string }[] }
       assert.deepEqual(state.todos.map((t) => t.title), ['Remember me'])
-      assert.ok((await (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()).includes('Remember me'))
-      assert.deepEqual(app.root.home.widgets().map((widget) => widget.id), ['organizer'])
     })
   } finally { await rm(home, { recursive: true, force: true }) }
 })

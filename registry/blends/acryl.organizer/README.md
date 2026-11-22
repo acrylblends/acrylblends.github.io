@@ -1,5 +1,9 @@
 # Organizer
 
+To-dos, a calendar and meeting booking that refuses overlaps. The first screen is the organizer itself: the starter's own React UI (`plugins/organizer/client.js`, moved onto the page with the same views, controls, texts and styles; React 18 is served by the app). The same operations are JSON routes under `/organizer` (`GET /state`, `/agenda?day=`, `/free-slots?day=&minutes=`, `POST /todo`, `/todo-done`, `/meeting`, `/meeting-cancel`), which is how the agent inside the app operates it. The rules are in `plugins/organizer/lib/domain.js` (pure, tested), the data in `organizer.json` in the app's home. It grew from the earlier ACRYL-app starter of the same name: `domain.js` and `store.js` are that code, unchanged; `plugins/organizer/index.ts` is the adapter.
+
+Below is what every app made by `acrylblends init` carries.
+
 To-dos, a calendar and meeting booking that refuses overlaps. The widget is on the first screen; the same operations are JSON routes under `/organizer` (`GET /state`, `/agenda?day=`, `/free-slots?day=&minutes=`, `POST /todo`, `/todo-done`, `/meeting`, `/meeting-cancel`), which is how the agent inside the app operates it. The rules are in `plugins/organizer/lib/domain.js` (pure, tested), the data in `organizer.json` in the app's home. It grew from the earlier ACRYL-app starter of the same name: `domain.js` and `store.js` are that code, unchanged; `plugins/organizer/index.ts` is the adapter.
 
 Below is what every app made by `acrylblends init` carries.
