@@ -5,7 +5,7 @@ Same CRM (deals pipeline with inspector, deals, contacts, companies, follow-ups,
 with chat and agents, but:
 
 - **no Chromium**: the window is the system webview (WKWebView on macOS, WebView2 on Windows, WebKitGTK on Linux);
-- **no Node**: the main process and the app host both run on the Bun that Electrobun ships.
+- **no Node**: the main process, the app host, the agents' terminals and the door all run on the Bun that Electrobun ships.
 
 This is the most size-optimized way an ACRYL Blend ships today. Each release also builds the Electron version of the same app, so you can
 compare the two installers yourself.
@@ -24,24 +24,34 @@ From the [Latest release](https://github.com/acrylblends/03-small-crm-eb/release
 on Windows, if SmartScreen asks, click More info and then Run anyway. The first start unpacks the app (on Windows with Defender on this
 takes minutes).
 
-## Sizes (release v0.1.2, both builds from the same run)
+## Sizes (release v0.1.3, both builds from the same run)
 
 | OS | Electron download | Electrobun download | Electron installed | Electrobun installed |
 | --- | ---: | ---: | ---: | ---: |
-| macOS arm64 | 205.8 MB | **83.5 MB (-59%)** | 548.7 MB | **352.9 MB (-36%)** |
-| Windows x64 | 177.7 MB | **88.3 MB (-50%)** | 598.9 MB | **353.7 MB (-41%)** |
-| Windows arm64 | 172.1 MB | **83.4 MB (-52%)** | 599.9 MB | **340.3 MB (-43%)** |
-| Linux x64 | 143.0 MB | **91.7 MB (-36%)** | 504.6 MB | **367.3 MB (-27%)** |
-| Linux arm64 | 137.4 MB | **90.3 MB (-34%)** | 508.5 MB | **364.5 MB (-28%)** |
+| macOS arm64 | 205.8 MB | **71.0 MB (-65%)** | 548.7 MB | **264.2 MB (-52%)** |
+| Windows x64 | 177.7 MB | **82.0 MB (-54%)** | 599.0 MB | **290.5 MB (-52%)** |
+| Windows arm64 | 172.1 MB | **76.8 MB (-55%)** | 599.9 MB | **276.7 MB (-54%)** |
+| Linux x64 | 143.0 MB | **85.0 MB (-41%)** | 504.6 MB | **304.6 MB (-40%)** |
+| Linux arm64 | 137.4 MB | **83.5 MB (-39%)** | 508.6 MB | **301.8 MB (-41%)** |
 
-Installed = the unpacked app, sum of file sizes (MB = 1,000,000 bytes); `sizes-<os>-<arch>.json` in the release has the parts.
-The Electron shell (Chromium) is 297-386 MB; the Electrobun shell (Bun + native libraries) is 112-159 MB. The app part (the CRM plus the
-ACRYL frame, 205-215 MB) is the same in both builds.
+Installed = the unpacked app, sum of file sizes (MB = 1,000,000 bytes); `sizes-<os>-<arch>.json` in the release has the parts (shell, app, Git).
+Since 0.1.3 the app part is 47 MB smaller than in the Electron build: on Bun, for one OS and CPU, `electrobun/slim.mjs` leaves out what never runs
+there (packages only Electron or a TypeScript build uses, type declarations, source maps, C/C++ sources of native modules, other OSes' native
+builds, third-party docs; Bun compiles TypeScript itself), and Git keeps only the commands ACRYL runs.
+
+## Live changes on Bun
+
+An agent in the right panel (or you, in an editor) adds a plugin (`plugins/<name>/index.ts` plus its row in `blend.yaml`) or edits the app's
+code while it runs: the frame loads the change inside the running host, the plugin is served within 2 s, and the agent's terminal stays open.
+The host is started again only after it crashed, on the next saved change (`electrobun/run-host.mjs`; the Electron build restarts its host on
+every change, which closes the terminals). A new plugin may import the framework by name (`import { Acryl } from 'acrylblends'`).
+Tested from the release builds on macOS arm64, Windows 10 x64 and Ubuntu 24.04 x64.
 
 ## Not there yet compared with Electron
 
-No auto-updater, no agent window commands (`acryl window`), no host restart after a crash, no Intel Mac build. The program installs into
-Electrobun's own folder (`~/Library/Application Support/<id>`, `~/.local/share/<id>`, `%LOCALAPPDATA%\<id>`); app data stays in `~/.acryl`.
+No auto-updater, no agent window commands (`acryl window`), no Intel Mac build. The program installs into Electrobun's own folder
+(`~/Library/Application Support/<id>`, `~/.local/share/<id>`, `%LOCALAPPDATA%\<id>`); app data stays in `~/.acryl`. On Windows the Setup
+unpacks for about 8 minutes with Defender on.
 
 ## Develop
 

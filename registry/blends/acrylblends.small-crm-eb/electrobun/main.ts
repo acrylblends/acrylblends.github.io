@@ -8,7 +8,8 @@
  * (`pack.mjs --host node`). Closing the window stops the host.
  */
 import Electrobun, { ApplicationMenu, BrowserWindow, Utils } from 'electrobun/main'
-import { appendFileSync, existsSync, mkdirSync, readFileSync, symlinkSync } from 'node:fs'
+import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, symlinkSync } from 'node:fs'
+import { homedir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { linkProgram, openProduct, startFrameHost } from './shell-core.mjs'
 
@@ -19,13 +20,25 @@ const program = join(app, 'payload')
 // Which host: the bundled Node when the build ships one (`pack.mjs --host node`), else Electrobun's own Bun (`--host bun`, the default).
 const node = join(app, 'node', process.platform === 'win32' ? 'node.exe' : 'node')
 const onBun = !existsSync(node)
-const version = (() => {
+const build = (() => {
   try {
-    return String(JSON.parse(readFileSync(join(resources, 'version.json'), 'utf8')).version)
+    return JSON.parse(readFileSync(join(resources, 'version.json'), 'utf8')) as { version?: string; hash?: string; channel?: string; identifier?: string }
   } catch {
-    return '0.0.0'
+    return {}
   }
 })()
+const version = String(build.version ?? '0.0.0')
+// Electrobun's first start leaves a list of every file it unpacked (self-extraction/<hash>.recipe.json, 38 MB). This build has no updater
+// (updateAuthority none) and starts without the list (tested on macOS: removed, the app starts and Electrobun does not write it again).
+if (build.hash !== undefined && build.identifier !== undefined) {
+  const data =
+    process.platform === 'darwin'
+      ? join(homedir(), 'Library', 'Application Support')
+      : process.platform === 'win32'
+        ? (process.env.LOCALAPPDATA ?? join(homedir(), 'AppData', 'Local'))
+        : (process.env.XDG_DATA_HOME ?? join(homedir(), '.local', 'share'))
+  rmSync(join(data, build.identifier, build.channel ?? 'stable', 'self-extraction', `${build.hash}.recipe.json`), { force: true })
+}
 const vcs = join(app, 'vcs', 'bin')
 const vcsBin = existsSync(vcs) ? vcs : undefined
 // The bundled Git's builtin names travel as a list (electrobun/pack.mjs): make the links once, in the app Electrobun unpacked.
@@ -89,14 +102,38 @@ const host = startFrameHost({
         hostScript: join(chosen.root, 'scripts', 'ide-host.mjs'),
       }
     : {}),
+  // The frame reloads an edited app inside the running host; a restart would end the agents' terminals (run-host.mjs).
+  runner: join(app, 'run-host.mjs'),
   vcsBin,
   write: (text: string) => {
     process.stdout.write(text)
     try {
       appendFileSync(logFile, text)
     } catch {}
+    reloadOnRestart(text)
   },
 })
+
+/**
+ * A saved change in the app's source or plugins restarts the host (watch-host), and the window then loads the restarted host's address, so the person
+ * and the agent see the change without reloading by hand. The Electron shell does the same (desktop-shell main.js, startHost: hostRestarting).
+ */
+let window: BrowserWindow | undefined
+let restarting = false
+let pending = ''
+function reloadOnRestart(text: string): void {
+  pending = (pending + text).slice(-4000)
+  if (/Restarting '/u.test(text)) {
+    restarting = true
+    pending = text.slice(text.lastIndexOf("Restarting '"))
+  }
+  if (!restarting) return
+  const again = /acrylblends host: (http:\/\/\S+)/u.exec(pending)?.[1]
+  if (again === undefined || window === undefined) return
+  restarting = false
+  pending = ''
+  window.webview.loadURL(again)
+}
 
 let stopped = false
 const stopHost = async () => {
@@ -139,7 +176,7 @@ try {
 console.log(`small-crm-eb: frame host ready after ${(performance.now() - started).toFixed(0)} ms`)
 
 const origin = new URL(url).origin
-const window = new BrowserWindow({ title, url, frame: { width: 1280, height: 820, x: 120, y: 80 } })
+window = new BrowserWindow({ title, url, frame: { width: 1280, height: 820, x: 120, y: 80 } })
 // Links to other sites open in the person's browser, as the Electron shell does (navigation() in desktop-shell frame.ts).
 window.webview.on('will-navigate', (event: { data?: { url?: string }; response?: { allow: boolean } }) => {
   const target = event.data?.url

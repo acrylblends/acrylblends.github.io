@@ -7,7 +7,7 @@ export default {
   app: {
     name: 'ACRYL Blends Electrobun',
     identifier: 'io.github.acrylblends.electrobun-blank',
-    version: process.env.ELECTROBUN_APP_VERSION ?? '0.2.2',
+    version: process.env.ELECTROBUN_APP_VERSION ?? '0.2.3',
     description: 'The ACRYL Blends frame around an empty app, in an Electrobun window.',
   },
   runtime: { exitOnLastWindowClosed: true },
@@ -17,6 +17,7 @@ export default {
     copy: {
       'dist/electrobun-stage/payload': 'payload',
       'electrobun/bun-node-hooks.mjs': 'bun-node-hooks.mjs',
+      'electrobun/run-host.mjs': 'run-host.mjs',
       ...(existsSync('dist/electrobun-stage/node') ? { 'dist/electrobun-stage/node': 'node' } : {}),
       ...(process.platform === 'darwin' ? { 'dist/electrobun-stage/vcs': 'vcs' } : {}),
     },

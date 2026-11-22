@@ -7,7 +7,7 @@ export default {
   app: {
     name: 'Small CRM',
     identifier: 'io.github.acrylblends.small-crm-eb',
-    version: process.env.ELECTROBUN_APP_VERSION ?? '0.1.2',
+    version: process.env.ELECTROBUN_APP_VERSION ?? '0.1.3',
     description: 'Small CRM in the ACRYL Blends frame, in an Electrobun window (Bun, system webview).',
   },
   runtime: { exitOnLastWindowClosed: true },
@@ -17,6 +17,7 @@ export default {
     copy: {
       'dist/electrobun-stage/payload': 'payload',
       'electrobun/bun-node-hooks.mjs': 'bun-node-hooks.mjs',
+      'electrobun/run-host.mjs': 'run-host.mjs',
       ...(existsSync('dist/electrobun-stage/node') ? { 'dist/electrobun-stage/node': 'node' } : {}),
       ...(process.platform === 'darwin' ? { 'dist/electrobun-stage/vcs': 'vcs' } : {}),
     },
