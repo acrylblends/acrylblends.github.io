@@ -237,7 +237,7 @@
       "path": "blends/acrylblends.electrobun-blank",
       "license": "MIT",
       "category": "desktop",
-      "description": "The ACRYL Blends Blank app as an installable Electrobun app for macOS, Windows and Linux: the full frame with chat and agents in a native window with the system webview, everything on Electrobun's own Bun (no Node, no Chromium), live changes by agents served in place. The page lists the measured sizes against the Electron build.",
+      "description": "The ACRYL Blends Blank app as an installable Electrobun app for macOS, Windows and Linux: the full frame with chat and agents in a native window with the system webview, the frame host on Electrobun's own Bun (no Node, no Chromium). The page lists the measured sizes against the Electron build.",
       "runtime": "acrylblends",
       "origin": "official"
     },
