@@ -63,7 +63,7 @@ export const registrySources: Record<string, Source> = {
       rows: [
         ["macOS arm64, download", "205.2 MB", "112.0 MB", "82.7 MB (-60%)"],
         ["macOS arm64, installed", "595.8 MB = shell 308.7 + app 251.0 + Git 36.2", "506.5 MB = shell 96.7 + Node 122.6 + app 251.0 + Git 36.2", "383.9 MB = shell 96.8 + app 251.0 + Git 36.2 (-36%)"],
-        ["Linux x64, download", "142.3 MB", "123.9 MB", "91.1 MB (-36%)"],
+        ["Linux x64, download", "142.5 MB", "123.9 MB", "91.4 MB (-36%)"],
         ["Linux x64, installed", "565.7 MB = shell 296.9 + app 268.8", "540.0 MB = shell 144.4 + Node 126.9 + app 268.7", "413.1 MB = shell 144.3 + app 268.8 (-27%)"],
         ["Windows x64, download", "177.1 MB", "113.7 MB", "87.7 MB (-50%)"],
         ["Windows x64, installed", "636.4 MB = shell 386.4 + app 249.9", "469.4 MB = shell 125.6 + Node 93.9 + app 249.8", "375.5 MB = shell 125.7 + app 249.8 (-41%)"],

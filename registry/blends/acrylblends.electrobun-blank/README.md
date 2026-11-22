@@ -6,6 +6,8 @@ folder (`~/.acryl/apps/<id>`). Since 0.2.2 the frame host runs on Electrobun's o
 
 ![The Blank app in the Electrobun window on macOS](docs/screenshot.png)
 
+The same release on [Windows](docs/screenshot-windows.png) and [Linux](docs/screenshot-linux.png).
+
 ## Download
 
 From the [Latest release](https://github.com/acrylblends/63-electrobun-blank/releases/latest):
@@ -23,13 +25,13 @@ and the Setup does not start the app: start it from the Start menu).
 ## Sizes
 
 Installed = the app folder after its first start, `du -sk` on the machine, MB = 1,000,000 bytes. Download = the installer file. Electron =
-the official `acrylblends pack` of `@acryldev/blends` 1.7.25 (Electron 44); Electrobun = Electrobun 2.0.7 with the same app payload.
+the official `acrylblends pack` of `@acryldev/blends` 1.7.25 (Electron 44; the app resolves the framework to 1.7.28 at pack time); Electrobun = Electrobun 2.0.7 with the same app payload.
 
 | OS | Electron | Electrobun, host on Node (v0.2.0) | Electrobun, host on Bun (v0.2.2) |
 | --- | --- | --- | --- |
 | macOS arm64, download | 205.2 | 112.0 | 82.7 (-60%) |
 | macOS arm64, installed | 595.8 = shell 308.7 + app 251.0 + Git 36.2 | 506.5 = shell 96.7 + Node 122.6 + app 251.0 + Git 36.2 | 383.9 = shell 96.8 + app 251.0 + Git 36.2 (-36%) |
-| Linux x64, download | 142.3 | 123.9 | 91.1 (-36%) |
+| Linux x64, download | 142.5 | 123.9 | 91.4 (-36%) |
 | Linux x64, installed | 565.7 = shell 296.9 + app 268.8 | 540.0 = shell 144.4 + Node 126.9 + app 268.7 | 413.1 = shell 144.3 + app 268.8 (-27%) |
 | Windows x64, download | 177.1 | 113.7 | 87.7 (-50%) |
 | Windows x64, installed | 636.4 = shell 386.4 + app 249.9 | 469.4 = shell 125.6 + Node 93.9 + app 249.8 | 375.5 = shell 125.7 + app 249.8 (-41%) |
