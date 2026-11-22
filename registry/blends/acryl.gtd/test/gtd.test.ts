@@ -33,12 +33,23 @@ const send = (app: App, path: string, payload?: unknown) =>
 const json = async <T>(response: Response) => (await response.json()) as T
 type Item = { id: number; title: string; status: string; project?: string; due?: string }
 
-test('the board is on the first screen', () =>
+test('the first screen is the board: the starter\'s own React UI, with React 18 served by the app; other clients still get the JSON hello', () =>
   withHome((home) =>
     withApp(home, async (app) => {
-      const html = await (await app.root.router.request('/', { headers: { accept: 'text/html' } })).text()
-      assert.ok(html.includes('data-test="gtd"'))
-      assert.ok(html.includes('Capture anything'))
+      const page = await app.root.router.request('/', { headers: { accept: 'text/html' } })
+      const html = await page.text()
+      assert.match(page.headers.get('content-type') ?? '', /text\/html/u)
+      assert.ok(html.includes('id="gtd-root"'))
+      for (const src of ['gtd/assets/vendor/react.js', 'gtd/assets/vendor/react-dom.js', 'gtd/assets/client.js']) {
+        assert.ok(html.includes(`src="${src}"`), src)
+        const asset = await app.root.router.request(`/${src}`)
+        assert.equal(asset.status, 200, src)
+        assert.match(asset.headers.get('content-type') ?? '', /javascript/u)
+      }
+      const client = await (await app.root.router.request('/gtd/assets/client.js')).text()
+      assert.ok(client.includes('Next Actions'), 'the starter\'s own UI')
+      assert.ok(!client.includes('__ModuleLoader__') && !client.includes('acryl-app-shell/client') && !client.includes("fetch('/api/"), 'no DSH integration is left in it')
+      assert.deepEqual(await (await app.root.router.request('/')).json(), { app: app.root.get('appInstance')?.name, ok: true })
     })))
 
 test('capture goes to the inbox; triage decides one bucket, with a project and a day; a wrong bucket or an empty title is refused', () =>
@@ -81,6 +92,5 @@ test('the items survive a restart', () =>
     await withApp(home, async (app) => { await send(app, 'capture', { title: 'Remember me' }) })
     await withApp(home, async (app) => {
       assert.deepEqual((await json<Item[]>(await send(app, 'items'))).map((i) => i.title), ['Remember me'])
-      assert.deepEqual(app.root.home.widgets().map((widget) => widget.id), ['gtd'])
     })
   }))

@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.gtd
   name: "GTD Planner"
-  version: 0.2.0
+  version: 0.3.0
   category: productivity
   description: "Getting Things Done - capture, triage, next actions, waiting for, someday/maybe, reference and a calendar, grown from the blank canvas."
   license: MIT
