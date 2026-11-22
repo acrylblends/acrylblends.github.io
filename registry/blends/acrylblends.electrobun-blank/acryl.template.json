@@ -1,5 +1,5 @@
 {
   "name": "Electrobun Blank",
-  "description": "The blank ACRYL Blend in an Electrobun window instead of Electron: the same Blends frame with chat and agents, in a native window with the system webview. Electrobun 2.0.6 on macOS arm64; the page lists the measured size wins.",
+  "description": "The ACRYL Blends Blank app as an installable Electrobun app for macOS, Windows and Linux, the frame host on Bun (no Node, no Chromium); the page lists the measured sizes against the Electron build.",
   "plugins": []
 }

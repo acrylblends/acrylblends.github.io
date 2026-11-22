@@ -1,6 +1,6 @@
 ---
 name: acryl-remove-plugin
-description: Use when the person asks to remove, delete, switch off, hide or undo a feature or plugin of blank.
+description: Use when the person asks to remove, delete, switch off, hide or undo a feature or plugin of fresh.
 ---
 # Switch off or remove a plugin
 

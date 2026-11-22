@@ -7,15 +7,18 @@ import { createRequire } from 'node:module'
 import { dirname, isAbsolute, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { DEFAULT_SCHEMA, dump as dumpYaml, Type, load as parseYaml } from 'js-yaml'
-import { Acryl } from 'acrylblends'
+import { Acryl } from '@acryldev/blends'
 
 // The framework's files (this launcher, the composition it reads) sit next to it; the app is chosen by the app's own family: this folder, or the
 // source a desktop product names when it runs the framework from its bundle. Its home and its port come with it, decided once.
 const frameworkRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
-const { selectInstance } = await import(new URL('@acryldev/instance', import.meta.url).href)
+const { selectInstance } = await import('@acryldev/instance')
 const chosen = selectInstance({ projectRoot: frameworkRoot, env: process.env })
 const appRoot = chosen.root
 const home = chosen.home
+// A host plugin's folder as the app has it: plugins/acryl-<id> only in an app made before the folders were renamed (registry Blueprints), else
+// plugins/<id>. An installed app has neither on disk (the bundle overlay resolves it), so the current name is the default.
+const hostPlugin = (id) => (existsSync(join(appRoot, 'plugins', `acryl-${id}`)) ? `acryl-${id}` : id)
 const profileName = 'acrylblends-electrobun-blank'
 // The page and its tab are named for the app: the package's name, as the frame's header says it, else the folder's.
 const appTitle = (() => {
@@ -31,7 +34,7 @@ process.env.DSH_HOME = home
 // of the app's src/ then resolves under a generation the frame's Host raises, so nothing but the app's own rows restarts. Before anything of the app loads;
 // a frame package that predates the hook leaves the code as it started.
 try {
-  const { installAppGeneration } = await import('@acrylblends/blends-frame/app-generation')
+  const { installAppGeneration } = await import('@acryldev/blends-frame/app-generation')
   installAppGeneration({ appRoot })
 } catch (error) {
   if (error?.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED' && error?.code !== 'ERR_MODULE_NOT_FOUND') throw error
@@ -156,6 +159,10 @@ const clientRows = [
   {
     "id": "client-modules",
     "name": "@deepseek-ai/dsh-client-modules"
+  },
+  {
+    "id": "client-hmr",
+    "name": "@deepseek-ai/dsh-client-hmr"
   },
   {
     "id": "client-locale",
@@ -382,9 +389,9 @@ function dshStandardPlugin(id) {
 agentRows.find((row) => row.id === 'preset-acryl-blends').config.plugins.push(...DSH_STANDARD_PLUGINS.map(dshStandardPlugin))
 const hostLayer = anchorRows([{
   insert: [
-    { id: 'node-server', name: './plugins/node-server/src/index.ts', config: { hostname: chosen.host ?? '127.0.0.1', port: Number(port), scan: Number(port) === 0 ? 0 : 20 } },
-    { id: 'web-server', name: './plugins/web-server/src/index.ts' },
-    { id: 'page', name: './plugins/page/src/index.ts', config: { title: appTitle } },
+    { id: 'node-server', name: `./plugins/${hostPlugin('node-server')}/src/index.ts`, config: { hostname: chosen.host ?? '127.0.0.1', port: Number(port), scan: Number(port) === 0 ? 0 : 20 } },
+    { id: 'web-server', name: `./plugins/${hostPlugin('web-server')}/src/index.ts` },
+    { id: 'page', name: `./plugins/${hostPlugin('page')}/src/index.ts`, config: { title: appTitle } },
     ...clientRows,
     ...agentRows,
   ],
@@ -570,5 +577,12 @@ if (check) {
   }
   await ctx.fiber.dispose()
 } else {
-  for (const signal of ['SIGINT', 'SIGTERM']) process.once(signal, () => { void ctx.fiber.dispose() })
+  let stopping = false
+  for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => {
+    if (stopping) return
+    stopping = true
+    console.log('acrylblends host: stopping')
+    setTimeout(() => { console.warn('acrylblends host: not stopped after 5 s, leaving now'); process.exit(1) }, 5_000).unref()
+    void ctx.fiber.dispose()
+  })
 }

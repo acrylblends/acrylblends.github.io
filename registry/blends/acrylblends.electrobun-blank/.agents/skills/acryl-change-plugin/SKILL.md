@@ -1,6 +1,6 @@
 ---
 name: acryl-change-plugin
-description: Use when the person asks you to change, improve, extend or restyle a feature or plugin that already exists in blank.
+description: Use when the person asks you to change, improve, extend or restyle a feature or plugin that already exists in fresh.
 ---
 # Change a plugin
 

@@ -1,10 +1,10 @@
 import type { Context } from '@deepseek-ai/cordis'
-import { Acryl } from '../plugins/router/src/index.ts'
 import { type Home, renderWidgets } from '../plugins/home/index.ts'
+import { Acryl } from '../plugins/router/src/index.ts'
 import { aboutPage } from './about.tsx'
 import { FIRST_PAGE_MARKER } from './first-page.ts'
 
-export const APP_NAME = 'electrobun-blank'
+export const APP_NAME = 'fresh'
 
 /**
  * The only place the app's mount prefix is named. On its own server (production, `npm start`) the app mounts at the root and

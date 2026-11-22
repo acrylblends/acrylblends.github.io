@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "door": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "b84342464fb19baab24f",
         "src/cli/acryl.ts": "b58a8fad896bbcec8599",
@@ -42,7 +42,7 @@
       }
     },
     "extensions": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "c8936159cdf9413be38a",
@@ -56,7 +56,7 @@
       }
     },
     "home": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "b1997dc16580e1b376c1",
@@ -64,7 +64,7 @@
       }
     },
     "manifest": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "e5c0fb5a8d03a9f6c2d7",
@@ -77,7 +77,7 @@
       }
     },
     "node-server": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "97e21f62916eb3787f2d",
         "src/adapter/conninfo.ts": "ecdf1ae9ccd7deee92e0",
@@ -108,7 +108,7 @@
       }
     },
     "page": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "src/favicon.ts": "06d5fb0711c521ac5380",
@@ -116,11 +116,11 @@
       }
     },
     "plugin-share": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "1577e97e75b892864358",
-        "index.ts": "d52ee16f1509d71579ef",
+        "index.ts": "6e7e98939de1d6f895f1",
         "merge-edits.ts": "f5f2fd5ac690f377f601",
         "native.ts": "174e05294e88b0c2a54b",
         "npm-login.ts": "b32abff9db002f1d1da1",
@@ -129,11 +129,12 @@
         "pull-check.ts": "80ec29321a6ef1a51f4d",
         "pull-list.ts": "1701ddea0bf9cae260d5",
         "pulled-records.ts": "9a9aa2a26014da112735",
-        "registry-source.ts": "6a91f8c650499c22d043"
+        "registry-source.ts": "6a91f8c650499c22d043",
+        "releases-fallback.ts": "695b81c9446fce72dbef"
       }
     },
     "router": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "fcf95a3a9e661936ca61",
         "src/browser/client.ts": "02d59cb4bbc4a494831e",
@@ -334,7 +335,7 @@
       }
     },
     "sandbox": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "59e8a27d1ddca4210ef1",
@@ -343,7 +344,7 @@
       }
     },
     "save": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "LICENSE": "0f98259ccb0f4cafebe9",
         "README.md": "3ca5c183f7ea0bdf6b95",
@@ -354,7 +355,7 @@
       }
     },
     "web-server": {
-      "from": "1.7.21",
+      "from": "1.7.25",
       "files": {
         "src/index.ts": "71bebe57fa8ebabfce5a"
       }
