@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.sde
   name: "ACRYL SDE"
-  version: 0.1.9
+  version: 0.1.10
   category: ai
   description: "ACRYL SDE, the Synthetic Data Engine: point it at a codebase and get a reviewed, anonymized Training Unit for coding-model training - secrets, personal data and project names removed, architecture extracted, nothing leaves the machine without your approval. A fork of ACRYL ADE."
   license: MIT

@@ -18,14 +18,8 @@ const appRoot = chosen.root
 const home = chosen.home
 // The host plugins live in the program (in a packaged app only the bundle overlay finds them, existsSync does not): their folders are plugins/<id>.
 const profileName = 'acrylblends-acryl-ade'
-// The page and its tab are named for the app: the package's name, as the frame's header says it, else the folder's.
-const appTitle = (() => {
-  try {
-    const name = JSON.parse(readFileSync(join(appRoot, 'package.json'), 'utf8')).name
-    if (typeof name === 'string' && name.trim() !== '') return name.trim()
-  } catch {}
-  return chosen.name
-})()
+// The page and its tab are named for the app as the instance names it: its Blend's name (blend.yaml), else its package's, else the folder's.
+const appTitle = chosen.name
 // DSH's rows keep their files in this app's own home: set before any driver row is imported.
 process.env.DSH_HOME = home
 // Development only: the app's code can be loaded again in this host (a version gone back to, a file written by the chat, an agent or an editor). Every file

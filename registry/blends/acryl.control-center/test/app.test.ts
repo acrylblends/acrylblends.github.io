@@ -30,8 +30,10 @@ async function withApp(run: (app: App) => Promise<void>, options: AppOptions = {
   }
 }
 
-// The pages name the app by the name it runs under (its package.json name, which Settings > App can change), not the scaffold's APP_NAME.
-const RUNNING_NAME: string = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8')).name
+// The pages name the app by the name it runs under: its Blend's name (blend.yaml metadata.name, "ACRYL Control Center"), as the instance names it, not the scaffold's APP_NAME.
+const RUNNING_NAME: string = /^ {2}name:\s*"?([^"\n]+?)"?\s*$/m.exec(
+  readFileSync(new URL('../blend.yaml', import.meta.url), 'utf8'),
+)?.[1] ?? ''
 
 test('serves the Control Center at the root, and the template\'s first screen at /home: a page to a browser, the JSON hello to an API client', () =>
   withApp(async (app) => {
