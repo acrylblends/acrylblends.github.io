@@ -24,12 +24,19 @@ From the [Latest release](https://github.com/acrylblends/03-small-crm-eb/release
 on Windows, if SmartScreen asks, click More info and then Run anyway. The first start unpacks the app (on Windows with Defender on this
 takes minutes).
 
-## Why it is smaller
+## Sizes (release v0.1.2, both builds from the same run)
 
-An Electron app carries a whole Chromium (about 300-390 MB installed) and the ACRYL host needed Node on top. Here the shell is Bun plus
-Electrobun's small native libraries (about 97 MB on macOS), and the host runs on that same Bun. Measured on the Blank Blend with the same
-setup ([63-electrobun-blank](https://github.com/acrylblends/63-electrobun-blank)): download 36-60% smaller, installed 27-41% smaller.
-The rest is the app's own code and the ACRYL framework (about 250 MB), which both builds share.
+| OS | Electron download | Electrobun download | Electron installed | Electrobun installed |
+| --- | ---: | ---: | ---: | ---: |
+| macOS arm64 | 205.8 MB | **83.5 MB (-59%)** | 548.7 MB | **352.9 MB (-36%)** |
+| Windows x64 | 177.7 MB | **88.3 MB (-50%)** | 598.9 MB | **353.7 MB (-41%)** |
+| Windows arm64 | 172.1 MB | **83.4 MB (-52%)** | 599.9 MB | **340.3 MB (-43%)** |
+| Linux x64 | 143.0 MB | **91.7 MB (-36%)** | 504.6 MB | **367.3 MB (-27%)** |
+| Linux arm64 | 137.4 MB | **90.3 MB (-34%)** | 508.5 MB | **364.5 MB (-28%)** |
+
+Installed = the unpacked app, sum of file sizes (MB = 1,000,000 bytes); `sizes-<os>-<arch>.json` in the release has the parts.
+The Electron shell (Chromium) is 297-386 MB; the Electrobun shell (Bun + native libraries) is 112-159 MB. The app part (the CRM plus the
+ACRYL frame, 205-215 MB) is the same in both builds.
 
 ## Not there yet compared with Electron
 
