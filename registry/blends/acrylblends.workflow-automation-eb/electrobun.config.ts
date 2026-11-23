@@ -7,7 +7,7 @@ export default {
   app: {
     name: 'ACRYL Workflow Automation',
     identifier: 'io.github.acrylblends.workflow-automation-eb',
-    version: process.env.ELECTROBUN_APP_VERSION ?? '0.1.1',
+    version: process.env.ELECTROBUN_APP_VERSION ?? '0.1.2',
     description: 'ACRYL Workflow Automation in the ACRYL Blends frame, in an Electrobun window (Bun, system webview).',
   },
   runtime: { exitOnLastWindowClosed: true },

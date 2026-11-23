@@ -5,7 +5,7 @@ The smallest build of [ACRYL Workflow Automation](https://github.com/acrylblends
 Workflow automation in the n8n class, as an ACRYL Blend: build workflows on a canvas, run them on a schedule, a webhook
 or by hand, look at every run step by step, and let the ACRYL agent build, test and fix them for you while you watch.
 
-![The ACRYL chat adding a step to a pipeline while the canvas follows](docs/screenshot.png)
+![The ACRYL chat adding a step to a pipeline while the canvas follows](docs/agent.png)
 
 | The pipeline after a test run | A step's settings | Adding a step | A run, step by step |
 |---|---|---|---|
