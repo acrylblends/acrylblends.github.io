@@ -1,0 +1,5 @@
+{
+  "name": "ACRYL Workflow Automation (Electrobun)",
+  "description": "ACRYL Workflow Automation in its smallest build: Electrobun (Bun + system webview), no Chromium, no Node.",
+  "plugins": []
+}

@@ -1,0 +1,5 @@
+{
+  "name": "ACRYL Workflow Automation",
+  "description": "Workflow automation in the n8n class: a canvas editor, schedules, webhooks, HTTP and data steps, routers and loops, durable runs, and the ACRYL agent building, testing and fixing workflows for you.",
+  "plugins": []
+}
