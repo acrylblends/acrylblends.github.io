@@ -59,3 +59,10 @@ test('the catalog finds actions by words and serves dynamic fields', async () =>
   const refreshed = await catalog.refresh('@aiqadam/qadam-http', 'action', 'send_request', 'body', { body_type: 'json' })
   assert.ok(JSON.stringify(refreshed).length > 2)
 })
+
+test('a saved secret is masked without showing any of its JSON', async () => {
+  const { mask } = await import('../plugins/automation/automation.ts')
+  assert.equal(mask('sk-live-abcdef1234'), '••••1234')
+  assert.equal(mask('abc'), '••••')
+  assert.equal(mask({ type: 'SECRET_TEXT', secret_text: 'xyz-123' }), '•••• (2 values)')
+})

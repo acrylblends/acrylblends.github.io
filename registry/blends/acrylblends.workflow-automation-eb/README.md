@@ -11,6 +11,14 @@ or by hand, look at every run step by step, and let the ACRYL agent build, test 
 |---|---|---|---|
 | ![canvas](docs/canvas.png) | ![inspector](docs/inspector.png) | ![catalog](docs/catalog.png) | ![run](docs/run.png) |
 
+| Your workflows | A schedule trigger | A webhook trigger | Every run |
+|---|---|---|---|
+| ![workflows](docs/list.png) | ![schedule](docs/schedule.png) | ![webhook](docs/webhook.png) | ![runs](docs/runs.png) |
+
+| A failed run | Connections | Integrations |
+|---|---|---|
+| ![failed run](docs/failed.png) | ![connections](docs/connections.png) | ![integrations](docs/integrations.png) |
+
 - **Editor**: a canvas (React Flow, Qadam Flow's layout) with routers (branches by conditions) and loops; a form per step
   generated from its integration, with `{{ }}` references to what earlier steps gave.
 - **Triggers**: manual, schedule (every hour, day, week, cron), webhook (`/automation/webhooks/<token>`, `/test` runs the draft).

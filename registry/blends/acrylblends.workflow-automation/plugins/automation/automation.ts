@@ -744,7 +744,8 @@ function missingFields(step: string, view: OperationView, input: Record<string, 
     .map((p) => ({ step, field: p.name, message: `${p.displayName} is required` }))
 }
 
-function mask(value: unknown): string {
-  const text = typeof value === 'string' ? value : JSON.stringify(value) ?? ''
-  return text.length <= 4 ? '••••' : `••••${text.slice(-4)}`
+/** What a person sees of a saved secret: the last four characters of a key, or how many values a JSON secret holds (never a piece of its JSON text). */
+export function mask(value: unknown): string {
+  if (typeof value !== 'string') return value !== null && typeof value === 'object' ? `•••• (${Object.keys(value).length} values)` : '••••'
+  return value.length <= 4 ? '••••' : `••••${value.slice(-4)}`
 }

@@ -1,0 +1,16 @@
+{
+  "screens": [
+    { "file": "screenshot.png", "caption": "A workflow on the canvas: a webhook trigger, a router with two branches, a loop, and a check on every step that passed its last test" },
+    { "file": "agent.png", "caption": "Ask the ACRYL agent in plain words: it adds and changes steps while you watch the canvas" },
+    { "file": "list.png", "caption": "Your workflows: what starts each one, whether it is active, and its published version" },
+    { "file": "schedule.png", "caption": "A schedule trigger: weekdays at 8 in your time zone, with the next run shown" },
+    { "file": "webhook.png", "caption": "A webhook trigger: its own address, live while the workflow is active" },
+    { "file": "inspector.png", "caption": "Click a step to set it up: every field of the action, with values from earlier steps" },
+    { "file": "catalog.png", "caption": "Add a step: routers, loops, HTTP, JSON, data mapping, math, dates and delays" },
+    { "file": "run.png", "caption": "A run, step by step, with what went into each step and what came out" },
+    { "file": "runs.png", "caption": "Every run of every workflow: tests, manual starts, schedules and webhooks" },
+    { "file": "failed.png", "caption": "A failed run shows the step that broke and why; run it again with the same data" },
+    { "file": "connections.png", "caption": "Connections: API keys kept encrypted, never shown again or sent to the agent" },
+    { "file": "integrations.png", "caption": "Integrations: the Qadam Flow (MIT) packages the steps come from" }
+  ]
+}

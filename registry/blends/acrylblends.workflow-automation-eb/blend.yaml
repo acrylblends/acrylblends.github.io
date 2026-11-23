@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.workflow-automation-eb
   name: "Workflow Automation (Electrobun)"
-  version: 0.1.3
+  version: 0.1.4
   category: automation
   description: "Workflow Automation in its smallest build: Electrobun with the system webview and the app host on Bun, no Chromium and no Node. n8n-class workflow automation as an ACRYL Blend: a visual workflow editor (React Flow), triggers (manual, schedule, webhook), HTTP, JSON, data mapping, routers and loops, durable runs you can inspect, and the ACRYL agent building, testing and fixing workflows for you. Built on Qadam Flow (MIT)."
   license: MIT

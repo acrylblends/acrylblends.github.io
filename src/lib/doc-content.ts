@@ -828,6 +828,7 @@ export const docContent: Record<string, DocEntry> = {
     intro: "Publishing a Blend lists it on this registry, tagged into the same 100-category taxonomy every category page already uses.",
     body: [{ paragraphs: [
       "A category with no Blends yet is a real, addressable target on this site, not a hidden gap — publishing the first Blend into it is exactly what that empty state is waiting for.",
+      "Show every screen: a Blend's page opens with a slider of its screenshots, so people see what the app is before they read about it. Put the images in the Blend's docs/ folder and list them, in order, with one line each in docs/screenshots.json: { \"screens\": [{ \"file\": \"canvas.png\", \"caption\": \"The workflow on its canvas\" }] }. The more screens the better. docs/screenshot.png is the image on the category cards and the slider's fallback when there is no list.",
     ]}],
   },
   "nesting-and-composition/grouping-plugins-into-larger-units": {
