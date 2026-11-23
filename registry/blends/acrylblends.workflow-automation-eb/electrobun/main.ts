@@ -52,7 +52,7 @@ if (existsSync(linksFile)) {
       } catch {}
     }
 }
-const title = 'ACRYL Blends (Electrobun)'
+const title = 'ACRYL Workflow Automation'
 
 ApplicationMenu.setApplicationMenu([
   {

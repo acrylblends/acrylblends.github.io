@@ -1,6 +1,6 @@
 {
   "name": "workflow-automation",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "type": "module",
   "imports": {
@@ -87,7 +87,10 @@
     "@deepseek-ai/libreoffice-kit-darwin-x64": "npm:@acryldev/absent@1.0.1",
     "@deepseek-ai/libreoffice-kit-wasm": "npm:@acryldev/absent@1.0.1",
     "@deepseek-ai/libreoffice-kit-win32-arm64": "npm:@acryldev/absent@1.0.1",
-    "@deepseek-ai/libreoffice-kit-win32-x64": "npm:@acryldev/absent@1.0.1"
+    "@deepseek-ai/libreoffice-kit-win32-x64": "npm:@acryldev/absent@1.0.1",
+    "@aiqadam/shared": "$@aiqadam/shared",
+    "@aiqadam/qadams-framework": "$@aiqadam/qadams-framework",
+    "@aiqadam/qadams-common": "$@aiqadam/qadams-common"
   },
   "license": "MIT",
   "description": "Workflow automation (n8n-class) as an ACRYL Blend, built on Qadam Flow (MIT)"
