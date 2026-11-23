@@ -23,6 +23,25 @@ From the [Latest release](https://github.com/acrylblends/05-acryl-ade-eb/release
 on Windows, if SmartScreen asks, click More info and then Run anyway. On Windows the Setup unpacks for several minutes with Defender on,
 and does not start the app: start it from the Start menu.
 
+## Sizes (release v0.1.0, both builds from the same run)
+
+| OS | Electron download | Electrobun download | Electron installed | Electrobun installed |
+| --- | ---: | ---: | ---: | ---: |
+| macOS arm64 | 205.5 MB | **71.0 MB (-65%)** | 548.1 MB | **263.7 MB (-52%)** |
+| Windows x64 | 177.4 MB | **81.6 MB (-54%)** | 598.4 MB | **289.9 MB (-52%)** |
+| Windows arm64 | 171.7 MB | **76.5 MB (-55%)** | 599.4 MB | **276.2 MB (-54%)** |
+| Linux x64 | 142.6 MB | **84.7 MB (-41%)** | 504.1 MB | **304.0 MB (-40%)** |
+| Linux arm64 | 137.1 MB | **83.2 MB (-39%)** | 508.0 MB | **301.2 MB (-41%)** |
+
+Installed = the unpacked app, sum of file sizes (MB = 1,000,000 bytes); `sizes-<os>-<arch>.json` in the release has the parts (shell, app, Git).
+The app part is 47.6 MB smaller than in the Electron build: on Bun, for one OS and CPU, `electrobun/slim.mjs` leaves out what never runs there
+(packages only Electron or a TypeScript build uses, type declarations, source maps, C/C++ sources, other OSes' native builds, third-party docs),
+and Git keeps only the commands ACRYL runs.
+
+Tested from CI builds of the release commit on macOS arm64, Windows 10 x64 and Ubuntu 24.04 x64: the workbench, the agent door, a terminal, a plugin
+added and edited while the app runs, nothing left running after closing. A change to the ADE's own plugins restarts its host (as in the Electron
+build), which closes its terminals; work in the projects it opens never does.
+
 ## How the Electrobun build works
 
 `electrobun/` holds it (the same files as [Small CRM (Electrobun)](https://github.com/acrylblends/03-small-crm-eb)):
