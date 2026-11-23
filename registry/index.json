@@ -50,6 +50,18 @@
       "origin": "official"
     },
     {
+      "id": "acrylblends.acryl-ade-eb",
+      "name": "ACRYL ADE (Electrobun)",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.acryl-ade-eb",
+      "license": "MIT",
+      "category": "ai",
+      "description": "ACRYL ADE, the Agent Development Environment, in its smallest build: Electrobun with the system webview and everything on Bun, no Chromium and no Node. Projects and git worktrees on the left, chats, terminals and coding agents as tabs, the changed files, review and files on the right.",
+      "runtime": "acrylblends",
+      "origin": "official"
+    },
+    {
       "id": "acrylblends.action-rpg",
       "name": "Action RPG",
       "kind": "Blueprint",
@@ -233,7 +245,7 @@
       "id": "acrylblends.electrobun-blank",
       "name": "Electrobun Blank",
       "kind": "Blueprint",
-      "version": "0.2.3",
+      "version": "0.2.4",
       "path": "blends/acrylblends.electrobun-blank",
       "license": "MIT",
       "category": "desktop",
@@ -533,7 +545,7 @@
       "id": "acrylblends.small-crm-eb",
       "name": "Small CRM (Electrobun)",
       "kind": "Blueprint",
-      "version": "0.1.3",
+      "version": "0.1.4",
       "path": "blends/acrylblends.small-crm-eb",
       "license": "MIT",
       "category": "business",

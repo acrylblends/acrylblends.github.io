@@ -6,7 +6,11 @@
  * the next real change (an agent's fix) starts it again, as watch-host does. Its lines are node --watch's (`Restarting '<script>'`,
  * `Failed running '<script>'`): electrobun/main.ts reloads the window on a restart.
  *
- *   <runtime> run-host.mjs --watch-path=<file or folder> ... -- <runtime arguments> <script>
+ * An app whose page root is not the Blends frame (ACRYL ADE mounts the workbench, @acryldev/workspace) has no in-place reload: with
+ * --restart-on-change a change restarts the running host, as watch-host does (its terminals end with it; edits in the projects it opens are
+ * not watched, only the app's own source).
+ *
+ *   <runtime> run-host.mjs [--restart-on-change] --watch-path=<file or folder> ... -- <runtime arguments> <script>
  */
 import { spawn } from 'node:child_process'
 import { readdirSync, statSync, watch } from 'node:fs'
@@ -42,8 +46,9 @@ export function changed(before, after) {
 
 function main(argv) {
   const split = argv.indexOf('--')
-  if (split === -1) throw new Error('run-host: usage: run-host.mjs --watch-path=<path> ... -- <runtime arguments> <script>')
+  if (split === -1) throw new Error('run-host: usage: run-host.mjs [--restart-on-change] --watch-path=<path> ... -- <runtime arguments> <script>')
   const paths = argv.slice(0, split).filter((a) => a.startsWith('--watch-path=')).map((a) => a.slice('--watch-path='.length))
+  const restartOnChange = argv.slice(0, split).includes('--restart-on-change')
   const command = argv.slice(split + 1)
   const script = command.at(-1)
   let files = snapshot(paths)
@@ -57,15 +62,45 @@ function main(argv) {
       console.log(`${code === 0 ? 'Completed' : 'Failed'} running '${script}'. Waiting for file changes before restarting...`)
     })
   }
+  /** End `proc` (SIGTERM, then SIGKILL after GRACE_MS); resolves once it exited. */
+  const end = (proc) =>
+    new Promise((done) => {
+      if (proc.exitCode !== null || proc.signalCode !== null) return done()
+      const killer = setTimeout(() => proc.kill('SIGKILL'), GRACE_MS)
+      proc.once('exit', () => {
+        clearTimeout(killer)
+        done()
+      })
+      proc.kill('SIGTERM')
+    })
   let timer
-  const check = () => {
-    const next = snapshot(paths)
-    if (!changed(files, next)) return
-    files = next
-    // A running host loads the change itself; only a host that ended is started again.
-    if (child !== undefined) return
-    console.log(`Restarting '${script}'`)
-    start()
+  // One check at a time: a burst that settles while a host is still stopping is checked again after it, never two hosts on one port.
+  let busy = false
+  let again = false
+  const check = async () => {
+    if (busy) {
+      again = true
+      return
+    }
+    busy = true
+    try {
+      do {
+        again = false
+        const next = snapshot(paths)
+        if (!changed(files, next)) continue
+        files = next
+        // A running host loads the change itself (the Blends frame); only a host that ended, or every host with --restart-on-change, starts again.
+        if (child !== undefined && !restartOnChange) continue
+        console.log(`Restarting '${script}'`)
+        const previous = child
+        // Its exit is this restart, not a crash: cleared first, so no "Failed running" line is printed for it.
+        child = undefined
+        if (previous !== undefined) await end(previous)
+        start()
+      } while (again)
+    } finally {
+      busy = false
+    }
   }
   for (const path of paths) {
     let recursive
@@ -76,18 +111,12 @@ function main(argv) {
     }
     watch(path, { recursive }, () => {
       clearTimeout(timer)
-      timer = setTimeout(check, SETTLE_MS)
+      timer = setTimeout(() => void check(), SETTLE_MS)
     })
   }
   const stop = () => {
-    const current = child
-    if (current === undefined || current.exitCode !== null || current.signalCode !== null) return process.exit(0)
-    const killer = setTimeout(() => current.kill('SIGKILL'), GRACE_MS)
-    current.once('exit', () => {
-      clearTimeout(killer)
-      process.exit(0)
-    })
-    current.kill('SIGTERM')
+    if (child === undefined) return process.exit(0)
+    void end(child).then(() => process.exit(0))
   }
   for (const name of ['SIGTERM', 'SIGINT']) process.once(name, stop)
   start()

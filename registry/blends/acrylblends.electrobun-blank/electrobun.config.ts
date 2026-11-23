@@ -7,7 +7,7 @@ export default {
   app: {
     name: 'ACRYL Blends Electrobun',
     identifier: 'io.github.acrylblends.electrobun-blank',
-    version: process.env.ELECTROBUN_APP_VERSION ?? '0.2.3',
+    version: process.env.ELECTROBUN_APP_VERSION ?? '0.2.4',
     description: 'The ACRYL Blends frame around an empty app, in an Electrobun window.',
   },
   runtime: { exitOnLastWindowClosed: true },

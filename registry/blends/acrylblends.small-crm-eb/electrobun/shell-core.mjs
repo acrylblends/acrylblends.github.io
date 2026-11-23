@@ -128,7 +128,7 @@ export function linkProgram(program, root, entries) {
  * Start the frame host as the packed Electron shell does (watch-host -> runtime --import loader --import overlay ide-host.mjs), with any runtime.
  * `preloadFlag` is `--import` for Node and `--preload` for Bun; `preloads` replaces the default loader list (the precompile and Bun spikes change it).
  */
-export function startFrameHost({ program, chosen, instance, runtime, vcsBin, preloadFlag = '--import', preloads, runtimeArgs = [], hostScript, runner, extraEnv = {}, write = (t) => process.stdout.write(t) }) {
+export function startFrameHost({ program, chosen, instance, runtime, vcsBin, preloadFlag = '--import', preloads, runtimeArgs = [], hostScript, runner, runnerArgs = [], extraEnv = {}, write = (t) => process.stdout.write(t) }) {
   const root = chosen.root
   const shellLib = join(program, 'node_modules', '@acryldev', 'desktop-shell', 'lib')
   const loaders = preloads ?? [
@@ -139,6 +139,7 @@ export function startFrameHost({ program, chosen, instance, runtime, vcsBin, pre
   const args = [
     // `runner` replaces the Electron shell's watcher (the Electrobun build: electrobun/run-host.mjs, no restart on an edit).
     runner ?? join(shellLib, 'watch-host.mjs'),
+    ...runnerArgs,
     ...watched.map((p) => `--watch-path=${p}`),
     '--',
     ...runtimeArgs,

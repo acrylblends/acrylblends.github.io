@@ -7,7 +7,7 @@ export default {
   app: {
     name: 'Small CRM',
     identifier: 'io.github.acrylblends.small-crm-eb',
-    version: process.env.ELECTROBUN_APP_VERSION ?? '0.1.3',
+    version: process.env.ELECTROBUN_APP_VERSION ?? '0.1.4',
     description: 'Small CRM in the ACRYL Blends frame, in an Electrobun window (Bun, system webview).',
   },
   runtime: { exitOnLastWindowClosed: true },

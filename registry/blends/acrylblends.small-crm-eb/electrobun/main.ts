@@ -104,6 +104,8 @@ const host = startFrameHost({
     : {}),
   // The frame reloads an edited app inside the running host; a restart would end the agents' terminals (run-host.mjs).
   runner: join(app, 'run-host.mjs'),
+  // An app whose page root is the ADE workbench, not the Blends frame, has no in-place reload: there a change restarts the host.
+  runnerArgs: pageRootReloadsInPlace(chosen.root) ? [] : ['--restart-on-change'],
   vcsBin,
   write: (text: string) => {
     process.stdout.write(text)
@@ -133,6 +135,15 @@ function reloadOnRestart(text: string): void {
   restarting = false
   pending = ''
   window.webview.loadURL(again)
+}
+
+/** Whether the app's page root is the Blends frame (it loads a changed app inside the running host), read from the overlay it mounts. */
+function pageRootReloadsInPlace(root: string): boolean {
+  try {
+    return !/^\s+name: (?:'@acryldev\/workspace'|acryl-workspace)\s*$/mu.test(readFileSync(join(root, 'cordis.patch.yml'), 'utf8'))
+  } catch {
+    return true
+  }
 }
 
 let stopped = false

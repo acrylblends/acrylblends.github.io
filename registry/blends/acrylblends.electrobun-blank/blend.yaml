@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acrylblends.electrobun-blank
   name: "Electrobun Blank"
-  version: 0.2.3
+  version: 0.2.4
   category: desktop
   description: "The ACRYL Blends Blank app as an installable Electrobun app for macOS, Windows and Linux: the full frame with chat and agents in a native window with the system webview, the frame host on Electrobun's own Bun (no Node, no Chromium). The page lists the measured sizes against the Electron build."
   license: MIT

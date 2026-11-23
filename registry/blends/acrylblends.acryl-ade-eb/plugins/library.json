@@ -1,0 +1,14 @@
+{
+  "plugins": [
+    "door",
+    "node-server",
+    "page",
+    "router",
+    "web-server",
+    "extensions",
+    "manifest",
+    "plugin-share",
+    "sandbox",
+    "save"
+  ]
+}
