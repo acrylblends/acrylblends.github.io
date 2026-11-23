@@ -91,7 +91,7 @@ label.wa-toggles, .wa-toggles > label, .wa-checks > label { display: flex; flex-
 /* The editor */
 .wa-editor { display: flex; flex-direction: column; height: 100%; }
 .wa-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--wa-line); background: var(--wa-surface); }
-.wa-name { min-width: 0; max-width: 360px; padding: 4px 6px; border: 1px solid transparent; border-radius: 6px; background: none; font-size: 15px; font-weight: 600; }
+.wa-name { min-width: 0; max-width: 520px; padding: 4px 6px; border: 1px solid transparent; border-radius: 6px; background: none; font-size: 15px; font-weight: 600; }
 .wa-name:hover, .wa-name:focus { border-color: var(--wa-line-strong); outline: none; }
 .wa-editor > .wa-note, .wa-editor > .wa-confirm { margin: 8px 14px 0; }
 .wa-workspace { display: grid; grid-template-columns: minmax(0, 1fr) 380px; flex: 1; min-height: 0; }
@@ -157,7 +157,7 @@ label.wa-toggles, .wa-toggles > label, .wa-checks > label { display: flex; flex-
 /* The frame's canvas is often 800-1200 px wide: below 1200 the inspector goes under the canvas instead of squeezing it. */
 @media (max-width: 1200px) {
   .wa-editor { height: auto; min-height: 100%; }
-  .wa-workspace { grid-template-columns: minmax(0, 1fr); grid-template-rows: 60vh auto; }
+  .wa-workspace { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(440px, 78vh) auto; }
   .wa-side { border-left: 0; border-top: 1px solid var(--wa-line); }
   .wa-canvas .react-flow__minimap { display: none; }
 }
@@ -172,3 +172,20 @@ label.wa-toggles, .wa-toggles > label, .wa-checks > label { display: flex; flex-
 .wa-approvals { position: sticky; top: 0; z-index: 5; display: flex; flex-direction: column; gap: 8px; padding: 10px 14px; background: var(--wa-bg); border-bottom: 1px solid var(--wa-line); }
 .wa-approval { justify-content: space-between; align-items: flex-start; }
 .wa-approval .wa-pre { margin-top: 6px; max-height: 160px; background: var(--wa-surface); }
+
+/* Nodes, n8n-style: a coloured tile per integration, the trigger marked, the last run's result as a badge. */
+.wa-node { position: relative; gap: 12px; padding: 0 14px 0 10px; border-radius: 12px; border-width: 1.5px; box-shadow: 0 1px 3px rgba(0, 0, 0, .12), 0 4px 14px rgba(0, 0, 0, .06); transition: border-color .12s, box-shadow .12s; }
+.wa-node:hover { box-shadow: 0 0 0 3px color-mix(in srgb, var(--wa-kind) 22%, transparent), 0 4px 14px rgba(0, 0, 0, .1); }
+.wa-node[data-trigger] { border-radius: 28px 12px 12px 28px; }
+.wa-tile { display: grid; flex: none; place-items: center; width: 38px; height: 38px; border-radius: 10px; background: var(--wa-kind); color: #fff; font-size: 17px; font-weight: 700; box-shadow: inset 0 -2px 0 rgba(0, 0, 0, .15); }
+.wa-node[data-trigger] .wa-tile { border-radius: 50%; }
+.wa-node-text b { font-size: 13.5px; }
+.wa-bolt { position: absolute; top: 50%; left: -11px; display: grid; place-items: center; width: 20px; height: 20px; margin-top: -10px; border: 1.5px solid var(--wa-line-strong); border-radius: 50%; background: var(--wa-surface); color: #f2994a; font-size: 11px; }
+.wa-mark { position: absolute; top: -9px; right: -9px; display: grid; place-items: center; width: 20px; height: 20px; border: 2px solid var(--wa-bg); border-radius: 50%; background: var(--wa-line-strong); color: #fff; font-size: 11px; font-weight: 800; }
+.wa-mark[data-status="succeeded"] { background: var(--wa-ok); }
+.wa-mark[data-status="failed"] { background: var(--wa-bad); }
+.wa-mark[data-status="running"] { background: var(--wa-run); }
+.wa-mark[data-status="waiting"] { background: var(--wa-warn); }
+.wa-node[data-status="succeeded"] { border-color: color-mix(in srgb, var(--wa-ok) 70%, var(--wa-line-strong)); }
+.react-flow__edge-path { stroke-width: 1.75; }
+.wa-branch { font-weight: 600; }

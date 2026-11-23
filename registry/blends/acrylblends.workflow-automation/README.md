@@ -3,9 +3,11 @@
 Workflow automation in the n8n class, as an ACRYL Blend: build workflows on a canvas, run them on a schedule, a webhook
 or by hand, look at every run step by step, and let the ACRYL agent build, test and fix them for you while you watch.
 
-![The ACRYL chat building a workflow](docs/screenshot.png)
+![The ACRYL chat adding a step to a pipeline while the canvas follows](docs/screenshot.png)
 
-![The editor](docs/editor.png)
+| The pipeline after a test run | A step's settings | Adding a step | A run, step by step |
+|---|---|---|---|
+| ![canvas](docs/canvas.png) | ![inspector](docs/inspector.png) | ![catalog](docs/catalog.png) | ![run](docs/run.png) |
 
 - **Editor**: a canvas (React Flow, Qadam Flow's layout) with routers (branches by conditions) and loops; a form per step
   generated from its integration, with `{{ }}` references to what earlier steps gave.

@@ -5,7 +5,7 @@
  * 12.4). The canvas keeps only view state (selection, viewport).
  */
 import { type BranchCondition, BranchOperator, FlowActionType, type FlowAction, FlowOperationType, type FlowTrigger, FlowTriggerType, flowStructureUtil, StepLocationRelativeToParent } from '@aiqadam/shared'
-import { Background, Controls, MiniMap, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react'
+import { Background, Controls, ReactFlow, ReactFlowProvider, useReactFlow } from '@xyflow/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { api, ApiError, base, type ConnectionView, events, type IntegrationView, type OperationView, type RunView, type ScheduleView, type WorkflowView } from './api'
 import { CanvasActionsContext, type CanvasActions } from './canvas/actions'
@@ -15,7 +15,7 @@ import { ApRouterEndCanvasEdge } from './canvas/edges/router-end-edge'
 import { ApRouterStartCanvasEdge } from './canvas/edges/router-start-edge'
 import { ApStraightLineCanvasEdge } from './canvas/edges/straight-line-edge'
 import { flowCanvasUtils } from './canvas/flow-canvas-utils'
-import { BigAddButtonNode, glyphOf, GraphEndNode, LoopReturnNode, StepNode } from './canvas/nodes'
+import { BigAddButtonNode, GraphEndNode, kindOf, LoopReturnNode, StepNode } from './canvas/nodes'
 import { ApEdgeType, ApNodeType, type ApButtonData } from './canvas/types'
 import { Field, focusedField } from './fields'
 import { RunSteps, StatusBadge, when } from './runs'
@@ -24,6 +24,11 @@ const nodeTypes = { [ApNodeType.STEP]: StepNode, [ApNodeType.BIG_ADD_BUTTON]: Bi
 const edgeTypes = { [ApEdgeType.STRAIGHT_LINE]: ApStraightLineCanvasEdge, [ApEdgeType.LOOP_START_EDGE]: ApLoopStartLineCanvasEdge, [ApEdgeType.LOOP_RETURN_EDGE]: ApLoopReturnLineCanvasEdge, [ApEdgeType.ROUTER_START_EDGE]: ApRouterStartCanvasEdge, [ApEdgeType.ROUTER_END_EDGE]: ApRouterEndCanvasEdge }
 
 type Step = FlowAction | FlowTrigger
+
+function KindTile({ step }: { step: Step }) {
+  const kind = kindOf(step)
+  return <span className="wa-glyph" aria-hidden="true" style={{ background: kind.color, color: '#fff' }}>{kind.glyph}</span>
+}
 type Side = { kind: 'step' } | { kind: 'add', where: ApButtonData } | { kind: 'trigger' } | { kind: 'problems' } | { kind: 'test' }
 
 const message = (cause: unknown): string => (cause instanceof Error ? cause.message : String(cause))
@@ -190,12 +195,11 @@ function Canvas({ workflow }: { workflow: WorkflowView }) {
   const graph = useMemo(() => flowCanvasUtils.createFlowGraph({ version: workflow.draft, notes: [], orientation: 'vertical' }), [workflow.draft])
   const flow = useReactFlow()
   const shape = useMemo(() => graph.nodes.filter((n) => n.type === ApNodeType.STEP).length, [graph])
-  useEffect(() => { const t = setTimeout(() => { void flow.fitView({ padding: 0.25, maxZoom: 1 }) }, 30); return () => { clearTimeout(t) } }, [shape, flow])
+  useEffect(() => { const t = setTimeout(() => { void flow.fitView({ padding: 0.08, maxZoom: 1.1 }) }, 30); return () => { clearTimeout(t) } }, [shape, flow])
   return (
     <ReactFlow nodes={graph.nodes as never} edges={graph.edges as never} nodeTypes={nodeTypes as never} edgeTypes={edgeTypes as never} nodesDraggable={false} nodesConnectable={false} elementsSelectable={false} fitView minZoom={0.2} maxZoom={1.5} proOptions={{ hideAttribution: true }}>
       <Background gap={20} size={1} />
       <Controls showInteractive={false} />
-      <MiniMap pannable zoomable ariaLabel="Overview of the workflow" bgColor="var(--wa-surface)" maskColor="rgba(127, 127, 127, 0.18)" nodeColor="var(--wa-line-strong)" nodeBorderRadius={6} />
     </ReactFlow>
   )
 }
@@ -203,7 +207,7 @@ function Canvas({ workflow }: { workflow: WorkflowView }) {
 function NameEditor({ name, onRename }: { name: string, onRename: (name: string) => void }) {
   const [text, setText] = useState(name)
   useEffect(() => { setText(name) }, [name])
-  return <input className="wa-name" aria-label="Workflow name" value={text} onChange={(e) => { setText(e.target.value) }} onBlur={() => { if (text.trim() !== '' && text !== name) onRename(text) }} onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }} />
+  return <input className="wa-name" aria-label="Workflow name" size={Math.max(12, Math.min(48, text.length + 2))} value={text} onChange={(e) => { setText(e.target.value) }} onBlur={() => { if (text.trim() !== '' && text !== name) onRename(text) }} onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }} />
 }
 
 type Pick = { kind: 'action', integration: string, action: string } | { kind: 'router' } | { kind: 'loop', items: string }
@@ -221,8 +225,8 @@ function Catalog({ kind, catalog, onPick, onCancel }: { kind: 'action' | 'trigge
         {core ? (
           <div className="wa-group">
             <h4>Flow control</h4>
-            <button type="button" className="wa-op" onClick={() => { onPick({ kind: 'router' }) }}><span className="wa-glyph">⑂</span><span><b>Router</b><small>Branches by conditions, with an Otherwise branch</small></span></button>
-            <button type="button" className="wa-op" onClick={() => { onPick({ kind: 'loop', items: '' }) }}><span className="wa-glyph">↻</span><span><b>Loop on items</b><small>Runs the steps inside once per item of a list</small></span></button>
+            <button type="button" className="wa-op" onClick={() => { onPick({ kind: 'router' }) }}><KindTile step={{ type: FlowActionType.ROUTER } as never} /><span><b>Router</b><small>Branches by conditions, with an Otherwise branch</small></span></button>
+            <button type="button" className="wa-op" onClick={() => { onPick({ kind: 'loop', items: '' }) }}><KindTile step={{ type: FlowActionType.LOOP_ON_ITEMS } as never} /><span><b>Loop on items</b><small>Runs the steps inside once per item of a list</small></span></button>
           </div>
         ) : null}
         {groups.map(({ i, ops }) => (
@@ -230,7 +234,7 @@ function Catalog({ kind, catalog, onPick, onCancel }: { kind: 'action' | 'trigge
             <h4>{i.displayName}</h4>
             {ops.map((op) => (
               <button type="button" className="wa-op" key={op.name} onClick={() => { onPick({ kind: 'action', integration: op.integration, action: op.name }) }}>
-                <span className="wa-glyph" aria-hidden="true">{glyphOf({ type: kind === 'action' ? 'PIECE' : 'PIECE_TRIGGER', settings: { qadamName: op.integration } } as never)}</span>
+                <KindTile step={{ type: kind === 'action' ? 'PIECE' : 'PIECE_TRIGGER', settings: { qadamName: op.integration } } as never} />
                 <span><b>{op.displayName}</b><small>{op.description}</small></span>
               </button>
             ))}
@@ -260,7 +264,7 @@ function Inspector(props: {
   return (
     <section className="wa-panel" aria-label={`Step ${step.name}`}>
       <div className="wa-panel-top">
-        <span className="wa-glyph" aria-hidden="true">{glyphOf(step)}</span>
+        <KindTile step={step} />
         <input className="wa-name" aria-label="Step name" value={name} onChange={(e) => { setName(e.target.value) }} onBlur={() => { if (name.trim() !== '' && name !== step.displayName) props.onUpdate({ displayName: name }) }} />
       </div>
       <p className="wa-meta">{isTrigger ? 'Trigger' : step.name}{operation === undefined ? '' : ` · ${props.catalog.find((i) => i.name === operation.integration)?.displayName} · ${operation.displayName}`}</p>
