@@ -17,7 +17,7 @@
       "id": "acryl.control-center",
       "name": "ACRYL Control Center",
       "kind": "Blueprint",
-      "version": "0.2.14",
+      "version": "0.2.15",
       "path": "blends/acryl.control-center",
       "license": "MIT",
       "category": "desktop",
