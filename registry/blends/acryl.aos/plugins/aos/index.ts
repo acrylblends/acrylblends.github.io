@@ -12,7 +12,7 @@ import { randomBytes, timingSafeEqual } from 'node:crypto'
 import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { readdir, stat } from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, sep } from 'node:path'
 import { acrylRoot, personHome } from '@acryldev/instance/storage'
 import { blendNameOf } from '@acryldev/launcher'
 import { createNodeLauncher, fileDoor, type LauncherService } from '@acryldev/launcher-desktop/node'
@@ -216,13 +216,8 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
   ctx.router.route('/api/aos', api)
   ctx.effect(() => () => { launcher.stopAll() }, 'aos: stop the apps it started')
 
-  /** The pid an app's door names: its host. In its own window the host is a child of the window's Electron main process, so the tree under the host's parent is the whole app. */
-  const rootOf = (path: string, table: ReadonlyArray<{ pid: number, ppid: number }>): number | undefined => {
-    let pid: number
-    try { pid = Number((JSON.parse(readFileSync(join(path, '.acryl', 'door.json'), 'utf8')) as { pid?: number }).pid) } catch { return undefined }
-    const parent = table.find((p) => p.pid === pid)?.ppid
-    return parent === undefined || parent <= 1 || parent === process.pid ? pid : parent
-  }
+  /** What names an app's processes: its folder (its launcher, its Electron on Linux and Windows) and its window bundle (macOS copies Electron into ~/.acryl/electron/<id>-<hash>.app). */
+  const marksOf = (app: AppInfo): string[] => [join(app.path, sep), join(home, 'electron', `${app.id}-`)]
   let checking = false
   const check = async (): Promise<void> => {
     if (checking) return
@@ -232,8 +227,7 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
       const now = Date.now()
       const after = ports.desktop().prefs.sleepAfter * 60_000
       for (const app of ports.apps()) {
-        const root = app.state === 'running' || waking.has(app.id) ? rootOf(app.path, table) : undefined
-        const used = root === undefined ? undefined : usageOf(table, root)
+        const used = app.state === 'running' || waking.has(app.id) ? usageOf(table, marksOf(app)) : undefined
         if (used === undefined) { usage.delete(app.id); continue }
         usage.set(app.id, used)
         const wokeAt = waking.get(app.id)

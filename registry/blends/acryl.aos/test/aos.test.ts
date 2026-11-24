@@ -133,12 +133,24 @@ test('an app\'s cost from the real process table: ps and Windows lines parsed, i
   assert.equal(seconds('1:02.50'), 62.5)
   assert.equal(seconds('01:00:01'), 3601)
   assert.equal(seconds('2-00:00:01'), 172801)
-  const table = parsePs(' 10 1 1000 0:01.00\n 11 10 2000 0:02.00\n 12 11 500 0:00.50\n 13 1 9999 9:00.00\n')
-  assert.deepEqual(usageOf(table, 10), { processes: 3, rss: 3500 * 1024, cpu: 3.5 })
-  assert.equal(usageOf(table, 99), undefined)
-  assert.deepEqual(parseWindows('4,1,1048576,20000000\r\n5,4,1048576,10000000\r\nnoise\r\n'), [{ pid: 4, ppid: 1, rss: 1048576, cpu: 2 }, { pid: 5, ppid: 4, rss: 1048576, cpu: 1 }])
-  // This test's own process is in the real table.
-  assert.ok((usageOf(await processTable(), process.pid)?.rss ?? 0) > 0)
+  // A real macOS tree (AION): the launcher names the folder, Electron names its bundle; the helpers and the host are only under them.
+  const table = parsePs([
+    ' 74107 74091  51200 0:01.00 node /x/home/ACRYL/notes/node_modules/.bin/acryl-desktop',
+    ' 74121 74107 190464 0:02.00 /x/home/.acryl/electron/notes-6ab2.app/Contents/MacOS/Electron /x/home/ACRYL/notes',
+    ' 74124 74121 243712 0:00.50 Electron Helper (Renderer) --type=renderer',
+    ' 74130 74121  10240 0:00.10 node --import ./plugins/node-server/src/register.ts scripts/ide-host.mjs',
+    ' 80000 1     99999 9:00.00 node /x/home/ACRYL/notes-old/server.js',
+    '',
+  ].join('\n'))
+  assert.equal(table[1]?.command, '/x/home/.acryl/electron/notes-6ab2.app/Contents/MacOS/Electron /x/home/ACRYL/notes')
+  assert.deepEqual(usageOf(table, ['/x/home/ACRYL/notes/', '/x/home/.acryl/electron/notes-']), { processes: 4, rss: (51200 + 190464 + 243712 + 10240) * 1024, cpu: 3.6 })
+  assert.equal(usageOf(table, ['/x/home/ACRYL/crm/']), undefined)
+  // Windows: paths with backslashes and any case, command lines with commas.
+  const win = parseWindows('4,1,1048576,20000000,"C:\\Users\\A\\ACRYL\\Notes\\node_modules\\electron\\dist\\electron.exe" a,b\r\n5,4,1048576,10000000,\r\nnoise\r\n')
+  assert.equal(win[0]?.command, '"C:\\Users\\A\\ACRYL\\Notes\\node_modules\\electron\\dist\\electron.exe" a,b')
+  assert.deepEqual(usageOf(win, ['c:/users/a/acryl/notes/']), { processes: 2, rss: 2 * 1048576, cpu: 3 })
+  // The real table on this computer lists this test's own command.
+  assert.ok((await processTable()).some((p) => p.ppid === process.pid || p.pid === process.ppid))
   // Idle: below 0.5 s of CPU per check for the whole wait; a busy check or an open starts the wait again; 0 minutes never sleeps.
   const clock = new IdleClock()
   assert.equal(clock.idle('a', 10, 0, 60_000), false)
