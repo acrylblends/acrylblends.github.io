@@ -1,0 +1,11 @@
+{
+  "screens": [
+    { "file": "1-desktop.png", "caption": "The desktop: your ACRYL apps as icons, a dock, menus, and the ACRYL chat beside it" },
+    { "file": "g2-run.png", "caption": "The chat made a folder and moved Notes into it: tool steps cost 0 tokens, model steps show the provider's tokens" },
+    { "file": "g1-folder.png", "caption": "Files: the Sales folder the chat made, with Notes in it" },
+    { "file": "g3-workflows.png", "caption": "The run, saved as a workflow: Run again repeats it with no model call" },
+    { "file": "g4-activity.png", "caption": "Activity: each app's memory and processes, read from the computer" },
+    { "file": "g5-settings.png", "caption": "Settings: wallpaper, icons, dock, chat, and how long an unused app waits before it sleeps" },
+    { "file": "g6-launchpad.png", "caption": "All apps, with search" }
+  ]
+}

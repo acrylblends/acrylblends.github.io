@@ -136,7 +136,7 @@ function openWindow(id, title = TITLES[id] ?? nameOf(id)) {
   const w = document.createElement('div')
   w.className = 'w'; w.dataset.id = id
   const width = id === 'activity' || id === 'run' ? 480 : id === 'files' ? 460 : 400
-  Object.assign(w.style, { left: `${(desk.clientWidth < 600 ? 8 : 120 + (n * 34) % 260)}px`, top: `${16 + (n * 30) % 200}px`, width: `${width}px`, height: `${id === 'activity' || id === 'settings' || id === 'run' ? 400 : 320}px` })
+  Object.assign(w.style, { left: `${(desk.clientWidth < 600 ? 8 : 120 + (n * 34) % 260)}px`, top: `${16 + (n * 30) % 200}px`, width: `${width}px`, height: `${id === 'settings' ? 440 : id === 'activity' || id === 'run' ? 400 : 320}px` })
   w.innerHTML = `<div class="bar"><button class="cl" aria-label="Close ${esc(title)}"></button><button class="mn" aria-label="Minimize ${esc(title)}"></button><span class="t">${esc(title)}</span></div><div class="wb"></div>`
   desk.appendChild(w)
   ui.open[id] = w

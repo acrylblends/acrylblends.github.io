@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.aos
   name: "ACRYL AOS"
-  version: 0.1.6
+  version: 0.1.7
   category: system
   description: "ACRYL AOS, an agentic operating system for your ACRYL apps: a desktop with app icons, folders and files, a dock, menus and Settings; each app opens in its own window; one chat drives every app with its tools, and a run saved as a workflow repeats with no model."
   license: MIT
