@@ -223,6 +223,8 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
   const check = async (): Promise<void> => {
     if (checking) return
     checking = true
+    // The store's names ("Notes, in a window") arrive over the network; a slow or failed first read is tried again until they are in.
+    if (titles.size === 0) readTitles()
     try {
       const table = await processTable()
       const now = Date.now()
