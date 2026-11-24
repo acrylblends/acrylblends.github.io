@@ -21,7 +21,7 @@ export function InstallBox() {
         ))}
       </div>
       <CopyCommand command={installs[os].command} label={`Copy the ${installs[os].tab} install command`} />
-      <p className="mt-3 text-xs leading-5 text-muted-foreground">No admin, no Node. The download is checked against GitHub&apos;s sha256; Windows and macOS open it without warnings because it is not browser-downloaded.</p>
+      <p className="mt-3 text-xs leading-5 text-muted-foreground">No Node and no admin for the app itself (Linux asks for sudo once if git or a desktop library is missing). The download is checked against GitHub&apos;s sha256; Windows and macOS open it without warnings because it is not browser-downloaded.</p>
     </div>
   )
 }
