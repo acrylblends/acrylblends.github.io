@@ -14,6 +14,18 @@
       "origin": "official"
     },
     {
+      "id": "acryl.aos",
+      "name": "ACRYL AOS",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acryl.aos",
+      "license": "MIT",
+      "category": "system",
+      "description": "ACRYL AOS, an agentic operating system for your ACRYL apps: a desktop with app icons, folders and files, a dock, menus and Settings; each app opens in its own window; one chat drives every app with its tools, and a run saved as a workflow repeats with no model.",
+      "runtime": "acrylblends",
+      "origin": "official"
+    },
+    {
       "id": "acryl.control-center",
       "name": "ACRYL Control Center",
       "kind": "Blueprint",

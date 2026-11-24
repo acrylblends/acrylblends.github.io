@@ -1,0 +1,16 @@
+{
+  "name": "aos",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts",
+    "./package.json": "./package.json"
+  },
+  "acryl": {
+    "schemaVersion": 1,
+    "artifacts": { "plugins": ["./index.ts"] },
+    "requires": { "host": ["router"] },
+    "provides": { "host": [] },
+    "slots": { "offers": [], "fills": [] }
+  }
+}

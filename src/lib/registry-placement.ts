@@ -35,6 +35,7 @@ export const registryPlacement: Record<string, Placement> = {
   "acryl.ade": { category: "AI", subcategory: "Agent Development Environment (ADE)" },
   "acrylblends.acryl-ade-eb": { category: "AI", subcategory: "Agent Development Environment (ADE)" },
   "acryl.sde": { category: "AI", subcategory: "Synthetic Data Engine (SDE)" },
+  "acryl.aos": { category: "System", subcategory: "Agentic operating systems" },
   "acryl.control-center": { category: "Software Marketplaces", subcategory: "Agentic Applications Marketplace" },
   "acrylblends.notes-desktop": { category: "Application", subcategory: "Productivity" },
   "acrylblends.chat": { category: "AI", subcategory: "AI assistants" },

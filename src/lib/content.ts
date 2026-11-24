@@ -63,7 +63,7 @@ const AGENTIC_APPS: SubcategoryDetail = {
 const DETAILS: readonly SubcategoryDetail[] = [ADE, SDE, AGENTIC_APPS];
 
 const categoriesRaw: { name: string; subs: string[] }[] = [
-  { name: "System", subs: ["Operating systems", "Kernels", "Device drivers", "Firmware", "Boot software", "System utilities"] },
+  { name: "System", subs: ["Operating systems", "Agentic operating systems", "Kernels", "Device drivers", "Firmware", "Boot software", "System utilities"] },
   { name: "Application", subs: ["Productivity", "Personal information management", "Communication", "Collaboration"] },
   { name: "Business", subs: ["ERP", "CRM", "Finance", "Payments", "HR", "Project management", "Procurement", "Operations"] },
   { name: "Developer", subs: ["Code editors", "IDEs", "Version control", "Build tools", "Language tooling", "Dependency management", "Testing", "API development", "Developer collaboration"] },
