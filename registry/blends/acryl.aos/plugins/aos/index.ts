@@ -285,6 +285,9 @@ function folderSizes(): (folder: string) => Promise<{ own: string, modules: stri
 /** The acrylblends release that packs an app: the one this app runs on, so an installer is made with the same frame. */
 const PACK_WITH = `@acryldev/blends@${(createRequire(import.meta.url)('@acryldev/blends/package.json') as { version: string }).version}`
 
+/** One argument for a cmd.exe line, kept whole whatever spaces or `&,;` it holds. shortcut: a `%NAME%` in it is still expanded by cmd, harmless in an app's name and folder. */
+export const cmdQuoted = (arg: string): string => `"${arg.replaceAll('"', '')}"`
+
 interface Export { state: 'packing' | 'done' | 'failed'; readonly out: string; readonly log: string; readonly started: string; seconds?: number; files?: string[] }
 
 /** Export as installer: `acrylblends pack` of the app's folder into ~/.acryl/installers/<app>, one at a time per app, stopped if AOS stops. */
@@ -302,7 +305,9 @@ function installers(home: string) {
       rmSync(out, { recursive: true, force: true })
       const fd = openSync(log, 'w')
       const win = process.platform === 'win32'
-      const child = spawn(win ? 'npx.cmd' : 'npx', ['-y', PACK_WITH, 'pack', '--from', '.', '--product', app.name, '--out', out],
+      const args = ['-y', PACK_WITH, 'pack', '--from', '.', '--product', app.name, '--out', out]
+      // npx is a .cmd on Windows, so cmd.exe reads the line: an unquoted "Notes, in a window" became --product "Notes," (the installer Notes--win-x64.exe).
+      const child = spawn(win ? 'npx.cmd' : 'npx', win ? args.map(cmdQuoted) : args,
         { cwd: app.path, stdio: ['ignore', fd, fd], shell: win, windowsHide: true, detached: !win })
       const job: Export = { state: 'packing', out, log, started: new Date().toISOString() }
       all.set(app.id, job)

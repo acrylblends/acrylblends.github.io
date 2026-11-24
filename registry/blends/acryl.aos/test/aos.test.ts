@@ -161,3 +161,29 @@ test('an app\'s cost from the real process table: ps and Windows lines parsed, i
   assert.equal(clock.idle('a', 12, 150_000, 60_000), true)
   assert.equal(clock.idle('a', 12, 999_000, 0), false)
 })
+
+test('a just-opened app is waited for until its page shows; a running app whose window was closed answers at once', async () => {
+  const home = mkdtempSync(join(scratch, 'door-wait-'))
+  try {
+    const { ports } = fakeComputer(home)
+    let looks = 0
+    const page = { title: 'Log in', nodes: [] }
+    ports.door.call = async (folder, verb) => {
+      if (verb !== 'look') return { ok: true, value: {} }
+      if (folder === '/apps/crm') return { ok: false, code: 'no-window', message: 'no page of the app is open to control' }
+      looks += 1
+      return looks < 3 ? { ok: false, code: 'no-window', message: 'no page of the app is open to control' } : { ok: true, value: page }
+    }
+    await assert.rejects(runTool(ports, 'app_look', { app: 'crm' }), /no-window/)
+    await runTool(ports, 'system_open', { app: 'notes' })
+    assert.deepEqual(await runTool(ports, 'app_look', { app: 'notes' }), page)
+    assert.equal(looks, 3)
+  } finally { rmSync(home, { recursive: true, force: true }) }
+})
+
+test('an export argument reaches cmd.exe whole', async () => {
+  const { cmdQuoted } = await import('../plugins/aos/index.ts')
+  assert.equal(cmdQuoted('Notes, in a window'), '"Notes, in a window"')
+  assert.equal(cmdQuoted('C:\\Users\\a b\\out'), '"C:\\Users\\a b\\out"')
+  assert.equal(cmdQuoted('say "hi" & bye'), '"say hi & bye"')
+})

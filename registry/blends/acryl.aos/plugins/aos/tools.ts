@@ -63,15 +63,28 @@ export function findApp(ports: ComputerPorts, nameOrId: unknown): AppInfo {
   return app
 }
 
-/** Call a verb of a running app's door; an app that is not running is told so, never started behind the person's back. */
-async function door(ports: ComputerPorts, nameOrId: unknown, verb: string, args: Record<string, unknown>): Promise<unknown> {
+/** When system_open last opened each app: its window registers its page with the door a moment after the app starts (26 s on mbpi9win). */
+const openedAt = new Map<string, number>()
+/** How long a just-opened app may take to show its page before its door's refusal stands. */
+export const OPENING_MS = 60_000
+
+/**
+ * Call a verb of a running app's door; an app that is not running is told so, never started behind the person's back. An app still starting, or opened in
+ * the last minute, is waited for: an agent that opens an app and looks at once gets the page, not "no-window". A window the person closed answers at once.
+ */
+async function door(ports: ComputerPorts, nameOrId: unknown, verb: string, args: Record<string, unknown>, wait = (ms: number) => new Promise((r) => setTimeout(r, ms))): Promise<unknown> {
   const app = findApp(ports, nameOrId)
-  // Its door answers when the app runs, whoever started it (AOS, the Control Center, a terminal).
-  const answer = await ports.door.call(app.path, verb, args).catch((cause: unknown) => {
-    throw new DesktopRefusal(`${app.name} is not running (${cause instanceof Error ? cause.message : String(cause)}); open it first with system_open`)
-  })
-  if (!answer.ok) throw new DesktopRefusal(`${answer.code ?? 'failed'}: ${answer.message ?? `the door of ${app.name} refused ${verb}`}`)
-  return answer.value ?? answer.text
+  const opening = () => findApp(ports, app.id).state === 'starting' || Date.now() - (openedAt.get(app.id) ?? 0) < OPENING_MS
+  for (;;) {
+    // Its door answers when the app runs, whoever started it (AOS, the Control Center, a terminal).
+    const answer = await ports.door.call(app.path, verb, args).catch((cause: unknown) => cause instanceof Error ? cause : new Error(String(cause)))
+    const notYet = answer instanceof Error || (!answer.ok && answer.code === 'no-window')
+    if (notYet && opening()) { await wait(1000); continue }
+    if (answer instanceof Error) throw new DesktopRefusal(`${app.name} is not running (${answer.message}); open it first with system_open`)
+    if (!answer.ok) throw new DesktopRefusal(`${answer.code ?? 'failed'}: ${answer.message ?? `the door of ${app.name} refused ${verb}`}`)
+    openedAt.delete(app.id)
+    return answer.value ?? answer.text
+  }
 }
 
 const view = (desktop: Desktop, names: Readonly<Record<string, string>>) => {
@@ -154,9 +167,9 @@ export const AOS_TOOLS: readonly AosTool[] = [
   },
   {
     name: 'system_open',
-    description: 'Open an app in its own window (it starts its own host the first time). Answers at once; the window shows when the app is up.',
+    description: 'Open an app in its own window (it starts its own host the first time). Answers at once; app_look and app_act wait for its page.',
     parameters: object({ app: str('The app (id or name)') }, ['app']),
-    run: (input, ports) => { const app = findApp(ports, input.app); ports.open(app.id); return { opening: app.id } },
+    run: (input, ports) => { const app = findApp(ports, input.app); ports.open(app.id); openedAt.set(app.id, Date.now()); return { opening: app.id } },
   },
   {
     name: 'system_stop',
