@@ -12,7 +12,7 @@ import { randomBytes, timingSafeEqual } from 'node:crypto'
 import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { readdir, stat } from 'node:fs/promises'
-import { join, sep } from 'node:path'
+import { basename, join, sep } from 'node:path'
 import { acrylRoot, personHome } from '@acryldev/instance/storage'
 import { blendNameOf } from '@acryldev/launcher'
 import { createNodeLauncher, fileDoor, type LauncherService } from '@acryldev/launcher-desktop/node'
@@ -174,7 +174,8 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
         desktop: ports.desktop(),
         exports: exports.view(),
         meter: { running: apps.filter((a) => a.state === 'running').length, ...meter, modelTokens: runs.tokens() },
-        home,
+        // Shown, never the absolute path: a screenshot or a shared screen does not carry the person's user name. The home sits in the user's home (launcher).
+        home: `~/${basename(home)}`,
       })
     })
     .get('/icon/:id', (c) => {
