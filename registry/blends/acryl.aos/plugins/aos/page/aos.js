@@ -49,7 +49,7 @@ function glyph(id, size = '') {
   return `<span class="glyph"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M6 2h20l10 10v32a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="var(--surface)" stroke="var(--border)" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="var(--border)" stroke-width="2"/></svg><span class="ext">${esc(ext)}</span></span>`
 }
 const running = (id) => app(id)?.state === 'running' || app(id)?.state === 'starting'
-const iconButton = (id) => `<button class="dicon" draggable="true" data-item="${esc(id)}" aria-label="${esc(nameOf(id))}">${glyph(id)}${running(id) ? '<span class="run" title="running"></span>' : ''}<span class="lbl">${esc(nameOf(id))}</span></button>`
+const iconButton = (id) => `<button class="dicon" draggable="true" data-item="${esc(id)}" aria-label="${esc(nameOf(id))}">${glyph(id)}${running(id) ? '<span class="run" title="running"></span>' : app(id)?.state === 'asleep' ? '<span class="run zz" title="asleep: opens again on the next click"></span>' : ''}<span class="lbl">${esc(nameOf(id))}</span></button>`
 
 function render() {
   const p = S.desktop.prefs
@@ -65,13 +65,19 @@ function render() {
     + S.desktop.dock.filter(kindOf).map(dockBtn).join('') + (extra.length ? `<span class="sep"></span>${extra.map(dockBtn).join('')}` : '')
   $('#mApps').textContent = S.apps.length
   $('#mRun').textContent = S.meter.running ?? 0
+  $('#mSleep').textContent = S.apps.filter((a) => a.state === 'asleep').length
   $('#mTools').textContent = S.meter.toolCalls ?? 0
   $('#mReplay').textContent = S.meter.replays ?? 0
   $('#mTok').textContent = (S.meter.modelTokens ?? 0).toLocaleString('en')
   for (const id of ['files', 'settings']) refresh(id)
 }
 async function load() {
+  const before = S?.exports ?? {}
   try { S = await api('state') } catch { return }
+  for (const [id, job] of Object.entries(S.exports ?? {})) {
+    if (before[id]?.state === 'packing' && job.state !== 'packing')
+      toast(job.state === 'done' ? `${nameOf(id)} installer ready in ${job.seconds} s: ${job.out}/${job.files.join(', ')}` : `Exporting ${nameOf(id)} failed; see ${job.log}`)
+  }
   render()
 }
 
@@ -86,9 +92,13 @@ const BODY = {
   },
   activity: () => {
     const a = S.activity
-    const rows = S.apps.map((x) => `<tr><td>${esc(x.name)}</td><td>${x.state === 'running' ? '<span class="pill ok">running</span>' : x.state === 'starting' ? '<span class="pill warn">starting</span>' : '<span class="pill off">stopped</span>'}</td><td class="num">${a?.sizes?.[x.id]?.own ?? '…'}</td><td class="num">${a?.sizes?.[x.id]?.modules ?? '…'}</td></tr>`).join('')
-    return `<table><thead><tr><th>App</th><th>State</th><th class="num">Own files</th><th class="num">node_modules</th></tr></thead><tbody>${rows}</tbody></table>
-      <p class="note" style="margin-top:8px">Measured on this computer: the sum of file sizes in each app's folder${a ? `, read ${esc(a.at)}` : ''}. AOS host memory: ${a?.hostMemory ?? '…'}. Each app runs its own host in its own window (D11).</p>`
+    const pill = (state) => state === 'running' ? '<span class="pill ok">running</span>' : state === 'starting' ? '<span class="pill warn">starting</span>' : state === 'asleep' ? '<span class="pill off">asleep</span>' : '<span class="pill off">stopped</span>'
+    const mb = (bytes) => bytes === undefined ? '-' : `${Math.round(bytes / 1048576).toLocaleString('en')} MB`
+    const rows = S.apps.map((x) => { const u = a?.apps?.[x.id]; return `<tr><td>${esc(x.name)}</td><td>${pill(u?.state ?? x.state)}</td><td class="num">${mb(u?.rss)}</td><td class="num">${u?.processes ?? '-'}</td><td class="num">${a?.sizes?.[x.id]?.own ?? '…'}</td></tr>` }).join('')
+    const wakes = (a?.wakes ?? []).map((w) => `${esc(nameOf(w.id))} ${w.seconds} s`).join(', ')
+    return `<table><thead><tr><th>App</th><th>State</th><th class="num">Memory</th><th class="num">Processes</th><th class="num">Own files</th></tr></thead><tbody>${rows}</tbody></table>
+      <p class="note" style="margin-top:8px">Read from this computer's processes${a ? ` at ${esc(a.at)}` : ''}: each app's window, renderers and host added up. AOS host: ${a?.hostMemory ?? '…'}.
+      An app unused for ${a?.sleepAfter ? `${a.sleepAfter} min` : '(never)'} sleeps: its host stops and the next open wakes it${wakes ? `; last wakes: ${wakes}` : ''}.</p>`
   },
   settings: () => {
     const p = S.desktop.prefs
@@ -97,6 +107,7 @@ const BODY = {
       <div><h4>Icons</h4><div class="opt"><label><input type="radio" name="ic" data-set="big" data-v="0" ${p.big ? '' : 'checked'}> Small</label><label><input type="radio" name="ic" data-set="big" data-v="1" ${p.big ? 'checked' : ''}> Large</label></div></div>
       <div><h4>Dock</h4><div class="opt"><label><input type="radio" name="dk" data-set="dockLeft" data-v="0" ${p.dockLeft ? '' : 'checked'}> Bottom</label><label><input type="radio" name="dk" data-set="dockLeft" data-v="1" ${p.dockLeft ? 'checked' : ''}> Left</label></div></div>
       <div><h4>Chat</h4><div class="opt"><label><input type="checkbox" data-set="chat" ${p.chat ? 'checked' : ''}> Show the ACRYL chat beside the desktop</label></div></div>
+      <div><h4>Sleep</h4><div class="opt"><label>Put an app to sleep after <select data-set="sleepAfter">${[0, 5, 15, 30, 60].map((m) => `<option value="${m}" ${p.sleepAfter === m ? 'selected' : ''}>${m === 0 ? 'never' : `${m} min`}</option>`).join('')}</select> unused</label></div></div>
       <p class="note">Saved as one file, ${esc(S.home)}/desktop.json. The agent changes it with desktop_arrange and desktop_move (deterministic, 0 tokens).</p></div>`
   },
   run: () => {
@@ -212,7 +223,7 @@ function frameControl() { try { return window.parent?.[Symbol.for('acryl.frame.c
 async function showChat(on) { await frameControl()?.run({ action: on ? 'open' : 'close', panel: 'right' }).catch(() => undefined) }
 async function applySetting(el) {
   const k = el.dataset.set
-  const args = k === 'wallpaper' ? { wallpaper: el.dataset.v } : k === 'chat' ? { chat: el.checked } : { [k]: el.dataset.v === '1' }
+  const args = k === 'wallpaper' ? { wallpaper: el.dataset.v } : k === 'chat' ? { chat: el.checked } : k === 'sleepAfter' ? { sleepAfter: Number(el.value) } : { [k]: el.dataset.v === '1' }
   await tool('desktop_arrange', args)
   if (k === 'chat') showChat(el.checked)
 }
@@ -263,7 +274,7 @@ function itemMenu(id, x, y) {
       ['open', a.state === 'running' ? 'Open (running)' : 'Open in its own window', () => openItem(id)], '-', dockEntry, ...moveEntries(id), '-',
       ['apps', 'Add to Applications', () => api('applications', { id, on: true }).then((r) => toast(r.problems.length ? `Added, with: ${r.problems.join('; ')}` : `${a.name} is in Applications: the OS search finds it now.`), (e) => toast(e.message))],
       ['unapps', 'Remove from Applications', () => api('applications', { id, on: false }).then(() => toast(`${a.name} is no longer in Applications.`), (e) => toast(e.message))],
-      ['export', 'Export as installer', () => api('export', { id }).then((r) => toast(`Exporting ${a.name} with acrylblends pack; progress in ${r.log}`), (e) => toast(e.message))],
+      ['export', 'Export as installer', () => api('export', { id }).then((r) => toast(`Exporting ${a.name} with acrylblends pack into ${r.out}; this takes a few minutes.`), (e) => toast(e.message))],
       ...(a.state === 'running' ? ['-', ['stop', 'Sleep (stop its host)', () => tool('system_stop', { app: id })]] : []),
     ])
   } else if (k === 'folder') {

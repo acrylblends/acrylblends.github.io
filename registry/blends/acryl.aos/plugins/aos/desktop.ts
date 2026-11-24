@@ -21,7 +21,8 @@ export type Wallpaper = (typeof WALLPAPERS)[number]
 export interface Folder { readonly name: string; readonly items: string[] }
 /** A file on the desktop: its path on disk and the app that opens it. */
 export interface DeskFile { readonly name: string; readonly path: string; readonly app?: string }
-export interface Prefs { wallpaper: Wallpaper; big: boolean; chat: boolean; dockLeft: boolean }
+/** `sleepAfter`: minutes an app may sit unused before its host stops (it wakes on the next open); 0 never. */
+export interface Prefs { wallpaper: Wallpaper; big: boolean; chat: boolean; dockLeft: boolean; sleepAfter: number }
 export interface Desktop {
   readonly version: number
   desk: string[]
@@ -43,7 +44,7 @@ export function freshDesktop(appIds: readonly string[]): Desktop {
     dock: ['files', ...appIds.slice(0, 5), 'activity', 'settings'],
     folders: {},
     files: {},
-    prefs: { wallpaper: 'default', big: false, chat: true, dockLeft: false },
+    prefs: { wallpaper: 'default', big: false, chat: true, dockLeft: false, sleepAfter: 15 },
   }
 }
 
@@ -149,6 +150,8 @@ export function setPrefs(desktop: Desktop, change: Partial<Prefs>): void {
     throw new DesktopRefusal(`the wallpapers are ${WALLPAPERS.join(', ')}`)
   for (const key of ['big', 'chat', 'dockLeft'] as const)
     if (change[key] !== undefined && typeof change[key] !== 'boolean') throw new DesktopRefusal(`${key} is true or false`)
+  if (change.sleepAfter !== undefined && !(Number.isInteger(change.sleepAfter) && change.sleepAfter >= 0 && change.sleepAfter <= 1440))
+    throw new DesktopRefusal('sleepAfter is whole minutes from 0 (never) to 1440')
   desktop.prefs = { ...desktop.prefs, ...Object.fromEntries(Object.entries(change).filter(([, v]) => v !== undefined)) }
 }
 

@@ -127,3 +127,25 @@ test('save as workflow: a manual trigger, one HTTP step per tool posting it back
     assert.deepEqual(await flows.run('wf_1'), { run: 'run_1', status: 'succeeded' })
   } finally { rmSync(home, { recursive: true, force: true }) }
 })
+
+test('an app\'s cost from the real process table: ps and Windows lines parsed, its window, renderers and host added up', async () => {
+  const { IdleClock, parsePs, parseWindows, processTable, seconds, usageOf } = await import('../plugins/aos/processes.ts')
+  assert.equal(seconds('1:02.50'), 62.5)
+  assert.equal(seconds('01:00:01'), 3601)
+  assert.equal(seconds('2-00:00:01'), 172801)
+  const table = parsePs(' 10 1 1000 0:01.00\n 11 10 2000 0:02.00\n 12 11 500 0:00.50\n 13 1 9999 9:00.00\n')
+  assert.deepEqual(usageOf(table, 10), { processes: 3, rss: 3500 * 1024, cpu: 3.5 })
+  assert.equal(usageOf(table, 99), undefined)
+  assert.deepEqual(parseWindows('4,1,1048576,20000000\r\n5,4,1048576,10000000\r\nnoise\r\n'), [{ pid: 4, ppid: 1, rss: 1048576, cpu: 2 }, { pid: 5, ppid: 4, rss: 1048576, cpu: 1 }])
+  // This test's own process is in the real table.
+  assert.ok((usageOf(await processTable(), process.pid)?.rss ?? 0) > 0)
+  // Idle: below 0.5 s of CPU per check for the whole wait; a busy check or an open starts the wait again; 0 minutes never sleeps.
+  const clock = new IdleClock()
+  assert.equal(clock.idle('a', 10, 0, 60_000), false)
+  assert.equal(clock.idle('a', 10.1, 30_000, 60_000), false)
+  assert.equal(clock.idle('a', 10.2, 60_000, 60_000), true)
+  assert.equal(clock.idle('a', 12, 90_000, 60_000), false)
+  assert.equal(clock.idle('a', 12, 140_000, 60_000), false)
+  assert.equal(clock.idle('a', 12, 150_000, 60_000), true)
+  assert.equal(clock.idle('a', 12, 999_000, 0), false)
+})

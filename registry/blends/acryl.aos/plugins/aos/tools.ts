@@ -134,15 +134,15 @@ export const AOS_TOOLS: readonly AosTool[] = [
   },
   {
     name: 'desktop_arrange',
-    description: 'Change how the desktop looks: sort the icons (by name or by kind), wallpaper (default, dusk, mint, plain), large icons, the dock on the left, the chat shown.',
+    description: 'Change how the desktop looks and behaves: sort the icons (by name or by kind), wallpaper (default, dusk, mint, plain), large icons, the dock on the left, the chat shown, and after how many unused minutes an app sleeps (its host stops; 0 never).',
     parameters: object({
       sort: { type: 'string', enum: ['name', 'kind'] },
       wallpaper: { type: 'string', enum: ['default', 'dusk', 'mint', 'plain'] },
-      big: { type: 'boolean' }, dockLeft: { type: 'boolean' }, chat: { type: 'boolean' },
+      big: { type: 'boolean' }, dockLeft: { type: 'boolean' }, chat: { type: 'boolean' }, sleepAfter: { type: 'integer', minimum: 0, maximum: 1440 },
     }),
     run: (input, ports) => ports.arrange((d, names) => {
       if (input.sort === 'name' || input.sort === 'kind') sortDesk(d, input.sort, names)
-      setPrefs(d, { wallpaper: input.wallpaper, big: input.big, dockLeft: input.dockLeft, chat: input.chat } as Partial<Prefs>)
+      setPrefs(d, { wallpaper: input.wallpaper, big: input.big, dockLeft: input.dockLeft, chat: input.chat, sleepAfter: input.sleepAfter } as Partial<Prefs>)
       return { prefs: d.prefs }
     }),
   },

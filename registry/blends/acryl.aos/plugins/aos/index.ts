@@ -7,9 +7,10 @@
  * reads. Consumes: `router` (hard), `tools` (optional: on the app's own server there is none, and the tools wait for it).
  * Effects: the registrations (removed with the plugin or the registry); on unload, every app this plugin started without a window of its own is stopped.
  */
-import { spawn } from 'node:child_process'
+import { type ChildProcess, spawn } from 'node:child_process'
 import { randomBytes, timingSafeEqual } from 'node:crypto'
-import { existsSync, mkdirSync, openSync, readFileSync, writeFileSync } from 'node:fs'
+import { closeSync, existsSync, mkdirSync, openSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { readdir, stat } from 'node:fs/promises'
 import { join } from 'node:path'
 import { acrylRoot, personHome } from '@acryldev/instance/storage'
@@ -18,6 +19,7 @@ import { createNodeLauncher, fileDoor, type LauncherService } from '@acryldev/la
 import type { Context } from '@deepseek-ai/cordis'
 import { Acryl } from '../router/src/index.ts'
 import { addFile, type Desktop, DesktopRefusal, readDesktop, writeDesktop } from './desktop.ts'
+import { IdleClock, processTable, type Usage, usageOf } from './processes.ts'
 import { watchRuns } from './runs.ts'
 import { AOS_TOOLS, type AppInfo, type ComputerPorts, runTool, TOOL_NAMES } from './tools.ts'
 import { type WorkflowStep, workflows } from './workflows.ts'
@@ -97,8 +99,25 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
   const titles = new Map<string, string>()
   const readTitles = (): void => { launcher.blends().then((all) => { for (const b of all) titles.set(b.id, b.name) }, () => undefined) }
   readTitles()
-  const ports = computer(home, launcher, titles)
-  const meter = { toolCalls: 0, replays: 0 }
+  const meter = { toolCalls: 0, replays: 0, slept: 0 }
+  // Idle sleep (D11): each check reads the real processes; an app that spent almost no CPU for the person's sleepAfter minutes stops its host, and
+  // the next open wakes it, timed from the open to its door answering.
+  const usage = new Map<string, Usage>()
+  const asleep = new Map<string, number>()
+  const waking = new Map<string, number>()
+  const wakes: Array<{ id: string, seconds: number, at: string }> = []
+  const clock = new IdleClock()
+  const exports = installers(home)
+  ctx.effect(() => () => { exports.stop() }, 'aos: stop an export still packing')
+  const base = computer(home, launcher, titles)
+  const ports: ComputerPorts = {
+    ...base,
+    open(id) {
+      clock.forget(id)
+      if (asleep.delete(id)) waking.set(id, Date.now())
+      base.open(id)
+    },
+  }
   const dataFolder = join((ctx.get('appInstance') as { home?: string } | undefined)?.home ?? home, 'aos')
   const token = replayToken(dataFolder)
   const port = (): string => (ctx.get('nodeServer') as { url?: string } | undefined)?.url ?? ''
@@ -143,13 +162,17 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
     .get('/activity', async (c) => c.json({
       at: new Date().toLocaleTimeString('en'),
       hostMemory: `${Math.round(process.memoryUsage().rss / 1048576)} MB`,
+      apps: Object.fromEntries(ports.apps().map((a) => [a.id, { ...usage.get(a.id), state: asleep.has(a.id) ? 'asleep' : a.state }])),
+      wakes: wakes.slice(-10),
+      sleepAfter: ports.desktop().prefs.sleepAfter,
       sizes: Object.fromEntries(await Promise.all(ports.apps().map(async (a) => [a.id, await sizes(a.path)] as const))),
     }))
     .get('/state', (c) => {
       const apps = launcher.state().apps
       return c.json({
-        apps: apps.map((a) => ({ id: a.id, name: shownName(a, titles), state: a.state, surface: a.surface, blend: a.blend, version: a.version, icon: existsSync(join(a.path, 'assets', 'icon.png')), failure: a.failure })),
+        apps: apps.map((a) => ({ id: a.id, name: shownName(a, titles), state: asleep.has(a.id) && a.state !== 'running' ? 'asleep' : a.state, surface: a.surface, blend: a.blend, version: a.version, icon: existsSync(join(a.path, 'assets', 'icon.png')), failure: a.failure })),
         desktop: ports.desktop(),
+        exports: exports.view(),
         meter: { running: apps.filter((a) => a.state === 'running').length, ...meter, modelTokens: runs.tokens() },
         home,
       })
@@ -176,7 +199,7 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
       return c.json({ name: file.name, text: readFileSync(file.path, 'utf8').slice(0, 200_000) })
     })
     .post('/applications', change((body) => ({ problems: launcher.appShortcut(String(body.id), body.on !== false) })))
-    .post('/export', change((body) => exportInstaller(home, ports.apps().find((a) => a.id === body.id))))
+    .post('/export', change((body) => exports.start(ports.apps().find((a) => a.id === body.id))))
     // The chat's last turn (from the frame's session log), its tool steps and model steps apart, tokens from the provider's usage.
     .get('/run', (c) => c.json(runs.last() ?? { steps: [], tokens: 0 }))
     .get('/workflows', async (c) => { try { return c.json(await flows.list()) } catch (cause) { return fail(c, cause) } })
@@ -192,6 +215,48 @@ export function apply(ctx: Context, config: { readonly prefix?: string } = {}): 
     })
   ctx.router.route('/api/aos', api)
   ctx.effect(() => () => { launcher.stopAll() }, 'aos: stop the apps it started')
+
+  /** The pid an app's door names: its host. In its own window the host is a child of the window's Electron main process, so the tree under the host's parent is the whole app. */
+  const rootOf = (path: string, table: ReadonlyArray<{ pid: number, ppid: number }>): number | undefined => {
+    let pid: number
+    try { pid = Number((JSON.parse(readFileSync(join(path, '.acryl', 'door.json'), 'utf8')) as { pid?: number }).pid) } catch { return undefined }
+    const parent = table.find((p) => p.pid === pid)?.ppid
+    return parent === undefined || parent <= 1 || parent === process.pid ? pid : parent
+  }
+  let checking = false
+  const check = async (): Promise<void> => {
+    if (checking) return
+    checking = true
+    try {
+      const table = await processTable()
+      const now = Date.now()
+      const after = ports.desktop().prefs.sleepAfter * 60_000
+      for (const app of ports.apps()) {
+        const root = app.state === 'running' || waking.has(app.id) ? rootOf(app.path, table) : undefined
+        const used = root === undefined ? undefined : usageOf(table, root)
+        if (used === undefined) { usage.delete(app.id); continue }
+        usage.set(app.id, used)
+        const wokeAt = waking.get(app.id)
+        if (wokeAt !== undefined && app.state === 'running' && await ports.door.call(app.path, 'tool-list', {}).then((a) => a.ok, () => false)) {
+          waking.delete(app.id)
+          wakes.push({ id: app.id, seconds: Math.round((now - wokeAt) / 100) / 10, at: new Date(now).toISOString() })
+        }
+        if (app.state === 'running' && clock.idle(app.id, used.cpu, now, after)) {
+          launcher.stop(app.id)
+          clock.forget(app.id)
+          usage.delete(app.id)
+          asleep.set(app.id, now)
+          meter.slept += 1
+        }
+      }
+    } catch { /* the next check tries again */ } finally { checking = false }
+  }
+  ctx.effect(() => {
+    const slow = setInterval(() => void check(), 15_000)
+    // While an app wakes, check every half second so its wake time is measured, not rounded to the slow check.
+    const fast = setInterval(() => { if (waking.size > 0) void check() }, 500)
+    return () => { clearInterval(slow); clearInterval(fast) }
+  }, 'aos: idle sleep and the apps\' memory')
 }
 
 /** The sizes of an app's folder (its own files, and node_modules), measured once a minute at most: a walk of node_modules takes a moment. */
@@ -223,14 +288,47 @@ function folderSizes(): (folder: string) => Promise<{ own: string, modules: stri
 }
 
 /** Export as installer (D6): `acrylblends pack` in the app's folder, detached, its progress in the home's logs. */
-function exportInstaller(home: string, app: AppInfo | undefined): { log: string } {
-  if (app === undefined) throw new DesktopRefusal('there is no such app')
-  const logs = join(home, 'logs')
-  mkdirSync(logs, { recursive: true })
-  const log = join(logs, `export-${app.id}.log`)
-  writeFileSync(log, '')
-  const fd = openSync(log, 'a')
-  const npx = process.platform === 'win32' ? 'npx.cmd' : 'npx'
-  spawn(npx, ['-y', '@acryldev/blends@latest', 'pack', '--from', '.', '--product', app.name], { cwd: app.path, detached: true, stdio: ['ignore', fd, fd], shell: process.platform === 'win32' }).unref()
-  return { log }
+/** The acrylblends release that packs an app: the one this app runs on, so an installer is made with the same frame. */
+const PACK_WITH = `@acryldev/blends@${(createRequire(import.meta.url)('@acryldev/blends/package.json') as { version: string }).version}`
+
+interface Export { state: 'packing' | 'done' | 'failed'; readonly out: string; readonly log: string; readonly started: string; seconds?: number; files?: string[] }
+
+/** Export as installer: `acrylblends pack` of the app's folder into ~/.acryl/installers/<app>, one at a time per app, stopped if AOS stops. */
+function installers(home: string) {
+  const all = new Map<string, Export>()
+  const children = new Set<ChildProcess>()
+  return {
+    view: (): Record<string, Export> => Object.fromEntries(all),
+    start(app: AppInfo | undefined): Export {
+      if (app === undefined) throw new DesktopRefusal('there is no such app')
+      if (all.get(app.id)?.state === 'packing') throw new DesktopRefusal(`${app.name} is already being exported`)
+      const out = join(home, 'installers', app.id)
+      const log = join(home, 'logs', `export-${app.id}.log`)
+      mkdirSync(join(home, 'logs'), { recursive: true })
+      rmSync(out, { recursive: true, force: true })
+      const fd = openSync(log, 'w')
+      const win = process.platform === 'win32'
+      const child = spawn(win ? 'npx.cmd' : 'npx', ['-y', PACK_WITH, 'pack', '--from', '.', '--product', app.name, '--out', out],
+        { cwd: app.path, stdio: ['ignore', fd, fd], shell: win, windowsHide: true, detached: !win })
+      const job: Export = { state: 'packing', out, log, started: new Date().toISOString() }
+      all.set(app.id, job)
+      children.add(child)
+      const begun = Date.now()
+      const end = (ok: boolean): void => {
+        children.delete(child)
+        closeSync(fd)
+        job.seconds = Math.round((Date.now() - begun) / 1000)
+        job.files = existsSync(out) ? readdirSync(out).filter((f) => /\.(dmg|exe|deb|tar\.gz|AppImage)$/u.test(f)) : []
+        job.state = ok && job.files.length > 0 ? 'done' : 'failed'
+      }
+      child.once('error', () => end(false))
+      child.once('exit', (code) => end(code === 0))
+      return job
+    },
+    stop(): void {
+      for (const child of children) {
+        try { if (process.platform === 'win32') spawn('taskkill', ['/pid', String(child.pid), '/t', '/f'], { windowsHide: true }); else process.kill(-(child.pid ?? 0), 'SIGTERM') } catch { /* gone */ }
+      }
+    },
+  }
 }
