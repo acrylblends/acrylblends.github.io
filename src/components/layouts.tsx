@@ -18,7 +18,7 @@ export function Breadcrumbs({ items }: { items: { label: string; to?: string }[]
 // on mount rather than relying on server-rendered <head> tags.
 export function usePageMeta(title: string, description: string) {
   useEffect(() => {
-    const fullTitle = `${title} — ACRYL Blends`;
+    const fullTitle = `${title} - ACRYL Blends`;
     document.title = fullTitle;
     const meta = document.querySelector('meta[name="description"]');
     if (meta) meta.setAttribute("content", description);
