@@ -28,12 +28,12 @@
     "precheck": "node scripts/check-node.cjs"
   },
   "dependencies": {
-    "@acryldev/app-context": "0.2.2",
+    "@acryldev/app-context": "0.2.3",
     "@acryldev/app-persistence": "0.1.6",
     "@acryldev/app-shell": "^0.2.1",
-    "@acryldev/blends": "1.7.34",
+    "@acryldev/blends": "1.7.35",
     "@acryldev/blends-core": "0.6.2",
-    "@acryldev/blends-frame": "^0.2.15",
+    "@acryldev/blends-frame": "^0.2.18",
     "@acryldev/brand-client": "^0.2.1",
     "@acryldev/desktop-shell": "0.1.14",
     "@acryldev/instance": "0.1.4",
