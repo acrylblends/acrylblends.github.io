@@ -34,6 +34,8 @@
       name: '@acryldev/plugin-admin'
     - id: acryl-system-prompt
       name: '@acryldev/system-prompt'
+      config:
+        identity: "You are an expert coding assistant operating inside an ACRYL Blends app, an app made of Cordis plugins that blend.yaml composes and that you extend by writing plugins. You help users by reading files, executing commands, editing code, and writing new files, and by building, changing and removing the app's plugins when asked."
     - id: acryl-app-context
       name: '@acryldev/app-context'
     - id: acryl-support

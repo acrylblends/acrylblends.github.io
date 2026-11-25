@@ -1,4 +1,6 @@
 import { readFileSync } from 'node:fs'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { Context } from '@deepseek-ai/cordis'
 import { Acryl } from '../plugins/router/src/index.ts'
 import { type Home, renderWidgets } from '../plugins/home/index.ts'
@@ -6,6 +8,9 @@ import { aboutPage } from './about.tsx'
 import { FIRST_PAGE_MARKER } from './first-page.ts'
 
 export const APP_NAME = 'acryl-control-center'
+
+/** The launcher's page: the one the @acryldev/launcher-desktop package ships, read from there (no copy of it in this app). */
+const launcherScript = () => readFileSync(join(dirname(fileURLToPath(import.meta.resolve('@acryldev/launcher-desktop/package.json'))), 'lib', 'page.js'))
 
 /**
  * The only place the app's mount prefix is named. On its own server (production, `npm start`) the app mounts at the root and
@@ -58,7 +63,7 @@ export function makeApp(home: Home, name: () => string = () => APP_NAME): Acryl 
     new Acryl()
       // A browser gets the first screen; an API client gets the JSON hello.
       .get('/', (c) => c.html(launcherPage()))
-      .get('/launcher.js', (c) => c.body(readFileSync(new URL('../public/launcher.js', import.meta.url)), 200, { 'content-type': 'text/javascript; charset=utf-8' }))
+      .get('/launcher.js', (c) => c.body(launcherScript(), 200, { 'content-type': 'text/javascript; charset=utf-8' }))
       // The template's own first screen, kept at /home.
       .get('/home', async (c) =>
         (c.req.header('accept') ?? '').includes('text/html')

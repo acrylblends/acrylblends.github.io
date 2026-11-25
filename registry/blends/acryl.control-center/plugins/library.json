@@ -1,15 +1,15 @@
 {
   "plugins": [
     "door",
-    "node-server",
-    "page",
-    "router",
-    "web-server",
     "extensions",
     "home",
     "manifest",
+    "node-server",
+    "page",
     "plugin-share",
+    "router",
     "sandbox",
-    "save"
+    "save",
+    "web-server"
   ]
 }

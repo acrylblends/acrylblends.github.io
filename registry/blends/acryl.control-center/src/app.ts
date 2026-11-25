@@ -16,6 +16,7 @@ import {
   type ParameterValue,
 } from '../plugins/manifest/index.ts'
 import { pluginShare } from '../plugins/plugin-share/index.ts'
+import * as launcher from './launcher.ts'
 import { doorEnabled } from './door.ts'
 import { FRAME_MOUNT_PREFIX, routes } from './routes.ts'
 
@@ -27,6 +28,7 @@ export const registry = {
   home,
   extensions,
   'plugin-share': pluginShare,
+  'acryl-launcher-desktop': launcher,
   routes,
 }
 

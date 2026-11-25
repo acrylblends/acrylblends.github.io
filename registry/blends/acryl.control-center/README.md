@@ -8,6 +8,22 @@ source and builds its releases.
 - plugins to pull into an app and to share from it;
 - the Blends right panel: chat, Claude Code, Codex, Pi and a terminal.
 
+## Get started
+
+Install ACRYL Control Center in one line. No Node and no admin for the app itself (Linux asks for sudo once if git or a desktop library is missing), the download is checked against GitHub's sha256, and Windows and macOS open it without warnings because it is not browser-downloaded.
+
+**macOS and Linux**
+```sh
+curl -fsSL https://acryl.dev/install.sh | bash
+```
+
+**Windows (PowerShell)**
+```powershell
+irm https://acryl.dev/install.ps1 | iex
+```
+
+**Developers:** `npx acryl@latest`
+
 ## Download
 
 The app, ready to install (the latest release, <https://github.com/acrylblends/63-acryl-control-center/releases/latest>):
@@ -19,6 +35,7 @@ The app, ready to install (the latest release, <https://github.com/acrylblends/6
 | Linux (Debian, Ubuntu) | [ACRYL-Control-Center-linux-arm64.deb](https://github.com/acrylblends/63-acryl-control-center/releases/latest/download/ACRYL-Control-Center-linux-arm64.deb) | [ACRYL-Control-Center-linux-x64.deb](https://github.com/acrylblends/63-acryl-control-center/releases/latest/download/ACRYL-Control-Center-linux-x64.deb) |
 
 The apps are not signed yet. macOS: the first start is right-click > Open. Windows: SmartScreen may ask, More info > Run anyway.
+Windows installers are being prepared for free code signing by [SignPath Foundation](https://signpath.org): see the [code signing policy](CODE_SIGNING_POLICY.md).
 Linux: `sudo apt install ./ACRYL-Control-Center-linux-x64.deb`. On Windows and Linux it uses the git on your machine.
 
 
@@ -73,14 +90,7 @@ Most of this app is not written here:
 - **The frame and its parts** (`@acryldev/blends-frame`, `@acryldev/settings` and the other `@acryldev/*` packages in
   `package.json`) and the framework (`acrylblends`) come from npm, built from the same repository (`ide/` and `packages/`). `npm install`
   installs them; `npx acrylblends upgrade` moves `package.json` to the release it brings.
-- **The launcher** is generated from ACRYL, <https://github.com/acryldev/acryl>, by its `scripts/launcher-blend.mjs`:
-  - `plugins/acryl-launcher-host/` (its `index.ts`, `package.json`, `contract.ts`, `door.ts`, `registry.ts`, `route.ts`, `runner.ts`,
-    `service.ts`) is the Host half of acryl's `plugins/launcher-desktop`, with its imports renamed for a Blends app;
-  - `plugins/acryl-launcher-host/launcher-lib/` (8 files) is acryl's `plugins/launcher`, built: its `.js` and `.d.ts` copied as they are;
-  - `public/launcher.js` is the page, acryl's `plugins/launcher-desktop/lib/page.js`.
-
-  Change these in acryl and run the script again with `ACRYL_LAUNCHER_APP` set to this checkout; an edit made here is overwritten. They become one published package in place of the
-  copies with acryl spec 051 (task T010).
+- **The launcher** is the published package `@acryldev/launcher-desktop` (built from <https://github.com/acryldev/acryl>, `plugins/launcher-desktop`), a dependency in `package.json` like the other `@acryldev/*` packages: its Host half is the row `acryl-launcher-desktop` in `blend.yaml` (`src/launcher.ts` tells it where ACRYL's home is), its page is the `lib/page.js` the package ships (`src/routes.ts` serves it), and its tools (`acryl_launcher_apps`, `acryl_launcher_new_app` and the others) go to the chat and to every agent. Nothing of it is copied here; change it in acryl and move the pin.
 
 What is this app's own: `blend.yaml`, `cordis.patch.yml`, `src/` (the root serves the Control Center, the template's first screen is at
 `/home`), `assets/`, the tests and the release workflow.

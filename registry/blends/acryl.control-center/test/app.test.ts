@@ -185,3 +185,14 @@ test('the manifest decides what is mounted: a parameter changes the server, an u
   )
   assert.throws(() => readManifest({ nothing: 1 }), /parameter-override-unknown/)
 })
+
+test('the launcher is the @acryldev/launcher-desktop package: its row is in the manifest and its page is the one the package ships', async () => {
+  const { readManifest } = await import('../src/app.ts')
+  assert.ok(readManifest().plugins.some((row) => row.id === 'acryl-launcher-desktop'), 'the launcher row')
+  await withApp(async (app) => {
+    const page = await app.root.router.request(`${FRAME_MOUNT_PREFIX}/launcher.js`)
+    assert.equal(page.status, 200)
+    const shipped = readFileSync(join(projectRoot, 'node_modules', '@acryldev', 'launcher-desktop', 'lib', 'page.js'), 'utf8')
+    assert.equal(await page.text(), shipped, 'the page is read from the package, not a copy')
+  }, { prefix: FRAME_MOUNT_PREFIX })
+})
