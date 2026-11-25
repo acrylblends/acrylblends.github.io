@@ -5,7 +5,7 @@ kind: Blueprint
 metadata:
   id: acryl.control-center
   name: "ACRYL Control Center"
-  version: 0.2.26
+  version: 0.2.27
   category: desktop
   description: "ACRYL Control Center: your apps, new apps from a starter or a Blend, plugins to pull and share, in a window or the browser, with the Blends agents on the right."
   license: MIT
