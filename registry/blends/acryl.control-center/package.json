@@ -38,7 +38,7 @@
     "@acryldev/desktop-shell": "0.1.14",
     "@acryldev/instance": "0.1.5",
     "@acryldev/launcher": "0.2.1",
-    "@acryldev/launcher-desktop": "0.2.3",
+    "@acryldev/launcher-desktop": "0.2.4",
     "@acryldev/plugin-admin": "^0.2.2",
     "@acryldev/plugin-hub-core": "0.2.4",
     "@acryldev/settings": "^0.2.1",
