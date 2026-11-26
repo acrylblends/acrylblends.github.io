@@ -81,6 +81,8 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+# A Blend's built screen (plugins/*/client/dist) is part of the Blend: an app made from the registry serves it as it is.
+!registry/blends/**/dist
 .output
 
 # Gatsby files
