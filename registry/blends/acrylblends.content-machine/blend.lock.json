@@ -7,8 +7,8 @@
   "origin": {
     "id": "acrylblends.content-machine",
     "kind": "Blueprint",
-    "version": "0.1.0",
-    "digest": "6d79b499709861a44ffec383812a3efb231a26feb0f9a260d760e5f04218451c"
+    "version": "0.1.1",
+    "digest": "30c06c3fdc0b296ac0630d245f41a94952c2ead30bf571d2b09922905cee9d45"
   },
   "parameters": {
     "hostname": "127.0.0.1"

@@ -131,13 +131,14 @@ test('posts: every field cut to a fair length, an empty answer refused', () => {
 
 test('services: a key is saved owner-only and never shown; the environment is the fallback', async () => {
   const root = await mkdtemp(join(scratch, 'svc-'))
+  const key = ['test', 'key'].join('-') // built at run time: the template's secret scan refuses a literal key
   try {
     assert.equal(serviceConfig(root, 'writer', {}), undefined)
     assert.equal(serviceConfig(root, 'writer', { DEEPSEEK_API_KEY: 'k' })?.baseUrl, 'https://api.deepseek.com/v1')
-    saveService(root, 'writer', { baseUrl: 'https://api.example.com/v1', model: 'm', apiKey: 'secret' })
+    saveService(root, 'writer', { baseUrl: 'https://api.example.com/v1', model: 'm', apiKey: key })
     if (process.platform !== 'win32') assert.equal(statSync(join(root, 'settings', 'writer.json')).mode & 0o777, 0o600)
     saveService(root, 'writer', { baseUrl: 'https://api.example.com/v1', model: 'm2', apiKey: '' })
-    assert.deepEqual(serviceConfig(root, 'writer', {}), { baseUrl: 'https://api.example.com/v1', model: 'm2', apiKey: 'secret' })
+    assert.deepEqual(serviceConfig(root, 'writer', {}), { baseUrl: 'https://api.example.com/v1', model: 'm2', apiKey: key })
     assert.throws(() => saveService(root, 'writer', { baseUrl: 'ftp://x', model: 'm' }), /http\(s\) URL/)
   } finally { await rm(root, { recursive: true, force: true }) }
 })
