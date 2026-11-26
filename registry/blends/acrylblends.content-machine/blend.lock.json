@@ -1,0 +1,243 @@
+{
+  "formatVersion": 3,
+  "generator": {
+    "name": "@acryldev/blends-core",
+    "version": "0.6.2"
+  },
+  "origin": {
+    "id": "acrylblends.content-machine",
+    "kind": "Blueprint",
+    "version": "0.1.0",
+    "digest": "6d79b499709861a44ffec383812a3efb231a26feb0f9a260d760e5f04218451c"
+  },
+  "parameters": {
+    "hostname": "127.0.0.1"
+  },
+  "rows": [
+    {
+      "id": "router",
+      "name": "acryl-router"
+    },
+    {
+      "id": "home",
+      "name": "home"
+    },
+    {
+      "id": "content",
+      "name": "content"
+    },
+    {
+      "id": "content-ingest",
+      "name": "content-ingest"
+    },
+    {
+      "id": "content-transcribe",
+      "name": "content-transcribe"
+    },
+    {
+      "id": "content-cut",
+      "name": "content-cut"
+    },
+    {
+      "id": "content-sound",
+      "name": "content-sound"
+    },
+    {
+      "id": "content-music",
+      "name": "content-music"
+    },
+    {
+      "id": "content-visuals",
+      "name": "content-visuals"
+    },
+    {
+      "id": "content-shorts",
+      "name": "content-shorts"
+    },
+    {
+      "id": "content-thumbnail",
+      "name": "content-thumbnail"
+    },
+    {
+      "id": "content-posts",
+      "name": "content-posts"
+    },
+    {
+      "id": "content-api",
+      "name": "content-api"
+    },
+    {
+      "id": "content-studio",
+      "name": "content-studio"
+    },
+    {
+      "id": "content-tools",
+      "name": "content-tools"
+    },
+    {
+      "id": "extensions",
+      "name": "extensions"
+    },
+    {
+      "id": "plugin-share",
+      "name": "plugin-share"
+    },
+    {
+      "id": "server",
+      "name": "acryl-node-server",
+      "config": {
+        "hostname": "127.0.0.1"
+      }
+    },
+    {
+      "id": "acryl-door",
+      "name": "acryl-door"
+    }
+  ],
+  "modules": [
+    {
+      "name": "${name}",
+      "origin": "local",
+      "digest": "sha256:0578476190175ab7cc868190604c1c7ea9609f84a347c86723086577d742fbe3",
+      "source": "plugins/extensions"
+    },
+    {
+      "name": "content",
+      "origin": "local",
+      "digest": "sha256:a06b15a78c903f4c76ff8f45db138eb647226eb2370c896fab28d3ed3589faa3",
+      "source": "plugins/content"
+    },
+    {
+      "name": "content-api",
+      "origin": "local",
+      "digest": "sha256:88566aa158e11a80f0469fc9bfdc7abea445a84cb259040074acb2a93985dc8f",
+      "source": "plugins/content-api"
+    },
+    {
+      "name": "content-cut",
+      "origin": "local",
+      "digest": "sha256:98a66622bab9aec388449d30d31501afed89d20adeb27b9d48de75c5b2b78420",
+      "source": "plugins/content-cut"
+    },
+    {
+      "name": "content-ingest",
+      "origin": "local",
+      "digest": "sha256:a6dcf1adab295cd7416dd97ce46d552f26f484aa80c630353ba3fe080c0634e2",
+      "source": "plugins/content-ingest"
+    },
+    {
+      "name": "content-music",
+      "origin": "local",
+      "digest": "sha256:d4ff5034d01f39a420a41c71a780ce9c03e91ecd74e2c735785df85fd5c5e787",
+      "source": "plugins/content-music"
+    },
+    {
+      "name": "content-posts",
+      "origin": "local",
+      "digest": "sha256:e63f55aacb462d7225a17d7e3c4dedce8619efc49485a1a05ebf9b36bae667b8",
+      "source": "plugins/content-posts"
+    },
+    {
+      "name": "content-shorts",
+      "origin": "local",
+      "digest": "sha256:0096838f4d26ce80a43c42ea15a54ba9e56b49b86c4b8e830ce1891ffb6a6d4e",
+      "source": "plugins/content-shorts"
+    },
+    {
+      "name": "content-sound",
+      "origin": "local",
+      "digest": "sha256:5cf294d255520e9c6b26a7bf4754f07dc5b25b04734b0117409aa360163919c9",
+      "source": "plugins/content-sound"
+    },
+    {
+      "name": "content-studio",
+      "origin": "local",
+      "digest": "sha256:50c8cf7b9ac1aeeb01b10b819e056ebc2f40f2a62cc313edd45f90cd93efcd50",
+      "source": "plugins/content-studio"
+    },
+    {
+      "name": "content-thumbnail",
+      "origin": "local",
+      "digest": "sha256:19d31b82b8ec6daaffc390b320a86330dd008323b9c17cd0b353d698f5d86f4f",
+      "source": "plugins/content-thumbnail"
+    },
+    {
+      "name": "content-tools",
+      "origin": "local",
+      "digest": "sha256:266a1e04c5f1e83cb5a05b7f5584a0553afd575ea717e0d6ac258a5128118361",
+      "source": "plugins/content-tools"
+    },
+    {
+      "name": "content-transcribe",
+      "origin": "local",
+      "digest": "sha256:2659d8d427d6f7675594eb2badde16654476a3efb9e14934f97f7b336a3da546",
+      "source": "plugins/content-transcribe"
+    },
+    {
+      "name": "content-visuals",
+      "origin": "local",
+      "digest": "sha256:1ac463aef5ba28ef9d760095920d53d8326a4576596e5e59dcab3932d4246815",
+      "source": "plugins/content-visuals"
+    },
+    {
+      "name": "door",
+      "origin": "local",
+      "digest": "sha256:f8f01d1fbc8c43eded9ae368f821c7b47ca4244cbadc36f83b4c4fc62e92b133",
+      "source": "plugins/door"
+    },
+    {
+      "name": "home",
+      "origin": "local",
+      "digest": "sha256:f0a6eb0bc35e1959f831c3de8bc03c187c8899610bcfa0d7bd92332f1d2118bf",
+      "source": "plugins/home"
+    },
+    {
+      "name": "manifest",
+      "origin": "local",
+      "digest": "sha256:a01f1a1f862ec94a7bde2f90a4b10a4a360ffc109f2431d128fedd35a39c3d1c",
+      "source": "plugins/manifest"
+    },
+    {
+      "name": "node-server",
+      "origin": "local",
+      "digest": "sha256:dde2497ca5ca7246d261ae63a0ecb57774ff1ff613cab176fb36e43c1d434084",
+      "source": "plugins/node-server"
+    },
+    {
+      "name": "page",
+      "origin": "local",
+      "digest": "sha256:1935035c8e1ece435fee2eb6ee61a76aa5ae8b6e7c7035367d45587f1de22686",
+      "source": "plugins/page"
+    },
+    {
+      "name": "plugin-share",
+      "origin": "local",
+      "digest": "sha256:c337c8663c08f2145bab71e429c3d2c72517a1ce74bbbbf11ed92bbb95768127",
+      "source": "plugins/plugin-share"
+    },
+    {
+      "name": "router",
+      "origin": "local",
+      "digest": "sha256:e6ffcb8813001ec103f37ebeff48dbf6ad607df6269678f5e43bee398eab541b",
+      "source": "plugins/router"
+    },
+    {
+      "name": "sandbox",
+      "origin": "local",
+      "digest": "sha256:18f122689c4e14d278837572cb321a73680747e3c9952a7876f4d66dce826dc4",
+      "source": "plugins/sandbox"
+    },
+    {
+      "name": "save",
+      "origin": "local",
+      "digest": "sha256:2a6e3a83562087492264697cc7d5b74bd18e0ecc15a54b8a7f4ad3cfa4cdae23",
+      "source": "plugins/save"
+    },
+    {
+      "name": "web-server",
+      "origin": "local",
+      "digest": "sha256:8aea9216006f128c8a784edb21d701b0fa7f6b427dbe2dff1717bd4d3991eb51",
+      "source": "plugins/web-server"
+    }
+  ]
+}

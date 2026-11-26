@@ -182,6 +182,18 @@
       "origin": "official"
     },
     {
+      "id": "acrylblends.content-machine",
+      "name": "Content Machine",
+      "kind": "Blueprint",
+      "version": "0.1.0",
+      "path": "blends/acrylblends.content-machine",
+      "license": "MIT",
+      "category": "media",
+      "description": "An all-in-one AI video editor and content formatter: bring a rough recording or a YouTube link, and it transcribes, cuts the fillers, retakes and pauses, makes the sound podcast-grade, adds captions, music, a title and b-roll, and makes the vertical shorts, the thumbnail and the posts for YouTube, LinkedIn, Instagram and X. HyperFrames (Apache-2.0) draws the video, ffmpeg cuts it, the ACRYL agent can run every step.",
+      "runtime": "acrylblends",
+      "origin": "official"
+    },
+    {
       "id": "acrylblends.corridor",
       "name": "Corridor",
       "kind": "Blueprint",

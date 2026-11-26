@@ -1,0 +1,19 @@
+ACRYL Content Machine
+Copyright (c) 2026 WebBoxes s.r.o. and the ACRYL contributors. MIT License (LICENSE).
+
+This app renders video with, and depends on (npm, unmodified):
+
+- HyperFrames (https://github.com/heygen-com/hyperframes), Apache License 2.0,
+  Copyright HeyGen. It turns the HTML compositions the app writes (captions, title card,
+  pictures over the video, shorts, thumbnail) into video and pictures with Chrome.
+  The Apache License 2.0 text: https://www.apache.org/licenses/LICENSE-2.0
+
+- GSAP (https://gsap.com), the animation library HyperFrames compositions are timed with,
+  under GSAP's Standard "no charge" license: https://gsap.com/standard-license
+
+It calls these programs, which are not part of it and are installed separately:
+- ffmpeg and ffprobe (https://ffmpeg.org), for cutting, sound and encoding.
+- yt-dlp (https://github.com/yt-dlp/yt-dlp), optional, for YouTube and similar links.
+
+No speech or language model is bundled or downloaded: transcription and writing use the
+services the person sets in Settings.

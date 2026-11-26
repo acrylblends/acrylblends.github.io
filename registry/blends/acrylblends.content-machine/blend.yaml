@@ -1,0 +1,79 @@
+# The app as data, in ACRYL's Blend format (blends.acryl.dev/v1alpha1): which plugins it mounts, in what order, with what config.
+# Edit this, not app.ts, to switch a plugin off (disabled: true) or change its config. `npm run lock` records what the app is built from.
+apiVersion: blends.acryl.dev/v1alpha1
+kind: Blueprint
+metadata:
+  id: acrylblends.content-machine
+  name: "Content Machine"
+  version: 0.1.0
+  category: media
+  description: "An all-in-one AI video editor and content formatter: bring a rough recording or a YouTube link, and it transcribes, cuts the fillers, retakes and pauses, makes the sound podcast-grade, adds captions, music, a title and b-roll, and makes the vertical shorts, the thumbnail and the posts for YouTube, LinkedIn, Instagram and X. HyperFrames (Apache-2.0) draws the video, ffmpeg cuts it, the ACRYL agent can run every step."
+  license: MIT
+  visibility: public
+spec:
+  runtime: cordis
+  parameters:
+    # The address the server listens on.
+    hostname: { type: string, default: 127.0.0.1 }
+  rows:
+    - id: router
+      name: acryl-router
+    # The home page's widgets: a feature plugin puts its UI on the home page with ctx.home.widget, and it leaves with the plugin.
+    - id: home
+      name: home
+    # The content machine's domain: projects (one folder each with its media), the brand, the media library and the jobs, in the app's data home.
+    # Every row below injects it, so switching it off takes them all.
+    - id: content
+      name: content
+    # The steps, one plugin each (Settings > Plugins switches any of them off, and it leaves the screen and the agent's tools with it):
+    # bring the video in (file, link, YouTube through yt-dlp)
+    - id: content-ingest
+      name: content-ingest
+    # the transcript (a speech-to-text API set in Settings, or a subtitle or transcript file)
+    - id: content-transcribe
+      name: content-transcribe
+    # the clean cut (fillers, earlier takes, long pauses) rendered with the sound chain
+    - id: content-cut
+      name: content-cut
+    # the voice cleaned and leveled (a stage of the cut's sound chain)
+    - id: content-sound
+      name: content-sound
+    # music under the voice, ducked, and whooshes at scene changes (a stage of the cut's sound chain)
+    - id: content-music
+      name: content-music
+    # captions, title card, b-roll, punch-ins, progress bar, drawn by HyperFrames into the finished video
+    - id: content-visuals
+      name: content-visuals
+    # vertical shorts of the best moments
+    - id: content-shorts
+      name: content-shorts
+    # the thumbnail
+    - id: content-thumbnail
+      name: content-thumbnail
+    # the posts for YouTube, LinkedIn, Instagram and X, from the transcript and the brand
+    - id: content-posts
+      name: content-posts
+    # The JSON API the screen calls, the uploads, the files with byte ranges, and the live event stream.
+    - id: content-api
+      name: content-api
+    # The screen: projects, the six steps, the player and the timeline; Brand, Library and Settings. Answers the app's root.
+    - id: content-studio
+      name: content-studio
+    # The ACRYL agent as the editor's operator: typed tools in the app's tools registry (list, read, change settings, keep or cut, run any step).
+    - id: content-tools
+      name: content-tools
+    # A feature is a plugin: its folder plugins/<name>/ plus a row of its own above this one (`- id: notes` / `name: notes`), which Settings > Plugins
+    # switches with `disabled: true`. This row starts the folders that have no row yet (a live install with `.acryl/bin/acryl plugin add`); a folder with
+    # a row is never started twice. Read-only when NODE_ENV=production.
+    - id: extensions
+      name: extensions
+    # Sharing: `npm run acryl -- plugin pull github:<owner>/<repo>@<version>` installs a plugin someone released (development only).
+    - id: plugin-share
+      name: plugin-share
+    - id: server
+      name: acryl-node-server
+      config:
+        hostname: "{{parameters.hostname}}"
+    # The door: an agent working in this folder looks at the page and acts on it through .acryl/bin/acryl. Development only: src/app.ts leaves it out when NODE_ENV=production.
+    - id: acryl-door
+      name: acryl-door

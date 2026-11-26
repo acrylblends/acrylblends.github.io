@@ -59,8 +59,23 @@ const AGENTIC_APPS: SubcategoryDetail = {
   gallery: [],
 };
 
+const CONTENT_CREATION: SubcategoryDetail = {
+  name: "Content creation",
+  slug: "content-creation",
+  summary: "One rough recording in, everything you post out: the finished video, vertical shorts, a thumbnail and the posts for every platform, made with an AI editor you keep the final say over.",
+  paragraphs: [
+    "Content creation apps turn what you record into what you publish. You talk into a phone or a webcam once, with the long takes, the mistakes and the \"ums\"; the app cuts them, makes the sound like a studio's, adds captions, music and a title, and writes the words that go with the video.",
+    "ACRYL Content Machine is that app as a Blend. It transcribes the recording, suggests every filler word, earlier take and long pause to cut (keep any with one click), cleans the sound to podcast level, draws captions, a title card and pictures over the video with HyperFrames, picks the best moments as vertical shorts, makes a thumbnail, and writes the YouTube, LinkedIn, Instagram and X posts from your brand. The ACRYL agent runs every step from the chat, and every step is a plugin you can switch off or replace.",
+  ],
+  gallery: [
+    { src: "/img/blends/media/content-machine-visuals.jpg", caption: "Captions, title card, music and b-roll, with the finished video beside them." },
+    { src: "/img/blends/media/content-machine-cut.jpg", caption: "Transcript and cut: fillers, an earlier take and long pauses found, each one kept or cut with a click." },
+    { src: "/img/blends/media/content-machine-shorts.jpg", caption: "Vertical shorts of the best moments, and a thumbnail with a headline." },
+  ],
+};
+
 /** The subcategories that have a page of their own, by the name the taxonomy lists them under. */
-const DETAILS: readonly SubcategoryDetail[] = [ADE, SDE, AGENTIC_APPS];
+const DETAILS: readonly SubcategoryDetail[] = [ADE, SDE, AGENTIC_APPS, CONTENT_CREATION];
 
 const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "System", subs: ["Operating systems", "Agentic operating systems", "Kernels", "Device drivers", "Firmware", "Boot software", "System utilities"] },
@@ -75,7 +90,7 @@ const categoriesRaw: { name: string; subs: string[] }[] = [
   { name: "Networking", subs: ["Network infrastructure", "Network services", "Network management"] },
   { name: "Cybersecurity", subs: ["Endpoint security", "Network security", "Identity security", "Application security", "Cloud security", "Security operations", "Privacy"] },
   { name: "Internet", subs: ["Browsers", "Search", "Web servers", "Internet publishing"] },
-  { name: "Media", subs: ["Graphics", "Video", "Audio", "Music", "Plugins"] },
+  { name: "Media", subs: [CONTENT_CREATION.name, "Graphics", "Video", "Audio", "Music", "Plugins"] },
   { name: "3D / CAD / Design", subs: ["CAD", "3D", "BIM", "CAM", "CAE"] },
   { name: "Scientific & Engineering", subs: ["Mathematics", "Statistics", "Science", "Engineering"] },
   { name: "Industrial", subs: ["Manufacturing", "Industrial control", "Digital twins"] },

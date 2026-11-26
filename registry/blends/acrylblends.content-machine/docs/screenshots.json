@@ -1,0 +1,19 @@
+{
+  "screens": [
+    { "file": "visuals.png", "caption": "Captions, title card, music and b-roll, with the finished video beside them" },
+    { "file": "cut.png", "caption": "Transcript and cut: fillers, an earlier take and long pauses found, each one kept or cut with a click" },
+    { "file": "frame-title.png", "caption": "The finished video: a title card in the brand's color, captions on a box, a progress bar" },
+    { "file": "frame-karaoke.png", "caption": "Karaoke captions: each word lights up as it is said" },
+    { "file": "shorts.png", "caption": "Shorts of the best moments and a thumbnail with a headline" },
+    { "file": "frame-short.png", "caption": "A vertical short, 1080x1920, with big captions" },
+    { "file": "thumbnail.png", "caption": "The thumbnail: a telling frame, a headline in the brand's color" },
+    { "file": "posts.png", "caption": "Posts for YouTube, LinkedIn, Instagram and X, written from the video and the brand" },
+    { "file": "sound.png", "caption": "Sound: a phone recording made to sound like a podcast, with before and after" },
+    { "file": "bring.png", "caption": "Bring a file, a link or a YouTube page" },
+    { "file": "agent.png", "caption": "The ACRYL agent runs every step from the chat" },
+    { "file": "brand.png", "caption": "The brand the posts speak for: offers, prices, tone, color" },
+    { "file": "library.png", "caption": "The library: music, sound effects, pictures and clips" },
+    { "file": "settings.png", "caption": "Settings: the AI writer (DeepSeek works) and speech to text" },
+    { "file": "home.png", "caption": "Start a new video" }
+  ]
+}
