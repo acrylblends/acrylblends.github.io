@@ -78,6 +78,7 @@ export const registrySources: Record<string, Source> = {
   },
   "acryl.aos": repo("01-acryl-aos", releaseFiles("01-acryl-aos", "ACRYL-AOS")),
   "acryl.control-center": repo("63-acryl-control-center", releaseFiles("63-acryl-control-center", "ACRYL-Control-Center")),
+  "acrylblends.content-machine": repo("13-content-machine", releaseFiles("13-content-machine", "ACRYL-Content-Machine")),
   "acrylblends.workflow-automation": repo("48-workflow-automation", releaseFiles("48-workflow-automation", "ACRYL-Workflow-Automation")),
   "acrylblends.workflow-automation-eb": {
     ...repo("48-workflow-automation-eb", [
