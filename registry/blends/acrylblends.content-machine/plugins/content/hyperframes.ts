@@ -43,15 +43,22 @@ export interface RenderOptions {
 /** Renders the composition folder to `output`; the node that runs the app runs the renderer (Electron runs as Node for it). */
 export async function renderComposition(dir: string, output: string, options: RenderOptions = {}): Promise<void> {
   const bin = binOf('hyperframes', 'hyperframes')
+  // The renderer's large temp files go beside the composition, on the project's disk: a WebBox's /tmp is a small memory disk it refuses to render into.
+  const temp = `${dir}.tmp`
+  mkdirSync(temp, { recursive: true })
   const args = [bin, 'render', dir, '-o', output, '--quality', options.quality ?? 'standard', ...(options.format ? ['--format', options.format] : []), '--workers', 'auto']
-  await run(process.execPath, args, {
-    ...(options.signal ? { signal: options.signal } : {}),
-    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1', DO_NOT_TRACK: '1', HYPERFRAMES_NO_UPDATE_CHECK: '1', NO_COLOR: '1' },
-    onLine: (line) => {
-      const match = /(\d{1,3}(?:\.\d+)?)%/.exec(line)
-      if (match && options.onProgress) options.onProgress(Math.min(1, Number(match[1]) / 100))
-    },
-  })
+  try {
+    await run(process.execPath, args, {
+      ...(options.signal ? { signal: options.signal } : {}),
+      env: { ...process.env, TMPDIR: temp, ELECTRON_RUN_AS_NODE: '1', DO_NOT_TRACK: '1', HYPERFRAMES_NO_UPDATE_CHECK: '1', NO_COLOR: '1' },
+      onLine: (line) => {
+        const match = /(\d{1,3}(?:\.\d+)?)%/.exec(line)
+        if (match && options.onProgress) options.onProgress(Math.min(1, Number(match[1]) / 100))
+      },
+    })
+  } finally {
+    rmSync(temp, { recursive: true, force: true })
+  }
 }
 
 /** Removes a composition folder and, when it was the last one, the `render/` folder that held it. */

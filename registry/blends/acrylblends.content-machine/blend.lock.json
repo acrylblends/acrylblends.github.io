@@ -7,8 +7,8 @@
   "origin": {
     "id": "acrylblends.content-machine",
     "kind": "Blueprint",
-    "version": "0.1.1",
-    "digest": "30c06c3fdc0b296ac0630d245f41a94952c2ead30bf571d2b09922905cee9d45"
+    "version": "0.1.2",
+    "digest": "a7cf967bd4054b0f1406f3ff3b530c6c93a55f6d2100c3b032c5ffe8862bed30"
   },
   "parameters": {
     "hostname": "127.0.0.1"
@@ -104,7 +104,7 @@
     {
       "name": "content",
       "origin": "local",
-      "digest": "sha256:a06b15a78c903f4c76ff8f45db138eb647226eb2370c896fab28d3ed3589faa3",
+      "digest": "sha256:560c2052b213248cfb7c12cab690188da4d908a170b7b5049c69054437099a62",
       "source": "plugins/content"
     },
     {
