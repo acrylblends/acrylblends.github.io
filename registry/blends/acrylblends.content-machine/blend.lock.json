@@ -7,8 +7,8 @@
   "origin": {
     "id": "acrylblends.content-machine",
     "kind": "Blueprint",
-    "version": "0.1.2",
-    "digest": "a7cf967bd4054b0f1406f3ff3b530c6c93a55f6d2100c3b032c5ffe8862bed30"
+    "version": "0.1.3",
+    "digest": "f8f3cd492b704e1444d0a4e206065398b5ffb750fead43c2b7e8a63367dcdd2e"
   },
   "parameters": {
     "hostname": "127.0.0.1"
@@ -104,13 +104,13 @@
     {
       "name": "content",
       "origin": "local",
-      "digest": "sha256:560c2052b213248cfb7c12cab690188da4d908a170b7b5049c69054437099a62",
+      "digest": "sha256:26eb2a5cda41869e67d05f07e61f1ddb22ffae7f05feb5e9cd6dc73411cb1410",
       "source": "plugins/content"
     },
     {
       "name": "content-api",
       "origin": "local",
-      "digest": "sha256:88566aa158e11a80f0469fc9bfdc7abea445a84cb259040074acb2a93985dc8f",
+      "digest": "sha256:d922dfb542442504cc92d1492b2a3efeab2ce23d3b12677dd9ea7d47b436a22d",
       "source": "plugins/content-api"
     },
     {
@@ -122,7 +122,7 @@
     {
       "name": "content-ingest",
       "origin": "local",
-      "digest": "sha256:a6dcf1adab295cd7416dd97ce46d552f26f484aa80c630353ba3fe080c0634e2",
+      "digest": "sha256:4a8b87872c73b36f22f76e70d2e4086977a6516ed7bd32f4ac54bb4e45e28d99",
       "source": "plugins/content-ingest"
     },
     {

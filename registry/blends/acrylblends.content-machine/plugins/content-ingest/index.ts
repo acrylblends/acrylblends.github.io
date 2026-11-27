@@ -76,7 +76,7 @@ async function download(context: ActionContext, raw: string): Promise<{ path: st
   const dir = context.path('download')
   rmSync(dir, { recursive: true, force: true })
   if (isPage(url)) {
-    if (!(await available('yt-dlp'))) throw new Refusal('unavailable', 'this link is a page, not a media file: install yt-dlp (brew install yt-dlp, or pip install yt-dlp) to fetch videos from YouTube and similar sites')
+    if (!(await available('yt-dlp', '--version'))) throw new Refusal('unavailable', 'this link is a page, not a media file: install yt-dlp (brew install yt-dlp, or pip install yt-dlp) to fetch videos from YouTube and similar sites')
     context.progress(0.01, 'downloading with yt-dlp')
     await run('yt-dlp', ['--no-playlist', '--newline', '-f', 'bv*[height<=1080]+ba/b[height<=1080]/b', '--merge-output-format', 'mp4', '-o', `${dir}/media.%(ext)s`, url.href], {
       signal: context.signal,

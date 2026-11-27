@@ -95,7 +95,7 @@ export function contentApi(machine: Machine): Acryl {
   return new Acryl()
     .get(`${API}/features`, read(() => ({ features: features() })))
     .get(`${API}/status`, read(async () => ({
-      tools: { ffmpeg: await available(machine.tools.ffmpeg), ffprobe: await available(machine.tools.ffprobe), 'yt-dlp': await available('yt-dlp') },
+      tools: { ffmpeg: await available(machine.tools.ffmpeg), ffprobe: await available(machine.tools.ffprobe), 'yt-dlp': await available('yt-dlp', '--version') },
       writer: describeService(machine.root, 'writer'),
       transcriber: describeService(machine.root, 'transcriber'),
     })))

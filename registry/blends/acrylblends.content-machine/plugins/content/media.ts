@@ -92,9 +92,10 @@ export async function probe(tools: Tools, file: string, signal?: AbortSignal): P
 }
 
 /** Whether a program answers `-version`: the screen says which tools are missing before a step fails on them. */
-export async function available(command: string): Promise<boolean> {
+/** Whether `command` runs: ffmpeg and ffprobe answer `-version`, yt-dlp only `--version`. */
+export async function available(command: string, versionFlag: '-version' | '--version' = '-version'): Promise<boolean> {
   try {
-    await run(command, ['-version'])
+    await run(command, [versionFlag])
     return true
   } catch {
     return false

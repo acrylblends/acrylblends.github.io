@@ -220,3 +220,11 @@ test('a real cut: ffmpeg keeps the stretches, joins them, and cleans the voice',
     await rm(home, { recursive: true, force: true })
   }
 })
+
+test('available() asks each program the way it answers: yt-dlp knows only --version', async () => {
+  const { available } = await import('../plugins/content/media.ts')
+  // node, like yt-dlp, rejects the single-dash flag ffmpeg uses; with --version it answers.
+  assert.equal(await available(process.execPath, '-version'), false)
+  assert.equal(await available(process.execPath, '--version'), true)
+  assert.equal(await available('no-such-program-content-machine'), false)
+})
